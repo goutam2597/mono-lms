@@ -1,4 +1,4 @@
-<x-layouts.app title="Dreams LMS – Home Page 5" active="home-5">
+<x-layouts.app title="Dreams LMS – Home" active="home">
 
     <!-- 1. HERO SECTION (Figma: 2355:29935 & 2355:29979) -->
     <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 overflow-hidden relative" data-node-id="2355:29908">

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | All screen routes mapped from the Figma UI Kit:
-| - Home Page 5 (the main and only home theme)
+| - Home (the main and only home page)
 | - Screens Showcase Gallery (/screens)
 | - Courses (Grid, List, Details)
 | - Instructors (Grid, List, Details)
@@ -18,14 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Home Route - Home Page 5 is the main and only home theme
+// Home - the one and only home page
 Route::get('/', function () {
-    return view('pages.home-5');
+    return view('pages.home');
 })->name('home');
-
-Route::get('/home-5', function () {
-    return view('pages.home-5');
-})->name('home-5');
 
 // Screens Showcase Hub
 Route::get('/screens', function () {

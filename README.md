@@ -14,8 +14,8 @@
 
 All screens are designed in Figma Dev Mode and mapped to structured Blade components.
 
-### 1. Home Page 5 (Flagship Home `/`)
-![Home Page 5](demos/homepage_5.png)
+### 1. Home (`/`)
+![Home](demos/home.png)
 
 ### 2. Course Grid (`/courses/grid`)
 ![Course Grid](demos/course_grid.png)
@@ -33,11 +33,11 @@ All screens are designed in Figma Dev Mode and mapped to structured Blade compon
 
 ## 🧭 Complete Screens & Route Directory
 
-All 23 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
+All 22 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
 
 | Category | Screen Name | Route | Figma Node ID |
 | :--- | :--- | :--- | :--- |
-| **Homepages** | Home Page 5 *(Main and Only Home)* | `/` or `/home-5` | `2355:29907` |
+| **Home** | Home *(Main and Only Home)* | `/` | `2355:29907` |
 | **Hub** | Screens Showcase Hub | `/screens` | `1:4659` |
 | **Courses** | Course Grid | `/courses/grid` | `200:18274` |
 | | Course List | `/courses/list` | `200:19012` |
@@ -131,7 +131,7 @@ Visit: `http://localhost/lms/public` or `http://localhost/lms/public/screens`.
 
 ## 🧪 Testing
 
-Run the feature test suite covering all 23 screens:
+Run the feature test suite covering all 22 screens:
 ```bash
 php artisan test --compact
 ```

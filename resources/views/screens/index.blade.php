@@ -32,13 +32,12 @@
             <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider text-[#ff4667]">Section 1</span>
-                    <h2 class="text-2xl font-bold text-[#191919]">Homepages</h2>
+                    <h2 class="text-2xl font-bold text-[#191919]">Home</h2>
                 </div>
-                <span class="text-sm text-gray-500 font-medium">1 Variant</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Home 5 (Main and Only Home) -->
+                <!-- Home (Main and Only Home) -->
                 <div class="bg-white border-2 border-[#ff4667] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col justify-between relative">
                     <div class="absolute top-3 right-3 z-10">
                         <span class="inline-block bg-[#ff4667] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
@@ -48,9 +47,9 @@
                     <div>
                         <div class="h-48 bg-gradient-to-br from-[#392c7d] via-[#5625e8] to-[#071136] relative p-6 flex flex-col justify-between overflow-hidden">
                             <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full"></div>
-                            <span class="inline-block bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit backdrop-blur-xs">Home Page 5</span>
+                            <span class="inline-block bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit backdrop-blur-xs">Home</span>
                             <div class="text-white">
-                                <h3 class="text-2xl font-extrabold">Home Page 5</h3>
+                                <h3 class="text-2xl font-extrabold">Home</h3>
                                 <p class="text-xs text-gray-200 mt-1">Engaging &amp; Accessible, 4 stats ribbon, 3-part Cloud feature showcase</p>
                             </div>
                         </div>
@@ -63,8 +62,8 @@
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('home-5') }}" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors shadow-sm">
-                            <span>Open Home Page 5</span>
+                        <a href="{{ route('home') }}" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors shadow-sm">
+                            <span>Open Home</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
                     </div>
