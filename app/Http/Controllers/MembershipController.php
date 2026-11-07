@@ -20,8 +20,16 @@ class MembershipController extends Controller
         $currentSubscription = auth('student')->user()
             ?->subscriptions()->with('plan')->where('status', 'active')->first();
 
+        $plans = Plan::active()->orderBy('sort_order')->get();
+
+        // Canonical feature list = every feature offered by any active plan,
+        // in first-appearance order. Cards show each feature as included (✓)
+        // or not included (✗) so tiers compare honestly side by side.
+        $allFeatures = $plans->flatMap(fn ($plan) => $plan->features ?? [])->unique()->values();
+
         return view('pages.membership.index', [
-            'plans' => Plan::active()->orderBy('sort_order')->get(),
+            'plans' => $plans,
+            'allFeatures' => $allFeatures,
             'currentSubscription' => $currentSubscription,
         ]);
     }

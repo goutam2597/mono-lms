@@ -219,9 +219,9 @@ class DatabaseSeeder extends Seeder
         \App\Models\Setting::set('membership_enabled', '1');
 
         $plans = [
-            ['Basic', 19.00, 'monthly', 'Start learning with the essentials.', ['Access to 1,000+ courses', 'Mobile & desktop learning', 'Progress tracking'], false, 1],
-            ['Standard', 39.00, 'monthly', 'Everything you need to master new skills.', ['Unlimited course access', 'Downloadable resources', 'Certificates of completion', 'Priority support'], true, 2],
-            ['Annual Premium', 299.00, 'yearly', 'Best value — two months free, billed yearly.', ['Everything in Standard', 'Offline downloads', '1-on-1 mentor sessions', 'Early access to new courses'], false, 3],
+            ['Basic', 19.00, 'monthly', 'Start learning with the essentials.', ['Mobile & desktop learning', 'Progress tracking'], false, 1],
+            ['Standard', 39.00, 'monthly', 'Everything you need to master new skills.', ['Unlimited course access', 'Mobile & desktop learning', 'Progress tracking', 'Downloadable resources', 'Certificates of completion', 'Priority support'], true, 2],
+            ['Annual Premium', 299.00, 'yearly', 'Best value — two months free, billed yearly.', ['Unlimited course access', 'Mobile & desktop learning', 'Progress tracking', 'Downloadable resources', 'Certificates of completion', 'Priority support', 'Offline downloads', '1-on-1 mentor sessions', 'Early access to new courses'], false, 3],
         ];
 
         foreach ($plans as [$name, $price, $period, $description, $features, $popular, $order]) {

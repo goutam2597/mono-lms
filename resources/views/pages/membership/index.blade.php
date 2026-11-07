@@ -16,9 +16,9 @@
     @endif
 
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-14">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse ($plans as $plan)
-                <div class="relative bg-white border-2 rounded-2xl p-8 shadow-xs hover:shadow-xl transition-all duration-300 {{ $plan->is_popular ? 'border-[#ff4667]' : 'border-[#e7e7e7]' }}">
+                <div class="relative bg-white border-2 rounded-2xl p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col {{ $plan->is_popular ? 'border-[#ff4667]' : 'border-[#e7e7e7]' }}">
                     @if ($plan->is_popular)
                         <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#ff4667] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
                             ★ {{ __('membership.most_popular') }}
@@ -33,16 +33,21 @@
                         <span class="text-sm text-gray-400">/ {{ __('membership.'.$plan->billing_period) }}</span>
                     </div>
 
-                    <ul class="mt-6 space-y-3 text-sm text-[#5d5d5d] border-t border-gray-100 pt-6">
-                        @foreach ($plan->features ?? [] as $feature)
-                            <li class="flex items-start gap-2.5">
-                                <span class="text-[#03c95a] font-bold mt-0.5">✓</span>
+                    <ul class="mt-6 space-y-3 text-sm border-t border-gray-100 pt-6 flex-1">
+                        @foreach ($allFeatures as $feature)
+                            @php $included = in_array($feature, $plan->features ?? []); @endphp
+                            <li class="flex items-start gap-2.5 {{ $included ? 'text-[#5d5d5d]' : 'text-gray-300' }}">
+                                @if ($included)
+                                    <span class="text-[#03c95a] font-bold mt-0.5">✓</span>
+                                @else
+                                    <span class="mt-0.5 w-3.5 h-3.5 rounded-full border border-gray-300 inline-flex items-center justify-center text-gray-300 text-[9px] shrink-0">✕</span>
+                                @endif
                                 <span>{{ $feature }}</span>
                             </li>
                         @endforeach
                     </ul>
 
-                    <div class="mt-8">
+                    <div class="mt-auto pt-8">
                         @auth('student')
                             @if ($currentSubscription?->plan_id === $plan->id && $currentSubscription?->status === 'active')
                                 <span class="block w-full text-center bg-[#03c95a]/10 text-[#0d7a38] font-bold py-3 rounded-full text-sm">{{ __('membership.current_plan') }}</span>
