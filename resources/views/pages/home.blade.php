@@ -100,7 +100,7 @@
                             <!-- Vector 1 (Cyan curved accent) -->
                             <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
                                      <!-- Image Slides (student / instructors / courses — crossfade every 10s) -->
-                        <div class="relative z-10 w-[85%] h-[92%] rounded-[32px] overflow-hidden shadow-2xl ring-8 ring-white/40">
+                        <div class="relative z-10 w-[74%] aspect-square rounded-full overflow-hidden shadow-2xl ring-8 ring-white/40">
                             @foreach ([
                                 ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
                                 ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
