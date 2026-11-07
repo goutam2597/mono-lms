@@ -11,6 +11,8 @@ return [
         'home' => 'Home',
         'courses' => 'Courses',
         'instructors' => 'Instructors',
+        'blog' => 'Blog',
+        'membership' => 'Membership',
         'student' => 'Student',
         'auth' => 'Auth',
         'screens' => 'Screens Gallery',

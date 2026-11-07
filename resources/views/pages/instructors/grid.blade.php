@@ -21,13 +21,14 @@
 
     <!-- Main Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12">
-        <!-- Results & Sort Bar -->
-        <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xs">
+        <!-- Results Bar -->
+        <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 shadow-xs">
             <div class="text-xs sm:text-sm text-[#6d6d6d]">
                 {{ __('instructors.results_for', ['count' => $instructors->total()]) }}
             </div>
+        </div>
 
-                    <!-- Instructors Grid (DB-driven) -->
+        <!-- Instructors Grid (DB-driven) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse ($instructors as $instructor)
                 <x-instructor-card

@@ -58,7 +58,7 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         if ($role->admins()->exists()) {
-            return back()->with('error', __('admin.roles.admins_with_role').' — '.__('common.confirm_delete'));
+            return back()->with('error', __('admin.roles.admins_with_role').' — '.__('app.common.confirm_delete'));
         }
 
         $role->permissions()->detach();

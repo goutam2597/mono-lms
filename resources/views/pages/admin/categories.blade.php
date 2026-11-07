@@ -15,7 +15,7 @@
                     <tr class="text-left text-[11px] uppercase tracking-wider text-gray-400 bg-[#f8fafb]">
                         <th class="px-6 py-3 font-semibold">{{ __('app.common.name') }}</th>
                         <th class="px-6 py-3 font-semibold">{{ __('admin.categories.icon') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('app.common.courses') ?? __('admin.dashboard.total_courses') }}</th>
+                        <th class="px-6 py-3 font-semibold">{{ __('admin.dashboard.total_courses') ?? __('admin.dashboard.total_courses') }}</th>
                         <th class="px-6 py-3 font-semibold">{{ __('app.common.actions') }}</th>
                     </tr>
                 </thead>

@@ -11,6 +11,8 @@ return [
         'home' => 'होम',
         'courses' => 'कोर्सेज़',
         'instructors' => 'इंस्ट्रक्टर',
+        'blog' => 'ब्लॉग',
+        'membership' => 'मेंबरशिप',
         'student' => 'स्टूडेंट',
         'auth' => 'प्रमाणीकरण',
         'screens' => 'स्क्रीन गैलरी',

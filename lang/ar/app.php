@@ -11,6 +11,8 @@ return [
         'home' => 'الرئيسية',
         'courses' => 'الدورات',
         'instructors' => 'المدرّبون',
+        'blog' => 'المدونة',
+        'membership' => 'العضوية',
         'student' => 'الطالب',
         'auth' => 'الحساب',
         'screens' => 'معرض الشاشات',

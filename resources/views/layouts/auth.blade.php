@@ -51,7 +51,7 @@
                     </div>
 
                     <h2 class="text-2xl font-bold text-[#191919] mb-2">
-                        {{ __('app.welcome') }} Mono<span class="text-[#ff4667]">LMS</span>
+                        {{ __('app.common.welcome') }} Mono<span class="text-[#ff4667]">LMS</span>
                     </h2>
                     <p class="text-sm text-[#6d6d6d] max-w-sm leading-relaxed">
                         {{ __('app.footer.about') }}

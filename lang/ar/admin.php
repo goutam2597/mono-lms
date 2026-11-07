@@ -13,6 +13,8 @@ return [
         'categories' => 'التصنيفات',
         'courses' => 'الدورات',
         'reviews' => 'المراجعات',
+        'blog' => 'المدونة',
+        'plans' => 'خطط العضوية',
         'languages' => 'اللغات',
         'settings' => 'الإعدادات',
     ],

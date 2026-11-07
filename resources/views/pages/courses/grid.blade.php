@@ -1,16 +1,16 @@
-<x-layouts.app title="Course Grid - Mono LMS" active="courses">
+<x-layouts.app :title="__('courses.title').' - Mono LMS'" active="courses">
 
     <!-- Page Title Header (Figma: 398:51277) -->
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-[#191919]">Course Grid</h1>
+                <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('courses.title') }}</h1>
                 <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
                     <a href="{{ route('home') }}" class="hover:text-[#ff4667]">Home</a>
                     <span>/</span>
                     <a href="{{ route('courses.index') }}" class="hover:text-[#ff4667]">Courses</a>
                     <span>/</span>
-                    <span class="text-[#ff4667] font-medium">Course Grid</span>
+                    <span class="text-[#ff4667] font-medium">{{ __('courses.title') }}</span>
                 </nav>
             </div>
             <div class="text-xs text-[#888888] font-medium">
@@ -23,15 +23,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12">
         <!-- Results & Sort Bar (Figma: 398:51279) -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xs">
-            <!-- Left Filter Toggle & Results Count -->
-            <div class="flex items-center justify-between lg:justify-start gap-6">
-                <button class="inline-flex items-center gap-2 text-sm font-semibold text-[#191919] bg-[#f4f6f9] px-4 py-2 rounded-lg">
-                    <svg class="w-4 h-4 text-[#ff4667]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                    <span>Filters</span>
-                </button>
-                <div class="text-xs sm:text-sm text-[#6d6d6d]">
-                    Showing {{ __('courses.results_for', ['count' => $courses->total()]) }}
-                </div>
+            <!-- Results Count -->
+            <div class="text-xs sm:text-sm text-[#6d6d6d]">
+                {{ __('courses.results_for', ['count' => $courses->total()]) }}
             </div>
 
             <!-- Right Controls: View Switcher, Sort Dropdown, Search Input -->
@@ -86,8 +80,7 @@
                                 </label>
                             @endforeach
                         </div>
-                    </div>
-                    <button class="mt-3 text-xs font-semibold text-[#ff4667] hover:underline">See More Categories</button>
+                    </form>
                     <button class="mt-3 text-xs font-semibold text-[#ff4667] hover:underline">See More Categories</button>
                 </div>
 

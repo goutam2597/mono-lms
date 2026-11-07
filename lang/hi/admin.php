@@ -13,6 +13,8 @@ return [
         'categories' => 'श्रेणियाँ',
         'courses' => 'कोर्स',
         'reviews' => 'समीक्षाएँ',
+        'blog' => 'ब्लॉग',
+        'plans' => 'मेंबरशिप प्लान',
         'languages' => 'भाषाएँ',
         'settings' => 'सेटिंग्स',
     ],
