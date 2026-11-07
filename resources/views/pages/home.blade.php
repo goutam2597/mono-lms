@@ -5,8 +5,8 @@
         <!-- Ambient decorative shapes (clipped in their own layer so the
              category dropdown can overflow the section freely) -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute -top-32 right-0 w-[550px] h-[550px] rounded-full bg-[#392c7d]/5 blur-3xl"></div>
-            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#ff4667]/5 blur-3xl"></div>
+            <div class="absolute -top-32 right-0 w-[550px] h-[550px] rounded-full bg-[#392c7d]/5 blur-3xl anim-pulse-soft"></div>
+            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#ff4667]/5 blur-3xl anim-pulse-soft"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
@@ -15,24 +15,24 @@
                 <!-- Left Content Column -->
                 <div class="lg:col-span-6 space-y-7 text-left">
                     <!-- Top Pill Tagline -->
-                    <div class="inline-block">
+                    <div class="inline-block anim-fade-up">
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#ff4667] text-white shadow-sm">
                             {{ __('home.hero.badge') }}
                         </span>
                     </div>
 
                     <!-- Main Display Heading -->
-                    <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight">
+                    <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight anim-fade-up anim-d1">
                         {{ __('home.hero.title_line1') }} <span class="text-[#ff4667]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
                     </h1>
 
                     <!-- Subtitle Description -->
-                    <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl">
+                    <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl anim-fade-up anim-d2">
                         {{ __('home.hero.subtitle') }}
                     </p>
 
                     <!-- Rounded Search Bar -->
-                    <form action="{{ route('courses.index') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl">
+                    <form action="{{ route('courses.index') }}" method="GET" class="anim-fade-up anim-d3 bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl">
                         <!-- Category Select Pill (custom MonoSelect) -->
                         <div class="bg-[#e7e7e7] rounded-[6px] flex items-center">
                             <x-select name="category"
@@ -61,6 +61,30 @@
                             </svg>
                         </button>
                     </form>
+
+                    <!-- Quick Category Chips -->
+                    <div class="flex flex-wrap items-center gap-2 anim-fade-up anim-d4">
+                        <span class="text-xs text-gray-400 font-medium">{{ __('home.hero.popular') }}</span>
+                        @foreach ($categories->take(4) as $chipCategory)
+                            <a href="{{ route('courses.index', ['category' => $chipCategory->slug]) }}" class="px-3 py-1.5 rounded-full bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] hover:border-[#ff4667] hover:text-[#ff4667] transition-colors">
+                                {{ $chipCategory->name }}
+                            </a>
+                        @endforeach
+                    </div>
+
+                    <!-- Trust Row -->
+                    <div class="flex items-center gap-3 anim-fade-up anim-d5">
+                        <div class="flex -space-x-2.5">
+                            @foreach ($topInstructors->take(4) as $trustInstructor)
+                                <img src="{{ $trustInstructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($trustInstructor->name).'&background=392c7d&color=fff' }}" alt="{{ $trustInstructor->name }}" class="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
+                            @endforeach
+                            <span class="w-9 h-9 rounded-full bg-[#ff4667] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">+{{ $stats['instructors'] }}</span>
+                        </div>
+                        <div class="text-xs text-[#6d6d6d] leading-snug">
+                            <span class="text-[#ffc107]">★★★★★</span> <strong class="text-[#191919]">{{ __('home.hero.rating_label') }}</strong><br>
+                            Trusted by <strong class="text-[#191919]">{{ $stats['students'] }}+ {{ __('home.hero.students_word') }}</strong>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right Visual Column -->
@@ -83,27 +107,27 @@
                         </div>
 
                         <!-- Floating Stat Badge 1 (6K+ Certified Courses) -->
-                        <div class="absolute -bottom-4 -left-6 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3">
+                        <div class="absolute -bottom-4 -left-6 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3 anim-float">
                             <div class="w-11 h-11 rounded-lg bg-[#0dcaf0]/15 flex items-center justify-center text-[#0dcaf0]">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-base font-bold text-[#0dcaf0]">{{ $stats['courses'] }}+</p>
+                                
                                 <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.courses') }}</p>
                             </div>
                         </div>
 
                         <!-- Floating Stat Badge 2 (60K+ Online Students) -->
-                        <div class="absolute top-8 -right-4 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3">
+                        <div class="absolute top-8 -right-4 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3 anim-float-slow">
                             <div class="w-11 h-11 rounded-lg bg-[#03c95a]/15 flex items-center justify-center text-[#03c95a]">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-base font-bold text-[#03c95a]">{{ $stats['students'] }}+</p>
+                                <p class="text-base font-bold text-[#03c95a]" data-countup="{{ $stats['students'] }}" data-suffix="+">0+</p>
                                 <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.students') }}</p>
                             </div>
                         </div>
@@ -126,7 +150,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight">{{ $stats['courses'] }}</h3>
+                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
@@ -139,7 +163,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight">{{ $stats['instructors'] }}+</h3>
+                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-countup="{{ $stats['instructors'] }}" data-suffix="+">0+</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.instructors') }}</p>
                 </div>
             </div>
@@ -152,7 +176,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight">{{ $stats['courses'] }}</h3>
+                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
@@ -165,7 +189,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight">{{ $stats['students'] }}+</h3>
+                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-countup="{{ $stats['students'] }}" data-suffix="+">0+</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.students') }}</p>
                 </div>
             </div>

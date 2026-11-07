@@ -10,6 +10,9 @@ return [
         'subtitle' => 'Our specialized online courses are designed to bring the classroom to you, with expert instructors and hands-on projects.',
         'select_category' => 'Select category',
         'get_started' => 'Get Started',
+        'popular' => 'Popular:',
+        'rating_label' => '4.8/5 average rating',
+        'students_word' => 'students',
         'browse_courses' => 'Browse Courses',
         'stats' => [
             'students' => 'Total Students',

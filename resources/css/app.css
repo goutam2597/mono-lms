@@ -49,3 +49,29 @@
 [data-ms-options]::-webkit-scrollbar-track { background: transparent; }
 [data-ms-options]::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 999px; }
 [data-ms-options]::-webkit-scrollbar-thumb:hover { background: #b0b0b0; }
+
+/* Hero / UI animations */
+@keyframes anim-fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes anim-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes anim-pulse-soft {
+    0%, 100% { opacity: .45; transform: scale(1); }
+    50% { opacity: .75; transform: scale(1.05); }
+}
+.anim-fade-up { opacity: 0; animation: anim-fade-up .7s cubic-bezier(.22, .61, .36, 1) forwards; }
+.anim-d1 { animation-delay: .1s; }
+.anim-d2 { animation-delay: .2s; }
+.anim-d3 { animation-delay: .32s; }
+.anim-d4 { animation-delay: .44s; }
+.anim-d5 { animation-delay: .56s; }
+.anim-float { animation: anim-float 5s ease-in-out infinite; }
+.anim-float-slow { animation: anim-float 7s ease-in-out 1.2s infinite; }
+.anim-pulse-soft { animation: anim-pulse-soft 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+    .anim-fade-up, .anim-float, .anim-float-slow, .anim-pulse-soft { animation: none; opacity: 1; transform: none; }
+}
