@@ -43,7 +43,7 @@
             </div>
 
             <label class="flex items-start gap-2.5 cursor-pointer select-none">
-                <input type="checkbox" name="is_super_admin" value="1" @checked(old('is_super_admin', $admin->is_super_admin)) class="mt-0.5 w-4 h-4 rounded text-[#ff4667] focus:ring-[#ff4667] border-gray-300">
+                <input type="checkbox" name="is_super_admin" value="1" @checked(old('is_super_admin', $admin->is_super_admin)) class="control mt-0.5">
                 <span class="text-sm text-[#191919]">{{ __('admin.admins.super_admin') }} <span class="text-xs text-gray-400">— {{ __('admin.admins.super_admin_hint') }}</span></span>
             </label>
 

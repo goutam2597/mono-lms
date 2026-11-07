@@ -15,3 +15,27 @@
     --color-warning: #ffc107;
     --color-success: #03c95a;
 }
+
+/* Custom checkbox / radio — hairline square, brand fill
+   (mono_market .control pattern, adapted to Dreams LMS tokens) */
+.control {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #e7e7e7;
+    background: #ffffff;
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+    flex: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.control:hover { border-color: #191919; }
+.control:checked {
+    background: #ff4667;
+    border-color: #ff4667;
+    box-shadow: inset 0 0 0 3px #ffffff;
+}
+.control:focus-visible { outline: 2px solid #ff4667; outline-offset: 2px; }
+.control[type="radio"] { border-radius: 9999px; }
+.control:disabled { opacity: 0.5; cursor: not-allowed; }

@@ -74,29 +74,28 @@
                         <h4 class="font-bold text-sm text-[#191919]">Categories</h4>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="space-y-2.5 text-xs text-[#6d6d6d]">
-                        @php
-                            $cats = [
-                                ['label' => 'Backend', 'count' => 3, 'checked' => true],
-                                ['label' => 'CSS & Styling', 'count' => 2, 'checked' => false],
-                                ['label' => 'Frontend', 'count' => 2, 'checked' => true],
-                                ['label' => 'General Skills', 'count' => 2, 'checked' => false],
-                                ['label' => 'IT & Software', 'count' => 2, 'checked' => false],
-                                ['label' => 'Photography', 'count' => 2, 'checked' => false],
-                                ['label' => 'Programming', 'count' => 3, 'checked' => true],
-                                ['label' => 'Technology', 'count' => 2, 'checked' => false],
-                            ];
-                        @endphp
-                        @foreach($cats as $cat)
+                    <form method="GET" action="{{ route('courses.grid') }}">
+                        @if(request('sort'))<input type="hidden" name="sort" value="{{ request('sort') }}">@endif
+                        @if(request('q'))<input type="hidden" name="q" value="{{ request('q') }}">@endif
+                        <div class="space-y-2.5 text-xs text-[#6d6d6d]">
                             <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                                 <div class="flex items-center gap-2">
-                                    <input type="checkbox" {{ $cat['checked'] ? 'checked' : '' }} class="w-4 h-4 text-[#ff4667] rounded border-gray-300 focus:ring-[#ff4667]">
-                                    <span>{{ $cat['label'] }}</span>
+                                    <input type="radio" name="category" value="" @checked(!request('category')) class="control" onchange="this.form.requestSubmit()">
+                                    <span>{{ __('app.common.all') }}</span>
                                 </div>
-                                <span class="text-gray-400">({{ $cat['count'] }})</span>
                             </label>
-                        @endforeach
+                            @foreach ($categories as $category)
+                                <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
+                                    <div class="flex items-center gap-2">
+                                        <input type="radio" name="category" value="{{ $category->slug }}" @checked(request('category') === $category->slug) class="control" onchange="this.form.requestSubmit()">
+                                        <span>{{ $category->name }}</span>
+                                    </div>
+                                    <span class="text-gray-400">({{ $category->courses_count }})</span>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
+                    <button class="mt-3 text-xs font-semibold text-[#ff4667] hover:underline">See More Categories</button>
                     <button class="mt-3 text-xs font-semibold text-[#ff4667] hover:underline">See More Categories</button>
                 </div>
 
@@ -109,28 +108,28 @@
                     <div class="space-y-2.5 text-xs text-[#6d6d6d]">
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="checkbox" checked class="w-4 h-4 text-[#ff4667] rounded border-gray-300 focus:ring-[#ff4667]">
+                                <input type="checkbox" checked class="control">
                                 <span>Keny White</span>
                             </div>
                             <span class="text-gray-400">(10)</span>
                         </label>
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="checkbox" class="w-4 h-4 text-[#ff4667] rounded border-gray-300 focus:ring-[#ff4667]">
+                                <input type="checkbox" class="control">
                                 <span>Hinata Hyuga</span>
                             </div>
                             <span class="text-gray-400">(5)</span>
                         </label>
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="checkbox" class="w-4 h-4 text-[#ff4667] rounded border-gray-300 focus:ring-[#ff4667]">
+                                <input type="checkbox" class="control">
                                 <span>John Doe</span>
                             </div>
                             <span class="text-gray-400">(3)</span>
                         </label>
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="checkbox" class="w-4 h-4 text-[#ff4667] rounded border-gray-300 focus:ring-[#ff4667]">
+                                <input type="checkbox" class="control">
                                 <span>Nicole Brown</span>
                             </div>
                             <span class="text-gray-400">(4)</span>
@@ -147,21 +146,21 @@
                     <div class="space-y-2.5 text-xs text-[#6d6d6d]">
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="radio" name="price_type" checked class="w-4 h-4 text-[#ff4667] focus:ring-[#ff4667]">
+                                <input type="radio" name="price_type" checked class="control">
                                 <span>All Courses</span>
                             </div>
                             <span class="text-gray-400">(50)</span>
                         </label>
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="radio" name="price_type" class="w-4 h-4 text-[#ff4667] focus:ring-[#ff4667]">
+                                <input type="radio" name="price_type" class="control">
                                 <span>Free Courses</span>
                             </div>
                             <span class="text-gray-400">(15)</span>
                         </label>
                         <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                             <div class="flex items-center gap-2">
-                                <input type="radio" name="price_type" class="w-4 h-4 text-[#ff4667] focus:ring-[#ff4667]">
+                                <input type="radio" name="price_type" class="control">
                                 <span>Paid Courses</span>
                             </div>
                             <span class="text-gray-400">(35)</span>

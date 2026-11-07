@@ -27,7 +27,7 @@
                                 <label class="flex items-center gap-2.5 cursor-pointer select-none text-sm text-[#191919]">
                                     <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
                                         @checked(in_array($permission->id, old('permissions', $role->exists ? $role->permissions->pluck('id')->all() : [])))
-                                        class="w-4 h-4 rounded text-[#ff4667] focus:ring-[#ff4667] border-gray-300">
+                                        class="control">
                                     <span>{{ $permission->name }} <span class="text-[11px] text-gray-400">({{ $permission->slug }})</span></span>
                                 </label>
                             @endforeach

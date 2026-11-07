@@ -38,7 +38,7 @@
 
             <div class="space-y-1.5">
                 <label class="flex items-start gap-2 cursor-pointer select-none text-xs text-[#191919]">
-                    <input type="checkbox" name="terms" value="1" required class="mt-0.5 w-4 h-4 rounded text-[#ff4667] focus:ring-[#ff4667] border-gray-300">
+                    <input type="checkbox" name="terms" value="1" required class="control mt-0.5">
                     <span>I agree to the Terms & Conditions</span>
                 </label>
                 @error('terms')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror

@@ -42,7 +42,7 @@
             <!-- Remember Me & Forgot Password -->
             <div class="flex items-center justify-between text-xs pt-1">
                 <label class="flex items-center gap-2 cursor-pointer select-none">
-                    <input type="checkbox" name="remember" class="w-4 h-4 rounded text-[#ff4667] focus:ring-[#ff4667] border-gray-300">
+                    <input type="checkbox" name="remember" class="control">
                     <span class="text-[#191919]">{{ __('auth.remember_me') }}</span>
                 </label>
                 <a href="{{ route('password.request') }}" class="font-medium text-[#ff4667] hover:underline">

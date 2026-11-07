@@ -61,7 +61,7 @@
 
                 <div class="flex flex-wrap items-center gap-6">
                     <label class="flex items-center gap-2.5 cursor-pointer select-none text-sm text-[#191919]">
-                        <input type="checkbox" name="is_published" value="1" @checked(old('is_published', $course->is_published)) class="w-4 h-4 rounded text-[#ff4667] focus:ring-[#ff4667] border-gray-300">
+                        <input type="checkbox" name="is_published" value="1" @checked(old('is_published', $course->is_published)) class="control mt-0.5">
                         {{ __('instructor.courses.fields.is_published') }}
                     </label>
                 </div>
