@@ -1,10 +1,13 @@
 <x-layouts.app title="Dreams LMS – Home" active="home">
 
     <!-- 1. HERO SECTION (Figma: 2355:29935 & 2355:29979) -->
-    <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 overflow-hidden relative" data-node-id="2355:29908">
-        <!-- Ambient decorative shapes in background -->
-        <div class="absolute -top-32 right-0 w-[550px] h-[550px] rounded-full bg-[#392c7d]/5 blur-3xl pointer-events-none"></div>
-        <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#ff4667]/5 blur-3xl pointer-events-none"></div>
+    <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 relative" data-node-id="2355:29908">
+        <!-- Ambient decorative shapes (clipped in their own layer so the
+             category dropdown can overflow the section freely) -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-32 right-0 w-[550px] h-[550px] rounded-full bg-[#392c7d]/5 blur-3xl"></div>
+            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#ff4667]/5 blur-3xl"></div>
+        </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

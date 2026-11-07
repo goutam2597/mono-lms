@@ -40,7 +40,7 @@
             </div>
         @endif
 
-        <div data-ms-options class="max-h-56 overflow-y-auto">
+        <div data-ms-options class="max-h-80 overflow-y-auto">
             @foreach ($normalized as $option)
                 <button type="button" data-ms-option value="{{ $option['value'] }}" data-label="{{ mb_strtolower($option['label']) }}"
                     class="w-full text-start px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667] transition-colors whitespace-nowrap {{ $option['value'] === (string) $selected ? 'text-[#ff4667] font-semibold' : 'text-[#191919]' }}">
