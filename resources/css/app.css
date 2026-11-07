@@ -39,3 +39,13 @@
 .control:focus-visible { outline: 2px solid #ff4667; outline-offset: 2px; }
 .control[type="radio"] { border-radius: 9999px; }
 .control:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* MonoSelect: slim scrollbar for dropdown option lists (no classic arrow buttons) */
+[data-ms-options] {
+    scrollbar-width: thin;
+    scrollbar-color: #d4d4d4 transparent;
+}
+[data-ms-options]::-webkit-scrollbar { width: 6px; }
+[data-ms-options]::-webkit-scrollbar-track { background: transparent; }
+[data-ms-options]::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 999px; }
+[data-ms-options]::-webkit-scrollbar-thumb:hover { background: #b0b0b0; }

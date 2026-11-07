@@ -32,7 +32,7 @@
         <svg data-ms-chevron class="w-4 h-4 text-gray-400 shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
     </button>
 
-    <div data-ms-panel class="hidden absolute {{ $align === 'right' ? 'right-0' : 'left-0' }} top-full mt-2 w-full min-w-[11rem] bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
+    <div data-ms-panel class="hidden absolute {{ $align === 'right' ? 'right-0' : 'left-0' }} top-full mt-2 min-w-full w-max max-w-xs bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
         @if ($showSearch)
             <div class="px-3 pb-2">
                 <input type="text" data-ms-search placeholder="{{ __('app.common.search') }}..." autocomplete="off"
@@ -43,12 +43,12 @@
         <div data-ms-options class="max-h-56 overflow-y-auto">
             @foreach ($normalized as $option)
                 <button type="button" data-ms-option value="{{ $option['value'] }}" data-label="{{ mb_strtolower($option['label']) }}"
-                    class="w-full text-start px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667] transition-colors {{ $option['value'] === (string) $selected ? 'text-[#ff4667] font-semibold' : 'text-[#191919]' }}">
-                    <span data-ms-option-label>{{ $option['label'] }}</span>
+                    class="w-full text-start px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667] transition-colors whitespace-nowrap {{ $option['value'] === (string) $selected ? 'text-[#ff4667] font-semibold' : 'text-[#191919]' }}">
+                    <span data-ms-option-label class="block truncate">{{ $option['label'] }}</span>
                 </button>
             @endforeach
 
-            <p data-ms-empty class="hidden px-4 py-3 text-xs text-gray-400 text-center">{{ __('app.common.no_matches') }}</p>
+            <p data-ms-empty class="hidden px-4 py-3 text-xs text-gray-400 text-center whitespace-nowrap">{{ __('app.common.no_matches') }}</p>
         </div>
     </div>
 </div>
