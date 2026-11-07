@@ -100,14 +100,14 @@
                             <!-- Vector 1 (Cyan curved accent) -->
                             <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
                                      <!-- Image Slides (student / instructors / courses — crossfade every 10s) -->
-                        <div class="relative z-10 w-[85%] h-[92%] rounded-[24px] overflow-hidden shadow-2xl">
+                        <div class="relative z-10 w-[85%] h-[92%] rounded-[32px] overflow-hidden shadow-2xl ring-8 ring-white/40">
                             @foreach ([
                                 ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
                                 ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
                                 ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
                                 ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
                             ] as $slide)
-                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top" />
+                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top rounded-[32px]" />
                             @endforeach
                         </div>
 
@@ -130,12 +130,12 @@
                         @endphp
 
                         @foreach ([
-                            ['pos' => 'top-6 -right-3 sm:-right-5', 'item' => 1],
-                            ['pos' => '-bottom-3 left-4 sm:-left-6', 'item' => 0],
-                            ['pos' => 'top-1/2 -left-4 sm:-left-10 hidden lg:block', 'item' => 2],
-                            ['pos' => '-bottom-6 right-8 hidden lg:block', 'item' => 3],
-                            ['pos' => '-top-6 left-6 sm:left-10 hidden lg:block', 'item' => 4],
-                            ['pos' => 'bottom-1/2 -right-4 sm:-right-8 hidden lg:block', 'item' => 5],
+                            ['pos' => 'top-5 right-8', 'item' => 4],
+                            ['pos' => '-top-4 -right-4', 'item' => 1],
+                            ['pos' => 'top-1/3 -left-4 hidden lg:block', 'item' => 2],
+                            ['pos' => 'bottom-1/4 -right-4 hidden lg:block', 'item' => 3],
+                            ['pos' => '-bottom-4 left-12', 'item' => 0],
+                            ['pos' => 'bottom-8 -right-5 hidden lg:block', 'item' => 5],
                         ] as $slotConfig)
                             <div data-hero-slot class="absolute {{ $slotConfig['pos'] }} z-20">
                                 <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
