@@ -24,7 +24,7 @@
         <!-- Results Bar -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xs">
             <div class="text-xs sm:text-sm text-[#6d6d6d]">
-                Showing <strong class="text-[#191919]">1–6</strong> of <strong class="text-[#191919]">42</strong> results
+                {{ __('courses.results_for', ['count' => $courses->total()]) }}
             </div>
 
             <!-- Switcher & Sort -->
@@ -37,99 +37,71 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </a>
                 </div>
-                <select class="bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] px-3 py-2 rounded-lg focus:outline-none cursor-pointer">
-                    <option>Newly Published</option>
-                    <option>Highest Rated</option>
-                </select>
+                <form method="GET" action="{{ route('courses.list') }}" class="flex items-center gap-3">
+                    @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
+                    <x-select name="sort"
+                        :options="['popular' => __('courses.sort_popular'), 'latest' => __('courses.sort_latest')]"
+                        :selected="request('sort', 'popular')"
+                        :searchable="false"
+                        data-ms-autosubmit
+                        triggerClass="bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] px-3 py-2 rounded-lg" />
+                </form>
             </div>
         </div>
 
         <!-- Horizontal Cards List -->
         <div class="space-y-6">
-            @php
-                $listCourses = [
-                    [
-                        'title' => 'Information About UI/UX Design Degree & Career Opportunities',
-                        'desc' => 'Comprehensive masterclass covering design thinking, user research, wireframing, high-fidelity Figma prototyping, and design systems.',
-                        'instructor' => 'David Benitez',
-                        'category' => 'UI/UX Design',
-                        'rating' => '4.9',
-                        'reviews' => '200',
-                        'lessons' => '16 Lessons',
-                        'duration' => '12hr 40min',
-                        'price' => '$120',
-                        'image' => 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80'
-                    ],
-                    [
-                        'title' => 'Complete Python Bootcamp From Zero to Hero in 30 Days',
-                        'desc' => 'Master Python 3 from variables and data structures to object-oriented programming, API development, web scraping, and automation.',
-                        'instructor' => 'Rolands Granger',
-                        'category' => 'Python',
-                        'rating' => '4.8',
-                        'reviews' => '340',
-                        'lessons' => '24 Lessons',
-                        'duration' => '22hr 15min',
-                        'price' => '$150',
-                        'image' => 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80'
-                    ],
-                    [
-                        'title' => 'The Complete Business, Leadership and Management Masterclass',
-                        'desc' => 'Strategic leadership tactics, financial management, team leadership, crisis handling, and agile execution for modern managers.',
-                        'instructor' => 'Nicole Brown',
-                        'category' => 'Business',
-                        'rating' => '5.0',
-                        'reviews' => '210',
-                        'lessons' => '18 Lessons',
-                        'duration' => '14hr 30min',
-                        'price' => '$168',
-                        'image' => 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80'
-                    ],
-                ];
-            @endphp
 
-            @foreach($listCourses as $c)
+            @forelse ($courses as $c)
                 <div class="bg-white border border-[#e7e7e7] rounded-xl p-5 shadow-xs hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 items-start md:items-center">
                     <div class="w-full md:w-64 h-48 rounded-lg overflow-hidden shrink-0 bg-gray-100">
-                        <img src="{{ $c['image'] }}" alt="{{ $c['title'] }}" class="w-full h-full object-cover">
+                        <img src="{{ $c->image ?? 'https://picsum.photos/seed/course-'.$c->id.'/600/400' }}" alt="{{ $c->title }}" class="w-full h-full object-cover">
                     </div>
 
                     <div class="flex-1 space-y-2">
                         <div class="flex items-center gap-3">
-                            <span class="bg-[#f4f6f9] text-[#191919] text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ $c['category'] }}</span>
+                            <span class="bg-[#f4f6f9] text-[#191919] text-xs font-semibold px-2.5 py-0.5 rounded-full">{{ $c->category?->name }}</span>
                             <div class="flex items-center gap-1 text-xs text-[#6d6d6d]">
                                 <span class="text-[#ffc107]">★</span>
-                                <span class="font-bold text-gray-800">{{ $c['rating'] }}</span>
-                                <span>({{ $c['reviews'] }} Reviews)</span>
+                                <span class="font-bold text-gray-800">{{ $c->averageRating() ?: '5.0' }}</span>
+                                <span>({{ $c->reviewCount() }} {{ __('app.common.reviews') }})</span>
                             </div>
                         </div>
 
-                        <a href="{{ route('courses.grid') }}" class="block text-xl font-bold text-[#191919] hover:text-[#ff4667] transition-colors">
-                            {{ $c['title'] }}
+                        <a href="{{ route('courses.show', $c->slug) }}" class="block text-xl font-bold text-[#191919] hover:text-[#ff4667] transition-colors">
+                            {{ $c->title }}
                         </a>
 
-                        <p class="text-sm text-[#6d6d6d] line-clamp-2">{{ $c['desc'] }}</p>
+                        <p class="text-sm text-[#6d6d6d] line-clamp-2">{{ $c->subtitle }}</p>
 
                         <div class="flex flex-wrap items-center gap-6 pt-2 text-xs text-[#6d6d6d]">
                             <div class="flex items-center gap-1.5">
-                                <span>Instructor: <strong class="text-gray-800">{{ $c['instructor'] }}</strong></span>
+                                <span>Instructor: <strong class="text-gray-800">{{ $c->instructor?->name }}</strong></span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <span>{{ $c['lessons'] }}</span>
+                                <span>{{ $c->lessons->count() }} {{ __('app.common.lessons') }}</span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <span>{{ $c['duration'] }}</span>
+                                <span>{{ $c->duration_minutes }} {{ __('app.common.minutes') }}</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="w-full md:w-auto flex md:flex-col items-center md:items-end justify-between gap-4 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
-                        <div class="text-2xl font-bold text-[#ff4667]">{{ $c['price'] }}</div>
-                        <a href="{{ route('courses.grid') }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors">
-                            View Course →
+                        <div class="text-2xl font-bold text-[#ff4667]">{{ $c->price > 0 ? __('app.common.currency').number_format($c->price, 2) : __('courses.price_free') }}</div>
+                        <a href="{{ route('courses.show', $c->slug) }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors">
+                            {{ __('courses.enroll_now') }} →
                         </a>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="bg-white border border-[#e7e7e7] rounded-xl p-12 text-center">
+                    <p class="text-sm text-gray-400">{{ __('courses.no_courses') }}</p>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="mt-10">{{ $courses->appends(request()->query())->links() }}</div>
         </div>
     </div>
 

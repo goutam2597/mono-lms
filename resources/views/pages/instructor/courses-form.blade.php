@@ -23,20 +23,17 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.courses.fields.category') }}</label>
-                        <select name="category_id" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
-                            <option value="">—</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @selected(old('category_id', $course->category_id) == $category->id)>{{ $category->name }}</option>
-                            @endforeach
-                        </select>
+                        <x-select name="category_id"
+                            :options="$categories->pluck('name', 'id')->prepend('—', '')"
+                            :selected="old('category_id', $course->category_id)"
+                            placeholder="—" />
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.courses.fields.level') }}</label>
-                        <select name="level" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
-                            @foreach (['beginner' => __('app.levels.beginner'), 'intermediate' => __('app.levels.intermediate'), 'advanced' => __('app.levels.advanced')] as $value => $label)
-                                <option value="{{ $value }}" @selected(old('level', $course->level ?? 'beginner') === $value)>{{ $label }}</option>
-                            @endforeach
-                        </select>
+                        <x-select name="level"
+                            :options="['beginner' => __('app.levels.beginner'), 'intermediate' => __('app.levels.intermediate'), 'advanced' => __('app.levels.advanced')]"
+                            :selected="old('level', $course->level ?? 'beginner')"
+                            :searchable="false" />
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.courses.fields.image') }}</label>

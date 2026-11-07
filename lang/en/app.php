@@ -92,6 +92,7 @@ return [
         'password' => 'Password',
         'phone' => 'Phone Number',
         'language' => 'Language',
+        'no_matches' => 'No matches',
         'welcome' => 'Welcome',
         'currency' => '$',
     ],

@@ -92,6 +92,7 @@ return [
         'password' => 'पासवर्ड',
         'phone' => 'फ़ोन नंबर',
         'language' => 'भाषा',
+        'no_matches' => 'कोई मेल नहीं मिला',
         'welcome' => 'स्वागत है',
         'currency' => '$',
     ],

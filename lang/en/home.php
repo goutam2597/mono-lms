@@ -8,6 +8,7 @@ return [
         'title_highlight' => '& Accessible',
         'title_line2' => 'online courses for all',
         'subtitle' => 'Our specialized online courses are designed to bring the classroom to you, with expert instructors and hands-on projects.',
+        'select_category' => 'Select category',
         'get_started' => 'Get Started',
         'browse_courses' => 'Browse Courses',
         'stats' => [

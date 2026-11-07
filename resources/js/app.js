@@ -1,1 +1,1 @@
-//
+import './mono-select';

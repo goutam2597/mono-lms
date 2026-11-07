@@ -30,7 +30,7 @@
                     <span>Filters</span>
                 </button>
                 <div class="text-xs sm:text-sm text-[#6d6d6d]">
-                    Showing <strong class="text-[#191919]">1–9</strong> of <strong class="text-[#191919]">50</strong> results
+                    Showing {{ __('courses.results_for', ['count' => $courses->total()]) }}
                 </div>
             </div>
 
@@ -46,21 +46,20 @@
                     </a>
                 </div>
 
-                <!-- Sort Dropdown -->
-                <div class="relative">
-                    <select class="bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] px-3 py-2 rounded-lg focus:outline-none cursor-pointer pr-8">
-                        <option>Newly Published</option>
-                        <option>Highest Rated</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                    </select>
-                </div>
-
-                <!-- Search Input -->
-                <div class="relative">
-                    <input type="text" placeholder="Search courses..." class="bg-white border border-[#e7e7e7] text-xs text-[#191919] px-3 py-2 rounded-lg focus:outline-none w-48 sm:w-56 pr-8">
-                    <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </div>
+                <form method="GET" action="{{ route('courses.grid') }}" class="flex flex-wrap items-center gap-3">
+                    @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
+                    @if(request('level'))<input type="hidden" name="level" value="{{ request('level') }}">@endif
+                    <x-select name="sort"
+                        :options="['popular' => __('courses.sort_popular'), 'latest' => __('courses.sort_latest'), 'price_low' => __('courses.sort_price_low'), 'price_high' => __('courses.sort_price_high')]"
+                        :selected="request('sort', 'popular')"
+                        :searchable="false"
+                        data-ms-autosubmit
+                        triggerClass="bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] px-3 py-2 rounded-lg" />
+                    <div class="relative">
+                        <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search') }}..." class="bg-white border border-[#e7e7e7] text-xs text-[#191919] px-3 py-2 rounded-lg focus:outline-none w-48 sm:w-56 pr-8">
+                        <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -206,111 +205,31 @@
             <!-- Course Cards Grid (Figma: 398:51409) -->
             <main class="lg:col-span-9 space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <x-course-card 
-                        title="Information About UI/UX Design Degree"
-                        category="Design"
-                        instructor="David Benitez"
-                        price="$120"
-                        rating="4.9"
-                        reviews="200"
-                        image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80"
+@forelse ($courses as $course)
+                    <x-course-card
+                        :slug="$course->slug"
+                        :title="$course->title"
+                        :category="$course->category?->name ?? ''"
+                        :instructor="$course->instructor?->name ?? ''"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :image="$course->image"
+                        :rating="$course->averageRating() ?: '5.0'"
+                        :reviews="$course->reviewCount()"
+                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                        :lessons="$course->lessons->count()"
+                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
                     />
-
-                    <x-course-card 
-                        title="Complete Python Bootcamp From Zero to Hero"
-                        category="Programming"
-                        instructor="Rolands Granger"
-                        price="$150"
-                        oldPrice="$220"
-                        rating="4.8"
-                        reviews="340"
-                        image="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="The Complete Business and Management Masterclass"
-                        category="Business"
-                        instructor="Nicole Brown"
-                        price="$168"
-                        rating="5.0"
-                        reviews="210"
-                        image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Modern Web Development with React 19 & Tailwind"
-                        category="Frontend"
-                        instructor="Keny White"
-                        price="$135"
-                        rating="4.9"
-                        reviews="185"
-                        image="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Machine Learning & Deep Learning A-Z with Python"
-                        category="Data Science"
-                        instructor="Hinata Hyuga"
-                        price="$180"
-                        oldPrice="$250"
-                        rating="4.9"
-                        reviews="410"
-                        image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Graphic Design Masterclass: Photoshop & Illustrator"
-                        category="Design"
-                        instructor="John Doe"
-                        price="$110"
-                        rating="4.7"
-                        reviews="128"
-                        image="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Laravel 12 API Development and Testing Masterclass"
-                        category="Backend"
-                        instructor="Rolands Granger"
-                        price="$145"
-                        rating="4.9"
-                        reviews="95"
-                        image="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Advanced DevOps: Kubernetes, Docker and CI/CD"
-                        category="DevOps"
-                        instructor="Keny White"
-                        price="$165"
-                        rating="4.8"
-                        reviews="212"
-                        image="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=600&auto=format&fit=crop&q=80"
-                    />
-
-                    <x-course-card 
-                        title="Digital Marketing Mastery: SEO, Social Media & Ads"
-                        category="Marketing"
-                        instructor="Nicole Brown"
-                        price="$125"
-                        rating="4.9"
-                        reviews="170"
-                        image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80"
-                    />
+                @empty
+                    <div class="col-span-full bg-white border border-[#e7e7e7] rounded-2xl p-12 text-center">
+                        <p class="text-sm text-gray-400">{{ __('courses.no_courses') }}</p>
+                    </div>
+                @endforelse
                 </div>
 
                 <!-- Pagination (Figma: 398:51422) -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-200">
-                    <span class="text-xs text-[#6d6d6d]">Showing 1 to 9 of 50 results</span>
-                    <div class="flex items-center gap-1.5 text-xs font-semibold">
-                        <button class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600 disabled:opacity-50" disabled>Previous</button>
-                        <button class="w-8 h-8 rounded-lg bg-[#ff4667] text-white">1</button>
-                        <button class="w-8 h-8 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-700">2</button>
-                        <button class="w-8 h-8 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-700">3</button>
-                        <span class="px-1 text-gray-400">...</span>
-                        <button class="w-8 h-8 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-700">6</button>
-                        <button class="px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600">Next</button>
-                    </div>
+{{ $courses->appends(request()->query())->links() }}
                 </div>
             </main>
 

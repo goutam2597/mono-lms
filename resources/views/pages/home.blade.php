@@ -29,13 +29,15 @@
                     </p>
 
                     <!-- Rounded Search Bar (Figma: 2355:29944) -->
-                    <div class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl" data-node-id="2355:29944">
-                        <!-- Category Select Pill (Figma: 2355:29947) -->
-                        <div class="bg-[#e7e7e7] rounded-[6px] px-4 py-2.5 flex items-center justify-between sm:justify-start gap-4 cursor-pointer" data-node-id="2355:29947">
-                            <span class="text-sm font-medium text-[#191919] whitespace-nowrap" data-node-id="2355:29949">Select category</span>
-                            <svg class="w-3.5 h-3.5 text-[#191919]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
-                            </svg>
+                    <form action="{{ route('courses.grid') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl" data-node-id="2355:29944">
+                        <!-- Category Select Pill (custom MonoSelect) -->
+                        <div class="bg-[#e7e7e7] rounded-[6px] flex items-center" data-node-id="2355:29947">
+                            <x-select name="category"
+                                :options="$categories->pluck('name', 'slug')"
+                                :selected="request('category')"
+                                placeholder="{{ __('home.hero.select_category') }}"
+                                :searchable="false"
+                                triggerClass="bg-transparent rounded-[6px] px-4 py-2.5 text-sm font-medium text-[#191919] border-0" />
                         </div>
 
                         <!-- Divider Line (Figma: 2355:29951) -->
@@ -46,16 +48,16 @@
                             <svg class="w-5 h-5 text-[#b0b0b0] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
-                            <input type="text" placeholder="Search for Courses, Instructors" class="w-full text-sm text-[#191919] placeholder-[#b0b0b0] bg-transparent focus:outline-none" data-node-id="2355:29975" />
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search_placeholder') }}" class="w-full text-sm text-[#191919] placeholder-[#b0b0b0] bg-transparent focus:outline-none" data-node-id="2355:29975" />
                         </div>
 
                         <!-- Arrow Submit Button (Figma: 2355:29976) -->
-                        <button type="button" class="bg-[#392c7d] hover:bg-[#2c2263] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm" aria-label="Search" data-node-id="2355:29976">
+                        <button type="submit" class="bg-[#392c7d] hover:bg-[#2c2263] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm cursor-pointer" aria-label="{{ __('app.common.search') }}" data-node-id="2355:29976">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
 
                 <!-- Right Visual Column (Figma: 2355:29979) -->

@@ -92,6 +92,7 @@ return [
         'password' => 'كلمة المرور',
         'phone' => 'رقم الهاتف',
         'language' => 'اللغة',
+        'no_matches' => 'لا توجد نتائج',
         'welcome' => 'مرحباً',
         'currency' => '$',
     ],

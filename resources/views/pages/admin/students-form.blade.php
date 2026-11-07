@@ -27,10 +27,10 @@
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.status') }}</label>
-                    <select name="status" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
-                        <option value="active" @selected(old('status', $student->status) === 'active')>{{ __('app.common.active') }}</option>
-                        <option value="inactive" @selected(old('status', $student->status) === 'inactive')>{{ __('app.common.inactive') }}</option>
-                    </select>
+                    <x-select name="status"
+                        :options="['active' => __('app.common.active'), 'inactive' => __('app.common.inactive')]"
+                        :selected="old('status', $student->status)"
+                        :searchable="false" />
                 </div>
             </div>
 

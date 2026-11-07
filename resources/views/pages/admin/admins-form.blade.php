@@ -28,19 +28,17 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('admin.admins.role') }}</label>
-                    <select name="role_id" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
-                        <option value="">—</option>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" @selected(old('role_id', $admin->role_id) == $role->id)>{{ $role->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-select name="role_id"
+                        :options="$roles->pluck('name', 'id')->prepend('—', '')"
+                        :selected="old('role_id', $admin->role_id)"
+                        placeholder="—" />
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.status') }}</label>
-                    <select name="status" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
-                        <option value="active" @selected(old('status', $admin->status ?? 'active') === 'active')>{{ __('app.common.active') }}</option>
-                        <option value="inactive" @selected(old('status', $admin->status) === 'inactive')>{{ __('app.common.inactive') }}</option>
-                    </select>
+                    <x-select name="status"
+                        :options="['active' => __('app.common.active'), 'inactive' => __('app.common.inactive')]"
+                        :selected="old('status', $admin->status ?? 'active')"
+                        :searchable="false" />
                 </div>
             </div>
 
