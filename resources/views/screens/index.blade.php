@@ -34,11 +34,11 @@
                     <span class="text-xs font-bold uppercase tracking-wider text-[#ff4667]">Section 1</span>
                     <h2 class="text-2xl font-bold text-[#191919]">Homepages</h2>
                 </div>
-                <span class="text-sm text-gray-500 font-medium">4 Variants</span>
+                <span class="text-sm text-gray-500 font-medium">1 Variant</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Home 4 (Selected Primary) -->
+                <!-- Home 5 (Main and Only Home) -->
                 <div class="bg-white border-2 border-[#ff4667] rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col justify-between relative">
                     <div class="absolute top-3 right-3 z-10">
                         <span class="inline-block bg-[#ff4667] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
@@ -46,104 +46,24 @@
                         </span>
                     </div>
                     <div>
-                        <div class="h-48 bg-gradient-to-br from-[#002058] to-[#392c7d] relative p-6 flex flex-col justify-between overflow-hidden">
-                            <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full"></div>
-                            <span class="inline-block bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit backdrop-blur-xs">Home Page 4</span>
-                            <div class="text-white">
-                                <h3 class="text-2xl font-extrabold">Home Page 4</h3>
-                                <p class="text-xs text-gray-200 mt-1">Leader in Online Learning, 4 stats, 8 categories, 3 feature stories</p>
-                            </div>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-800 font-mono">2355:25632</code></span>
-                                <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Active Root (/)</span>
-                            </div>
-                            <p class="text-sm text-[#6d6d6d]">Flagship layout requested by user: specialized course search, 4 feature pillars ribbon, top 8 tech categories, and world student map.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <a href="{{ route('home-4') }}" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors shadow-sm">
-                            <span>Open Home Page 4</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Home 1 -->
-                <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 group flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-[#392c7d] relative p-6 flex flex-col justify-between overflow-hidden">
-                            <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full"></div>
-                            <span class="inline-block bg-[#ff4667] text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit">Home Page 1</span>
-                            <div class="text-white">
-                                <h3 class="text-xl font-bold">Home Page 1</h3>
-                                <p class="text-xs text-gray-200 mt-1">Empowering Minds, Shaping Futures with course carousel</p>
-                            </div>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-800 font-mono">200:16418</code></span>
-                                <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Ready</span>
-                            </div>
-                            <p class="text-sm text-[#6d6d6d]">Classic layout with top search, category pills, floating course bestseller cards, and instructor showcase.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <a href="{{ route('home-1') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
-                            <span>Open Home Page 1</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Home 2 -->
-                <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 group flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-gradient-to-r from-[#08131e] to-[#243547] relative p-6 flex flex-col justify-between overflow-hidden">
-                            <span class="inline-block bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit">Home Page 2</span>
-                            <div class="text-white">
-                                <h3 class="text-xl font-bold">Home Page 2</h3>
-                                <p class="text-xs text-gray-200 mt-1">Dark hero banner with split CTA and quick filter chips</p>
-                            </div>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-800 font-mono">1:7504</code></span>
-                                <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Ready</span>
-                            </div>
-                            <p class="text-sm text-[#6d6d6d]">Modern dark variation highlighting trending courses, mentor ratings, and interactive statistics counters.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <a href="{{ route('home-2') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
-                            <span>Open Home Page 2</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Home 5 -->
-                <div class="bg-white border-2 border-[#5625e8]/40 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 group flex flex-col justify-between">
-                    <div>
                         <div class="h-48 bg-gradient-to-br from-[#392c7d] via-[#5625e8] to-[#071136] relative p-6 flex flex-col justify-between overflow-hidden">
                             <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full"></div>
-                            <span class="inline-block bg-[#ff4667] text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit">Home Page 5</span>
+                            <span class="inline-block bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded-full w-fit backdrop-blur-xs">Home Page 5</span>
                             <div class="text-white">
-                                <h3 class="text-xl font-bold">Home Page 5</h3>
+                                <h3 class="text-2xl font-extrabold">Home Page 5</h3>
                                 <p class="text-xs text-gray-200 mt-1">Engaging &amp; Accessible, 4 stats ribbon, 3-part Cloud feature showcase</p>
                             </div>
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
                                 <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-800 font-mono">2355:29907</code></span>
-                                <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Ready</span>
+                                <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Active Root (/)</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">High-impact layout with search pill, 5 category cards, 8 featured courses, 3 alternating enterprise feature stories, and news masonry.</p>
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('home-5') }}" class="w-full bg-[#5625e8] hover:bg-[#392c7d] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors shadow-sm">
+                        <a href="{{ route('home-5') }}" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors shadow-sm">
                             <span>Open Home Page 5</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>

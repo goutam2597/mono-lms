@@ -64,24 +64,10 @@
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-7 text-[14px] font-medium text-[#191919]">
-            <!-- Home Dropdown -->
-            <div class="relative group">
-                <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
-                    <span>Home</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="absolute left-0 top-full pt-2 w-52 hidden group-hover:block z-50">
-                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('home') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667] font-semibold text-[#ff4667] flex items-center justify-between">
-                            <span>Home Page 4</span>
-                            <span class="text-[10px] bg-red-100 text-[#ff4667] px-1.5 py-0.5 rounded">Active</span>
-                        </a>
-                        <a href="{{ route('home-1') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Home Page 1</a>
-                        <a href="{{ route('home-2') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Home Page 2</a>
-                        <a href="{{ route('home-5') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667] {{ $active === 'home-5' ? 'text-[#ff4667] font-semibold' : '' }}">Home Page 5</a>
-                    </div>
-                </div>
-            </div>
+            <!-- Home Link -->
+            <a href="{{ route('home') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
+                Home
+            </a>
 
             <!-- Courses Dropdown -->
             <div class="relative group">

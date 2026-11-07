@@ -14,39 +14,30 @@
 
 All screens are designed in Figma Dev Mode and mapped to structured Blade components.
 
-### 1. Home Page 4 (Flagship Default Home `/`)
-![Home Page 4](demos/homepage_4.png)
-
-### 2. Home Page 5 (`/home-5`)
+### 1. Home Page 5 (Flagship Home `/`)
 ![Home Page 5](demos/homepage_5.png)
 
-### 3. Home Page 1 (`/home-1`)
-![Home Page 1](demos/homepage_1.png)
-
-### 4. Course Grid (`/courses/grid`)
+### 2. Course Grid (`/courses/grid`)
 ![Course Grid](demos/course_grid.png)
 
-### 5. Student Dashboard (`/student/dashboard`)
+### 3. Student Dashboard (`/student/dashboard`)
 ![Student Dashboard](demos/student_dashboard.png)
 
-### 6. Instructor Dashboard (`/instructor/dashboard`)
+### 4. Instructor Dashboard (`/instructor/dashboard`)
 ![Instructor Dashboard](demos/instructor_dashboard.png)
 
-### 7. Authentication Screen (`/login`)
+### 5. Authentication Screen (`/login`)
 ![Login Screen](demos/login.png)
 
 ---
 
 ## 🧭 Complete Screens & Route Directory
 
-All 26 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
+All 23 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
 
 | Category | Screen Name | Route | Figma Node ID |
 | :--- | :--- | :--- | :--- |
-| **Homepages** | Home Page 4 *(Active Home)* | `/` or `/home-4` | `2355:25632` |
-| | Home Page 5 | `/home-5` | `2355:29907` |
-| | Home Page 1 | `/home-1` | `200:16418` |
-| | Home Page 2 | `/home-2` | `1:7504` |
+| **Homepages** | Home Page 5 *(Main and Only Home)* | `/` or `/home-5` | `2355:29907` |
 | **Hub** | Screens Showcase Hub | `/screens` | `1:4659` |
 | **Courses** | Course Grid | `/courses/grid` | `200:18274` |
 | | Course List | `/courses/list` | `200:19012` |
@@ -140,7 +131,7 @@ Visit: `http://localhost/lms/public` or `http://localhost/lms/public/screens`.
 
 ## 🧪 Testing
 
-Run the feature test suite covering all 26 screens:
+Run the feature test suite covering all 23 screens:
 ```bash
 php artisan test --compact
 ```
