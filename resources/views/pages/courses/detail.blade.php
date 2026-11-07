@@ -1,4 +1,12 @@
-<x-layouts.app title="Information About UI/UX Design Degree - Dreams LMS" active="courses">
+<x-layouts.app :title="$course->title.' - Dreams LMS'" active="courses">
+
+    @if (session('success') || session('info'))
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-6">
+            <div class="{{ session('success') ? 'bg-[#03c95a]/10 border-[#03c95a]/30 text-[#0d7a38]' : 'bg-[#5625e8]/10 border-[#5625e8]/30 text-[#392c7d]' }} border px-4 py-3 rounded-xl text-sm font-medium">
+                {{ session('success') ?? session('info') }}
+            </div>
+        </div>
+    @endif
 
     <!-- Course Hero Section -->
     <div class="bg-[#08131e] text-white py-14">
@@ -6,30 +14,36 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-8 space-y-4">
                     <div class="flex items-center gap-3">
-                        <span class="bg-[#ff4667] text-white text-xs font-semibold px-3 py-1 rounded-full">UI/UX Design</span>
-                        <span class="text-xs text-gray-400">Last updated: November 2026</span>
+                        <span class="bg-[#ff4667] text-white text-xs font-semibold px-3 py-1 rounded-full">{{ $course->category?->name ?? '' }}</span>
+                        <span class="text-xs text-gray-400">{{ __('app.levels.'.$course->level) }}</span>
                     </div>
 
                     <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-                        Information About UI/UX Design Degree & Professional Career
+                        {{ $course->title }}
                     </h1>
 
-                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl">
-                        Master modern user interface and user experience design principles, design systems, Figma workflows, and build an exceptional portfolio.
-                    </p>
+                    @if ($course->subtitle)
+                        <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+                            {{ $course->subtitle }}
+                        </p>
+                    @endif
 
                     <div class="flex flex-wrap items-center gap-6 pt-2 text-sm text-gray-300">
                         <div class="flex items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80" class="w-8 h-8 rounded-full object-cover">
-                            <span>Created by <strong class="text-white font-semibold">David Benitez</strong></span>
+                            @if ($course->instructor?->avatar)
+                                <img src="{{ $course->instructor->avatar }}" class="w-8 h-8 rounded-full object-cover">
+                            @else
+                                <span class="w-8 h-8 rounded-full bg-[#392c7d] flex items-center justify-center text-xs font-bold">{{ strtoupper(substr($course->instructor?->name ?? 'I', 0, 1)) }}</span>
+                            @endif
+                            <span>{{ __('courses.about_instructor') }}: <strong class="text-white font-semibold">{{ $course->instructor?->name }}</strong></span>
                         </div>
                         <div class="flex items-center gap-1.5 text-[#ffc107]">
-                            <span>★ ★ ★ ★ ★</span>
-                            <span class="font-bold text-white">4.9</span>
-                            <span class="text-gray-400">(200 Reviews)</span>
+                            <span>{{ str_repeat('★', (int) round($course->averageRating() ?: 5)) }}</span>
+                            <span class="font-bold text-white">{{ $course->averageRating() ?: '5.0' }}</span>
+                            <span class="text-gray-400">({{ $course->reviewCount() }} {{ __('app.common.reviews') }})</span>
                         </div>
                         <div>
-                            <span>1,420 Enrolled Students</span>
+                            <span>{{ $course->enrolledCount() }} {{ __('app.common.students') }}</span>
                         </div>
                     </div>
                 </div>
@@ -74,75 +88,27 @@
                     </div>
                 </div>
 
-                <!-- Course Curriculum / Modules -->
+
+                <!-- Course Curriculum (DB-driven lessons) -->
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 sm:p-8 shadow-xs">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-bold text-[#191919]">Course Curriculum</h2>
-                        <span class="text-xs text-gray-500 font-medium">6 Sections • 34 Lectures • 18h 45m Total Length</span>
+                        <h2 class="text-xl font-bold text-[#191919]">{{ __('courses.curriculum') }}</h2>
+                        <span class="text-xs text-gray-500 font-medium">{{ $course->lessons->count() }} {{ __('app.common.lessons') }} · {{ $course->duration_minutes }} {{ __('app.common.minutes') }}</span>
                     </div>
 
-                    <div class="space-y-3">
-                        <details class="group bg-[#f4f6f9] rounded-xl p-4 border border-gray-200" open>
-                            <summary class="flex items-center justify-between font-bold text-sm text-[#191919] cursor-pointer">
-                                <span>1. Introduction to UX Design & Fundamentals</span>
-                                <span class="text-xs text-gray-500 font-normal">4 Lectures • 1h 20m</span>
-                            </summary>
-                            <div class="pt-3 mt-3 border-t border-gray-200 space-y-2 text-xs text-[#5d5d5d]">
-                                <div class="flex items-center justify-between">
-                                    <span>▶ 1.1 Course Welcome and Roadmap</span>
-                                    <span>10:15</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span>▶ 1.2 The UX Process: Double Diamond Framework</span>
-                                    <span>22:40</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span>▶ 1.3 Setting Up Your Figma Environment</span>
-                                    <span>18:10</span>
-                                </div>
-                            </div>
-                        </details>
-
-                        <details class="group bg-[#f4f6f9] rounded-xl p-4 border border-gray-200">
-                            <summary class="flex items-center justify-between font-bold text-sm text-[#191919] cursor-pointer">
-                                <span>2. Wireframing & Low-Fidelity Prototyping</span>
-                                <span class="text-xs text-gray-500 font-normal">8 Lectures • 3h 15m</span>
-                            </summary>
-                            <div class="pt-3 mt-3 border-t border-gray-200 text-xs text-gray-500">
-                                Detailed practical exercises on creating user flow diagrams and low-fidelity prototypes.
-                            </div>
-                        </details>
-
-                        <details class="group bg-[#f4f6f9] rounded-xl p-4 border border-gray-200">
-                            <summary class="flex items-center justify-between font-bold text-sm text-[#191919] cursor-pointer">
-                                <span>3. High-Fidelity UI Design in Figma</span>
-                                <span class="text-xs text-gray-500 font-normal">10 Lectures • 5h 30m</span>
-                            </summary>
-                            <div class="pt-3 mt-3 border-t border-gray-200 text-xs text-gray-500">
-                                Master layout grids, component sets, interactive variant properties, and variables.
-                            </div>
-                        </details>
-
-                        <details class="group bg-[#f4f6f9] rounded-xl p-4 border border-gray-200">
-                            <summary class="flex items-center justify-between font-bold text-sm text-[#191919] cursor-pointer">
-                                <span>4. Portfolio Building & Real-World Client Projects</span>
-                                <span class="text-xs text-gray-500 font-normal">6 Lectures • 4h 10m</span>
-                            </summary>
-                            <div class="pt-3 mt-3 border-t border-gray-200 text-xs text-gray-500">
-                                Step-by-step case study creation for Behance, Dribbble, and personal website.
-                            </div>
-                        </details>
-                    </div>
-                </div>
-
-                <!-- Instructor Card Details -->
-                <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 sm:p-8 shadow-xs">
-                    <h2 class="text-xl font-bold text-[#191919] mb-6">About the Instructor</h2>
-                    <div class="flex flex-col sm:flex-row items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-24 h-24 rounded-2xl object-cover shrink-0">
+                    @if ($course->lessons->count())
                         <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#191919]">David Benitez</h3>
-                            <p class="text-xs text-[#ff4667] font-semibold">Principal Product Designer & Educator</p>
+                            @foreach ($course->lessons as $lesson)
+                                <div class="flex items-center justify-between bg-[#f4f6f9] rounded-xl px-4 py-3 border border-gray-200 text-sm">
+                                    <span class="text-[#191919] font-medium">▶ {{ $loop->iteration }}. {{ $lesson->title }}</span>
+                                    <span class="text-xs text-gray-500 whitespace-nowrap">{{ $lesson->duration_minutes }} {{ __('app.common.minutes') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-400">{{ __('instructor.lessons.no_lessons') }}</p>
+                    @endif
+                </div>
                             <p class="text-sm text-[#6d6d6d] leading-relaxed">
                                 David has over 12 years of industry experience leading design teams in Silicon Valley and Europe. He has trained over 25,000 designers worldwide.
                             </p>
@@ -161,50 +127,56 @@
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-xl space-y-6">
                     <!-- Video Preview Container -->
                     <div class="relative h-48 rounded-xl overflow-hidden bg-gray-900 group">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-80" alt="Preview Video">
-                        <button class="absolute inset-0 flex items-center justify-center text-white" aria-label="Play course preview">
-                            <div class="w-14 h-14 rounded-full bg-[#ff4667] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                <svg class="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </div>
-                        </button>
+                        <img src="{{ $course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420' }}" class="w-full h-full object-cover opacity-80" alt="{{ $course->title }}">
                     </div>
 
                     <!-- Price -->
                     <div class="flex items-baseline gap-3">
-                        <span class="text-3xl font-extrabold text-[#191919]">$120</span>
-                        <span class="text-base text-gray-400 line-through">$220</span>
-                        <span class="bg-red-50 text-[#ff4667] text-xs font-bold px-2 py-0.5 rounded-full">45% OFF</span>
+                        <span class="text-3xl font-extrabold text-[#191919]">{{ $course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free') }}</span>
+                        @if ($course->old_price)
+                            <span class="text-base text-gray-400 line-through">{{ __('app.common.currency') }}{{ number_format($course->old_price, 2) }}</span>
+                        @endif
                     </div>
 
                     <!-- Buttons -->
                     <div class="space-y-3">
-                        <button class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white font-bold py-3.5 rounded-full transition-colors shadow-md text-sm">
-                            Add to Cart
-                        </button>
-                        <button class="w-full bg-[#08131e] hover:bg-gray-800 text-white font-bold py-3.5 rounded-full transition-colors text-sm">
-                            Buy Now
-                        </button>
+                        @auth('student')
+                            @if ($isEnrolled)
+                                <a href="{{ route('student.enrolled-courses') }}" class="block w-full text-center bg-[#03c95a] hover:bg-[#02a84c] text-white font-bold py-3.5 rounded-full transition-colors shadow-md text-sm">
+                                    {{ __('courses.go_to_course') }}
+                                </a>
+                            @else
+                                <form action="{{ route('courses.enroll', $course) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white font-bold py-3.5 rounded-full transition-colors shadow-md text-sm">
+                                        {{ $course->price > 0 ? __('courses.enroll_now') : __('courses.enroll_free') }}
+                                    </button>
+                                </form>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}" class="block w-full text-center bg-[#ff4667] hover:bg-[#e03a58] text-white font-bold py-3.5 rounded-full transition-colors shadow-md text-sm">
+                                {{ __('courses.guest_enroll_hint') }}
+                            </a>
+                        @endauth
                     </div>
-
-                    <p class="text-center text-xs text-gray-400">30-Day Money-Back Guarantee</p>
 
                     <!-- Features List -->
                     <div class="border-t border-gray-100 pt-5 space-y-3 text-xs text-[#5d5d5d]">
-                        <div class="font-bold text-[#191919] text-sm">This course includes:</div>
+                        <div class="font-bold text-[#191919] text-sm">{{ __('courses.includes') }}</div>
                         <div class="flex items-center gap-2">
-                            <span>📹</span> 18.5 hours on-demand video
+                            <span>📹</span> {{ $course->lessons->count() }} {{ __('courses.on_demand_video') }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span>📄</span> 14 downloadable design templates
+                            <span>⏱️</span> {{ __('app.common.duration') }}: {{ $course->duration_minutes }} {{ __('app.common.minutes') }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span>📱</span> Access on mobile and TV
+                            <span>📱</span> {{ __('app.common.level') }}: {{ __('app.levels.'.$course->level) }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span>♾️</span> Full lifetime access
+                            <span>♾️</span> {{ __('courses.full_lifetime_access') }}
                         </div>
                         <div class="flex items-center gap-2">
-                            <span>🏆</span> Certificate of completion
+                            <span>🏆</span> {{ __('courses.certificate_completion') }}
                         </div>
                     </div>
                 </div>

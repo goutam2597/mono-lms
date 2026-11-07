@@ -9,7 +9,7 @@
         </div>
 
         <!-- OTP Form -->
-        <form action="{{ route('set-password') }}" method="GET" class="space-y-6">
+        <form action="{{ route('password.request') }}" method="GET" class="space-y-6">
             <div class="space-y-4">
                 <!-- 4 Digit Inputs -->
                 <div class="flex items-center justify-between gap-3 sm:gap-4">

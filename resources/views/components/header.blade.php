@@ -1,4 +1,7 @@
-@props(['active' => ''])
+@php
+    $sampleCourse = \App\Models\Course::published()->latest()->value('slug');
+    $sampleInstructor = \App\Models\Instructor::where('status', 'active')->first();
+@endphp
 
 <!-- Top Bar -->
 <div class="bg-[#08131e] text-white text-xs py-2 px-4 sm:px-8 border-b border-[#1b2737]">
@@ -8,28 +11,19 @@
                 <svg class="w-3.5 h-3.5 text-[#ff4667]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
-                <span>1442 Crosswind Drive Madisonville</span>
+                <span>{{ __('app.footer.address') }}</span>
             </div>
             <div class="hidden sm:flex items-center gap-2 text-gray-300">
                 <svg class="w-3.5 h-3.5 text-[#ff4667]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 018.57 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.57c0-.55-.45-1-.99-1.05z"/>
                 </svg>
-                <span>+1 45887 77874</span>
+                <span>{{ __('app.footer.phone') }}</span>
             </div>
         </div>
         <div class="flex items-center gap-5">
-            <!-- Language & Currency -->
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1 cursor-pointer hover:text-[#ff4667] transition-colors">
-                    <span class="w-4 h-3 bg-red-600 inline-block rounded-xs"></span>
-                    <span>ENG</span>
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-                <div class="flex items-center gap-1 cursor-pointer hover:text-[#ff4667] transition-colors">
-                    <span>USD</span>
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-            </div>
+            <!-- Language (storefront session) -->
+            <x-language-switcher panel="store" class="text-gray-300 [&>button]:text-gray-300" />
+
             <!-- Social Icons -->
             <div class="flex items-center gap-3 text-gray-400">
                 <a href="#" class="hover:text-white transition-colors" aria-label="Facebook">
@@ -66,20 +60,22 @@
         <nav class="hidden lg:flex items-center gap-7 text-[14px] font-medium text-[#191919]">
             <!-- Home Link -->
             <a href="{{ route('home') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
-                Home
+                {{ __('app.nav.home') }}
             </a>
 
             <!-- Courses Dropdown -->
             <div class="relative group">
                 <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
-                    <span>Courses</span>
+                    <span>{{ __('app.nav.courses') }}</span>
                     <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div class="absolute left-0 top-full pt-2 w-48 hidden group-hover:block z-50">
                     <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('courses.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Course Grid</a>
-                        <a href="{{ route('courses.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Course List</a>
-                        <a href="{{ route('courses.detail') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Course Details</a>
+                        <a href="{{ route('courses.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.grid') }}</a>
+                        <a href="{{ route('courses.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.list') }}</a>
+                        @if ($sampleCourse)
+                            <a href="{{ route('courses.show', $sampleCourse) }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.detail') }}</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -87,50 +83,53 @@
             <!-- Instructors Dropdown -->
             <div class="relative group">
                 <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'instructor') ? 'text-[#ff4667]' : '' }}">
-                    <span>Instructors</span>
+                    <span>{{ __('app.nav.instructors') }}</span>
                     <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div class="absolute left-0 top-full pt-2 w-52 hidden group-hover:block z-50">
                     <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('instructors.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Instructor Grid</a>
-                        <a href="{{ route('instructors.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Instructor List</a>
-                        <a href="{{ route('instructors.detail') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Instructor Details</a>
+                        <a href="{{ route('instructors.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.grid') }}</a>
+                        <a href="{{ route('instructors.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.list') }}</a>
+                        @if ($sampleInstructor)
+                            <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($sampleInstructor->name)) }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.detail') }}</a>
+                        @endif
                         <div class="border-t border-gray-100 my-1"></div>
-                        <a href="{{ route('instructor.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] text-[#392c7d] font-semibold">Instructor Dashboard</a>
+                        <a href="{{ route('instructor.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] text-[#392c7d] font-semibold">{{ __('app.nav.instructor_panel') }}</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Student Dashboard -->
+            <!-- Student Panel -->
             <div class="relative group">
                 <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'student') ? 'text-[#ff4667]' : '' }}">
-                    <span>Student</span>
+                    <span>{{ __('app.nav.student') }}</span>
                     <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div class="absolute left-0 top-full pt-2 w-52 hidden group-hover:block z-50">
                     <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Dashboard</a>
-                        <a href="{{ route('student.profile') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">My Profile</a>
-                        <a href="{{ route('student.enrolled-courses') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Enrolled Courses</a>
-                        <a href="{{ route('student.certificates') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">My Certificates</a>
-                        <a href="{{ route('student.quiz-attempts') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Quiz Attempts</a>
+                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.dashboard') }}</a>
+                        <a href="{{ route('student.profile') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.profile') }}</a>
+                        <a href="{{ route('student.enrolled-courses') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.enrolled') }}</a>
+                        <a href="{{ route('student.certificates') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.certificates') }}</a>
+                        <a href="{{ route('student.quiz-attempts') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.quiz') }}</a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="{{ route('admin.login') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] text-[#392c7d] font-semibold">{{ __('app.nav.admin_panel') }}</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Authentication Dropdown -->
+            <!-- Authentication Screens -->
             <div class="relative group">
                 <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'auth') ? 'text-[#ff4667]' : '' }}">
-                    <span>Auth</span>
+                    <span>{{ __('app.nav.auth') }}</span>
                     <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div class="absolute left-0 top-full pt-2 w-48 hidden group-hover:block z-50">
                     <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Sign In</a>
-                        <a href="{{ route('register') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Sign Up</a>
-                        <a href="{{ route('forgot-password') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Forgot Password</a>
+                        <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.sign_in') }}</a>
+                        <a href="{{ route('register') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.register') }}</a>
+                        <a href="{{ route('password.request') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('auth.forgot_password') }}</a>
                         <a href="{{ route('otp') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">OTP Verification</a>
-                        <a href="{{ route('set-password') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Set Password</a>
                         <a href="{{ route('lock-screen') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Lock Screen</a>
                     </div>
                 </div>
@@ -139,38 +138,49 @@
             <!-- Screens Page Link (Highlighted) -->
             <a href="{{ route('screens') }}" class="flex items-center gap-1.5 px-3 py-1 bg-red-50 text-[#ff4667] rounded-full border border-red-200 hover:bg-[#ff4667] hover:text-white transition-all text-xs font-semibold">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                <span>Screens Gallery (All)</span>
+                <span>{{ __('app.nav.screens') }}</span>
             </a>
         </nav>
 
         <!-- Right Action Buttons -->
         <div class="flex items-center gap-3">
-            <!-- Theme Toggle -->
-            <button class="w-9 h-9 rounded-full border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#ff4667] hover:border-[#ff4667] transition-colors" aria-label="Toggle Theme">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                </svg>
-            </button>
+            @guest('student')
+                <!-- Sign In Button -->
+                <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center gap-1.5 bg-[#e7e7e7] text-[#191919] hover:bg-gray-300 px-4 py-2 rounded-full font-medium text-[13px] transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                    <span>{{ __('app.nav.sign_in') }}</span>
+                </a>
 
-            <!-- Cart Icon with Badge -->
-            <a href="{{ route('courses.grid') }}" class="relative w-9 h-9 rounded-full border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#ff4667] hover:border-[#ff4667] transition-colors" aria-label="Shopping Cart">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                </svg>
-                <span class="absolute -top-1 -right-1 bg-[#03c95a] text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">1</span>
-            </a>
-
-            <!-- Sign In Button -->
-            <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center gap-1.5 bg-[#e7e7e7] text-[#191919] hover:bg-gray-300 px-4 py-2 rounded-full font-medium text-[13px] transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-                <span>Sign In</span>
-            </a>
-
-            <!-- Register Button -->
-            <a href="{{ route('register') }}" class="inline-flex items-center gap-1.5 bg-[#ff4667] text-white hover:bg-[#e03a58] px-4 py-2 rounded-full font-medium text-[13px] shadow-sm transition-all hover:shadow">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                <span>Register</span>
-            </a>
+                <!-- Register Button -->
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-1.5 bg-[#ff4667] text-white hover:bg-[#e03a58] px-4 py-2 rounded-full font-medium text-[13px] shadow-sm transition-all hover:shadow">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                    <span>{{ __('app.nav.register') }}</span>
+                </a>
+            @else
+                @php $student = auth('student')->user(); @endphp
+                <!-- Student Account Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center gap-2 py-1.5">
+                        <span class="w-9 h-9 rounded-full bg-[#392c7d] text-white font-bold text-sm flex items-center justify-center">{{ strtoupper(substr($student->name, 0, 1)) }}</span>
+                        <span class="hidden md:inline text-[13px] font-medium text-[#191919] max-w-[110px] truncate">{{ $student->name }}</span>
+                        <svg class="w-4 h-4 text-gray-500 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="absolute right-0 top-full pt-2 w-52 hidden group-hover:block z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
+                            <div class="px-4 py-2 border-b border-gray-100">
+                                <p class="text-sm font-semibold text-[#191919] truncate">{{ $student->name }}</p>
+                                <p class="text-xs text-gray-500 truncate">{{ $student->email }}</p>
+                            </div>
+                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.dashboard') }}</a>
+                            <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.profile') }}</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endguest
         </div>
     </div>
 </header>

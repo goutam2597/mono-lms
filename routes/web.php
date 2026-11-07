@@ -1,5 +1,31 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CourseController as AdminCourseController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
+use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\InstructorAuthController;
+use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
+use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
+use App\Http\Controllers\Instructor\LessonController;
+use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
+use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
+use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
+use App\Http\Controllers\InstructorDirectoryController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Student\ProfileController as StudentProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -7,119 +33,165 @@ use Illuminate\Support\Facades\Route;
 | Web Routes - Dreams LMS
 |--------------------------------------------------------------------------
 |
-| All screen routes mapped from the Figma UI Kit:
-| - Home (the main and only home page)
-| - Screens Showcase Gallery (/screens)
-| - Courses (Grid, List, Details)
-| - Instructors (Grid, List, Details)
-| - Student Dashboard (Dashboard, Profile, Enrolled Courses, Certificates, Quiz Attempts)
-| - Instructor Dashboard (Dashboard, Courses, Reviews)
-| - Authentication (Login, Register, Forgot Password, OTP, Set Password, Lock Screen)
+| Panels and their guards (independent sessions per panel):
+|  - /admin/*       guard: admin       (super admin / manager, RBAC)
+|  - /instructor/*  guard: instructor  (accounts created by admins)
+|  - /student/*     guard: student     (self-registered)
+|  - everything else is the public storefront.
+|
+| Each panel has its own language switcher stored in its own locale session
+| (admin_locale / instructor_locale / student_locale / store_locale).
 |
 */
 
-// Home - the one and only home page
-Route::get('/', function () {
-    return view('pages.home');
-})->name('home');
+// ---------------------------------------------------------------- Storefront
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/locale/{code}', [LocaleController::class, 'switchStore'])->name('locale.switch');
+
+// Public catalog (DB-driven)
+Route::prefix('courses')->name('courses.')->group(function () {
+    Route::get('/grid', [CourseController::class, 'grid'])->name('grid');
+    Route::get('/list', [CourseController::class, 'list'])->name('list');
+    Route::get('/{slug}', [CourseController::class, 'show'])->name('show');
+    Route::post('/{course:slug}/enroll', [CourseController::class, 'enroll'])
+        ->middleware('auth:student')->name('enroll');
+});
+
+Route::prefix('instructors')->name('instructors.')->group(function () {
+    Route::get('/grid', [InstructorDirectoryController::class, 'grid'])->name('grid');
+    Route::get('/list', [InstructorDirectoryController::class, 'list'])->name('list');
+    Route::get('/{name}', [InstructorDirectoryController::class, 'show'])->name('show');
+});
 
 // Screens Showcase Hub
 Route::get('/screens', function () {
     return view('screens.index');
 })->name('screens');
-Route::get('/screens-index', function () {
-    return redirect()->route('screens');
-})->name('screens.index');
+Route::get('/screens-index', fn () => redirect()->route('screens'))->name('screens.index');
 
-// Course Pages
-Route::prefix('courses')->name('courses.')->group(function () {
-    Route::get('/grid', function () {
-        return view('pages.courses.grid');
-    })->name('grid');
+// ------------------------------------------------------------ Language switch
+// Panel locale switches live OUTSIDE the guarded groups so they work from
+// login pages too; each writes to its own panel session key.
+Route::get('/admin/locale/{code}', [LocaleController::class, 'switchAdmin'])->name('admin.locale.switch');
+Route::get('/instructor/locale/{code}', [LocaleController::class, 'switchInstructor'])->name('instructor.locale.switch');
+Route::get('/student/locale/{code}', [LocaleController::class, 'switchStudent'])->name('student.locale.switch');
 
-    Route::get('/list', function () {
-        return view('pages.courses.list');
-    })->name('list');
+// ----------------------------------------------------------------- Panel auth
+Route::middleware('guest:admin')->group(function () {
+    Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.attempt');
+});
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:admin')->name('admin.logout');
 
-    Route::get('/detail', function () {
-        return view('pages.courses.detail');
-    })->name('detail');
+Route::middleware('guest:instructor')->group(function () {
+    Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])->name('instructor.login');
+    Route::post('/instructor/login', [InstructorAuthController::class, 'login'])->name('instructor.login.attempt');
+});
+Route::post('/instructor/logout', [InstructorAuthController::class, 'logout'])->middleware('auth:instructor')->name('instructor.logout');
+
+Route::middleware('guest:student')->group(function () {
+    Route::get('/login', [StudentAuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [StudentAuthController::class, 'login'])->name('login.attempt');
+    Route::get('/register', [StudentAuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [StudentAuthController::class, 'register'])->name('register.attempt');
+});
+Route::post('/logout', [StudentAuthController::class, 'logout'])->middleware('auth:student')->name('logout');
+
+// Shared password reset (?panel=student|instructor|admin)
+Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::get('/set-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+Route::post('/set-password', [PasswordResetController::class, 'reset'])->name('password.update');
+
+// Static UI-kit screens (kept for the screens hub)
+Route::get('/otp', fn () => view('pages.auth.otp'))->name('otp');
+Route::get('/lock-screen', fn () => view('pages.auth.lock-screen'))->name('lock-screen');
+
+// -------------------------------------------------------------- Admin panel
+Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::middleware('permission:admins.manage')->group(function () {
+        Route::resource('admins', AdminUserController::class)->except('show');
+    });
+
+    Route::middleware('permission:roles.manage')->group(function () {
+        Route::resource('roles', RoleController::class)->except('show');
+    });
+
+    Route::middleware('permission:instructors.manage')->group(function () {
+        Route::resource('instructors', AdminInstructorController::class)->except('show');
+    });
+
+    Route::middleware('permission:students.manage')->group(function () {
+        Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
+        Route::get('/students/{student}/edit', [AdminStudentController::class, 'edit'])->name('students.edit');
+        Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('students.update');
+        Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('students.destroy');
+    });
+
+    Route::middleware('permission:categories.manage')->group(function () {
+        Route::resource('categories', AdminCategoryController::class)->except('show');
+    });
+
+    Route::get('/courses', [AdminCourseController::class, 'index'])
+        ->middleware('permission:courses.manage')->name('courses.index');
+    Route::patch('/courses/{course}/publish', [AdminCourseController::class, 'publish'])
+        ->middleware('permission:courses.publish')->name('courses.publish');
+    Route::patch('/courses/{course}/unpublish', [AdminCourseController::class, 'unpublish'])
+        ->middleware('permission:courses.publish')->name('courses.unpublish');
+    Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])
+        ->middleware('permission:courses.manage')->name('courses.destroy');
+
+    Route::get('/reviews', [AdminReviewController::class, 'index'])
+        ->middleware('permission:reviews.moderate')->name('reviews.index');
+    Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])
+        ->middleware('permission:reviews.moderate')->name('reviews.approve');
+    Route::patch('/reviews/{review}/reject', [AdminReviewController::class, 'reject'])
+        ->middleware('permission:reviews.moderate')->name('reviews.reject');
+    Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])
+        ->middleware('permission:reviews.moderate')->name('reviews.destroy');
+
+    Route::get('/languages', [LanguageController::class, 'index'])
+        ->middleware('permission:languages.manage')->name('languages.index');
+    Route::patch('/languages/{language}/toggle', [LanguageController::class, 'toggle'])
+        ->middleware('permission:languages.manage')->name('languages.toggle');
+    Route::patch('/languages/{language}/default', [LanguageController::class, 'makeDefault'])
+        ->middleware('permission:languages.manage')->name('languages.default');
 });
 
-// Instructor Public Directory Pages
-Route::prefix('instructors')->name('instructors.')->group(function () {
-    Route::get('/grid', function () {
-        return view('pages.instructors.grid');
-    })->name('grid');
+// ---------------------------------------------------------- Instructor panel
+Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')->group(function () {
+    Route::get('/', [InstructorDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/list', function () {
-        return view('pages.instructors.list');
-    })->name('list');
+    Route::get('/courses', [InstructorCourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/create', [InstructorCourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [InstructorCourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}/edit', [InstructorCourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/courses/{course}', [InstructorCourseController::class, 'update'])->name('courses.update');
+    Route::delete('/courses/{course}', [InstructorCourseController::class, 'destroy'])->name('courses.destroy');
 
-    Route::get('/detail', function () {
-        return view('pages.instructors.detail');
-    })->name('detail');
+    Route::post('/courses/{course}/lessons', [LessonController::class, 'store'])->name('lessons.store');
+    Route::put('/lessons/{lesson}', [LessonController::class, 'update'])->name('lessons.update');
+    Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy'])->name('lessons.destroy');
+
+    Route::get('/students', [InstructorStudentController::class, 'index'])->name('students');
+    Route::get('/reviews', [InstructorReviewController::class, 'index'])->name('reviews');
+    Route::get('/profile', [InstructorProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [InstructorProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [InstructorProfileController::class, 'updatePassword'])->name('profile.password');
 });
 
-// Student Dashboard Pages
-Route::prefix('student')->name('student.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.student.dashboard');
-    })->name('dashboard');
+// ------------------------------------------------------------ Student panel
+Route::prefix('student')->name('student.')->middleware('auth:student')->group(function () {
+    Route::get('/', [StudentDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/enrolled-courses', [EnrollmentController::class, 'index'])->name('enrolled-courses');
+    Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');
 
-    Route::get('/profile', function () {
-        return view('pages.student.profile');
-    })->name('profile');
-
-    Route::get('/enrolled-courses', function () {
-        return view('pages.student.enrolled-courses');
-    })->name('enrolled-courses');
-
-    Route::get('/certificates', function () {
-        return view('pages.student.certificates');
-    })->name('certificates');
-
-    Route::get('/quiz-attempts', function () {
-        return view('pages.student.quiz-attempts');
-    })->name('quiz-attempts');
+    // Static UI-kit placeholders (no quiz/certificate engine yet)
+    Route::get('/certificates', fn () => view('pages.student.certificates'))->name('certificates');
+    Route::get('/quiz-attempts', fn () => view('pages.student.quiz-attempts'))->name('quiz-attempts');
 });
-
-// Instructor Dashboard Pages
-Route::prefix('instructor')->name('instructor.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.instructor.dashboard');
-    })->name('dashboard');
-
-    Route::get('/courses', function () {
-        return view('pages.instructor.courses');
-    })->name('courses');
-
-    Route::get('/reviews', function () {
-        return view('pages.instructor.reviews');
-    })->name('reviews');
-});
-
-// Authentication Pages
-Route::get('/login', function () {
-    return view('pages.auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('pages.auth.register');
-})->name('register');
-
-Route::get('/forgot-password', function () {
-    return view('pages.auth.forgot-password');
-})->name('forgot-password');
-
-Route::get('/otp', function () {
-    return view('pages.auth.otp');
-})->name('otp');
-
-Route::get('/set-password', function () {
-    return view('pages.auth.set-password');
-})->name('set-password');
-
-Route::get('/lock-screen', function () {
-    return view('pages.auth.lock-screen');
-})->name('lock-screen');

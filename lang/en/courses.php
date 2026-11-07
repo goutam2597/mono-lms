@@ -1,0 +1,37 @@
+<?php
+
+// Public course pages: grid, list, detail.
+return [
+    'title' => 'Courses',
+    'grid' => 'Course Grid',
+    'list' => 'Course List',
+    'detail' => 'Course Details',
+    'results_for' => 'Showing :count courses',
+    'filter_category' => 'Category',
+    'filter_level' => 'Level',
+    'sort_by' => 'Sort by',
+    'sort_latest' => 'Latest',
+    'sort_popular' => 'Most Popular',
+    'sort_price_low' => 'Price: Low to High',
+    'sort_price_high' => 'Price: High to Low',
+    'no_courses' => 'No courses found.',
+    'empty_description' => 'Check back soon — new courses are added regularly.',
+
+    'curriculum' => 'Curriculum',
+    'description' => 'Description',
+    'what_you_get' => 'What you will get',
+    'about_instructor' => 'About the Instructor',
+    'related_courses' => 'Related Courses',
+    'enroll_now' => 'Enroll Now',
+    'go_to_course' => 'Go To Course',
+    'enroll_free' => 'Free Enroll',
+    'already_enrolled' => 'You are already enrolled in this course.',
+    'enrolled_success' => 'You have successfully enrolled in this course!',
+    'guest_enroll_hint' => 'Sign in as a student to enroll in this course.',
+    'includes' => 'This course includes',
+    'on_demand_video' => 'On-demand video lessons',
+    'full_lifetime_access' => 'Full lifetime access',
+    'certificate_completion' => 'Certificate of completion',
+    'not_found' => 'Course not found.',
+    'price_free' => 'Free',
+];

@@ -4,13 +4,13 @@
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-[#191919]">Instructor Grid</h1>
+                <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.grid') }}</h1>
                 <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
                     <a href="{{ route('home') }}" class="hover:text-[#ff4667]">Home</a>
                     <span>/</span>
                     <a href="{{ route('instructors.grid') }}" class="hover:text-[#ff4667]">Instructors</a>
                     <span>/</span>
-                    <span class="text-[#ff4667] font-medium">Instructor Grid</span>
+                    <span class="text-[#ff4667] font-medium">{{ __('instructors.grid') }}</span>
                 </nav>
             </div>
             <div class="text-xs text-[#888888] font-medium">
@@ -24,7 +24,7 @@
         <!-- Results & Sort Bar -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xs">
             <div class="text-xs sm:text-sm text-[#6d6d6d]">
-                Showing <strong class="text-[#191919]">1–8</strong> of <strong class="text-[#191919]">24</strong> instructors
+                {{ __('instructors.results_for', ['count' => $instructors->total()]) }}
             </div>
 
             <!-- View Switcher & Search -->
@@ -41,81 +41,22 @@
             </div>
         </div>
 
-        <!-- Instructors Grid -->
+        <!-- Instructors Grid (DB-driven) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <x-instructor-card 
-                name="Rolands Granger"
-                role="Full-Stack Developer"
-                image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80"
-                rating="4.9"
-                reviews="200"
-                lessons="12+ Lessons"
-                duration="169hr 20min"
-            />
-            <x-instructor-card 
-                name="David Benitez"
-                role="UI/UX Specialist"
-                image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80"
-                rating="4.9"
-                reviews="180"
-                lessons="15+ Lessons"
-                duration="142hr 10min"
-            />
-            <x-instructor-card 
-                name="Hinata Hyuga"
-                role="Machine Learning Engineer"
-                image="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80"
-                rating="5.0"
-                reviews="310"
-                lessons="20+ Lessons"
-                duration="210hr 45min"
-            />
-            <x-instructor-card 
-                name="Keny White"
-                role="Cloud Systems Architect"
-                image="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80"
-                rating="4.8"
-                reviews="145"
-                lessons="10+ Lessons"
-                duration="98hr 30min"
-            />
-            <x-instructor-card 
-                name="Nicole Brown"
-                role="Strategic Business Coach"
-                image="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop&q=80"
-                rating="4.9"
-                reviews="220"
-                lessons="14+ Lessons"
-                duration="115hr 00min"
-            />
-            <x-instructor-card 
-                name="John Doe"
-                role="Creative Director & Artist"
-                image="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80"
-                rating="4.7"
-                reviews="98"
-                lessons="8+ Lessons"
-                duration="76hr 15min"
-            />
-            <x-instructor-card 
-                name="Sarah Jenkins"
-                role="Cybersecurity Specialist"
-                image="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&auto=format&fit=crop&q=80"
-                rating="4.9"
-                reviews="165"
-                lessons="11+ Lessons"
-                duration="130hr 50min"
-            />
-            <x-instructor-card 
-                name="Michael Chang"
-                role="Data Architect"
-                image="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600&auto=format&fit=crop&q=80"
-                rating="4.8"
-                reviews="190"
-                lessons="16+ Lessons"
-                duration="155hr 20min"
-            />
+            @forelse ($instructors as $instructor)
+                <x-instructor-card
+                    :name="$instructor->name"
+                    :role="$instructor->designation ?? ''"
+                    :image="$instructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&background=392c7d&color=fff&size=400'"
+                    :lessons="$instructor->courses_count.' '.__('app.common.lessons')"
+                    :duration="$instructor->courses_count.' '.__('instructors.courses_count', ['count' => $instructor->courses_count])"
+                />
+            @empty
+                <p class="col-span-full py-10 text-center text-gray-400">{{ __('instructors.no_instructors') }}</p>
+            @endforelse
         </div>
+
+        <div class="mt-10">{{ $instructors->links() }}</div>
     </div>
 
 </x-layouts.app>

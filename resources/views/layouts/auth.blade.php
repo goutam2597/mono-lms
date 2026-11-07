@@ -1,7 +1,7 @@
 @props(['title' => 'Authentication - Dreams LMS'])
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-white">
+<html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-white">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,10 +51,10 @@
                     </div>
 
                     <h2 class="text-2xl font-bold text-[#191919] mb-2">
-                        Welcome to Dreams<span class="text-[#ff4667]">LMS</span>
+                        {{ __('app.welcome') }} Dreams<span class="text-[#ff4667]">LMS</span>
                     </h2>
                     <p class="text-sm text-[#6d6d6d] max-w-sm leading-relaxed">
-                        Platform designed to help organizations, educators, and learners manage, deliver, and track learning and training activities.
+                        {{ __('app.footer.about') }}
                     </p>
 
                     <!-- Progress Dots -->
@@ -67,7 +67,7 @@
 
                 <!-- Footer copyright note -->
                 <div class="text-xs text-[#888888] z-10 text-center">
-                    © {{ date('Y') }} Dreams LMS. All Rights Reserved.
+                    © {{ date('Y') }} Dreams LMS. {{ __('app.footer.copyright') }}
                 </div>
             </div>
 
@@ -78,10 +78,16 @@
                     <a href="{{ route('home') }}" class="lg:hidden flex items-center gap-2">
                         <span class="text-xl font-bold text-[#191919]">Dreams<span class="text-[#ff4667]">LMS</span></span>
                     </a>
-                    <a href="{{ route('home') }}" class="ml-auto inline-flex items-center gap-1.5 text-sm font-medium text-[#ff4667] hover:underline">
-                        <span>Back to Home</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
+                    @php
+                        $localePanel = request()->is('admin*') ? 'admin' : (request()->is('instructor*') ? 'instructor' : 'student');
+                    @endphp
+                    <div class="ml-auto flex items-center gap-4">
+                        <x-language-switcher :panel="$localePanel" class="text-[14px] font-medium text-[#191919]" />
+                        <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-[#ff4667] hover:underline">
+                            <span>{{ __('auth.back_to_home') }}</span>
+                            <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Form Content -->

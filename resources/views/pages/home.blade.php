@@ -14,18 +14,18 @@
                     <!-- Top Pill Tagline (Figma: 2355:29938) -->
                     <div class="inline-block" data-node-id="2355:29937">
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#ff4667] text-white shadow-sm" data-node-id="2355:29939">
-                            The Leader in Online Learning
+                            {{ __('home.hero.badge') }}
                         </span>
                     </div>
 
                     <!-- Main Display Heading (Figma: 2355:29941) -->
                     <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight" data-node-id="2355:29941">
-                        Engaging <span class="text-[#ff4667]">&amp;</span> Accessible online courses for all
+                        {{ __('home.hero.title_line1') }} <span class="text-[#ff4667]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
                     </h1>
 
                     <!-- Subtitle Description (Figma: 2355:29943) -->
                     <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl" data-node-id="2355:29943">
-                        Our specialized online courses are designed to bring the classroom experience to you, no matter where you are.
+                        {{ __('home.hero.subtitle') }}
                     </p>
 
                     <!-- Rounded Search Bar (Figma: 2355:29944) -->
@@ -85,8 +85,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-base font-bold text-[#0dcaf0]">6K+</p>
-                                <p class="text-xs text-[#6d6d6d] font-medium">Certified Courses</p>
+                                <p class="text-base font-bold text-[#0dcaf0]">{{ $stats['courses'] }}+</p>
+                                <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.courses') }}</p>
                             </div>
                         </div>
 
@@ -98,8 +98,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-base font-bold text-[#03c95a]">60K+</p>
-                                <p class="text-xs text-[#6d6d6d] font-medium">Online Students</p>
+                                <p class="text-base font-bold text-[#03c95a]">{{ $stats['students'] }}+</p>
+                                <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.students') }}</p>
                             </div>
                         </div>
                     </div>
@@ -121,8 +121,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-node-id="2550:20091">10K</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">Online Courses</p>
+                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-node-id="2550:20091">{{ $stats['courses'] }}</h3>
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
@@ -134,8 +134,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-node-id="2550:20102">200+</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">Expert Tutors</p>
+                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-node-id="2550:20102">{{ $stats['instructors'] }}+</h3>
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.instructors') }}</p>
                 </div>
             </div>
 
@@ -147,8 +147,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-node-id="2550:20114">6K+</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">Certified Courses</p>
+                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-node-id="2550:20114">{{ $stats['courses'] }}</h3>
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
@@ -160,8 +160,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-node-id="2550:20130">60K +</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">Online Students</p>
+                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-node-id="2550:20130">{{ $stats['students'] }}+</h3>
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.students') }}</p>
                 </div>
             </div>
 
@@ -280,119 +280,29 @@
                     </a>
                 </div>
 
-                <!-- 5 Category Cards (Figma: 2355:30100) -->
+                <!-- Category Cards (DB-driven, Figma: 2355:30100) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-
-                    <!-- Category 1: Angular Development -->
-                    <div class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between" data-node-id="2355:30101">
-                        <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] bg-[#dd0031]/10 flex items-center justify-center text-[#dd0031] group-hover:scale-110 transition-transform">
-                                <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2.5L2.8 5.75L4.2 17.5L12 21.8L19.8 17.5L21.2 5.75L12 2.5ZM12 4.67L18.7 7.05L17.57 16.55L12 19.64L6.43 16.55L5.3 7.05L12 4.67ZM12 6.8L8.6 15.2H10.4L11.1 13.4H12.9L13.6 15.2H15.4L12 6.8ZM12 9.4L12.5 11.8H11.5L12 9.4Z" />
-                                </svg>
+                    @foreach ($categories->take(5) as $category)
+                        <a href="{{ route('courses.grid', ['category' => $category->slug]) }}"
+                           class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between">
+                            <div class="flex flex-col items-center text-center space-y-3">
+                            <div class="w-16 h-16 rounded-[8px] flex items-center justify-center group-hover:scale-110 transition-transform" style="background: {{ $category->color }}15; color: {{ $category->color }};">
+                                @if ($category->icon && str_starts_with($category->icon, 'M'))
+                                    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor"><path d="{{ $category->icon }}" /></svg>
+                                @else
+                                    <span class="text-3xl">{{ $category->icon ?? '📚' }}</span>
+                                @endif
                             </div>
-                            <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                Angular Development
-                            </h4>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                            <span class="text-[#6d6d6d] font-medium">Instructors</span>
-                            <div class="flex items-center -space-x-2">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">80+</span>
+                                <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
+                                    {{ $category->name }}
+                                </h4>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Category 2: Python Development -->
-                    <div class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between" data-node-id="2355:30121">
-                        <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] bg-[#3776ab]/10 flex items-center justify-center text-[#3776ab] group-hover:scale-110 transition-transform">
-                                <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M11.9 2C8.3 2 6 3.6 6 5.8V7.5H12V8.4H3.7C2.1 8.4 1 9.7 1 11.5C1 13.5 2.2 14.8 4 14.8H5.6V13.3C5.6 11.9 6.8 10.7 8.2 10.7H13.6C14.8 10.7 15.8 9.7 15.8 8.5V5.5C15.8 3.5 14.2 2 11.9 2ZM9.5 4C10.1 4 10.6 4.5 10.6 5.1C10.6 5.7 10.1 6.2 9.5 6.2C8.9 6.2 8.4 5.7 8.4 5.1C8.4 4.5 8.9 4 9.5 4ZM12.1 22C15.7 22 18 20.4 18 18.2V16.5H12V15.6H20.3C21.9 15.6 23 14.3 23 12.5C23 10.5 21.8 9.2 20 9.2H18.4V10.7C18.4 12.1 17.2 13.3 15.8 13.3H10.4C9.2 13.3 8.2 14.3 8.2 15.5V18.5C8.2 20.5 9.8 22 12.1 22ZM14.5 20C13.9 20 13.4 19.5 13.4 18.9C13.4 18.3 13.9 17.8 14.5 17.8C15.1 17.8 15.6 18.3 15.6 18.9C15.6 19.5 15.1 20 14.5 20Z" />
-                                </svg>
+                            <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
+                                <span class="text-[#6d6d6d] font-medium">{{ __('home.categories.courses_count', ['count' => $category->courses_count]) }}</span>
+                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">{{ $category->courses_count }}</span>
                             </div>
-                            <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                Python Development
-                            </h4>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                            <span class="text-[#6d6d6d] font-medium">Instructors</span>
-                            <div class="flex items-center -space-x-2">
-                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">28+</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Category 3: NodeJS Development -->
-                    <div class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between" data-node-id="2355:30138">
-                        <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] bg-[#339933]/10 flex items-center justify-center text-[#339933] group-hover:scale-110 transition-transform">
-                                <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L3.5 6.9V17.1L12 22L20.5 17.1V6.9L12 2ZM11.1 18.5V11.2L6 14.1V9.5L11.1 6.5V5.5L4.8 9.1V16.3L11.1 19.9V18.5ZM12.9 5.5L19.2 9.1V16.3L12.9 19.9V18.5L18 15.6V10.9L12.9 8V5.5Z" />
-                                </svg>
-                            </div>
-                            <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                NodeJS Development
-                            </h4>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                            <span class="text-[#6d6d6d] font-medium">Instructors</span>
-                            <div class="flex items-center -space-x-2">
-                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">16+</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Category 4: PHP Development -->
-                    <div class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between" data-node-id="2355:30155">
-                        <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] bg-[#777bb4]/10 flex items-center justify-center text-[#777bb4] group-hover:scale-110 transition-transform">
-                                <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-5 13.5l1.2-6h2.4c1.1 0 1.9.9 1.9 2s-.9 2-1.9 2H9.2l-.4 2H7zm8.8 0l1.2-6h2.4c1.1 0 1.9.9 1.9 2s-.9 2-1.9 2h-1.4l-.4 2h-1.8zm-5.4-2l.4-2h1.4c.5 0 .8.3.8.8s-.3.8-.8.8h-1.4zm6.4 0l.4-2h1.4c.5 0 .8.3.8.8s-.3.8-.8.8h-1.4z" />
-                                </svg>
-                            </div>
-                            <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                PHP Development
-                            </h4>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                            <span class="text-[#6d6d6d] font-medium">Instructors</span>
-                            <div class="flex items-center -space-x-2">
-                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">12+</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Category 5: Laravel Development -->
-                    <div class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between" data-node-id="2355:30172">
-                        <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] bg-[#ff2d20]/10 flex items-center justify-center text-[#ff2d20] group-hover:scale-110 transition-transform">
-                                <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2L3 6.5V17.5L12 22L21 17.5V6.5L12 2ZM19.2 16.4L12 20L4.8 16.4V7.6L12 4L19.2 7.6V16.4Z" />
-                                </svg>
-                            </div>
-                            <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                Laravel Development
-                            </h4>
-                        </div>
-                        <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                            <span class="text-[#6d6d6d] font-medium">Instructors</span>
-                            <div class="flex items-center -space-x-2">
-                                <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop" class="w-7 h-7 rounded-full border-2 border-white object-cover" alt="Instructor" />
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">80+</span>
-                            </div>
-                        </div>
-                    </div>
-
+                        </a>
+                    @endforeach
                 </div>
 
                 <!-- Carousel Dots (Figma: 2355:30189) -->
@@ -438,264 +348,31 @@
                 </div>
             </div>
 
-            <!-- 8 Course Cards Grid (2 rows x 4 columns) (Figma: 2355:30226) -->
+            <!-- Featured Course Cards (DB-driven, Figma: 2355:30226) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Course 1 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30227">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80" alt="Web Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-[#ff4667] transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Web Design</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Build Responsive Websites with HTML
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>256 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="text-base font-bold text-[#392c7d]">$650.00</span>
-                            <span class="text-gray-400 line-through">$900.00</span>
-                        </div>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            8 hr 30min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 2 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30252">
-                    <div>
-                        <div class="relative h-48 overflow-hidden bg-black">
-                            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80" alt="Python" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#ff4667] text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Python Development</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                The Complete Web Developer Python Course
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>356 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <span class="text-base font-bold text-[#392c7d]">$300.00</span>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            6 hr 30min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 3 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30277">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80" alt="Business Management" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#ff4667] text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Business Management</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                The Complete Business Management Course
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>224 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="text-base font-bold text-[#392c7d]">$200.00</span>
-                            <span class="text-gray-400 line-through">$900.00</span>
-                        </div>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            6 hr 30min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 4 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30302">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&auto=format&fit=crop&q=80" alt="Creative Arts" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#ff4667] text-white flex items-center justify-center shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Creative Arts &amp; media</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Build Creative Arts &amp; media Course Completed
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>250 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2">
-                            <span class="text-base font-bold text-[#392c7d]">$700.00</span>
-                            <span class="text-gray-400 line-through">$900.00</span>
-                        </div>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            6 hr 30min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 5 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30327">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80" alt="Angular Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-[#ff4667] transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Angular, Development</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Build Responsive Websites with HTML
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>121 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <span class="text-base font-bold text-[#392c7d]">$550.00</span>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            4 hr 10min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 6 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30352">
-                    <div>
-                        <div class="relative h-48 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&auto=format&fit=crop&q=80" alt="Personalized Learning" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-[#ff4667] transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Personalized Learning</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Critical Reading and Writing Skills
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>33 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <span class="text-base font-bold text-[#5625e8]">Free</span>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            3 hr 15min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 7 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30377">
-                    <div>
-                        <div class="relative h-48 overflow-hidden bg-gray-900">
-                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80" alt="NodeJS" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-[#ff4667] transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">NodeJS, Development</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                NodeJS Fundamentals: Storage in Server
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>336 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <span class="text-base font-bold text-[#392c7d]">$999.00</span>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            4 hr 30min
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Course 8 -->
-                <div class="bg-white rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 group flex flex-col justify-between" data-node-id="2355:30402">
-                    <div>
-                        <div class="relative h-48 overflow-hidden bg-gray-900">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80" alt="Docker Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90" />
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-[#ff4667] transition-colors shadow-sm">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop" alt="Instructor" class="absolute -bottom-4 right-4 w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm z-10" />
-                        </div>
-                        <div class="p-5 space-y-3">
-                            <span class="text-xs font-semibold text-[#ff4667] underline">Docker Development</span>
-                            <h3 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Data Science Essentials: Exploring Docker
-                            </h3>
-                            <div class="flex items-center gap-1.5 text-xs text-[#6d6d6d]">
-                                <svg class="w-4 h-4 text-[#ffc107]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                <span>1216 Students</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3.5 bg-gray-50 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                        <span class="text-base font-bold text-[#392c7d]">$6965.00</span>
-                        <span class="text-[#6d6d6d] flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            12hr 50min
-                        </span>
-                    </div>
-                </div>
-
+                @foreach ($featuredCourses->take(8) as $course)
+                    <x-course-card
+                        :slug="$course->slug"
+                        :title="$course->title"
+                        :category="$course->category?->name ?? ''"
+                        :instructor="$course->instructor?->name ?? ''"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
+                        :rating="$course->averageRating() ?: '5.0'"
+                        :reviews="$course->reviewCount()"
+                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                        :lessons="$course->lessons->count()"
+                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
+                    />
+                @endforeach
             </div>
 
-            <!-- View All Courses Button (Figma: 2355:30195) -->
-            <div class="text-center pt-6">
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-md transition-all duration-300 transform hover:-translate-y-0.5">
-                    View all Courses
+            <!-- View All Courses Button -->
+            <div class="flex justify-center mt-12">
+                <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-semibold shadow-md transition-all">
+                    {{ __('app.common.view_all') }}
+                    <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
             </div>
 
@@ -1001,127 +678,25 @@
                 </a>
             </div>
 
-            <!-- 4 Trending Cards (Figma: 2355:30658) -->
+            <!-- Trending Course Cards (DB-driven, Figma: 2355:30658) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Trending Card 1: Yellow Header (Figma: 2355:30659) -->
-                <div class="rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="bg-[#ffdd79] p-6 space-y-4">
-                        <span class="inline-block bg-[#191919] text-white text-xs font-medium px-2.5 py-1 rounded">
-                            SEO, Marketing
-                        </span>
-                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors leading-snug">
-                            Digital Marketing Strategies for Business Growth
-                        </h3>
-                        <p class="text-xs text-[#6d6d6d] line-clamp-2">
-                            Navigating the Tech World: The Ultimate Guide to Finding an IT Mentor
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-[#6d6d6d] pt-2 border-t border-black/10">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                400 Students
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                8 hr 30min
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 flex items-center justify-between border-t border-[#e9ecef]">
-                        <span class="text-xl font-bold text-[#191919]">$650.00</span>
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Instructor" class="w-10 h-10 rounded-full object-cover border border-gray-200" />
-                    </div>
-                </div>
-
-                <!-- Trending Card 2: Mint Green Header (Figma: 2355:30682) -->
-                <div class="rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="bg-[#77e2a6] p-6 space-y-4">
-                        <span class="inline-block bg-[#08131e] text-white text-xs font-medium px-2.5 py-1 rounded">
-                            Personalised Learning
-                        </span>
-                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors leading-snug">
-                            Starting Your Own Business: From Idea to Launch
-                        </h3>
-                        <p class="text-xs text-[#6d6d6d] line-clamp-2">
-                            Learn how mentorship can help guide your decision-making process
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-[#6d6d6d] pt-2 border-t border-black/10">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                2250 Students
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                1 hr 30min
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 flex items-center justify-between border-t border-[#e9ecef]">
-                        <span class="text-xl font-bold text-[#191919]">$650.00</span>
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop" alt="Instructor" class="w-10 h-10 rounded-full object-cover border border-gray-200" />
-                    </div>
-                </div>
-
-                <!-- Trending Card 3: Soft Grey Header (Figma: 2355:30705) -->
-                <div class="rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="bg-[#e9ecef] p-6 space-y-4">
-                        <span class="inline-block bg-[#191919] text-white text-xs font-medium px-2.5 py-1 rounded">
-                            Finance
-                        </span>
-                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors leading-snug">
-                            Financial Literacy: Managing Your Money for Long-Term
-                        </h3>
-                        <p class="text-xs text-[#6d6d6d] line-clamp-2">
-                            The tech industry is vast and ever-changing, but a mentor can help
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-[#6d6d6d] pt-2 border-t border-black/10">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                560 Students
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                3 hr 15min
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 flex items-center justify-between border-t border-[#e9ecef]">
-                        <span class="text-xl font-bold text-[#191919]">$650.00</span>
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop" alt="Instructor" class="w-10 h-10 rounded-full object-cover border border-gray-200" />
-                    </div>
-                </div>
-
-                <!-- Trending Card 4: Sky Blue Header (Figma: 2355:30728) -->
-                <div class="rounded-[10px] overflow-hidden border border-[#e9ecef] shadow-[0px_4px_12px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                    <div class="bg-[#80e5ff] p-6 space-y-4">
-                        <span class="inline-block bg-[#191919] text-white text-xs font-medium px-2.5 py-1 rounded">
-                            Business Management
-                        </span>
-                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors leading-snug">
-                            The Complete Web Developer PHP framework Course 2.0
-                        </h3>
-                        <p class="text-xs text-[#6d6d6d] line-clamp-2">
-                            Scaling a business requires more than just hard work—it requires
-                        </p>
-                        <div class="flex items-center justify-between text-xs text-[#6d6d6d] pt-2 border-t border-black/10">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                                1400 Students
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                3 hr 30min
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 flex items-center justify-between border-t border-[#e9ecef]">
-                        <span class="text-xl font-bold text-[#191919]">$650.00</span>
-                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=80&h=80&fit=crop" alt="Instructor" class="w-10 h-10 rounded-full object-cover border border-gray-200" />
-                    </div>
-                </div>
-
+                @foreach ($featuredCourses->skip(2)->take(4) as $course)
+                    <x-course-card
+                        :slug="$course->slug"
+                        :title="$course->title"
+                        :category="$course->category?->name ?? ''"
+                        :instructor="$course->instructor?->name ?? ''"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
+                        :rating="$course->averageRating() ?: '5.0'"
+                        :reviews="$course->reviewCount()"
+                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                        :lessons="$course->lessons->count()"
+                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
+                    />
+                @endforeach
             </div>
-
             <!-- Dots -->
             <div class="flex justify-center items-center gap-2 pt-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
@@ -1156,18 +731,15 @@
 
                 <!-- Left 4 Instructor Photos (md:col-span-4) -->
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm bg-[#ffc107]/20 group">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
+                    @foreach ($topInstructors->take(4) as $instructor)
+                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#392c7d]/10 flex items-center justify-center">
+                            @if($instructor->avatar)
+                                <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            @else
+                                <span class="text-4xl font-bold text-[#392c7d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
 
                 <!-- Center Featured Card with Overlay (md:col-span-4) (Figma: 2355:30773 & 2355:30780) -->
@@ -1193,17 +765,16 @@
 
                 <!-- Right 3-4 Instructor Photos (md:col-span-4) -->
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
-                    <div class="col-span-2 h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <div class="h-56 rounded-[10px] overflow-hidden shadow-sm group">
-                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600&auto=format&fit=crop&q=80" alt="Instructor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    </div>
+                    @foreach ($topInstructors->skip(4) as $instructor)
+                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#ff4667]/10 flex items-center justify-center">
+                            @if($instructor->avatar)
+                                <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            @else
+                                <span class="text-4xl font-bold text-[#ff4667]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
-
             </div>
 
         </div>

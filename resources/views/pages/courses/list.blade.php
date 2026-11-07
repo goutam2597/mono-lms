@@ -103,7 +103,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('courses.detail') }}" class="block text-xl font-bold text-[#191919] hover:text-[#ff4667] transition-colors">
+                        <a href="{{ route('courses.grid') }}" class="block text-xl font-bold text-[#191919] hover:text-[#ff4667] transition-colors">
                             {{ $c['title'] }}
                         </a>
 
@@ -124,7 +124,7 @@
 
                     <div class="w-full md:w-auto flex md:flex-col items-center md:items-end justify-between gap-4 pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
                         <div class="text-2xl font-bold text-[#ff4667]">{{ $c['price'] }}</div>
-                        <a href="{{ route('courses.detail') }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors">
+                        <a href="{{ route('courses.grid') }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors">
                             View Course →
                         </a>
                     </div>

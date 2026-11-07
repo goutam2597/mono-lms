@@ -64,16 +64,34 @@ All 22 screens can be browsed and accessed from the interactive **Screens Showca
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Backend Framework**: [Laravel 13](https://laravel.com) on **PHP 8.4 / 8.5**
+- **Backend Framework**: [Laravel 13](https://laravel.com) on **PHP 8.3+**
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com) with `@theme` design tokens
 - **Font Foundations**: Inter & Montserrat typography
 - **Frontend Build**: [Vite](https://vitejs.dev) with production pre-compiled assets in `public/build/`
-- **Database**: SQLite pre-migrated database (`database/database.sqlite`)
+- **Database**: **MySQL** (`mono_lms`, utf8mb4)
+- **Auth**: 3 independent guards — `admin`, `instructor`, `student` — each with its own table, panel, login page and session
+- **RBAC**: roles & permissions for the admin panel, curated by the super admin (`permission:` middleware + gates)
+- **i18n**: key-based translations (`lang/en`, `lang/hi`, `lang/ar`) with a per-panel language switcher; each panel keeps its own locale session (Arabic renders RTL)
 - **Blade Architecture**:
   - `<x-layouts.app>`: Standard customer-facing header, main content, and footer
-  - `<x-layouts.dashboard>`: Shared portal layout for Students and Instructors with active sidebar navigation
+  - `<x-layouts.dashboard>`: Shared panel layout for Admin, Instructor and Student (`userType` prop)
   - `<x-layouts.auth>`: Split-screen branding layout for authentication flows
-  - Reusable components: `<x-header>`, `<x-footer>`, `<x-dashboard.sidebar>`
+  - Reusable components: `<x-header>`, `<x-footer>`, `<x-language-switcher>`, `<x-admin-sidebar>`, `<x-instructor-sidebar>`, `<x-student-sidebar>`
+
+---
+
+## 🔐 Seeded Panel Logins
+
+All seeded accounts use the password **`password`**:
+
+| Panel | URL | Email | Role |
+| :--- | :--- | :--- | :--- |
+| Super Admin | `/admin/login` | `superadmin@mono-lms.test` | Super Admin (all permissions) |
+| Manager | `/admin/login` | `manager@mono-lms.test` | Manager (limited — try `/admin/roles` → 403) |
+| Instructor | `/instructor/login` | `instructor@mono-lms.test` | — |
+| Student | `/login` | `student@mono-lms.test` | — |
+
+Students can also self-register at `/register`. Instructor accounts are created by admins only.
 
 ---
 

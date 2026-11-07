@@ -1,5 +1,6 @@
 @props([
     'name' => 'Rolands Granger',
+    'slug' => null,
     'role' => 'Full-Stack Developer',
     'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
     'rating' => '4.9',
@@ -25,7 +26,7 @@
             <span class="text-xs text-[#6d6d6d] font-medium">{{ $rating }} ({{ $reviews }} Reviews)</span>
         </div>
         <!-- Name -->
-        <a href="{{ route('instructors.detail') }}" class="font-bold text-[18px] text-[#191919] hover:text-[#ff4667] transition-colors">
+        <a href="{{ route('instructors.show', $slug ?? \Illuminate\Support\Str::slug($name)) }}" class="font-bold text-[18px] text-[#191919] hover:text-[#ff4667] transition-colors">
             {{ $name }}
         </a>
         <span class="text-xs text-[#6d6d6d]">{{ $role }}</span>

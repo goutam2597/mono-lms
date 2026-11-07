@@ -1,5 +1,6 @@
 @props([
     'id' => 1,
+    'slug' => null,
     'title' => 'Information About UI/UX Design Degree',
     'category' => 'Design',
     'instructor' => 'David Benitez',
@@ -34,7 +35,7 @@
         </div>
 
         <!-- Course Title -->
-        <a href="{{ route('courses.detail') }}" class="block font-bold text-[17px] text-[#191919] leading-snug mb-3 hover:text-[#ff4667] transition-colors line-clamp-2">
+        <a href="{{ route('courses.show', $slug ?? $id) }}" class="block font-bold text-[17px] text-[#191919] leading-snug mb-3 hover:text-[#ff4667] transition-colors line-clamp-2">
             {{ $title }}
         </a>
 
@@ -54,8 +55,8 @@
                 <span class="text-xs text-gray-400 line-through">{{ $oldPrice }}</span>
             @endif
         </div>
-        <a href="{{ route('courses.detail') }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors">
-            <span>View Course</span>
+        <a href="{{ route('courses.show', $slug ?? $id) }}" class="bg-[#08131e] hover:bg-[#ff4667] text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors">
+            <span>{{ __('courses.enroll_now') }}</span>
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </a>
     </div>

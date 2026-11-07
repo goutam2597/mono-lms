@@ -12,7 +12,7 @@
                     <span class="text-2xl font-bold tracking-tight text-white">Dreams<span class="text-[#ff4667]">LMS</span></span>
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
-                    Platform designed to help organizations, educators, and learners manage, deliver, and track learning and training activities.
+                    {{ __('app.footer.about') }}
                 </p>
                 <!-- App Badges -->
                 <div class="flex items-center gap-3 pt-2">
@@ -35,48 +35,46 @@
 
             <!-- Support Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">Support</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.support') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Education</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Manage Deliveries</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Orders</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Payments</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Blogs</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.help_center') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.faq') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.contact') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.blog') }}</a></li>
                 </ul>
             </div>
 
             <!-- Pages Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">Pages</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.pages') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ route('courses.grid') }}" class="hover:text-[#ff4667] transition-colors">Categories</a></li>
-                    <li><a href="{{ route('courses.grid') }}" class="hover:text-[#ff4667] transition-colors">Courses</a></li>
-                    <li><a href="{{ route('instructors.grid') }}" class="hover:text-[#ff4667] transition-colors">Instructors</a></li>
-                    <li><a href="{{ route('screens') }}" class="hover:text-[#ff4667] transition-colors">All Screens</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Contact Us</a></li>
+                    <li><a href="{{ route('courses.grid') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.courses') }}</a></li>
+                    <li><a href="{{ route('instructors.grid') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.instructors') }}</a></li>
+                    <li><a href="{{ route('screens') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.screens') }}</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
+                    <li><a href="{{ route('register') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.register') }}</a></li>
                 </ul>
             </div>
 
             <!-- Useful Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">Useful Links</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.useful') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Our Values</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Advisory Board</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Our Partners</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Become a Partner</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">Work at Future Learn</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.about_us') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.blog') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.pricing') }}</a></li>
+                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.contact') }}</a></li>
                 </ul>
             </div>
 
             <!-- Newsletter Column -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">Newsletter</h4>
-                <p class="text-xs text-gray-400 mb-3">Subscribe to get latest updates and course discounts.</p>
+                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.newsletter') }}</h4>
+                <p class="text-xs text-gray-400 mb-3">{{ __('app.footer.newsletter_hint') }}</p>
                 <div class="space-y-2">
-                    <input type="email" placeholder="Enter your email" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#ff4667]" />
+                    <input type="email" placeholder="{{ __('app.footer.email_placeholder') }}" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#ff4667]" />
                     <button class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
-                        Subscribe
+                        {{ __('app.footer.subscribe') }}
                     </button>
                 </div>
             </div>
@@ -84,7 +82,7 @@
 
         <!-- Bottom Copyright -->
         <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-            <p>© {{ date('Y') }} Dreams LMS. All rights reserved.</p>
+            <p>© {{ date('Y') }} Dreams LMS. {{ __('app.footer.copyright') }}</p>
             <div class="flex items-center gap-4">
                 <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
                 <span>|</span>

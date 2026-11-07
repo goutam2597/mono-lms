@@ -1,0 +1,37 @@
+<?php
+
+// صفحات الدورات العامة: الشبكة، القائمة، التفاصيل.
+return [
+    'title' => 'الدورات',
+    'grid' => 'شبكة الدورات',
+    'list' => 'قائمة الدورات',
+    'detail' => 'تفاصيل الدورة',
+    'results_for' => 'عرض :count دورة',
+    'filter_category' => 'التصنيف',
+    'filter_level' => 'المستوى',
+    'sort_by' => 'ترتيب حسب',
+    'sort_latest' => 'الأحدث',
+    'sort_popular' => 'الأكثر شعبية',
+    'sort_price_low' => 'السعر: من الأقل للأعلى',
+    'sort_price_high' => 'السعر: من الأعلى للأقل',
+    'no_courses' => 'لم يتم العثور على دورات.',
+    'empty_description' => 'عد قريباً — تُضاف دورات جديدة بانتظام.',
+
+    'curriculum' => 'المنهج الدراسي',
+    'description' => 'الوصف',
+    'what_you_get' => 'ماذا ستحصل عليه',
+    'about_instructor' => 'نبذة عن المدرّب',
+    'related_courses' => 'دورات ذات صلة',
+    'enroll_now' => 'التسجيل الآن',
+    'go_to_course' => 'الانتقال إلى الدورة',
+    'enroll_free' => 'تسجيل مجاني',
+    'already_enrolled' => 'أنت مسجَّل بالفعل في هذه الدورة.',
+    'enrolled_success' => 'تم تسجيلك في هذه الدورة بنجاح!',
+    'guest_enroll_hint' => 'سجّل الدخول كطالب للتسجيل في هذه الدورة.',
+    'includes' => 'تشمل هذه الدورة',
+    'on_demand_video' => 'دروس فيديو عند الطلب',
+    'full_lifetime_access' => 'وصول كامل مدى الحياة',
+    'certificate_completion' => 'شهادة إتمام',
+    'not_found' => 'الدورة غير موجودة.',
+    'price_free' => 'مجاني',
+];

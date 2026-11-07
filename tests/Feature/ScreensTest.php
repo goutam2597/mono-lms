@@ -2,37 +2,31 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ScreensTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
-     * Test that all Dreams LMS screens load successfully.
+     * Public screens return 200 for guests.
      */
-    public function test_all_screens_return_successful_response(): void
+    public function test_public_screens_return_successful_response(): void
     {
         $routes = [
             '/',
             '/screens',
             '/courses/grid',
             '/courses/list',
-            '/courses/detail',
             '/instructors/grid',
             '/instructors/list',
-            '/instructors/detail',
-            '/student/dashboard',
-            '/student/profile',
-            '/student/enrolled-courses',
-            '/student/certificates',
-            '/student/quiz-attempts',
-            '/instructor/dashboard',
-            '/instructor/courses',
-            '/instructor/reviews',
             '/login',
             '/register',
             '/forgot-password',
+            '/admin/login',
+            '/instructor/login',
             '/otp',
-            '/set-password',
             '/lock-screen',
         ];
 
@@ -40,5 +34,15 @@ class ScreensTest extends TestCase
             $response = $this->get($route);
             $response->assertStatus(200, "Route [{$route}] failed to return 200 OK.");
         }
+    }
+
+    /**
+     * Panel screens redirect guests to the right login page.
+     */
+    public function test_panel_screens_redirect_guests_to_panel_logins(): void
+    {
+        $this->get('/student')->assertRedirect(route('login'));
+        $this->get('/instructor')->assertRedirect(route('instructor.login'));
+        $this->get('/admin')->assertRedirect(route('admin.login'));
     }
 }
