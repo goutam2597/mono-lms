@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[\Illuminate\Database\Eloquent\Attributes\Fillable([
@@ -22,6 +23,16 @@ class Instructor extends Authenticatable
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function enrollments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Enrollment::class, Course::class);
+    }
+
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(Review::class, Course::class);
     }
 
     public function sendPasswordResetNotification($token): void

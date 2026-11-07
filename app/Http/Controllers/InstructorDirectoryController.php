@@ -3,13 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instructor;
+use Illuminate\Http\Request;
 
 class InstructorDirectoryController extends Controller
 {
-    public function grid()
+    public function grid(Request $request)
     {
+        $instructors = Instructor::where('status', 'active')
+            ->withCount(['courses', 'enrollments', 'reviews'])
+            ->withAvg('reviews', 'rating')
+            ->when($request->filled('q'), fn ($q) => $q->where(fn ($w) => $w
+                ->where('name', 'like', '%'.$request->string('q').'%')
+                ->orWhere('designation', 'like', '%'.$request->string('q').'%')
+                ->orWhere('bio', 'like', '%'.$request->string('q').'%')))
+            ->when($request->query('sort') === 'courses', fn ($q) => $q->orderByDesc('courses_count'))
+            ->when($request->query('sort') !== 'latest', fn ($q) => $q->orderBy('name'))
+            ->when($request->query('sort') === 'latest', fn ($q) => $q->latest())
+            ->paginate(9)
+            ->withQueryString();
+
         return view('pages.instructors.grid', [
-            'instructors' => Instructor::where('status', 'active')->withCount('courses')->orderBy('name')->paginate(9),
+            'instructors' => $instructors,
         ]);
     }
 
