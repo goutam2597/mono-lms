@@ -90,7 +90,7 @@
                 <!-- Right Visual Column -->
                 <div class="lg:col-span-6 relative flex justify-center items-center">
                     <!-- Dynamic curved background vectors -->
-                    <div class="relative w-full max-w-[540px] aspect-[4/4.5] flex items-center justify-center">
+                    <div data-hero-showcase class="relative w-full max-w-[540px] aspect-[4/4.5] flex items-center justify-center">
                         <!-- Curved Decorative Ribbon Layers -->
                         <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 540 600" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <!-- Vector 3 (Deep Indigo wave) -->
@@ -99,38 +99,73 @@
                             <path d="M160 140C280 90 480 160 510 320C540 480 400 580 270 570C140 560 30 460 60 320C90 180 80 170 160 140Z" fill="#FF4667" />
                             <!-- Vector 1 (Cyan curved accent) -->
                             <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
-                        </svg>
-
-                        <!-- Hero Model Image -->
+                                     <!-- Image Slides (student / instructors / courses — crossfade every 10s) -->
                         <div class="relative z-10 w-[85%] h-[92%] rounded-[24px] overflow-hidden shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85" alt="Smiling student with study materials" class="w-full h-full object-cover object-top" />
+                            @foreach ([
+                                ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
+                                ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
+                                ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
+                                ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
+                            ] as $slide)
+                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top" />
+                            @endforeach
                         </div>
 
-                        <!-- Floating Stat Badge 1 (6K+ Certified Courses) -->
-                        <div class="absolute -bottom-4 -left-6 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3 anim-float">
-                            <div class="w-11 h-11 rounded-lg bg-[#0dcaf0]/15 flex items-center justify-center text-[#0dcaf0]">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                                </svg>
-                            </div>
-                            <div>
-                                
-                                <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.courses') }}</p>
-                            </div>
-                        </div>
+                        <!-- 6 Floating Info Chips — rotate every 10s -->
+                        @php
+                            $heroItems = [
+                                ['value' => $stats['courses'].'+', 'label' => __('home.hero.items.courses'), 'color' => '#ff4667', 'icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
+                                ['value' => $stats['students'].'+', 'label' => __('home.hero.items.students'), 'color' => '#03c95a', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'],
+                                ['value' => $stats['instructors'].'+', 'label' => __('home.hero.items.instructors'), 'color' => '#5625e8', 'icon' => 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z'],
+                                ['value' => $stats['enrollments'].'+', 'label' => __('home.hero.items.enrollments'), 'color' => '#0dcaf0', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
+                                ['value' => $categories->count(), 'label' => __('home.hero.items.categories'), 'color' => '#ffc107', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
+                                ['value' => __('home.hero.items.live_value'), 'label' => __('home.hero.items.live'), 'color' => '#ff2d55', 'icon' => 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'],
+                                ['value' => __('home.hero.items.certificates_value'), 'label' => __('home.hero.items.certificates'), 'color' => '#03c95a', 'icon' => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z'],
+                                ['value' => __('home.hero.items.rating_value'), 'label' => __('home.hero.items.rating'), 'color' => '#ffc107', 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+                                ['value' => __('home.hero.items.support_value'), 'label' => __('home.hero.items.support'), 'color' => '#0dcaf0', 'icon' => 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z'],
+                                ['value' => __('home.hero.items.guidance_value'), 'label' => __('home.hero.items.guidance'), 'color' => '#5625e8', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
+                                ['value' => __('home.hero.items.access_value'), 'label' => __('home.hero.items.access'), 'color' => '#03c95a', 'icon' => 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'],
+                                ['value' => __('home.hero.items.anywhere_value'), 'label' => __('home.hero.items.anywhere'), 'color' => '#ff4667', 'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
+                            ];
+                        @endphp
 
-                        <!-- Floating Stat Badge 2 (60K+ Online Students) -->
-                        <div class="absolute top-8 -right-4 z-20 bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl flex items-center gap-3 anim-float-slow">
-                            <div class="w-11 h-11 rounded-lg bg-[#03c95a]/15 flex items-center justify-center text-[#03c95a]">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
+                        @foreach ([
+                            ['pos' => 'top-6 -right-3 sm:-right-5', 'item' => 1],
+                            ['pos' => '-bottom-3 left-4 sm:-left-6', 'item' => 0],
+                            ['pos' => 'top-1/2 -left-4 sm:-left-10 hidden lg:block', 'item' => 2],
+                            ['pos' => '-bottom-6 right-8 hidden lg:block', 'item' => 3],
+                            ['pos' => '-top-6 left-6 sm:left-10 hidden lg:block', 'item' => 4],
+                            ['pos' => 'bottom-1/2 -right-4 sm:-right-8 hidden lg:block', 'item' => 5],
+                        ] as $slotConfig)
+                            <div data-hero-slot class="absolute {{ $slotConfig['pos'] }} z-20">
+                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItems[$slotConfig['item']]['color'] }}15; color: {{ $heroItems[$slotConfig['item']]['color'] }};">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItems[$slotConfig['item']]['icon'] }}"/></svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-base font-bold text-[#191919] leading-tight">{{ $heroItems[$slotConfig['item']]['value'] }}</p>
+                                            <p class="text-xs text-[#6d6d6d] font-medium">{{ $heroItems[$slotConfig['item']]['label'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-base font-bold text-[#03c95a]" data-countup="{{ $stats['students'] }}" data-suffix="+">0+</p>
-                                <p class="text-xs text-[#6d6d6d] font-medium">{{ __('home.hero.stats.students') }}</p>
-                            </div>
-                        </div>
+                        @endforeach
+
+                        <!-- Rotation templates (JS swaps chip content every 10s) -->
+                        @foreach ($heroItems as $heroItem)
+                            <template data-hero-item>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItem['color'] }}15; color: {{ $heroItem['color'] }};">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItem['icon'] }}"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-bold text-[#191919] leading-tight">{{ $heroItem['value'] }}</p>
+                                        <p class="text-xs text-[#6d6d6d] font-medium">{{ $heroItem['label'] }}</p>
+                                    </div>
+                                </div>
+                            </template>
+                        @endforeach            </div>
                     </div>
                 </div>
 

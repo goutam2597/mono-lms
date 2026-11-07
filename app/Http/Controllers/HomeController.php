@@ -18,6 +18,7 @@ class HomeController extends Controller
             'topInstructors' => Instructor::where('status', 'active')->withCount('courses')->take(4)->get(),
             'posts' => Post::published()->latest('published_at')->take(4)->get(),
             'stats' => [
+                'enrollments' => \App\Models\Enrollment::count(),
                 'students' => Student::count(),
                 'courses' => Course::published()->count(),
                 'instructors' => Instructor::where('status', 'active')->count(),

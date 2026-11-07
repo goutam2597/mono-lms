@@ -75,3 +75,13 @@
 @media (prefers-reduced-motion: reduce) {
     .anim-fade-up, .anim-float, .anim-float-slow, .anim-pulse-soft { animation: none; opacity: 1; transform: none; }
 }
+
+/* Hero showcase: rotating chips + image slides */
+.hero-chip { transition: opacity .35s ease, transform .35s ease; }
+.hero-chip-out { opacity: 0; transform: translateY(14px) scale(.9); }
+.hero-chip-in { animation: anim-fade-up .5s cubic-bezier(.22, .61, .36, 1); }
+.hero-slide { opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease; }
+.hero-slide.is-on { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+    .hero-chip, .hero-slide { transition: none; }
+}
