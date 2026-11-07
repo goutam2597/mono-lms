@@ -32,7 +32,7 @@
                     </p>
 
                     <!-- Rounded Search Bar (Figma: 2355:29944) -->
-                    <form action="{{ route('courses.grid') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl" data-node-id="2355:29944">
+                    <form action="{{ route('courses.index') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl" data-node-id="2355:29944">
                         <!-- Category Select Pill (custom MonoSelect) -->
                         <div class="bg-[#e7e7e7] rounded-[6px] flex items-center" data-node-id="2355:29947">
                             <x-select name="category"
@@ -277,7 +277,7 @@
                         </h3>
                         <div class="w-14 h-1 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30098">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30098">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -288,7 +288,7 @@
                 <!-- Category Cards (DB-driven, Figma: 2355:30100) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     @foreach ($categories->take(5) as $category)
-                        <a href="{{ route('courses.grid', ['category' => $category->slug]) }}"
+                        <a href="{{ route('courses.index', ['category' => $category->slug]) }}"
                            class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between">
                             <div class="flex flex-col items-center text-center space-y-3">
                             <div class="w-16 h-16 rounded-[8px] flex items-center justify-center group-hover:scale-110 transition-transform" style="background: {{ $category->color }}15; color: {{ $category->color }};">
@@ -333,7 +333,7 @@
                         </h2>
                         <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30209">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30209">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -375,7 +375,7 @@
 
             <!-- View All Courses Button -->
             <div class="flex justify-center mt-12">
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-semibold shadow-md transition-all">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-semibold shadow-md transition-all">
                     {{ __('app.common.view_all') }}
                     <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
@@ -401,7 +401,7 @@
             </div>
 
             <div class="relative z-10 shrink-0">
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-lg transition-all" data-node-id="2355:30437">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-lg transition-all" data-node-id="2355:30437">
                     View all Courses
                 </a>
             </div>
@@ -675,7 +675,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30656">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30656">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -723,7 +723,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('instructors.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30762">
+                <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30762">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -817,7 +817,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30801">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30801">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -967,7 +967,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.grid') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30981">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30981">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

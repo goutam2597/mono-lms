@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('courses.grid') }}" class="w-full bg-[#392c7d] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
+                        <a href="{{ route('courses.index') }}" class="w-full bg-[#392c7d] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
                             <span>Open Course Grid</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('courses.grid') }}" class="w-full bg-[#392c7d] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
+                        <a href="{{ route('courses.index') }}" class="w-full bg-[#392c7d] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
                             <span>Open Course Details</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('instructors.grid') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
+                        <a href="{{ route('instructors.index') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
                             <span>Open Instructor Grid</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>
@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <div class="p-6 pt-0">
-                        <a href="{{ route('instructors.grid') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
+                        <a href="{{ route('instructors.index') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
                             <span>Open Instructor Profile</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </a>

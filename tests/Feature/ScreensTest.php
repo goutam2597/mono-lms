@@ -25,8 +25,8 @@ class ScreensTest extends TestCase
         $routes = [
             '/',
             '/screens',
-            '/courses/grid',
-            '/instructors/grid',
+            '/courses',
+            '/instructors',
             '/blog',
             '/membership',
             '/login',

@@ -61,10 +61,10 @@
             <a href="{{ route('home') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
                 {{ __('app.nav.home') }}
             </a>
-            <a href="{{ route('courses.grid') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('courses.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
                 {{ __('app.nav.courses') }}
             </a>
-            <a href="{{ route('instructors.grid') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'instructors' ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('instructors.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'instructors' ? 'text-[#ff4667]' : '' }}">
                 {{ __('app.nav.instructors') }}
             </a>
             <a href="{{ route('blog.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'blog' ? 'text-[#ff4667]' : '' }}">

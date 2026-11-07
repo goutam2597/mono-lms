@@ -48,8 +48,8 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.pages') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ route('courses.grid') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.courses') }}</a></li>
-                    <li><a href="{{ route('instructors.grid') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.instructors') }}</a></li>
+                    <li><a href="{{ route('courses.index') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.courses') }}</a></li>
+                    <li><a href="{{ route('instructors.index') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.instructors') }}</a></li>
                     <li><a href="{{ route('screens') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.screens') }}</a></li>
                     <li><a href="{{ route('login') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
                     <li><a href="{{ route('register') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.register') }}</a></li>

@@ -55,14 +55,16 @@ Route::get('/locale/{code}', [LocaleController::class, 'switchStore'])->name('lo
 
 // Public catalog (DB-driven)
 Route::prefix('courses')->name('courses.')->group(function () {
-    Route::get('/grid', [CourseController::class, 'grid'])->name('grid');
+    Route::get('/', [CourseController::class, 'grid'])->name('index');
+    Route::get('/grid', fn () => redirect()->route('courses.index', request()->query()));
     Route::get('/{slug}', [CourseController::class, 'show'])->name('show');
     Route::post('/{course:slug}/enroll', [CourseController::class, 'enroll'])
         ->middleware('auth:student')->name('enroll');
 });
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
-    Route::get('/grid', [InstructorDirectoryController::class, 'grid'])->name('grid');
+    Route::get('/', [InstructorDirectoryController::class, 'grid'])->name('index');
+    Route::get('/grid', fn () => redirect()->route('instructors.index', request()->query()));
     Route::get('/{name}', [InstructorDirectoryController::class, 'show'])->name('show');
 });
 

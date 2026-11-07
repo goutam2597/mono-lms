@@ -4,13 +4,13 @@
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.grid') }}</h1>
+                <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.title') }}</h1>
                 <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
                     <a href="{{ route('home') }}" class="hover:text-[#ff4667]">Home</a>
                     <span>/</span>
-                    <a href="{{ route('instructors.grid') }}" class="hover:text-[#ff4667]">Instructors</a>
+                    <a href="{{ route('instructors.index') }}" class="hover:text-[#ff4667]">Instructors</a>
                     <span>/</span>
-                    <span class="text-[#ff4667] font-medium">{{ __('instructors.grid') }}</span>
+                    <span class="text-[#ff4667] font-medium">{{ __('instructors.title') }}</span>
                 </nav>
             </div>
             <div class="text-xs text-[#888888] font-medium">

@@ -8,7 +8,7 @@
                 <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
                     <a href="{{ route('home') }}" class="hover:text-[#ff4667]">Home</a>
                     <span>/</span>
-                    <a href="{{ route('courses.grid') }}" class="hover:text-[#ff4667]">Courses</a>
+                    <a href="{{ route('courses.index') }}" class="hover:text-[#ff4667]">Courses</a>
                     <span>/</span>
                     <span class="text-[#ff4667] font-medium">Course Grid</span>
                 </nav>
@@ -38,7 +38,7 @@
             <div class="flex flex-wrap items-center gap-3">
                 <!-- Grid / List Switcher -->
                 
-                <form method="GET" action="{{ route('courses.grid') }}" class="flex flex-wrap items-center gap-3">
+                <form method="GET" action="{{ route('courses.index') }}" class="flex flex-wrap items-center gap-3">
                     @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
                     @if(request('level'))<input type="hidden" name="level" value="{{ request('level') }}">@endif
                     <x-select name="sort"
@@ -66,7 +66,7 @@
                         <h4 class="font-bold text-sm text-[#191919]">Categories</h4>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <form method="GET" action="{{ route('courses.grid') }}">
+                    <form method="GET" action="{{ route('courses.index') }}">
                         @if(request('sort'))<input type="hidden" name="sort" value="{{ request('sort') }}">@endif
                         @if(request('q'))<input type="hidden" name="q" value="{{ request('q') }}">@endif
                         <div class="space-y-2.5 text-xs text-[#6d6d6d]">

@@ -37,7 +37,7 @@
         @empty
             <div class="bg-white border border-[#e7e7e7] rounded-2xl p-12 text-center shadow-xs">
                 <p class="text-sm text-gray-400">{{ __('student.enrolled.no_courses') }}</p>
-                <a href="{{ route('courses.grid') }}" class="inline-block mt-4 bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-bold px-5 py-2.5 rounded-full transition-colors">{{ __('student.nav.browse') }}</a>
+                <a href="{{ route('courses.index') }}" class="inline-block mt-4 bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-bold px-5 py-2.5 rounded-full transition-colors">{{ __('student.nav.browse') }}</a>
             </div>
         @endforelse
     </div>
