@@ -83,7 +83,8 @@ class CourseController extends Controller
 
         return [
             'courses' => $courses,
-            'categories' => Category::withCount(['courses' => fn ($q) => $q->published()])->orderBy('name')->get(),
+            'categories' => Category::withCount(['courses' => fn ($q) => $q->published()])->orderBy('sort_order')->orderBy('name')->get(),
+            'levelCounts' => Course::published()->selectRaw('level, COUNT(*) as total')->groupBy('level')->pluck('total', 'level'),
             'view' => $view,
         ];
     }

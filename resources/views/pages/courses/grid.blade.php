@@ -156,32 +156,31 @@
                 <!-- Level Filter -->
                 <div class="bg-white border border-[#e7e7e7] rounded-xl p-5 shadow-xs">
                     <div class="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-                        <h4 class="font-bold text-sm text-[#191919]">Difficulty Level</h4>
+                        <h4 class="font-bold text-sm text-[#191919]">{{ __('courses.filter_level') }}</h4>
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
-                    <div class="space-y-2.5 text-xs text-[#6d6d6d]">
-                        <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" checked class="w-4 h-4 text-[#ff4667] rounded border-gray-300">
-                                <span>Beginner</span>
-                            </div>
-                            <span class="text-gray-400">(10)</span>
-                        </label>
-                        <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" checked class="w-4 h-4 text-[#ff4667] rounded border-gray-300">
-                                <span>Intermediate</span>
-                            </div>
-                            <span class="text-gray-400">(25)</span>
-                        </label>
-                        <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" class="w-4 h-4 text-[#ff4667] rounded border-gray-300">
-                                <span>Advanced</span>
-                            </div>
-                            <span class="text-gray-400">(15)</span>
-                        </label>
-                    </div>
+                    <form method="GET" action="{{ route('courses.index') }}">
+                        @if(request('sort'))<input type="hidden" name="sort" value="{{ request('sort') }}">@endif
+                        @if(request('q'))<input type="hidden" name="q" value="{{ request('q') }}">@endif
+                        @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
+                        <div class="space-y-2.5 text-xs text-[#6d6d6d]">
+                            <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="level" value="" @checked(!request('level')) class="control" onchange="this.form.requestSubmit()">
+                                    <span>{{ __('app.common.all') }}</span>
+                                </div>
+                            </label>
+                            @foreach (['beginner' => __('app.levels.beginner'), 'intermediate' => __('app.levels.intermediate'), 'advanced' => __('app.levels.advanced')] as $levelValue => $levelLabel)
+                                <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
+                                    <div class="flex items-center gap-2">
+                                        <input type="radio" name="level" value="{{ $levelValue }}" @checked(request('level') === $levelValue) class="control" onchange="this.form.requestSubmit()">
+                                        <span>{{ $levelLabel }}</span>
+                                    </div>
+                                    <span class="text-gray-400">({{ $levelCounts[$levelValue] ?? 0 }})</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </form>
                 </div>
 
             </aside>
