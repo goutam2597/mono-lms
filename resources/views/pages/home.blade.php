@@ -1,7 +1,7 @@
 <x-layouts.app title="Mono LMS – Home" active="home">
 
-    <!-- 1. HERO SECTION (Figma: 2355:29935 & 2355:29979) -->
-    <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 relative" data-node-id="2355:29908">
+    <!-- 1. HERO SECTION -->
+    <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 relative">
         <!-- Ambient decorative shapes (clipped in their own layer so the
              category dropdown can overflow the section freely) -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -12,29 +12,29 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-                <!-- Left Content Column (Figma: 2355:29935) -->
-                <div class="lg:col-span-6 space-y-7 text-left" data-node-id="2355:29935">
-                    <!-- Top Pill Tagline (Figma: 2355:29938) -->
-                    <div class="inline-block" data-node-id="2355:29937">
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#ff4667] text-white shadow-sm" data-node-id="2355:29939">
+                <!-- Left Content Column -->
+                <div class="lg:col-span-6 space-y-7 text-left">
+                    <!-- Top Pill Tagline -->
+                    <div class="inline-block">
+                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#ff4667] text-white shadow-sm">
                             {{ __('home.hero.badge') }}
                         </span>
                     </div>
 
-                    <!-- Main Display Heading (Figma: 2355:29941) -->
-                    <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight" data-node-id="2355:29941">
+                    <!-- Main Display Heading -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight">
                         {{ __('home.hero.title_line1') }} <span class="text-[#ff4667]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
                     </h1>
 
-                    <!-- Subtitle Description (Figma: 2355:29943) -->
-                    <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl" data-node-id="2355:29943">
+                    <!-- Subtitle Description -->
+                    <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl">
                         {{ __('home.hero.subtitle') }}
                     </p>
 
-                    <!-- Rounded Search Bar (Figma: 2355:29944) -->
-                    <form action="{{ route('courses.index') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl" data-node-id="2355:29944">
+                    <!-- Rounded Search Bar -->
+                    <form action="{{ route('courses.index') }}" method="GET" class="bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl">
                         <!-- Category Select Pill (custom MonoSelect) -->
-                        <div class="bg-[#e7e7e7] rounded-[6px] flex items-center" data-node-id="2355:29947">
+                        <div class="bg-[#e7e7e7] rounded-[6px] flex items-center">
                             <x-select name="category"
                                 :options="$categories->pluck('name', 'slug')"
                                 :selected="request('category')"
@@ -43,19 +43,19 @@
                                 triggerClass="bg-transparent rounded-[6px] px-4 py-2.5 text-sm font-medium text-[#191919] border-0" />
                         </div>
 
-                        <!-- Divider Line (Figma: 2355:29951) -->
+                        <!-- Divider Line -->
                         <div class="hidden sm:block w-px h-8 bg-[#e9ecef]"></div>
 
-                        <!-- Search Input with School/Building Icon (Figma: 2355:29952) -->
+                        <!-- Search Input with School/Building Icon -->
                         <div class="flex-1 flex items-center gap-2.5 px-2">
                             <svg class="w-5 h-5 text-[#b0b0b0] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search_placeholder') }}" class="w-full text-sm text-[#191919] placeholder-[#b0b0b0] bg-transparent focus:outline-none" data-node-id="2355:29975" />
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search_placeholder') }}" class="w-full text-sm text-[#191919] placeholder-[#b0b0b0] bg-transparent focus:outline-none" />
                         </div>
 
-                        <!-- Arrow Submit Button (Figma: 2355:29976) -->
-                        <button type="submit" class="bg-[#392c7d] hover:bg-[#2c2263] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm cursor-pointer" aria-label="{{ __('app.common.search') }}" data-node-id="2355:29976">
+                        <!-- Arrow Submit Button -->
+                        <button type="submit" class="bg-[#392c7d] hover:bg-[#2c2263] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm cursor-pointer" aria-label="{{ __('app.common.search') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
@@ -63,9 +63,9 @@
                     </form>
                 </div>
 
-                <!-- Right Visual Column (Figma: 2355:29979) -->
-                <div class="lg:col-span-6 relative flex justify-center items-center" data-node-id="2355:29979">
-                    <!-- Dynamic curved background vectors matching Figma Group 8 (2355:29980) -->
+                <!-- Right Visual Column -->
+                <div class="lg:col-span-6 relative flex justify-center items-center">
+                    <!-- Dynamic curved background vectors -->
                     <div class="relative w-full max-w-[540px] aspect-[4/4.5] flex items-center justify-center">
                         <!-- Curved Decorative Ribbon Layers -->
                         <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 540 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +77,7 @@
                             <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
                         </svg>
 
-                        <!-- Hero Model Image (Figma: 2355:29984) -->
+                        <!-- Hero Model Image -->
                         <div class="relative z-10 w-[85%] h-[92%] rounded-[24px] overflow-hidden shadow-2xl">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85" alt="Smiling student with study materials" class="w-full h-full object-cover object-top" />
                         </div>
@@ -114,58 +114,58 @@
         </div>
     </section>
 
-    <!-- 2. FOUR QUICK STATISTICS RIBBON (Figma: 2550:20078) -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 -mt-6 lg:-mt-10 relative z-20" data-node-id="2550:20078">
+    <!-- 2. FOUR QUICK STATISTICS RIBBON -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-8 -mt-6 lg:-mt-10 relative z-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <!-- Stat 1: 10K Online Courses (Figma: 2550:20079) -->
-            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow" data-node-id="2550:20079">
+            <!-- Stat 1: 10K Online Courses -->
+            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#5625e8]/10 flex items-center justify-center text-[#5625e8] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-node-id="2550:20091">{{ $stats['courses'] }}</h3>
+                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight">{{ $stats['courses'] }}</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 2: 200+ Expert Tutors (Figma: 2550:20092) -->
-            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow" data-node-id="2550:20092">
+            <!-- Stat 2: 200+ Expert Tutors -->
+            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#ffc107]/15 flex items-center justify-center text-[#ffc107] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-node-id="2550:20102">{{ $stats['instructors'] }}+</h3>
+                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight">{{ $stats['instructors'] }}+</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.instructors') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 3: 6K+ Certified Courses (Figma: 2550:20103) -->
-            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow" data-node-id="2550:20103">
+            <!-- Stat 3: 6K+ Certified Courses -->
+            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#0dcaf0]/15 flex items-center justify-center text-[#0dcaf0] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-node-id="2550:20114">{{ $stats['courses'] }}</h3>
+                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight">{{ $stats['courses'] }}</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 4: 60K+ Online Students (Figma: 2550:20115) -->
-            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow" data-node-id="2550:20115">
+            <!-- Stat 4: 60K+ Online Students -->
+            <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#03c95a]/15 flex items-center justify-center text-[#03c95a] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-node-id="2550:20130">{{ $stats['students'] }}+</h3>
+                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight">{{ $stats['students'] }}+</h3>
                     <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.students') }}</p>
                 </div>
             </div>
@@ -173,13 +173,13 @@
         </div>
     </section>
 
-    <!-- 3. MASTER THE SKILLS TO DRIVE YOUR CAREER (Figma: 2355:30034) -->
-    <section class="py-20 lg:py-28 overflow-hidden bg-white" data-node-id="2355:30034">
+    <!-- 3. MASTER THE SKILLS TO DRIVE YOUR CAREER -->
+    <section class="py-20 lg:py-28 overflow-hidden bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-                <!-- Left Layered Image Composition (Figma: 2355:30036) -->
-                <div class="lg:col-span-5 relative" data-node-id="2355:30036">
+                <!-- Left Layered Image Composition -->
+                <div class="lg:col-span-5 relative">
                     <div class="relative w-full max-w-[440px] mx-auto aspect-[4/4.8]">
                         <!-- Decorative dotted turquoise ornament & color tabs -->
                         <div class="absolute -top-6 -right-6 w-32 h-32 rounded-full border-8 border-[#00c9a7]/20 border-dashed pointer-events-none"></div>
@@ -197,20 +197,20 @@
                     </div>
                 </div>
 
-                <!-- Right Text & 4 Features Grid (Figma: 2355:30043) -->
-                <div class="lg:col-span-7 space-y-8" data-node-id="2355:30043">
+                <!-- Right Text & 4 Features Grid -->
+                <div class="lg:col-span-7 space-y-8">
                     <div>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] tracking-tight leading-tight" data-node-id="2355:30046">
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] tracking-tight leading-tight">
                             Master the skills to drive your career
                         </h2>
-                        <!-- Multi-color Rainbow Bar (Figma: 2355:30049) -->
+                        <!-- Multi-color Rainbow Bar -->
                         <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-4 mb-5"></div>
-                        <p class="text-[#6d6d6d] text-base leading-relaxed" data-node-id="2355:30050">
+                        <p class="text-[#6d6d6d] text-base leading-relaxed">
                             Get certified, master modern tech skills, and level up your career whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.
                         </p>
                     </div>
 
-                    <!-- 4 Features (2x2 Grid) (Figma: 2355:30051) -->
+                    <!-- 4 Features (2x2 Grid) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                         <!-- Feature 1 -->
                         <div class="flex items-start gap-4">
@@ -264,20 +264,20 @@
 
             </div>
 
-            <!-- Divider Line (Figma: 2355:30085) -->
+            <!-- Divider Line -->
             <div class="my-16 border-t border-[#e9ecef]"></div>
 
-            <!-- Choose Favourite Course From top Category (Figma: 2355:30088) -->
-            <div class="space-y-8" data-node-id="2355:30088">
+            <!-- Choose Favourite Course From top Category -->
+            <div class="space-y-8">
                 <!-- Section Header with View All -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-2xl sm:text-3xl font-bold text-[#191919]" data-node-id="2355:30092">
+                        <h3 class="text-2xl sm:text-3xl font-bold text-[#191919]">
                             Choose Favourite Course From top Category
                         </h3>
                         <div class="w-14 h-1 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30098">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -285,7 +285,7 @@
                     </a>
                 </div>
 
-                <!-- Category Cards (DB-driven, Figma: 2355:30100) -->
+                <!-- Category Cards (DB-driven) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                     @foreach ($categories->take(5) as $category)
                         <a href="{{ route('courses.index', ['category' => $category->slug]) }}"
@@ -310,7 +310,7 @@
                     @endforeach
                 </div>
 
-                <!-- Carousel Dots (Figma: 2355:30189) -->
+                <!-- Carousel Dots -->
                 <div class="flex justify-center items-center gap-2 pt-4">
                     <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
                     <span class="w-3 h-3 rounded-full bg-[#ff4667]"></span>
@@ -320,20 +320,20 @@
         </div>
     </section>
 
-    <!-- 4. FEATURED COURSES 8-GRID (Figma: 2355:30195) -->
-    <section class="py-20 bg-[#f8fafb]" data-node-id="2355:30195">
+    <!-- 4. FEATURED COURSES 8-GRID -->
+    <section class="py-20 bg-[#f8fafb]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
 
             <!-- Section Title & Filter Tabs -->
             <div class="space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30203">
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                             Featured Courses
                         </h2>
                         <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30209">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -341,7 +341,7 @@
                     </a>
                 </div>
 
-                <!-- Tabs (Figma: 2355:30211) -->
+                <!-- Tabs -->
                 <div class="flex flex-wrap items-center gap-2.5 pt-2">
                     <button class="px-5 py-2 rounded-[5px] text-sm font-medium border border-[#ff4667] text-[#ff4667] bg-white shadow-xs">All</button>
                     <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Most popular</button>
@@ -353,7 +353,7 @@
                 </div>
             </div>
 
-            <!-- Featured Course Cards (DB-driven, Figma: 2355:30226) -->
+            <!-- Featured Course Cards (DB-driven) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($featuredCourses->take(8) as $course)
                     <x-course-card
@@ -384,74 +384,74 @@
         </div>
     </section>
 
-    <!-- 5. TRANSFORM ACCESS TO EDUCATION BANNER (Figma: 2355:30431) -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16" data-node-id="2355:30431">
+    <!-- 5. TRANSFORM ACCESS TO EDUCATION BANNER -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
         <div class="bg-[#392c7d] rounded-[20px] p-8 sm:p-12 lg:p-16 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <!-- Background Waves -->
             <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/5 pointer-events-none"></div>
             <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#ff4667]/10 pointer-events-none"></div>
 
             <div class="space-y-3 max-w-2xl relative z-10 text-center lg:text-left">
-                <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight" data-node-id="2355:30435">
+                <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
                     Transform Access To Education
                 </h3>
-                <p class="text-white/80 text-sm sm:text-base leading-relaxed" data-node-id="2355:30436">
+                <p class="text-white/80 text-sm sm:text-base leading-relaxed">
                     Create an account to receive our newsletter, course recommendations and promotions.
                 </p>
             </div>
 
             <div class="relative z-10 shrink-0">
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-lg transition-all" data-node-id="2355:30437">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-lg transition-all">
                     View all Courses
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 6. ACHIEVE YOUR GOALS WITH DREAMSLMS (Figma: 2355:30488) -->
-    <section class="py-12 bg-white" data-node-id="2355:30488">
+    <!-- 6. ACHIEVE YOUR GOALS WITH DREAMSLMS -->
+    <section class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
 
                 <!-- Left Title -->
                 <div class="max-w-md">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] leading-tight" data-node-id="2355:30489">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] leading-tight">
                         Acheive you Goals with MonoLMS
                     </h2>
                 </div>
 
-                <!-- Right 3 Stats with circles (Figma: 2355:30490) -->
+                <!-- Right 3 Stats with circles -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 flex-1 max-w-3xl">
 
                     <!-- Stat 1 -->
-                    <div class="relative pl-4 border-l-2 border-[#5625e8]/20" data-node-id="2355:30491">
+                    <div class="relative pl-4 border-l-2 border-[#5625e8]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30494">253,085</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">253,085</span>
                             <span class="w-5 h-5 rounded-full bg-[#5625e8] shrink-0 inline-block"></span>
                         </div>
-                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed" data-node-id="2355:30495">
+                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
                             Students Enrolled all over World
                         </p>
                     </div>
 
                     <!-- Stat 2 -->
-                    <div class="relative pl-4 border-l-2 border-[#0dcaf0]/20" data-node-id="2355:30496">
+                    <div class="relative pl-4 border-l-2 border-[#0dcaf0]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30499">1,205</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">1,205</span>
                             <span class="w-5 h-5 rounded-full bg-[#0dcaf0] shrink-0 inline-block"></span>
                         </div>
-                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed" data-node-id="2355:30500">
+                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
                             Total Courses on our Platform
                         </p>
                     </div>
 
                     <!-- Stat 3 -->
-                    <div class="relative pl-4 border-l-2 border-[#03c95a]/20" data-node-id="2355:30501">
+                    <div class="relative pl-4 border-l-2 border-[#03c95a]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30504">56</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">56</span>
                             <span class="w-5 h-5 rounded-full bg-[#03c95a] shrink-0 inline-block"></span>
                         </div>
-                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed" data-node-id="2355:30505">
+                        <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
                             Various Countries of Students
                         </p>
                     </div>
@@ -462,28 +462,28 @@
         </div>
     </section>
 
-    <!-- 7. ACCELERATE CLOUD SUCCESS (3 ALTERNATING SHOWCASES) (Figma: 2355:30508) -->
-    <section class="py-24 bg-[#071136] text-white relative overflow-hidden" data-node-id="2355:30508">
+    <!-- 7. ACCELERATE CLOUD SUCCESS (3 ALTERNATING SHOWCASES) -->
+    <section class="py-24 bg-[#071136] text-white relative overflow-hidden">
         <!-- Ambient background glows -->
         <div class="absolute top-1/4 -right-40 w-96 h-96 rounded-full bg-[#5625e8]/10 blur-3xl pointer-events-none"></div>
         <div class="absolute bottom-1/4 -left-40 w-96 h-96 rounded-full bg-[#ff4667]/10 blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-20 relative z-10">
 
-            <!-- Section Header (Figma: 2355:30509) -->
+            <!-- Section Header -->
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/10">
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight" data-node-id="2355:30511">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
                         Accelerate Cloud Success
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <p class="text-white/80 text-sm sm:text-base max-w-xl leading-relaxed" data-node-id="2355:30515">
+                <p class="text-white/80 text-sm sm:text-base max-w-xl leading-relaxed">
                     96% of eLearning for Business customers see improved results within six months. Whether you’re a team of 10 or 10,000, faster cloud fluency starts here.
                 </p>
             </div>
 
-            <!-- Showcase 1: Image Left, Text Right (Figma: 2355:30518) -->
+            <!-- Showcase 1: Image Left, Text Right -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <!-- Dual Images Left -->
                 <div class="lg:col-span-6 relative">
@@ -506,11 +506,11 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl sm:text-3xl font-bold text-[#ffc107]" data-node-id="2355:30538">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-[#ffc107]">
                         Award Winning Course Management
                     </h3>
 
-                    <p class="text-white/80 text-base leading-relaxed" data-node-id="2355:30539">
+                    <p class="text-white/80 text-base leading-relaxed">
                         An award-winning course management system (CMS) or program is typically recognized for its exceptional quality, innovation, and effectiveness in helping both instructors and students succeed.
                     </p>
 
@@ -543,7 +543,7 @@
             <!-- Divider -->
             <div class="border-t border-white/10"></div>
 
-            <!-- Showcase 2: Text Left, Image Right (Figma: 2355:30557) -->
+            <!-- Showcase 2: Text Left, Image Right -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <!-- Text Left (Cyan Clock) -->
                 <div class="lg:col-span-6 space-y-6 order-2 lg:order-1">
@@ -553,11 +553,11 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-2xl sm:text-3xl font-bold text-[#0dcaf0]" data-node-id="2355:30570">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-[#0dcaf0]">
                         Learn anything from anywhere anytime
                     </h3>
 
-                    <p class="text-white/80 text-base leading-relaxed" data-node-id="2355:30571">
+                    <p class="text-white/80 text-base leading-relaxed">
                         In today’s fast-paced, digital world, the ability to learn anything, from anywhere, and at any time is more accessible than ever. Whether you are looking to expand your knowledge, gain new skills.
                     </p>
 
@@ -603,7 +603,7 @@
             <!-- Divider -->
             <div class="border-t border-white/10"></div>
 
-            <!-- Showcase 3: Image Left, Text Right (Figma: 2355:30598) -->
+            <!-- Showcase 3: Image Left, Text Right -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 <!-- Dual Images Left -->
                 <div class="lg:col-span-6 relative">
@@ -663,19 +663,19 @@
         </div>
     </section>
 
-    <!-- 8. MOST TRENDING COURSES (Figma: 2355:30643) -->
-    <section class="py-20 bg-[#f8fafb]" data-node-id="2355:30643">
+    <!-- 8. MOST TRENDING COURSES -->
+    <section class="py-20 bg-[#f8fafb]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
 
             <!-- Section Title & View All -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30650">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Most Trending Courses
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30656">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -683,7 +683,7 @@
                 </a>
             </div>
 
-            <!-- Trending Course Cards (DB-driven, Figma: 2355:30658) -->
+            <!-- Trending Course Cards (DB-driven) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($featuredCourses->skip(2)->take(4) as $course)
                     <x-course-card
@@ -711,19 +711,19 @@
         </div>
     </section>
 
-    <!-- 9. COURSES TAUGHT BY REAL INSTRUCTOR (Figma: 2355:30752) -->
-    <section class="py-20 bg-white" data-node-id="2355:30752">
+    <!-- 9. COURSES TAUGHT BY REAL INSTRUCTOR -->
+    <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
 
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30756">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Courses Taught by Real Instructor
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30762">
+                <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -731,7 +731,7 @@
                 </a>
             </div>
 
-            <!-- Masonry Grid with Tall Center Card (Figma: 2355:30764) -->
+            <!-- Masonry Grid with Tall Center Card -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
 
                 <!-- Left 4 Instructor Photos (md:col-span-4) -->
@@ -747,7 +747,7 @@
                     @endforeach
                 </div>
 
-                <!-- Center Featured Card with Overlay (md:col-span-4) (Figma: 2355:30773 & 2355:30780) -->
+                <!-- Center Featured Card with Overlay (md:col-span-4) -->
                 <div class="md:col-span-4 h-[470px] relative rounded-[14px] overflow-hidden shadow-2xl group">
                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&auto=format&fit=crop&q=80" alt="Hendriques" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-[#392c7d]/85 flex flex-col justify-between p-6 text-white">
@@ -758,8 +758,8 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-2xl font-bold tracking-tight" data-node-id="2355:30785">Hendriques</h3>
-                                <p class="text-sm text-white/80 mt-1" data-node-id="2355:30786">Python Developer</p>
+                                <h3 class="text-2xl font-bold tracking-tight">Hendriques</h3>
+                                <p class="text-sm text-white/80 mt-1">Python Developer</p>
                             </div>
                             <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:bg-[#ff4667] transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -785,39 +785,39 @@
         </div>
     </section>
 
-    <!-- 10. BECOME AN INSTRUCTOR BANNER (Figma: 2355:31060) -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16" data-node-id="2355:31060">
+    <!-- 10. BECOME AN INSTRUCTOR BANNER -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
         <div class="bg-[#ff4667] rounded-[20px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <div class="space-y-3 max-w-2xl text-center lg:text-left">
-                <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight" data-node-id="2355:31064">
+                <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
                     Become An Instructor
                 </h3>
-                <p class="text-white/90 text-sm sm:text-base leading-relaxed" data-node-id="2355:31065">
+                <p class="text-white/90 text-sm sm:text-base leading-relaxed">
                     Top instructors from around the world teach millions of students on MonoLMS.
                 </p>
             </div>
 
             <div class="shrink-0">
-                <a href="{{ route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all" data-node-id="2355:31066">
+                <a href="{{ route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
                     Join Our Community
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 11. 500+ LEADING UNIVERSITIES AND COMPANIES (Figma: 2355:30789) -->
-    <section class="py-16 bg-white" data-node-id="2355:30789">
+    <!-- 11. 500+ LEADING UNIVERSITIES AND COMPANIES -->
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
 
             <!-- Section Title & View All -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-[#191919]" data-node-id="2355:30795">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-[#191919]">
                         500+ Leading Universities And Companies
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30801">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -825,7 +825,7 @@
                 </a>
             </div>
 
-            <!-- Brand Logos Row (Figma: 2355:30803) -->
+            <!-- Brand Logos Row -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-85 hover:opacity-100 transition-opacity">
                 <!-- Jira Software -->
                 <div class="flex items-center gap-2 font-bold text-lg text-[#0052cc] hover:scale-105 transition-transform">
@@ -877,48 +877,48 @@
         </div>
     </section>
 
-    <!-- 12. TRUSTED BY MANY TESTIMONIALS (Figma: 2355:30810) -->
-    <section class="py-24 bg-[#071136] text-white relative overflow-hidden" data-node-id="2355:30810">
+    <!-- 12. TRUSTED BY MANY TESTIMONIALS -->
+    <section class="py-24 bg-[#071136] text-white relative overflow-hidden">
         <!-- Dotted world map background overlay -->
         <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-                <!-- Left Content (Figma: 2355:30812) -->
+                <!-- Left Content -->
                 <div class="lg:col-span-5 space-y-6 text-center lg:text-left">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight" data-node-id="2355:30813">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
                         Trusted By Many
                     </h2>
 
-                    <p class="text-white/80 text-lg leading-relaxed max-w-md" data-node-id="2355:30814">
+                    <p class="text-white/80 text-lg leading-relaxed max-w-md">
                         We are a very happy because we have a happy Learners
                     </p>
 
                     <div>
-                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all" data-node-id="2355:30815">
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
                             Join Our Community
                         </a>
                     </div>
                 </div>
 
-                <!-- Right Cascading Testimonials (Figma: 2355:30816) -->
+                <!-- Right Cascading Testimonials -->
                 <div class="lg:col-span-7 relative flex flex-col items-center lg:items-end">
                     <!-- Featured Active Review Card -->
-                    <div class="bg-white text-[#191919] rounded-[14px] p-8 shadow-2xl max-w-xl relative border border-gray-100 space-y-6" data-node-id="2355:30818">
-                        <!-- Purple Quote Icon (Figma: 2355:30820) -->
+                    <div class="bg-white text-[#191919] rounded-[14px] p-8 shadow-2xl max-w-xl relative border border-gray-100 space-y-6">
+                        <!-- Purple Quote Icon -->
                         <div class="text-[#5625e8]">
                             <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                             </svg>
                         </div>
 
-                        <!-- Quote Text (Figma: 2355:30825) -->
-                        <p class="text-[#4f4f4f] text-base sm:text-lg leading-relaxed font-normal" data-node-id="2355:30825">
+                        <!-- Quote Text -->
+                        <p class="text-[#4f4f4f] text-base sm:text-lg leading-relaxed font-normal">
                             “I often felt like the mentor’s answers were too detailed, which made it hard for me to keep up. Sometimes, a simpler explanation would have helped me understand things faster. But overall, I’ve become more organized, confident, and focused thanks to my life coach.”
                         </p>
 
-                        <!-- Rating Stars (Figma: 2355:30826) -->
+                        <!-- Rating Stars -->
                         <div class="flex items-center gap-3">
                             <div class="flex text-[#ffc107]">
                                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
@@ -927,20 +927,20 @@
                                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                                 <svg class="w-5 h-5 fill-current opacity-50" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                             </div>
-                            <span class="text-sm font-semibold text-[#685f78]" data-node-id="2355:30833">4.5 ratings</span>
+                            <span class="text-sm font-semibold text-[#685f78]">4.5 ratings</span>
                         </div>
 
-                        <!-- Reviewer Info (Figma: 2355:30837) -->
+                        <!-- Reviewer Info -->
                         <div class="pt-4 border-t border-gray-100 flex items-center gap-4">
                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Martin Harn" class="w-12 h-12 rounded-full object-cover shadow-sm" />
                             <div>
-                                <h4 class="text-base font-bold text-[#002058]" data-node-id="2355:30840">Martin Harn</h4>
-                                <p class="text-sm text-[#685f78]" data-node-id="2355:30841">Docker Development</p>
+                                <h4 class="text-base font-bold text-[#002058]">Martin Harn</h4>
+                                <p class="text-sm text-[#685f78]">Docker Development</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Carousel Controls (Figma: 2355:30894) -->
+                    <!-- Carousel Controls -->
                     <div class="flex items-center gap-3 mt-8">
                         <button class="w-10 h-10 rounded-full bg-white text-[#191919] hover:bg-[#ff4667] hover:text-white flex items-center justify-center transition-colors shadow-md" aria-label="Previous Review">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
@@ -955,19 +955,19 @@
         </div>
     </section>
 
-    <!-- 13. LATEST NEWS & EVENTS (Figma: 2355:30969) -->
-    <section class="py-20 bg-white" data-node-id="2355:30969">
+    <!-- 13. LATEST NEWS & EVENTS -->
+    <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
 
             <!-- Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]" data-node-id="2355:30975">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Latest news &amp; Events
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors" data-node-id="2355:30981">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -995,7 +995,6 @@
                             <div class="col-span-full text-center text-gray-400 text-sm py-10">{{ __('blog.empty') }}</div>
                         @endforelse
                     </div>
-                </div>
             </div>
         </div>
     </section>

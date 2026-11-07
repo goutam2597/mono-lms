@@ -1,7 +1,7 @@
 <x-layouts.dashboard title="My Certificates - Mono LMS" active="certificates" userType="student">
 
     <div class="space-y-6">
-        <!-- Header (Figma: 5035:15047) -->
+        <!-- Header -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 shadow-xs flex items-center justify-between">
             <div>
                 <h2 class="text-xl font-bold text-[#191919]">My Certificates (05)</h2>

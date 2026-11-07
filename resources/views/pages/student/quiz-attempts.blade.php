@@ -1,7 +1,7 @@
 <x-layouts.dashboard title="My Quiz Attempts - Mono LMS" active="quiz" userType="student">
 
     <div class="space-y-6">
-        <!-- Header (Figma: 5013:76280) -->
+        <!-- Header -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-[#191919]">My Quiz Attempts</h2>

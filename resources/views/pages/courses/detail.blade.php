@@ -63,7 +63,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#5d5d5d]">
                         <div class="flex items-start gap-3">
                             <span class="text-[#03c95a] font-bold text-base mt-0.5">✓</span>
-                            <span>Build responsive websites and mobile app layouts using Figma</span>
+                            <span>Build responsive websites and mobile app layouts using modern design tools</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-[#03c95a] font-bold text-base mt-0.5">✓</span>

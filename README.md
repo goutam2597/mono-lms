@@ -1,6 +1,6 @@
 # Mono LMS – Learning Management System
 
-> High-fidelity, pixel-perfect Laravel 13 & Tailwind CSS v4 implementation of the **Mono LMS Figma UI Kit**.
+> High-fidelity, pixel-perfect Laravel 13 & Tailwind CSS v4 implementation of the **Mono LMS design system**.
 
 [![Laravel 13](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
@@ -12,7 +12,7 @@
 
 ## 📸 Visual Demos & Screenshots
 
-All screens are designed in Figma Dev Mode and mapped to structured Blade components.
+All screens are designed in a structured design process and mapped to structured Blade components.
 
 ### 1. Home (`/`)
 ![Home](demos/home.png)
@@ -35,7 +35,7 @@ All screens are designed in Figma Dev Mode and mapped to structured Blade compon
 
 All 22 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
 
-| Category | Screen Name | Route | Figma Node ID |
+| Category | Screen Name | Route | Node ID |
 | :--- | :--- | :--- | :--- |
 | **Home** | Home *(Main and Only Home)* | `/` | `2355:29907` |
 | **Hub** | Screens Showcase Hub | `/screens` | `1:4659` |

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the platform: languages, roles, demo accounts and the original
-     * Figma-kit demo catalog (categories with brand icons, instructors with
+     * design-kit demo catalog (categories with brand icons, instructors with
      * photos, courses with the original demo images/prices).
      *
      * Seeded logins (all with password "password"):
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
 
     private function seedCatalog(): void
     {
-        // ---- Categories: the five branded cards from the Figma kit first,
+        // ---- Categories: the five branded cards from the design kit first,
         // ---- then the extra categories used by the demo course cards.
         $categories = [
             ['Angular Development', 'angular-development', '#dd0031', 'M12 2.5L2.8 5.75L4.2 17.5L12 21.8L19.8 17.5L21.2 5.75L12 2.5ZM12 4.67L18.7 7.05L17.57 16.55L12 19.64L6.43 16.55L5.3 7.05L12 4.67ZM12 6.8L8.6 15.2H10.4L11.1 13.4H12.9L13.6 15.2H15.4L12 6.8ZM12 9.4L12.5 11.8H11.5L12 9.4Z', 1],
@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
         // ---- Instructors: the eight demo mentors with their photos.
         $instructors = [
             ['instructor@mono-lms.test', 'Rolands Granger', 'Senior Full-Stack Engineer & Architect', 'photo-1507003211169-0a1dd7228f2d', 'Teaching web architecture, PHP, Laravel, Docker, and modern reactive frontends with over 10 years of production experience.'],
-            ['david@mono-lms.test', 'David Benitez', 'Principal Product Designer & Figma Certified', 'photo-1500648767791-00dcc994a43e', 'Former design lead at high-growth startups, coaching digital designers on building design systems and seamless UX flows.'],
+            ['david@mono-lms.test', 'David Benitez', 'Principal Product Designer & Design Systems Certified', 'photo-1500648767791-00dcc994a43e', 'Former design lead at high-growth startups, coaching digital designers on building design systems and seamless UX flows.'],
             ['hinata@mono-lms.test', 'Hinata Hyuga', 'Machine Learning & Python Specialist', 'photo-1544005313-94ddf0286df2', 'Specializing in deep learning, neural networks, computer vision, and big data pipelines for AI-driven applications.'],
             ['keny@mono-lms.test', 'Keny White', 'Cloud Systems Architect', 'photo-1519085360753-af0119f7cbe7', 'Designing resilient cloud infrastructure and teaching DevOps practices used by enterprise teams.'],
             ['nicole@mono-lms.test', 'Nicole Brown', 'Strategic Business Coach', 'photo-1573496359142-b8d87734a5a2', 'Helping founders and executives turn strategy into measurable growth for over a decade.'],
@@ -144,7 +144,7 @@ class DatabaseSeeder extends Seeder
         $hinata = Instructor::where('email', 'hinata@mono-lms.test')->first();
 
         // ---- Courses: the original demo cards (title, category, price,
-        // ---- compare-at price, duration, image) straight from the Figma kit.
+        // ---- compare-at price, duration, image) straight from the design kit.
         $courses = [
             ['Build Responsive Websites with HTML', 'web-design', $rolands, 650.00, 900.00, 510, 'photo-1522202176988-66273c2fd55f', true, true],
             ['The Complete Web Developer Python Course', 'python-development', $hinata, 300.00, null, 390, 'photo-1526374965328-7f61d4dc18c5', true, true],
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
                     'category_id' => $categories[$categorySlug]->id,
                     'title' => $title,
                     'subtitle' => 'Master '.Str::lower($title).' with hands-on projects and expert guidance.',
-                    'description' => 'This comprehensive course takes you from fundamentals to advanced practice. You will build real projects, get feedback from your instructor, and finish with a portfolio-ready skill set — exactly as designed in the Mono LMS Figma kit.',
+                    'description' => 'This comprehensive course takes you from fundamentals to advanced practice. You will build real projects, get feedback from your instructor, and finish with a portfolio-ready skill set — exactly as designed in the Mono LMS design kit.',
                     'image' => 'https://images.unsplash.com/'.$photo.'?w=600&auto=format&fit=crop&q=80',
                     'price' => $price,
                     'old_price' => $oldPrice,

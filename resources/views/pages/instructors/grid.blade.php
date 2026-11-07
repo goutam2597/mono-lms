@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('instructors.title').' - Mono LMS'" active="instructors">
 
-    <!-- Page Title Header (Figma: 311:27960) -->
+    <!-- Page Title Header -->
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.title') }}</h1>

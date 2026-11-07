@@ -97,7 +97,7 @@
 
                 <!-- Footer Screen Link -->
                 <div class="mt-8 text-center text-xs text-gray-400">
-                    <a href="{{ route('screens') }}" class="text-[#392c7d] hover:underline font-medium">← View all Figma screens</a>
+                    <a href="{{ route('screens') }}" class="text-[#392c7d] hover:underline font-medium">← View all screens</a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <x-layouts.app title="Rolands Granger - Instructor Profile" active="instructors">
 
-    <!-- Instructor Hero Header (Figma: 311:37242) -->
+    <!-- Instructor Hero Header -->
     <div class="bg-[#392c7d] text-white py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="flex flex-col md:flex-row items-center gap-8">

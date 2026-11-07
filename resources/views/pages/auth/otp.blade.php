@@ -23,7 +23,7 @@
                         class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#ff4667] focus:ring-2 focus:ring-[#ff4667]/20 shadow-sm">
                 </div>
 
-                <!-- Timer Badge (Figma: 375:50121) -->
+                <!-- Timer Badge -->
                 <div class="flex justify-center">
                     <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f6cece] text-[#e70d0d] rounded-full text-xs font-semibold">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <!-- Submit Button (Figma: 375:49807) -->
+            <!-- Submit Button -->
             <button type="submit" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white py-3 px-6 rounded-full font-medium text-sm transition-all shadow-md flex items-center justify-center gap-2">
                 <span>Verify & Proceed</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

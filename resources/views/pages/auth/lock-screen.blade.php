@@ -14,7 +14,7 @@
 </head>
 <body class="font-sans antialiased text-[#191919] min-h-screen flex items-center justify-center p-4 sm:p-6" style="background: linear-gradient(144.39deg, rgb(255, 238, 240) 2.28%, rgb(248, 246, 255) 74.3%);">
     
-    <!-- Lock Screen Card (Figma: 375:50392 & 375:50557) -->
+    <!-- Lock Screen Card -->
     <div class="w-full max-w-md bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-gray-100 flex flex-col items-center text-center space-y-8">
         
         <!-- Logo -->
@@ -33,7 +33,7 @@
             <p class="text-sm text-[#6d6d6d]">Please enter your password to unlock your session</p>
         </div>
 
-        <!-- User Info: Avatar + Name (Figma: 375:50832) -->
+        <!-- User Info: Avatar + Name -->
         <div class="flex flex-col items-center space-y-3">
             <div class="relative w-28 h-28 rounded-full p-1 border-2 border-[#ff4667] shadow-md">
                 <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=240&auto=format&fit=crop&q=80" 
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Submit Button (Figma: 375:50575) -->
+            <!-- Submit Button -->
             <button type="submit" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white py-3 px-6 rounded-full font-medium text-sm transition-all shadow-md flex items-center justify-center gap-2">
                 <span>Sign In</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

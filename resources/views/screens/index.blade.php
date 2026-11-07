@@ -3,13 +3,13 @@
     <section class="bg-gradient-to-r from-[#392c7d] to-[#191919] text-white py-16 px-4 sm:px-8 relative overflow-hidden">
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold mb-4 text-[#ff4667]">
-                <span>Figma UI Kit Node: 1:4659 (Screens)</span>
+                <span>design system Node: 1:4659 (Screens)</span>
             </div>
             <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
                 Mono LMS <span class="text-[#ff4667]">Screens Gallery</span>
             </h1>
             <p class="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed">
-                All production screens from the Mono LMS Figma UI Kit accurately implemented with Laravel 13, Blade Components, and Tailwind CSS.
+                All production screens from the Mono LMS design system accurately implemented with Laravel 13, Blade Components, and Tailwind CSS.
             </p>
 
             <!-- Quick Filter Bar -->
@@ -55,7 +55,6 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-gray-800 font-mono">2355:29907</code></span>
                                 <span class="text-[#03c95a] font-semibold flex items-center gap-1">● Active Root (/)</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">High-impact layout with search pill, 5 category cards, 8 featured courses, 3 alternating enterprise feature stories, and news masonry.</p>
@@ -91,7 +90,6 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">398:51274</code></span>
                                 <span class="text-[#03c95a] font-semibold">● Full Filter Sidebar</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">Sidebar with Categories, Instructors, Price (Free/Paid), Price Range Slider, Difficulty Level, and Star Ratings.</p>
@@ -116,7 +114,6 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">398:52163</code></span>
                                 <span class="text-[#03c95a] font-semibold">● Sticky Enrollment</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">Hero course overview, sticky pricing video card, curriculum accordion, what you'll learn, and instructor profile.</p>
@@ -129,7 +126,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
         </section>
 
         <!-- 3. INSTRUCTORS -->
@@ -152,7 +148,6 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">311:27960</code></span>
                                 <span class="text-[#03c95a] font-semibold">● Grid & Filter</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">Mentor cards showing photo, ratings, number of lessons taught, duration, and subject specialty.</p>
@@ -177,7 +172,6 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">311:37242</code></span>
                                 <span class="text-[#03c95a] font-semibold">● Bio & Courses</span>
                             </div>
                             <p class="text-sm text-[#6d6d6d]">Full instructor profile with experience timeline, certifications, student feedback, and active courses.</p>
@@ -190,7 +184,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
         </section>
 
         <!-- 4. STUDENT DASHBOARD -->

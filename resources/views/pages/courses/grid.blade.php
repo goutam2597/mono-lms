@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('courses.title').' - Mono LMS'" active="courses">
 
-    <!-- Page Title Header (Figma: 398:51277) -->
+    <!-- Page Title Header -->
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -13,15 +13,12 @@
                     <span class="text-[#ff4667] font-medium">{{ __('courses.title') }}</span>
                 </nav>
             </div>
-            <div class="text-xs text-[#888888] font-medium">
-                Figma Node: <code class="bg-white px-2 py-1 rounded border border-gray-200 font-mono text-[#191919]">398:51274</code>
-            </div>
         </div>
     </div>
 
     <!-- Main Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12">
-        <!-- Results & Sort Bar (Figma: 398:51279) -->
+        <!-- Results & Sort Bar -->
         <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xs">
             <!-- Results Count -->
             <div class="text-xs sm:text-sm text-[#6d6d6d]">
@@ -52,7 +49,7 @@
         <!-- Layout Grid: Filter Sidebar + Courses Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Filter Sidebar (Figma: 398:51305) -->
+            <!-- Filter Sidebar -->
             <aside class="lg:col-span-3 space-y-6">
                 <!-- Categories Filter -->
                 <div class="bg-white border border-[#e7e7e7] rounded-xl p-5 shadow-xs">
@@ -185,7 +182,7 @@
 
             </aside>
 
-            <!-- Course Cards Grid (Figma: 398:51409) -->
+            <!-- Course Cards Grid -->
             <main class="lg:col-span-9 space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 @forelse ($courses as $course)
@@ -210,7 +207,7 @@
                 @endforelse
                 </div>
 
-                <!-- Pagination (Figma: 398:51422) -->
+                <!-- Pagination -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-200">
 {{ $courses->appends(request()->query())->links() }}
                 </div>
