@@ -100,7 +100,7 @@
                             <!-- Vector 1 (Cyan curved accent) -->
                             <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
                                      <!-- Image Slides (student / instructors / courses — crossfade every 10s) -->
-                        <div class="relative z-10 w-[74%] aspect-square rounded-full overflow-hidden shadow-2xl ring-8 ring-white/40">
+                        <div class="relative z-10 w-[82%] aspect-square rounded-full overflow-hidden shadow-2xl ring-8 ring-white/40 border-4 border-white/60">
                             @foreach ([
                                 ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
                                 ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
@@ -138,7 +138,7 @@
                             ['pos' => 'bottom-10 -right-3 hidden lg:block', 'item' => 5],
                         ] as $slotConfig)
                             <div data-hero-slot class="absolute {{ $slotConfig['pos'] }} z-20">
-                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
+                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-full p-3.5 shadow-xl">
                                     <div class="flex items-center gap-3">
                                         <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItems[$slotConfig['item']]['color'] }}15; color: {{ $heroItems[$slotConfig['item']]['color'] }};">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItems[$slotConfig['item']]['icon'] }}"/></svg>
@@ -155,7 +155,7 @@
                         <!-- Rotation templates (JS swaps chip content every 10s) -->
                         @foreach ($heroItems as $heroItem)
                             <template data-hero-item>
-                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
+                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-full p-3.5 shadow-xl">
                                     <div class="flex items-center gap-3">
                                     <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItem['color'] }}15; color: {{ $heroItem['color'] }};">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItem['icon'] }}"/></svg>
