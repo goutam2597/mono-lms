@@ -58,88 +58,23 @@
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-7 text-[14px] font-medium text-[#191919]">
-            <!-- Home Link -->
             <a href="{{ route('home') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
                 {{ __('app.nav.home') }}
             </a>
-
-            <!-- Courses Dropdown -->
-            <div class="relative group">
-                <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
-                    <span>{{ __('app.nav.courses') }}</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="absolute left-0 top-full pt-2 w-48 hidden group-hover:block z-50">
-                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('courses.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.grid') }}</a>
-                        <a href="{{ route('courses.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.list') }}</a>
-                        @if ($sampleCourse)
-                            <a href="{{ route('courses.show', $sampleCourse) }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('courses.detail') }}</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-            <!-- Instructors Dropdown -->
-            <div class="relative group">
-                <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'instructor') ? 'text-[#ff4667]' : '' }}">
-                    <span>{{ __('app.nav.instructors') }}</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="absolute left-0 top-full pt-2 w-52 hidden group-hover:block z-50">
-                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('instructors.grid') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.grid') }}</a>
-                        <a href="{{ route('instructors.list') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.list') }}</a>
-                        @if ($sampleInstructor)
-                            <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($sampleInstructor->name)) }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('instructors.detail') }}</a>
-                        @endif
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="{{ route('instructor.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] text-[#392c7d] font-semibold">{{ __('app.nav.instructor_panel') }}</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Student Panel -->
-            <div class="relative group">
-                <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'student') ? 'text-[#ff4667]' : '' }}">
-                    <span>{{ __('app.nav.student') }}</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="absolute left-0 top-full pt-2 w-52 hidden group-hover:block z-50">
-                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.dashboard') }}</a>
-                        <a href="{{ route('student.profile') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.profile') }}</a>
-                        <a href="{{ route('student.enrolled-courses') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.enrolled') }}</a>
-                        <a href="{{ route('student.certificates') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.certificates') }}</a>
-                        <a href="{{ route('student.quiz-attempts') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('student.nav.quiz') }}</a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="{{ route('admin.login') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] text-[#392c7d] font-semibold">{{ __('app.nav.admin_panel') }}</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Authentication Screens -->
-            <div class="relative group">
-                <button class="flex items-center gap-1.5 py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'auth') ? 'text-[#ff4667]' : '' }}">
-                    <span>{{ __('app.nav.auth') }}</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-[#ff4667] transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="absolute left-0 top-full pt-2 w-48 hidden group-hover:block z-50">
-                    <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                        <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.sign_in') }}</a>
-                        <a href="{{ route('register') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.register') }}</a>
-                        <a href="{{ route('password.request') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('auth.forgot_password') }}</a>
-                        <a href="{{ route('otp') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">OTP Verification</a>
-                        <a href="{{ route('lock-screen') }}" class="block px-4 py-2 hover:bg-[#f4f6f9] hover:text-[#ff4667]">Lock Screen</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screens Page Link (Highlighted) -->
-            <a href="{{ route('screens') }}" class="flex items-center gap-1.5 px-3 py-1 bg-red-50 text-[#ff4667] rounded-full border border-red-200 hover:bg-[#ff4667] hover:text-white transition-all text-xs font-semibold">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                <span>{{ __('app.nav.screens') }}</span>
+            <a href="{{ route('courses.grid') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
+                {{ __('app.nav.courses') }}
             </a>
+            <a href="{{ route('instructors.grid') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'instructors' ? 'text-[#ff4667]' : '' }}">
+                {{ __('app.nav.instructors') }}
+            </a>
+            <a href="{{ route('blog.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'blog' ? 'text-[#ff4667]' : '' }}">
+                {{ __('app.nav.blog') }}
+            </a>
+            @if (\App\Models\Setting::get('membership_enabled'))
+                <a href="{{ route('membership.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'membership' ? 'text-[#ff4667]' : '' }}">
+                    {{ __('app.nav.membership') }}
+                </a>
+            @endif
         </nav>
 
         <!-- Right Action Buttons -->

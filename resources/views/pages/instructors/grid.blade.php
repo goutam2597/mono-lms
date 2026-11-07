@@ -27,21 +27,7 @@
                 {{ __('instructors.results_for', ['count' => $instructors->total()]) }}
             </div>
 
-            <!-- View Switcher & Search -->
-            <div class="flex items-center gap-3">
-                <div class="flex items-center bg-[#f4f6f9] p-1 rounded-lg border border-gray-200">
-                    <a href="{{ route('instructors.grid') }}" class="p-1.5 rounded bg-white text-[#ff4667] shadow-xs" title="Grid View">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                    </a>
-                    <a href="{{ route('instructors.list') }}" class="p-1.5 rounded text-gray-500 hover:text-[#191919]" title="List View">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </a>
-                </div>
-                <input type="text" placeholder="Search mentors..." class="bg-white border border-[#e7e7e7] text-xs text-[#191919] px-3 py-2 rounded-lg focus:outline-none w-48">
-            </div>
-        </div>
-
-        <!-- Instructors Grid (DB-driven) -->
+                    <!-- Instructors Grid (DB-driven) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse ($instructors as $instructor)
                 <x-instructor-card

@@ -975,128 +975,28 @@
                 </a>
             </div>
 
-            <!-- 5 News Cards Masonry (Figma: 2355:30983) -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-
-                <!-- Tall Card Left (md:col-span-5) (Figma: 2355:30984) -->
-                <div class="md:col-span-5 rounded-[14px] overflow-hidden relative shadow-lg group min-h-[460px] flex flex-col justify-between p-6">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
-
-                    <!-- Top Author Badge (Figma: 2355:30986) -->
-                    <div class="relative z-10">
-                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#5625e8] text-white text-xs font-semibold shadow-sm">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" class="w-4 h-4 rounded-full object-cover" alt="David" />
-                            <span>David Benitez</span>
-                        </span>
-                    </div>
-
-                    <!-- Bottom Info -->
-                    <div class="relative z-10 space-y-3">
-                        <div class="flex items-center gap-3 text-xs text-white">
-                            <span class="border border-white/80 rounded-full px-3 py-1 font-medium">Lifestyle</span>
-                            <span class="flex items-center gap-1.5 opacity-90">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                09 Aug 2025
-                            </span>
-                        </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-[#ff4667] transition-colors leading-snug" data-node-id="2355:30988">
-                            Why an LMS is Essential for Modern Education
-                        </h3>
+                    <!-- News Cards (DB-driven blog posts) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @forelse ($posts as $post)
+                            <a href="{{ route('blog.show', $post->slug) }}" class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-end p-5">
+                                <img src="{{ $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                                <div class="relative z-10 space-y-2">
+                                    <div class="flex items-center gap-2 text-[11px] text-white">
+                                        <span class="border border-white/80 rounded-full px-2 py-0.5">{{ $post->author?->name ?? 'DreamsLMS' }}</span>
+                                        <span class="opacity-80">{{ $post->published_at?->format('d M Y') }}</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
+                                        {{ $post->title }}
+                                    </h4>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="col-span-full text-center text-gray-400 text-sm py-10">{{ __('blog.empty') }}</div>
+                        @endforelse
                     </div>
                 </div>
-
-                <!-- Right 4 Cards Grid (md:col-span-7) -->
-                <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                    <!-- Card 2 (Figma: 2355:30995) -->
-                    <div class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-between p-5">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                        <div class="relative z-10">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5625e8] text-white text-[11px] font-semibold">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" class="w-3.5 h-3.5 rounded-full object-cover" alt="David" />
-                                <span>David Benitez</span>
-                            </span>
-                        </div>
-                        <div class="relative z-10 space-y-2">
-                            <div class="flex items-center gap-2 text-[11px] text-white">
-                                <span class="border border-white/80 rounded-full px-2 py-0.5">Productivity</span>
-                                <span class="opacity-80">09 Aug 2025</span>
-                            </div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                The Impact of LMS on Academic Journey Education
-                            </h4>
-                        </div>
-                    </div>
-
-                    <!-- Card 3 (Figma: 2355:31018) -->
-                    <div class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-between p-5">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                        <div class="relative z-10">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5625e8] text-white text-[11px] font-semibold">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" class="w-3.5 h-3.5 rounded-full object-cover" alt="David" />
-                                <span>David Benitez</span>
-                            </span>
-                        </div>
-                        <div class="relative z-10 space-y-2">
-                            <div class="flex items-center gap-2 text-[11px] text-white">
-                                <span class="border border-white/80 rounded-full px-2 py-0.5">Productivity</span>
-                                <span class="opacity-80">09 Aug 2025</span>
-                            </div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Maximizing Academic Success with the Right LMS
-                            </h4>
-                        </div>
-                    </div>
-
-                    <!-- Card 4 (Figma: 2355:31038) -->
-                    <div class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-between p-5">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                        <div class="relative z-10">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5625e8] text-white text-[11px] font-semibold">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" class="w-3.5 h-3.5 rounded-full object-cover" alt="David" />
-                                <span>David Benitez</span>
-                            </span>
-                        </div>
-                        <div class="relative z-10 space-y-2">
-                            <div class="flex items-center gap-2 text-[11px] text-white">
-                                <span class="border border-white/80 rounded-full px-2 py-0.5">UI /UX</span>
-                                <span class="opacity-80">09 Aug 2025</span>
-                            </div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                Promoting Health &amp; Well being in Schools
-                            </h4>
-                        </div>
-                    </div>
-
-                    <!-- Card 5 (Figma: 2355:31049) -->
-                    <div class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-between p-5">
-                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&auto=format&fit=crop&q=80" alt="News Image" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                        <div class="relative z-10">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#5625e8] text-white text-[11px] font-semibold">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop" class="w-3.5 h-3.5 rounded-full object-cover" alt="David" />
-                                <span>David Benitez</span>
-                            </span>
-                        </div>
-                        <div class="relative z-10 space-y-2">
-                            <div class="flex items-center gap-2 text-[11px] text-white">
-                                <span class="border border-white/80 rounded-full px-2 py-0.5">Development</span>
-                                <span class="opacity-80">09 Aug 2025</span>
-                            </div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
-                                How to Build and Run a Pilot Mentoring Program
-                            </h4>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
-
         </div>
     </section>
 

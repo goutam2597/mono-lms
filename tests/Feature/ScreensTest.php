@@ -9,6 +9,14 @@ class ScreensTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Membership is admin-dependent; enable it for the public screens test.
+        \App\Models\Setting::set('membership_enabled', '1');
+    }
+
     /**
      * Public screens return 200 for guests.
      */
@@ -18,9 +26,9 @@ class ScreensTest extends TestCase
             '/',
             '/screens',
             '/courses/grid',
-            '/courses/list',
             '/instructors/grid',
-            '/instructors/list',
+            '/blog',
+            '/membership',
             '/login',
             '/register',
             '/forgot-password',

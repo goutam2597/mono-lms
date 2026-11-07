@@ -37,15 +37,7 @@
             <!-- Right Controls: View Switcher, Sort Dropdown, Search Input -->
             <div class="flex flex-wrap items-center gap-3">
                 <!-- Grid / List Switcher -->
-                <div class="flex items-center bg-[#f4f6f9] p-1 rounded-lg border border-gray-200">
-                    <a href="{{ route('courses.grid') }}" class="p-1.5 rounded bg-white text-[#ff4667] shadow-xs" title="Grid View">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                    </a>
-                    <a href="{{ route('courses.list') }}" class="p-1.5 rounded text-gray-500 hover:text-[#191919]" title="List View">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    </a>
-                </div>
-
+                
                 <form method="GET" action="{{ route('courses.grid') }}" class="flex flex-wrap items-center gap-3">
                     @if(request('category'))<input type="hidden" name="category" value="{{ request('category') }}">@endif
                     @if(request('level'))<input type="hidden" name="level" value="{{ request('level') }}">@endif

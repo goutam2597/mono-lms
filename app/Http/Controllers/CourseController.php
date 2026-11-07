@@ -14,11 +14,6 @@ class CourseController extends Controller
         return view('pages.courses.grid', $this->catalog($request, 'grid'));
     }
 
-    public function list(Request $request)
-    {
-        return view('pages.courses.list', $this->catalog($request, 'list'));
-    }
-
     public function show(string $slug)
     {
         $course = Course::published()

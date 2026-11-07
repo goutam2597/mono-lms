@@ -15,6 +15,8 @@ return [
         'reviews' => 'Reviews',
         'languages' => 'Languages',
         'settings' => 'Settings',
+        'blog' => 'Blog',
+        'plans' => 'Membership Plans',
     ],
 
     'dashboard' => [
@@ -136,6 +138,38 @@ return [
         'count' => ':count reviews',
     ],
 
+    'blog' => [
+        'title' => 'Blog Posts',
+        'subtitle' => 'Write and publish articles for the public blog',
+        'create' => 'New Post',
+        'edit' => 'Edit Post',
+        'excerpt' => 'Excerpt',
+        'content' => 'Content',
+        'content_hint' => 'Plain text paragraphs — each line break becomes a paragraph.',
+        'created' => 'Post created successfully.',
+        'updated' => 'Post updated successfully.',
+        'deleted' => 'Post deleted.',
+    ],
+
+    'plans' => [
+        'title' => 'Membership Plans',
+        'subtitle' => 'Coursera-style access plans students can subscribe to',
+        'create' => 'New Plan',
+        'edit' => 'Edit Plan',
+        'membership' => 'Membership',
+        'membership_hint' => 'When disabled, the Membership page and nav entry disappear for everyone.',
+        'membership_enabled' => 'Membership enabled.',
+        'membership_disabled' => 'Membership disabled.',
+        'description' => 'Description',
+        'billing_period' => 'Billing Period',
+        'features' => 'Features',
+        'features_hint' => 'One feature per line.',
+        'subscribers' => 'Subscribers',
+        'has_subscribers' => 'This plan has active subscribers. Move them to another plan first.',
+        'created' => 'Plan created successfully.',
+        'updated' => 'Plan updated successfully.',
+        'deleted' => 'Plan deleted.',
+    ],
     'languages' => [
         'title' => 'Languages',
         'subtitle' => 'Enable languages for every panel and the storefront',

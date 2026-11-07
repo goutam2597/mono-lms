@@ -10,6 +10,8 @@
         ['id' => 'categories', 'label' => __('admin.nav.categories'), 'route' => 'admin.categories.index', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
         ['id' => 'courses', 'label' => __('admin.nav.courses'), 'route' => 'admin.courses.index', 'icon' => 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'],
         ['id' => 'reviews', 'label' => __('admin.nav.reviews'), 'route' => 'admin.reviews.index', 'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'],
+        ['id' => 'blog', 'label' => __('admin.nav.blog'), 'route' => 'admin.blog.index', 'icon' => 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z'],
+        ['id' => 'plans', 'label' => __('admin.nav.plans'), 'route' => 'admin.plans.index', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
         ['id' => 'languages', 'label' => __('admin.nav.languages'), 'route' => 'admin.languages.index', 'icon' => 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7m-3.5-3.5L18 21m-3-6l3 6m0 0l3-6m-3 6V3'],
     ];
 @endphp
@@ -26,6 +28,8 @@
                 'categories' => $admin->hasPermission('categories.manage'),
                 'courses' => $admin->hasPermission('courses.manage'),
                 'reviews' => $admin->hasPermission('reviews.moderate'),
+                'blog' => $admin->hasPermission('blog.manage'),
+                'plans' => $admin->hasPermission('plans.manage'),
                 'languages' => $admin->hasPermission('languages.manage'),
                 default => true,
             };

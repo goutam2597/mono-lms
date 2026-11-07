@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
 
         $this->seedAdmins();
         $this->seedCatalog();
+        $this->seedBlogAndPlans();
 
         $this->command->info('Seeded logins (password: "password"):');
         $this->command->table(
@@ -208,6 +209,59 @@ class DatabaseSeeder extends Seeder
                     ['rating' => 5 - $i, 'comment' => 'Excellent course, clearly explained and well structured.', 'status' => 'approved']
                 );
             }
+        }
+    }
+
+    private function seedBlogAndPlans(): void
+    {
+        // Membership is admin-dependent: the super admin can switch it off
+        // from Admin → Membership Plans.
+        \App\Models\Setting::set('membership_enabled', '1');
+
+        $plans = [
+            ['Basic', 19.00, 'monthly', 'Start learning with the essentials.', ['Access to 1,000+ courses', 'Mobile & desktop learning', 'Progress tracking'], false, 1],
+            ['Standard', 39.00, 'monthly', 'Everything you need to master new skills.', ['Unlimited course access', 'Downloadable resources', 'Certificates of completion', 'Priority support'], true, 2],
+            ['Annual Premium', 299.00, 'yearly', 'Best value — two months free, billed yearly.', ['Everything in Standard', 'Offline downloads', '1-on-1 mentor sessions', 'Early access to new courses'], false, 3],
+        ];
+
+        foreach ($plans as [$name, $price, $period, $description, $features, $popular, $order]) {
+            \App\Models\Plan::updateOrCreate(
+                ['slug' => \Illuminate\Support\Str::slug($name)],
+                [
+                    'name' => $name,
+                    'description' => $description,
+                    'price' => $price,
+                    'billing_period' => $period,
+                    'features' => $features,
+                    'is_active' => true,
+                    'is_popular' => $popular,
+                    'sort_order' => $order,
+                ]
+            );
+        }
+
+        $admin = Admin::where('email', 'superadmin@mono-lms.test')->first();
+
+        $posts = [
+            ['The Impact of LMS on Academic Journey Education', 'photo-1523240795612-9a054b0db644', 'A deep dive into how modern learning management systems reshape the academic journey for students and institutions alike.', 'From streamlined course delivery to data-driven progress tracking, learning management systems have quietly transformed how education is delivered. In this article we explore the measurable impact of LMS adoption on student outcomes, engagement, and institutional efficiency.'],
+            ['Maximizing Academic Success with the Right LMS', 'photo-1454165804606-c3d57bc86b40', 'Choosing the right platform is half the battle. Here is what actually moves the needle for learners.', 'Not all learning platforms are created equal. The difference between a course catalog and a true learning experience comes down to structure, feedback loops, and motivation design. We break down the features that correlate with real academic success.'],
+            ['Why Unlimited Access Beats Buying Course by Course', 'photo-1499750310107-5fef28a66643', 'The subscription model is changing how people learn online — and the numbers back it up.', 'Learners with unlimited memberships complete 3x more courses than those buying à la carte. When cost friction disappears, curiosity takes over. We look at the data behind Coursera-style memberships and what it means for your learning goals.'],
+            ['How to Build a Learning Habit That Sticks', 'photo-1517245386807-bb43f82c33c4', 'Consistency beats intensity. Five evidence-based techniques to make daily learning automatic.', 'The most successful students are rarely the most talented — they are the most consistent. This article covers habit stacking, spaced repetition, and the 20-minute rule that turns casual learners into lifelong ones.'],
+        ];
+
+        foreach ($posts as $i => [$title, $photo, $excerpt, $content]) {
+            \App\Models\Post::updateOrCreate(
+                ['slug' => \Illuminate\Support\Str::slug($title)],
+                [
+                    'admin_id' => $admin?->id,
+                    'title' => $title,
+                    'excerpt' => $excerpt,
+                    'content' => $content."\n\n".str_repeat('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ', 3),
+                    'image' => 'https://images.unsplash.com/'.$photo.'?w=800&auto=format&fit=crop&q=80',
+                    'status' => 'published',
+                    'published_at' => now()->subDays($i * 5),
+                ]
+            );
         }
     }
 }

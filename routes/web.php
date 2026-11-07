@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
@@ -15,6 +17,8 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
 use App\Http\Controllers\Instructor\LessonController;
@@ -52,7 +56,6 @@ Route::get('/locale/{code}', [LocaleController::class, 'switchStore'])->name('lo
 // Public catalog (DB-driven)
 Route::prefix('courses')->name('courses.')->group(function () {
     Route::get('/grid', [CourseController::class, 'grid'])->name('grid');
-    Route::get('/list', [CourseController::class, 'list'])->name('list');
     Route::get('/{slug}', [CourseController::class, 'show'])->name('show');
     Route::post('/{course:slug}/enroll', [CourseController::class, 'enroll'])
         ->middleware('auth:student')->name('enroll');
@@ -60,7 +63,6 @@ Route::prefix('courses')->name('courses.')->group(function () {
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
     Route::get('/grid', [InstructorDirectoryController::class, 'grid'])->name('grid');
-    Route::get('/list', [InstructorDirectoryController::class, 'list'])->name('list');
     Route::get('/{name}', [InstructorDirectoryController::class, 'show'])->name('show');
 });
 
@@ -69,6 +71,15 @@ Route::get('/screens', function () {
     return view('screens.index');
 })->name('screens');
 Route::get('/screens-index', fn () => redirect()->route('screens'))->name('screens.index');
+
+// Blog
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+// Membership (admin-dependent: 404 when disabled in settings)
+Route::get('/membership', [MembershipController::class, 'index'])->name('membership.index');
+Route::post('/membership/{plan:slug}/subscribe', [MembershipController::class, 'subscribe'])
+    ->middleware('auth:student')->name('membership.subscribe');
 
 // ------------------------------------------------------------ Language switch
 // Panel locale switches live OUTSIDE the guarded groups so they work from
@@ -159,6 +170,27 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:languages.manage')->name('languages.toggle');
     Route::patch('/languages/{language}/default', [LanguageController::class, 'makeDefault'])
         ->middleware('permission:languages.manage')->name('languages.default');
+
+    // Blog
+    Route::middleware('permission:blog.manage')->group(function () {
+        Route::get('/blog', [AdminPostController::class, 'index'])->name('blog.index');
+        Route::get('/blog/create', [AdminPostController::class, 'create'])->name('blog.create');
+        Route::post('/blog', [AdminPostController::class, 'store'])->name('blog.store');
+        Route::get('/blog/{post}/edit', [AdminPostController::class, 'edit'])->name('blog.edit');
+        Route::put('/blog/{post}', [AdminPostController::class, 'update'])->name('blog.update');
+        Route::delete('/blog/{post}', [AdminPostController::class, 'destroy'])->name('blog.destroy');
+    });
+
+    // Membership plans + the master enable/disable switch
+    Route::middleware('permission:plans.manage')->group(function () {
+        Route::get('/plans', [AdminPlanController::class, 'index'])->name('plans.index');
+        Route::patch('/plans/membership/toggle', [AdminPlanController::class, 'toggleMembership'])->name('plans.membership-toggle');
+        Route::get('/plans/create', [AdminPlanController::class, 'create'])->name('plans.create');
+        Route::post('/plans', [AdminPlanController::class, 'store'])->name('plans.store');
+        Route::get('/plans/{plan}/edit', [AdminPlanController::class, 'edit'])->name('plans.edit');
+        Route::put('/plans/{plan}', [AdminPlanController::class, 'update'])->name('plans.update');
+        Route::delete('/plans/{plan}', [AdminPlanController::class, 'destroy'])->name('plans.destroy');
+    });
 });
 
 // ---------------------------------------------------------- Instructor panel

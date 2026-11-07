@@ -13,13 +13,6 @@ class InstructorDirectoryController extends Controller
         ]);
     }
 
-    public function list()
-    {
-        return view('pages.instructors.list', [
-            'instructors' => Instructor::where('status', 'active')->withCount('courses')->orderBy('name')->paginate(10),
-        ]);
-    }
-
     public function show(string $name)
     {
         // Instructor "slug" is the URL-encoded name in this directory.

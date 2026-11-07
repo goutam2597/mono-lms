@@ -105,27 +105,6 @@
                     </div>
                 </div>
 
-                <!-- Course List -->
-                <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="h-44 bg-purple-50 border-b border-gray-100 p-6 flex flex-col justify-between">
-                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full w-fit">List Layout</span>
-                            <h3 class="text-xl font-bold text-[#191919]">Course List View</h3>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">398:51425</code></span>
-                                <span class="text-[#03c95a] font-semibold">● Horizontal Cards</span>
-                            </div>
-                            <p class="text-sm text-[#6d6d6d]">Wide course cards with detailed summaries, lesson hours, instructor bio snippets, and direct purchase triggers.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <a href="{{ route('courses.list') }}" class="w-full bg-[#392c7d] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
-                            <span>Open Course List</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Course Detail -->
@@ -187,27 +166,6 @@
                     </div>
                 </div>
 
-                <!-- Instructor List -->
-                <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="h-44 bg-emerald-50 border-b border-gray-100 p-6 flex flex-col justify-between">
-                            <span class="bg-emerald-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full w-fit">List View</span>
-                            <h3 class="text-xl font-bold text-[#191919]">Instructor List</h3>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>Figma Node: <code class="bg-gray-100 px-1.5 py-0.5 rounded font-mono">311:35028</code></span>
-                                <span class="text-[#03c95a] font-semibold">● Expanded Bios</span>
-                            </div>
-                            <p class="text-sm text-[#6d6d6d]">Comprehensive horizontal list view of top teachers with course badges and contact options.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <a href="{{ route('instructors.list') }}" class="w-full bg-[#08131e] hover:bg-[#ff4667] text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2 transition-colors">
-                            <span>Open Instructor List</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Instructor Detail -->
