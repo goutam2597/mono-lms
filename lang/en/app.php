@@ -3,7 +3,7 @@
 // Shared UI strings: header, footer, common actions, statuses.
 return [
     'brand' => [
-        'name' => 'DreamsLMS',
+        'name' => 'MonoLMS',
         'tagline' => 'Learn anything, anywhere.',
     ],
 

@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.categories.title').' - Dreams LMS'" active="categories" userType="admin">
+<x-layouts.dashboard :title="__('admin.categories.title').' - Mono LMS'" active="categories" userType="admin">
 
     <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between gap-4">

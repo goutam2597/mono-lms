@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.languages.title').' - Dreams LMS'" active="languages" userType="admin">
+<x-layouts.dashboard :title="__('admin.languages.title').' - Mono LMS'" active="languages" userType="admin">
 
     <div class="space-y-6">
         <div class="bg-[#0dcaf0]/5 border border-[#0dcaf0]/20 rounded-xl px-5 py-3.5 text-xs text-[#0891b2] font-medium">

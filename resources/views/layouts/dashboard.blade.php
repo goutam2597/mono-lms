@@ -1,4 +1,4 @@
-@props(['title' => 'Dashboard - Dreams LMS', 'active' => 'dashboard', 'userType' => 'student'])
+@props(['title' => 'Dashboard - Mono LMS', 'active' => 'dashboard', 'userType' => 'student'])
 
 <x-layouts.app :title="$title" :active="$userType === 'student' ? 'student' : ($userType === 'admin' ? 'admin' : 'instructor')">
     <div class="bg-[#f4f6f9] py-8 min-h-[calc(100vh-200px)]">

@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('student.enrolled.title').' - Dreams LMS'" active="enrolled" userType="student">
+<x-layouts.dashboard :title="__('student.enrolled.title').' - Mono LMS'" active="enrolled" userType="student">
 
     <div class="space-y-6">
         <!-- Header & Filter Tabs -->

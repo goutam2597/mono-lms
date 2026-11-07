@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('instructor.dashboard.title').' - Dreams LMS'" active="dashboard" userType="instructor">
+<x-layouts.dashboard :title="__('instructor.dashboard.title').' - Mono LMS'" active="dashboard" userType="instructor">
 
     <div class="space-y-8">
         <!-- Metric Stat Cards -->

@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="($category->exists ? __('admin.categories.edit') : __('admin.categories.create')).' - Dreams LMS'" active="categories" userType="admin">
+<x-layouts.dashboard :title="($category->exists ? __('admin.categories.edit') : __('admin.categories.create')).' - Mono LMS'" active="categories" userType="admin">
 
     <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs p-6 sm:p-8 max-w-xl">
         <h3 class="font-bold text-[#191919] mb-6">{{ $category->exists ? __('admin.categories.edit') : __('admin.categories.create') }}</h3>

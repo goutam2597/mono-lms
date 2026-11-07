@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
                     'category_id' => $categories[$categorySlug]->id,
                     'title' => $title,
                     'subtitle' => 'Master '.Str::lower($title).' with hands-on projects and expert guidance.',
-                    'description' => 'This comprehensive course takes you from fundamentals to advanced practice. You will build real projects, get feedback from your instructor, and finish with a portfolio-ready skill set — exactly as designed in the Dreams LMS Figma kit.',
+                    'description' => 'This comprehensive course takes you from fundamentals to advanced practice. You will build real projects, get feedback from your instructor, and finish with a portfolio-ready skill set — exactly as designed in the Mono LMS Figma kit.',
                     'image' => 'https://images.unsplash.com/'.$photo.'?w=600&auto=format&fit=crop&q=80',
                     'price' => $price,
                     'old_price' => $oldPrice,

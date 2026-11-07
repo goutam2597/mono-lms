@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('student.dashboard.title').' - Dreams LMS'" active="dashboard" userType="student">
+<x-layouts.dashboard :title="__('student.dashboard.title').' - Mono LMS'" active="dashboard" userType="student">
 
     <div class="space-y-8">
         <!-- Quiz Alert Banner -->

@@ -1,4 +1,4 @@
-<x-layouts.app title="Course Grid - Dreams LMS" active="courses">
+<x-layouts.app title="Course Grid - Mono LMS" active="courses">
 
     <!-- Page Title Header (Figma: 398:51277) -->
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">

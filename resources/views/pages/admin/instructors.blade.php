@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.instructors.title').' - Dreams LMS'" active="instructors" userType="admin">
+<x-layouts.dashboard :title="__('admin.instructors.title').' - Mono LMS'" active="instructors" userType="admin">
 
     <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between gap-4">

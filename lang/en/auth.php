@@ -3,9 +3,9 @@
 // Authentication screens (shared by student, instructor and admin panels).
 return [
     'welcome_back' => 'Welcome Back',
-    'sign_in_subtitle' => 'Sign in to continue learning with DreamsLMS.',
+    'sign_in_subtitle' => 'Sign in to continue learning with MonoLMS.',
     'register_title' => 'Create Account',
-    'register_subtitle' => 'Join DreamsLMS and start learning today.',
+    'register_subtitle' => 'Join MonoLMS and start learning today.',
     'forgot_title' => 'Forgot Password',
     'forgot_subtitle' => 'Enter your email and we will send you a reset link.',
     'reset_title' => 'Set New Password',

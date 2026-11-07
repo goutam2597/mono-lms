@@ -1,6 +1,6 @@
-# Dreams LMS – Learning Management System
+# Mono LMS – Learning Management System
 
-> High-fidelity, pixel-perfect Laravel 13 & Tailwind CSS v4 implementation of the **Dreams LMS Figma UI Kit**.
+> High-fidelity, pixel-perfect Laravel 13 & Tailwind CSS v4 implementation of the **Mono LMS Figma UI Kit**.
 
 [![Laravel 13](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)

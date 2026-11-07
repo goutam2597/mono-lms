@@ -1,4 +1,4 @@
-@props(['title' => 'Authentication - Dreams LMS'])
+@props(['title' => 'Authentication - Mono LMS'])
 
 <!DOCTYPE html>
 <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-white">
@@ -32,7 +32,7 @@
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
                         </svg>
                     </div>
-                    <span class="text-2xl font-bold tracking-tight text-[#191919]">Dreams<span class="text-[#ff4667]">LMS</span></span>
+                    <span class="text-2xl font-bold tracking-tight text-[#191919]">Mono<span class="text-[#ff4667]">LMS</span></span>
                 </a>
 
                 <!-- Centered Vector Illustration Graphic -->
@@ -51,7 +51,7 @@
                     </div>
 
                     <h2 class="text-2xl font-bold text-[#191919] mb-2">
-                        {{ __('app.welcome') }} Dreams<span class="text-[#ff4667]">LMS</span>
+                        {{ __('app.welcome') }} Mono<span class="text-[#ff4667]">LMS</span>
                     </h2>
                     <p class="text-sm text-[#6d6d6d] max-w-sm leading-relaxed">
                         {{ __('app.footer.about') }}
@@ -67,7 +67,7 @@
 
                 <!-- Footer copyright note -->
                 <div class="text-xs text-[#888888] z-10 text-center">
-                    © {{ date('Y') }} Dreams LMS. {{ __('app.footer.copyright') }}
+                    © {{ date('Y') }} Mono LMS. {{ __('app.footer.copyright') }}
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
                 <!-- Top Navigation back -->
                 <div class="flex items-center justify-between mb-8">
                     <a href="{{ route('home') }}" class="lg:hidden flex items-center gap-2">
-                        <span class="text-xl font-bold text-[#191919]">Dreams<span class="text-[#ff4667]">LMS</span></span>
+                        <span class="text-xl font-bold text-[#191919]">Mono<span class="text-[#ff4667]">LMS</span></span>
                     </a>
                     @php
                         $localePanel = request()->is('admin*') ? 'admin' : (request()->is('instructor*') ? 'instructor' : 'student');

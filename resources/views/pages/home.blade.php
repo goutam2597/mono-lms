@@ -1,4 +1,4 @@
-<x-layouts.app title="Dreams LMS – Home" active="home">
+<x-layouts.app title="Mono LMS – Home" active="home">
 
     <!-- 1. HERO SECTION (Figma: 2355:29935 & 2355:29979) -->
     <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 relative" data-node-id="2355:29908">
@@ -416,7 +416,7 @@
                 <!-- Left Title -->
                 <div class="max-w-md">
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] leading-tight" data-node-id="2355:30489">
-                        Acheive you Goals with DreamsLMS
+                        Acheive you Goals with MonoLMS
                     </h2>
                 </div>
 
@@ -793,7 +793,7 @@
                     Become An Instructor
                 </h3>
                 <p class="text-white/90 text-sm sm:text-base leading-relaxed" data-node-id="2355:31065">
-                    Top instructors from around the world teach millions of students on DreamsLMS.
+                    Top instructors from around the world teach millions of students on MonoLMS.
                 </p>
             </div>
 
@@ -983,7 +983,7 @@
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                                 <div class="relative z-10 space-y-2">
                                     <div class="flex items-center gap-2 text-[11px] text-white">
-                                        <span class="border border-white/80 rounded-full px-2 py-0.5">{{ $post->author?->name ?? 'DreamsLMS' }}</span>
+                                        <span class="border border-white/80 rounded-full px-2 py-0.5">{{ $post->author?->name ?? 'MonoLMS' }}</span>
                                         <span class="opacity-80">{{ $post->published_at?->format('d M Y') }}</span>
                                     </div>
                                     <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">

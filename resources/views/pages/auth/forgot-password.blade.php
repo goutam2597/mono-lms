@@ -1,4 +1,4 @@
-<x-layouts.auth :title="__('auth.forgot_title').' - Dreams LMS'">
+<x-layouts.auth :title="__('auth.forgot_title').' - Mono LMS'">
 
     <div class="space-y-6">
         <div>

@@ -31,7 +31,7 @@ return [
     ],
 
     'features' => [
-        'heading' => 'Why Choose DreamsLMS',
+        'heading' => 'Why Choose MonoLMS',
         'subtitle' => 'Everything you need for a world-class learning experience',
         'expert' => 'Expert Instructors',
         'expert_text' => 'Learn from industry professionals with years of real-world experience.',
@@ -60,7 +60,7 @@ return [
 
     'cta' => [
         'heading' => 'Start Your Learning Journey Today',
-        'subtitle' => 'Join thousands of students already learning on DreamsLMS.',
+        'subtitle' => 'Join thousands of students already learning on MonoLMS.',
         'button' => 'Sign Up Free',
     ],
 ];

@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('student.profile.title').' - Dreams LMS'" active="profile" userType="student">
+<x-layouts.dashboard :title="__('student.profile.title').' - Mono LMS'" active="profile" userType="student">
 
     <div class="space-y-6">
         @if (session('success'))

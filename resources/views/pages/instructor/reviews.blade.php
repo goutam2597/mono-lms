@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('instructor.reviews.title').' - Dreams LMS'" active="reviews" userType="instructor">
+<x-layouts.dashboard :title="__('instructor.reviews.title').' - Mono LMS'" active="reviews" userType="instructor">
 
     <div class="bg-white border border-[#e7e7e7] rounded-xl p-6 shadow-xs space-y-6">
         <div>

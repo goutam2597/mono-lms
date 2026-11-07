@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="($admin->exists ? __('admin.admins.edit') : __('admin.admins.create')).' - Dreams LMS'" active="admins" userType="admin">
+<x-layouts.dashboard :title="($admin->exists ? __('admin.admins.edit') : __('admin.admins.create')).' - Mono LMS'" active="admins" userType="admin">
 
     <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs p-6 sm:p-8 max-w-2xl">
         <h3 class="font-bold text-[#191919] mb-6">{{ $admin->exists ? __('admin.admins.edit') : __('admin.admins.create') }}</h3>

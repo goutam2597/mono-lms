@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('blog.title').' - Dreams LMS'" active="blog">
+<x-layouts.app :title="__('blog.title').' - Mono LMS'" active="blog">
 
     <!-- Page Header -->
     <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">

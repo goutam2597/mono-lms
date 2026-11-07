@@ -1,9 +1,9 @@
-<x-layouts.app :title="$post->title.' - Dreams LMS'" active="blog">
+<x-layouts.app :title="$post->title.' - Mono LMS'" active="blog">
 
     <!-- Article Hero -->
     <div class="bg-[#08131e] text-white py-14">
         <div class="max-w-4xl mx-auto px-4 sm:px-8 space-y-4">
-            <span class="text-xs text-gray-400">{{ $post->published_at?->format('d M Y') }} · {{ __('blog.by') }} {{ $post->author?->name ?? 'DreamsLMS' }}</span>
+            <span class="text-xs text-gray-400">{{ $post->published_at?->format('d M Y') }} · {{ __('blog.by') }} {{ $post->author?->name ?? 'MonoLMS' }}</span>
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">{{ $post->title }}</h1>
             @if ($post->excerpt)
                 <p class="text-gray-300 text-base leading-relaxed">{{ $post->excerpt }}</p>

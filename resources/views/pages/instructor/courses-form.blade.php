@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="($course->exists ? __('instructor.courses.edit') : __('instructor.courses.create')).' - Dreams LMS'" active="courses" userType="instructor">
+<x-layouts.dashboard :title="($course->exists ? __('instructor.courses.edit') : __('instructor.courses.create')).' - Mono LMS'" active="courses" userType="instructor">
 
     <div class="space-y-6">
         <!-- Course Form -->

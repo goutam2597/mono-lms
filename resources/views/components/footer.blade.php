@@ -9,7 +9,7 @@
                             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
                         </svg>
                     </div>
-                    <span class="text-2xl font-bold tracking-tight text-white">Dreams<span class="text-[#ff4667]">LMS</span></span>
+                    <span class="text-2xl font-bold tracking-tight text-white">Mono<span class="text-[#ff4667]">LMS</span></span>
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
                     {{ __('app.footer.about') }}
@@ -82,7 +82,7 @@
 
         <!-- Bottom Copyright -->
         <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-            <p>© {{ date('Y') }} Dreams LMS. {{ __('app.footer.copyright') }}</p>
+            <p>© {{ date('Y') }} Mono LMS. {{ __('app.footer.copyright') }}</p>
             <div class="flex items-center gap-4">
                 <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
                 <span>|</span>

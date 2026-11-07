@@ -1,4 +1,4 @@
-<x-layouts.dashboard title="My Certificates - Dreams LMS" active="certificates" userType="student">
+<x-layouts.dashboard title="My Certificates - Mono LMS" active="certificates" userType="student">
 
     <div class="space-y-6">
         <!-- Header (Figma: 5035:15047) -->
@@ -28,7 +28,7 @@
                     <div>
                         <!-- Certificate Thumbnail Preview -->
                         <div class="relative h-40 bg-gradient-to-br from-indigo-50 to-purple-100 rounded-lg border-2 border-dashed border-[#392c7d]/30 p-4 flex flex-col justify-between text-center mb-4">
-                            <div class="text-[10px] font-bold tracking-widest text-[#392c7d] uppercase">Dreams LMS Certificate</div>
+                            <div class="text-[10px] font-bold tracking-widest text-[#392c7d] uppercase">Mono LMS Certificate</div>
                             <div>
                                 <div class="text-xs font-extrabold text-[#191919] line-clamp-1">{{ $cert['title'] }}</div>
                                 <div class="text-[10px] text-gray-500 mt-1">Presented to Eugene Andre</div>

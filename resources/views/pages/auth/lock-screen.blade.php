@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lock Screen – Dreams LMS</title>
+    <title>Lock Screen – Mono LMS</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
                     <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
                 </svg>
             </div>
-            <span class="text-2xl font-bold tracking-tight text-[#191919]">Dreams<span class="text-[#ff4667]">LMS</span></span>
+            <span class="text-2xl font-bold tracking-tight text-[#191919]">Mono<span class="text-[#ff4667]">LMS</span></span>
         </a>
 
         <!-- Welcome Back Header -->

@@ -1,4 +1,4 @@
-<x-layouts.app :title="$course->title.' - Dreams LMS'" active="courses">
+<x-layouts.app :title="$course->title.' - Mono LMS'" active="courses">
 
     @if (session('success') || session('info'))
         <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-6">

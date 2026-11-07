@@ -1,4 +1,4 @@
-<x-layouts.auth title="OTP Verification – Dreams LMS">
+<x-layouts.auth title="OTP Verification – Mono LMS">
     <div class="space-y-6">
         <!-- Header -->
         <div class="space-y-2">

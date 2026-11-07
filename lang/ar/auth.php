@@ -3,9 +3,9 @@
 // شاشات المصادقة (مشتركة بين لوحات الطالب والمدرّب والإدارة).
 return [
     'welcome_back' => 'مرحباً بعودتك',
-    'sign_in_subtitle' => 'سجّل الدخول لمتابعة التعلّم مع DreamsLMS.',
+    'sign_in_subtitle' => 'سجّل الدخول لمتابعة التعلّم مع MonoLMS.',
     'register_title' => 'إنشاء حساب',
-    'register_subtitle' => 'انضم إلى DreamsLMS وابدأ التعلّم اليوم.',
+    'register_subtitle' => 'انضم إلى MonoLMS وابدأ التعلّم اليوم.',
     'forgot_title' => 'نسيت كلمة المرور',
     'forgot_subtitle' => 'أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.',
     'reset_title' => 'تعيين كلمة مرور جديدة',

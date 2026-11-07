@@ -1,4 +1,4 @@
-<x-layouts.auth title="Create Account - Dreams LMS">
+<x-layouts.auth title="Create Account - Mono LMS">
 
     <div class="space-y-6">
         <div>

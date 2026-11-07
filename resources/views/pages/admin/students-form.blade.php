@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.students.title').' - Dreams LMS'" active="students" userType="admin">
+<x-layouts.dashboard :title="__('admin.students.title').' - Mono LMS'" active="students" userType="admin">
 
     <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs p-6 sm:p-8 max-w-2xl">
         <h3 class="font-bold text-[#191919] mb-6">{{ __('app.common.edit') }} — {{ $student->name }}</h3>

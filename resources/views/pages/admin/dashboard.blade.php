@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.dashboard.title').' - Dreams LMS'" active="dashboard" userType="admin">
+<x-layouts.dashboard :title="__('admin.dashboard.title').' - Mono LMS'" active="dashboard" userType="admin">
 
     <div class="space-y-8">
         <!-- Stats Grid -->

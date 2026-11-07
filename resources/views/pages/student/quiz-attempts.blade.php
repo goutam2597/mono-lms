@@ -1,4 +1,4 @@
-<x-layouts.dashboard title="My Quiz Attempts - Dreams LMS" active="quiz" userType="student">
+<x-layouts.dashboard title="My Quiz Attempts - Mono LMS" active="quiz" userType="student">
 
     <div class="space-y-6">
         <!-- Header (Figma: 5013:76280) -->

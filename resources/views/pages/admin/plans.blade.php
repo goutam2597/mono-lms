@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.plans.title').' - Dreams LMS'" active="plans" userType="admin">
+<x-layouts.dashboard :title="__('admin.plans.title').' - Mono LMS'" active="plans" userType="admin">
 
     <div class="space-y-6">
         <!-- Membership master switch (admin-dependent) -->

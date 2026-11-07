@@ -17,7 +17,7 @@
 }
 
 /* Custom checkbox / radio — hairline square, brand fill
-   (mono_market .control pattern, adapted to Dreams LMS tokens) */
+   (mono_market .control pattern, adapted to Mono LMS tokens) */
 .control {
     appearance: none;
     width: 16px;

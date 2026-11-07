@@ -1,4 +1,4 @@
-@props(['title' => 'Dreams LMS - Online Learning Management System', 'active' => ''])
+@props(['title' => 'Mono LMS - Online Learning Management System', 'active' => ''])
 
 <!DOCTYPE html>
 <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-white">

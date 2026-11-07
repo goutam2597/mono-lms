@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes - Dreams LMS
+| Web Routes - Mono LMS
 |--------------------------------------------------------------------------
 |
 | Panels and their guards (independent sessions per panel):

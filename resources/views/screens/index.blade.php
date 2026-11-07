@@ -1,4 +1,4 @@
-<x-layouts.app title="Screens Gallery - Dreams LMS UI Kit" active="screens">
+<x-layouts.app title="Screens Gallery - Mono LMS UI Kit" active="screens">
     <!-- Hero Banner -->
     <section class="bg-gradient-to-r from-[#392c7d] to-[#191919] text-white py-16 px-4 sm:px-8 relative overflow-hidden">
         <div class="max-w-7xl mx-auto relative z-10">
@@ -6,10 +6,10 @@
                 <span>Figma UI Kit Node: 1:4659 (Screens)</span>
             </div>
             <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
-                Dreams LMS <span class="text-[#ff4667]">Screens Gallery</span>
+                Mono LMS <span class="text-[#ff4667]">Screens Gallery</span>
             </h1>
             <p class="text-gray-300 text-base sm:text-lg max-w-2xl leading-relaxed">
-                All production screens from the Dreams LMS Figma UI Kit accurately implemented with Laravel 13, Blade Components, and Tailwind CSS.
+                All production screens from the Mono LMS Figma UI Kit accurately implemented with Laravel 13, Blade Components, and Tailwind CSS.
             </p>
 
             <!-- Quick Filter Bar -->
