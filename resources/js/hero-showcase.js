@@ -44,7 +44,7 @@ function initHeroShowcase() {
                     const next = slot.firstElementChild;
                     next?.classList.add('hero-chip-in');
                     setTimeout(() => next?.classList.remove('hero-chip-in'), 600);
-                }, 320);
+                }, 180);
             }, i * 90);
         });
     };

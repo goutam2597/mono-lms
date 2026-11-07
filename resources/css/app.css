@@ -77,11 +77,12 @@
 }
 
 /* Hero showcase: rotating chips + image slides */
-.hero-chip { transition: opacity .35s ease, transform .35s ease; }
-.hero-chip-out { opacity: 0; transform: translateY(14px) scale(.9); }
-.hero-chip-in { animation: anim-fade-up .5s cubic-bezier(.22, .61, .36, 1); }
-.hero-slide { opacity: 0; transform: scale(1.06); transition: opacity 1s ease, transform 6s ease; }
-.hero-slide.is-on { opacity: 1; transform: scale(1); }
+.hero-chip { transition: opacity .18s ease, transform .18s ease; }
+.hero-chip-out { opacity: 0; transform: translateY(10px) scale(.94); }
+.hero-chip-in { animation: anim-fade-up .45s cubic-bezier(.22, .61, .36, 1); }
+[data-hero-slide] { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 32px; opacity: 0; transition: opacity .6s ease; }
+[data-hero-slide].is-on { opacity: 1; }
+[data-hero-slot] { z-index: 30; }
 @media (prefers-reduced-motion: reduce) {
-    .hero-chip, .hero-slide { transition: none; }
+    .hero-chip, [data-hero-slide] { transition: none; }
 }

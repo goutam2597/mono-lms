@@ -107,7 +107,7 @@
                                 ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
                                 ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
                             ] as $slide)
-                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top rounded-[32px]" />
+                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" />
                             @endforeach
                         </div>
 
@@ -130,12 +130,12 @@
                         @endphp
 
                         @foreach ([
-                            ['pos' => 'top-5 right-8', 'item' => 4],
-                            ['pos' => '-top-4 -right-4', 'item' => 1],
-                            ['pos' => 'top-1/3 -left-4 hidden lg:block', 'item' => 2],
-                            ['pos' => 'bottom-1/4 -right-4 hidden lg:block', 'item' => 3],
-                            ['pos' => '-bottom-4 left-12', 'item' => 0],
-                            ['pos' => 'bottom-8 -right-5 hidden lg:block', 'item' => 5],
+                            ['pos' => '-top-5 right-0', 'item' => 4],
+                            ['pos' => '-bottom-5 left-6', 'item' => 0],
+                            ['pos' => 'top-1/3 -left-3 hidden lg:block', 'item' => 2],
+                            ['pos' => 'bottom-1/3 -right-3 hidden lg:block', 'item' => 3],
+                            ['pos' => '-top-6 left-14 hidden lg:block', 'item' => 4],
+                            ['pos' => 'bottom-10 -right-3 hidden lg:block', 'item' => 5],
                         ] as $slotConfig)
                             <div data-hero-slot class="absolute {{ $slotConfig['pos'] }} z-20">
                                 <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
@@ -155,7 +155,8 @@
                         <!-- Rotation templates (JS swaps chip content every 10s) -->
                         @foreach ($heroItems as $heroItem)
                             <template data-hero-item>
-                                <div class="flex items-center gap-3">
+                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-xl p-3.5 shadow-xl">
+                                    <div class="flex items-center gap-3">
                                     <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItem['color'] }}15; color: {{ $heroItem['color'] }};">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItem['icon'] }}"/></svg>
                                     </div>
@@ -163,6 +164,8 @@
                                         <p class="text-base font-bold text-[#191919] leading-tight">{{ $heroItem['value'] }}</p>
                                         <p class="text-xs text-[#6d6d6d] font-medium">{{ $heroItem['label'] }}</p>
                                     </div>
+                                </div>
+                            
                                 </div>
                             </template>
                         @endforeach            </div>
