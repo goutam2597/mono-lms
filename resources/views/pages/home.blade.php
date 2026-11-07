@@ -995,7 +995,6 @@
                             <div class="col-span-full text-center text-gray-400 text-sm py-10">{{ __('blog.empty') }}</div>
                         @endforelse
                     </div>
-            </div>
         </div>
     </section>
 
