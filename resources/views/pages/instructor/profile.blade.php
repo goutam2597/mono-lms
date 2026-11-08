@@ -15,7 +15,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.name') }}</label>
-                        <input type="text" name="name" value="{{ old('name', $instructor->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                        <input type="text" name="name" value="{{ old('name', $instructor->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.email') }}</label>
@@ -26,20 +26,20 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.phone') }}</label>
-                        <input type="text" name="phone" value="{{ old('phone', $instructor->phone) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                        <input type="text" name="phone" value="{{ old('phone', $instructor->phone) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('admin.instructors.designation') }}</label>
-                        <input type="text" name="designation" value="{{ old('designation', $instructor->designation) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                        <input type="text" name="designation" value="{{ old('designation', $instructor->designation) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     </div>
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('admin.instructors.bio') }}</label>
-                    <textarea name="bio" rows="4" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">{{ old('bio', $instructor->bio) }}</textarea>
+                    <textarea name="bio" rows="4" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">{{ old('bio', $instructor->bio) }}</textarea>
                 </div>
 
-                <button type="submit" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors">{{ __('app.common.save_changes') }}</button>
+                <button type="submit" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">{{ __('app.common.save_changes') }}</button>
             </form>
         </div>
 
@@ -52,22 +52,22 @@
 
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.profile.current_password') }}</label>
-                    <input type="password" name="current_password" required class="w-full border {{ $errors->has('current_password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="password" name="current_password" required class="w-full border {{ $errors->has('current_password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     @error('current_password')<p class="text-[11px] text-red-500">{{ __('instructor.profile.current_password_incorrect') }}</p>@enderror
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.profile.new_password') }}</label>
-                    <input type="password" name="password" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="password" name="password" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     <p class="text-[11px] text-gray-400">{{ __('instructor.profile.new_password_hint') }}</p>
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('auth.confirm_password') }}</label>
-                    <input type="password" name="password_confirmation" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="password" name="password_confirmation" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                 </div>
 
-                <button type="submit" class="bg-[#08131e] hover:bg-[#1b2737] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors">{{ __('app.common.save') }}</button>
+                <button type="submit" class="bg-[#08131e] hover:bg-[#1b2737] text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">{{ __('app.common.save') }}</button>
             </form>
         </div>
     </div>

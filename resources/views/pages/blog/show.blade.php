@@ -21,7 +21,7 @@
         </article>
 
         <div class="mt-12 pt-8 border-t border-gray-100">
-            <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:underline">
+            <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:underline">
                 <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                 {{ __('blog.back') }}
             </a>
@@ -35,7 +35,7 @@
                         <a href="{{ route('blog.show', $item->slug) }}" class="bg-white border border-[#e7e7e7] rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
                             <img src="{{ $item->image ?? 'https://picsum.photos/seed/post-'.$item->id.'/640/420' }}" alt="{{ $item->title }}" class="w-full h-32 object-cover">
                             <div class="p-4">
-                                <h3 class="text-sm font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">{{ $item->title }}</h3>
+                                <h3 class="text-sm font-bold text-[#191919] group-hover:text-[#344c3d] transition-colors line-clamp-2">{{ $item->title }}</h3>
                                 <p class="text-xs text-gray-400 mt-1">{{ $item->published_at?->format('d M Y') }}</p>
                             </div>
                         </a>

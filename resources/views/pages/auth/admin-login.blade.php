@@ -18,7 +18,7 @@
                     <span>{{ __('auth.email') }}</span>
                     <span class="text-[#e70d0d]">*</span>
                 </label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="you@example.com" class="w-full bg-white border {{ $errors->has('email') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#ff4667]">
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="you@example.com" class="w-full bg-white border {{ $errors->has('email') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('email')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
@@ -27,7 +27,7 @@
                     <span>{{ __('auth.password') }}</span>
                     <span class="text-[#e70d0d]">*</span>
                 </label>
-                <input id="password" name="password" type="password" required placeholder="••••••••" class="w-full bg-white border {{ $errors->has('password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#ff4667]">
+                <input id="password" name="password" type="password" required placeholder="••••••••" class="w-full bg-white border {{ $errors->has('password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('password')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
@@ -36,12 +36,12 @@
                     <input type="checkbox" name="remember" class="control">
                     <span class="text-[#191919]">{{ __('auth.remember_me') }}</span>
                 </label>
-                <a href="{{ route('password.request', ['panel' => 'admin']) }}" class="font-medium text-[#ff4667] hover:underline">
+                <a href="{{ route('password.request', ['panel' => 'admin']) }}" class="font-medium text-[#738a6e] hover:underline">
                     {{ __('auth.forgot_password') }}
                 </a>
             </div>
 
-            <button type="submit" class="w-full bg-[#392c7d] hover:bg-[#2a1f5e] text-white text-sm font-semibold py-3 rounded-full flex items-center justify-center gap-2 transition-all shadow-md mt-2">
+            <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md mt-2">
                 <span>{{ __('auth.sign_in') }}</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>

@@ -6,7 +6,7 @@
                 <h3 class="font-bold text-[#191919]">{{ __('admin.instructors.title') }}</h3>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.instructors.subtitle') }}</p>
             </div>
-            <a href="{{ route('admin.instructors.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.instructors.create') }}</a>
+            <a href="{{ route('admin.instructors.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.instructors.create') }}</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -25,7 +25,7 @@
                         <tr class="hover:bg-[#f8fafb] transition-colors">
                             <td class="px-6 py-3.5">
                                 <div class="flex items-center gap-3">
-                                    <span class="w-9 h-9 rounded-full bg-[#ff4667]/10 text-[#ff4667] font-bold text-sm flex items-center justify-center">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                                    <span class="w-9 h-9 rounded-full bg-[#738a6e]/10 text-[#738a6e] font-bold text-sm flex items-center justify-center">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                                     <div>
                                         <p class="font-semibold text-[#191919]">{{ $instructor->name }}</p>
                                         <p class="text-xs text-gray-400">{{ $instructor->email }}</p>

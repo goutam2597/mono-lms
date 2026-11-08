@@ -5,9 +5,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.title') }}</h1>
             <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
-                <a href="{{ route('home') }}" class="hover:text-[#ff4667]">{{ __('app.nav.home') }}</a>
+                <a href="{{ route('home') }}" class="hover:text-[#344c3d]">{{ __('app.nav.home') }}</a>
                 <span>/</span>
-                <span class="text-[#ff4667] font-medium">{{ __('instructors.title') }}</span>
+                <span class="text-[#738a6e] font-medium">{{ __('instructors.title') }}</span>
             </nav>
         </div>
     </div>

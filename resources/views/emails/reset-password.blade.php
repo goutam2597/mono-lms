@@ -3,7 +3,7 @@
     <p style="color:#5d5d5d; font-size:14px; margin:0 0 8px;">{{ __('emails.reset.line') }}</p>
     <p style="color:#5d5d5d; font-size:14px; margin:0 0 24px;">{{ __('emails.reset.panel_line', ['panel' => $panelLabel]) }}</p>
 
-    <a href="{{ $url }}" style="display:inline-block; background:#ff4667; color:#ffffff; text-decoration:none; font-weight:600; font-size:14px; padding:12px 28px; border-radius:999px;">
+    <a href="{{ $url }}" style="display:inline-block; background:#344c3d; color:#ffffff; text-decoration:none; font-weight:600; font-size:14px; padding:12px 28px; border-radius:999px;">
         {{ __('emails.reset.action') }}
     </a>
 

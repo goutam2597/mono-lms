@@ -22,6 +22,7 @@ return [
     'what_you_get' => 'ماذا ستحصل عليه',
     'about_instructor' => 'نبذة عن المدرّب',
     'related_courses' => 'دورات ذات صلة',
+    'enroll' => 'تسجيل',
     'enroll_now' => 'التسجيل الآن',
     'go_to_course' => 'الانتقال إلى الدورة',
     'enroll_free' => 'تسجيل مجاني',

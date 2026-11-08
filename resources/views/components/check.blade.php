@@ -12,7 +12,7 @@
         class="control {{ $size }}" {{ $attributes->only('id', 'required', 'disabled', 'form') }}>
 
     @if ($label)
-        <span class="text-sm text-[#191919] group-hover:text-[#ff4667] transition-colors">{{ $label }}</span>
+        <span class="text-sm text-[#191919] group-hover:text-[#738a6e] transition-colors">{{ $label }}</span>
     @endif
 
     {{ $slot }}

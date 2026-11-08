@@ -21,7 +21,7 @@
                     <h3 class="font-bold text-[#191919]">{{ __('admin.plans.title') }}</h3>
                     <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.plans.subtitle') }}</p>
                 </div>
-                <a href="{{ route('admin.plans.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.plans.create') }}</a>
+                <a href="{{ route('admin.plans.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.plans.create') }}</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -42,7 +42,7 @@
                                     <p class="font-semibold text-[#191919]">
                                         {{ $plan->name }}
                                         @if ($plan->is_popular)
-                                            <span class="ml-1 text-[10px] font-bold text-[#ff4667]">★ {{ __('membership.most_popular') }}</span>
+                                            <span class="ml-1 text-[10px] font-bold text-[#738a6e]">★ {{ __('membership.most_popular') }}</span>
                                         @endif
                                     </p>
                                     <p class="text-xs text-gray-400">{{ \Illuminate\Support\Str::limit($plan->description ?? '', 60) }}</p>

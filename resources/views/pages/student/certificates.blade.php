@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-bold text-[#191919]">My Certificates (05)</h2>
                 <p class="text-xs text-[#6d6d6d] mt-0.5">Accredited verified certificates earned from completed LMS curricula.</p>
             </div>
-            <button class="bg-[#392c7d] hover:bg-[#ff4667] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+            <button class="bg-[#392c7d] hover:bg-[#344c3d] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
                 Verify Credential ID
             </button>
         </div>
@@ -33,7 +33,7 @@
                                 <div class="text-xs font-extrabold text-[#191919] line-clamp-1">{{ $cert['title'] }}</div>
                                 <div class="text-[10px] text-gray-500 mt-1">Presented to Eugene Andre</div>
                             </div>
-                            <div class="flex items-center justify-between text-[9px] text-[#ff4667] font-mono">
+                            <div class="flex items-center justify-between text-[9px] text-[#738a6e] font-mono">
                                 <span>{{ $cert['code'] }}</span>
                                 <span>Verified ✓</span>
                             </div>
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="flex items-center gap-2 pt-2 border-t border-gray-100">
-                        <button class="flex-1 bg-[#392c7d] hover:bg-[#ff4667] text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5">
+                        <button class="flex-1 bg-[#392c7d] hover:bg-[#344c3d] text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             <span>Download PDF</span>
                         </button>

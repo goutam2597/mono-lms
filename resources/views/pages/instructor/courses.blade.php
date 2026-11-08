@@ -6,7 +6,7 @@
                 <h2 class="text-xl font-bold text-[#191919]">{{ __('instructor.courses.title') }}</h2>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.instructors.count', ['count' => $courses->total()]) }}</p>
             </div>
-            <a href="{{ route('instructor.courses.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-colors">+ {{ __('instructor.courses.create') }}</a>
+            <a href="{{ route('instructor.courses.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors">+ {{ __('instructor.courses.create') }}</a>
         </div>
 
         <div class="overflow-x-auto">

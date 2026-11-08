@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="bg-[#f4f6f9] py-12 border-b border-[#e7e7e7] text-center">
         <div class="max-w-3xl mx-auto px-4 sm:px-8">
-            <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-[#ff4667] text-white shadow-sm">{{ __('membership.badge') }}</span>
+            <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-[#344c3d] text-white shadow-sm">{{ __('membership.badge') }}</span>
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#191919] mt-4">{{ __('membership.title') }}</h1>
             <p class="text-sm sm:text-base text-[#6d6d6d] mt-3">{{ __('membership.subtitle') }}</p>
         </div>
@@ -18,9 +18,9 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-8 py-14">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse ($plans as $plan)
-                <div class="relative bg-white border-2 rounded-2xl p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col {{ $plan->is_popular ? 'border-[#ff4667]' : 'border-[#e7e7e7]' }}">
+                <div class="relative bg-white border-2 rounded-2xl p-8 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col {{ $plan->is_popular ? 'border-[#738a6e]' : 'border-[#e7e7e7]' }}">
                     @if ($plan->is_popular)
-                        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#ff4667] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
+                        <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#344c3d] text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
                             ★ {{ __('membership.most_popular') }}
                         </span>
                     @endif
@@ -54,13 +54,13 @@
                             @else
                                 <form action="{{ route('membership.subscribe', $plan) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="w-full {{ $plan->is_popular ? 'bg-[#ff4667] hover:bg-[#e03a58]' : 'bg-[#08131e] hover:bg-[#1b2737]' }} text-white font-bold py-3 rounded-full transition-colors text-sm cursor-pointer">
+                                    <button type="submit" class="w-full {{ $plan->is_popular ? 'bg-[#344c3d] hover:bg-[#283a2f]' : 'bg-[#08131e] hover:bg-[#1b2737]' }} text-white font-bold py-3 rounded-full transition-colors text-sm cursor-pointer">
                                         {{ __('membership.subscribe') }}
                                     </button>
                                 </form>
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="block w-full text-center {{ $plan->is_popular ? 'bg-[#ff4667] hover:bg-[#e03a58]' : 'bg-[#08131e] hover:bg-[#1b2737]' }} text-white font-bold py-3 rounded-full transition-colors text-sm">
+                            <a href="{{ route('login') }}" class="block w-full text-center {{ $plan->is_popular ? 'bg-[#344c3d] hover:bg-[#283a2f]' : 'bg-[#08131e] hover:bg-[#1b2737]' }} text-white font-bold py-3 rounded-full transition-colors text-sm">
                                 {{ __('membership.sign_in_to_subscribe') }}
                             </a>
                         @endauth

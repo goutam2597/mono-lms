@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'admin_id', 'title', 'slug', 'excerpt', 'content', 'image', 'status', 'published_at',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Hidden([])]
+#[Hidden([])]
 class Post extends Model
 {
     protected function casts(): array

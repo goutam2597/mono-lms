@@ -22,7 +22,7 @@ class AdminUserController extends Controller
     public function create()
     {
         return view('pages.admin.admins-form', [
-            'admin' => new Admin(),
+            'admin' => new Admin,
             'roles' => Role::all(),
         ]);
     }

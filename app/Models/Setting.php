@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable(['key', 'value'])]
+#[Fillable(['key', 'value'])]
 class Setting extends Model
 {
     public static function get(string $key, ?string $default = null): ?string

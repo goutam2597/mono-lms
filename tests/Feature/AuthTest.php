@@ -65,4 +65,29 @@ class AuthTest extends TestCase
 
         $this->assertDatabaseHas('students', ['email' => 'new@test.dev']);
     }
+
+    public function test_admin_can_sign_in_via_universal_login_and_see_dashboard(): void
+    {
+        $admin = Admin::create([
+            'name' => 'Administrator',
+            'email' => 'admin@learnify.test',
+            'password' => '12345678',
+            'is_super_admin' => true,
+            'status' => 'active',
+        ]);
+
+        $this->post(route('login.attempt'), [
+            'email' => 'admin@learnify.test',
+            'password' => '12345678',
+        ])->assertRedirect(route('admin.dashboard'));
+
+        $response = $this->get(route('admin.dashboard'));
+        $response->assertOk()
+            ->assertSee('Admin overview')
+            ->assertSee('Welcome back, Administrator')
+            ->assertSee('Revenue & Enrollments', false)
+            ->assertSee('Recent Orders')
+            ->assertSee('Courses by Category')
+            ->assertSee('Top Courses');
+    }
 }

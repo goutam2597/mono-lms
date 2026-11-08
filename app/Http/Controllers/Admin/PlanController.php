@@ -32,7 +32,7 @@ class PlanController extends Controller
 
     public function create()
     {
-        return view('pages.admin.plans-form', ['plan' => new Plan()]);
+        return view('pages.admin.plans-form', ['plan' => new Plan]);
     }
 
     public function store(Request $request)

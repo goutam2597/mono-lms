@@ -22,6 +22,7 @@ return [
     'what_you_get' => 'What you will get',
     'about_instructor' => 'About the Instructor',
     'related_courses' => 'Related Courses',
+    'enroll' => 'Enroll',
     'enroll_now' => 'Enroll Now',
     'go_to_course' => 'Go To Course',
     'enroll_free' => 'Free Enroll',

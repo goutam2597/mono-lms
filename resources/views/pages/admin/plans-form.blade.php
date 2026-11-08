@@ -9,19 +9,19 @@
 
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.name') }} *</label>
-                <input type="text" name="name" value="{{ old('name', $plan->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                <input type="text" name="name" value="{{ old('name', $plan->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                 @error('name')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
             </div>
 
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-[#191919]">{{ __('admin.plans.description') }}</label>
-                <textarea name="description" rows="2" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">{{ old('description', $plan->description) }}</textarea>
+                <textarea name="description" rows="2" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">{{ old('description', $plan->description) }}</textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('admin.courses.price') }} *</label>
-                    <input type="number" step="0.01" min="0" name="price" value="{{ old('price', $plan->price ?? 0) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="number" step="0.01" min="0" name="price" value="{{ old('price', $plan->price ?? 0) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('admin.plans.billing_period') }}</label>
@@ -32,13 +32,13 @@
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('instructor.lessons.fields.sort_order') }}</label>
-                    <input type="number" name="sort_order" min="0" value="{{ old('sort_order', $plan->sort_order ?? 0) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="number" name="sort_order" min="0" value="{{ old('sort_order', $plan->sort_order ?? 0) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                 </div>
             </div>
 
             <div class="space-y-1.5">
                 <label class="text-xs font-semibold text-[#191919]">{{ __('admin.plans.features') }}</label>
-                <textarea name="features" rows="5" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">{{ old('features', implode("\n", $plan->features ?? [])) }}</textarea>
+                <textarea name="features" rows="5" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">{{ old('features', implode("\n", $plan->features ?? [])) }}</textarea>
                 <p class="text-[11px] text-gray-400">{{ __('admin.plans.features_hint') }}</p>
             </div>
 
@@ -54,7 +54,7 @@
             </div>
 
             <div class="flex items-center gap-3 pt-2">
-                <button type="submit" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors">{{ __('app.common.save') }}</button>
+                <button type="submit" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">{{ __('app.common.save') }}</button>
                 <a href="{{ route('admin.plans.index') }}" class="text-sm font-semibold text-[#5d5d5d] hover:text-[#191919] px-4 py-2.5">{{ __('app.common.cancel') }}</a>
             </div>
         </form>

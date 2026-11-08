@@ -19,7 +19,7 @@ class InstructorController extends Controller
 
     public function create()
     {
-        return view('pages.admin.instructors-form', ['instructor' => new Instructor()]);
+        return view('pages.admin.instructors-form', ['instructor' => new Instructor]);
     }
 
     public function store(Request $request)

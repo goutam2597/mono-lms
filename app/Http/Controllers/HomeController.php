@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\Instructor;
 use App\Models\Post;
 use App\Models\Student;
@@ -18,7 +19,7 @@ class HomeController extends Controller
             'topInstructors' => Instructor::where('status', 'active')->withCount('courses')->take(4)->get(),
             'posts' => Post::published()->latest('published_at')->take(4)->get(),
             'stats' => [
-                'enrollments' => \App\Models\Enrollment::count(),
+                'enrollments' => Enrollment::count(),
                 'students' => Student::count(),
                 'courses' => Course::published()->count(),
                 'instructors' => Instructor::where('status', 'active')->count(),

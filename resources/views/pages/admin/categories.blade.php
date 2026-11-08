@@ -6,7 +6,7 @@
                 <h3 class="font-bold text-[#191919]">{{ __('admin.categories.title') }}</h3>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.categories.subtitle') }}</p>
             </div>
-            <a href="{{ route('admin.categories.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.categories.create') }}</a>
+            <a href="{{ route('admin.categories.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.categories.create') }}</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -23,7 +23,17 @@
                     @forelse ($categories as $category)
                         <tr class="hover:bg-[#f8fafb] transition-colors">
                             <td class="px-6 py-3.5 font-semibold text-[#191919]">{{ $category->name }} <span class="text-xs text-gray-400 font-normal">({{ $category->slug }})</span></td>
-                            <td class="px-6 py-3.5 text-xl">{{ $category->icon ?? '—' }}</td>
+                            <td class="px-6 py-3.5">
+                                @if ($category->imageUrl())
+                                    <img src="{{ $category->imageUrl() }}" alt="{{ $category->name }}" class="w-8 h-8 object-contain rounded-md bg-white border border-gray-200 p-0.5">
+                                @elseif ($category->icon && str_starts_with($category->icon, 'M'))
+                                    <div class="w-8 h-8 rounded-md flex items-center justify-center" style="background: {{ $category->color }}15; color: {{ $category->color }};">
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="{{ $category->icon }}" /></svg>
+                                    </div>
+                                @else
+                                    <span class="text-xl">{{ $category->icon ?? '—' }}</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-3.5 text-[#5d5d5d]">{{ $category->courses_count }}</td>
                             <td class="px-6 py-3.5">
                                 <div class="flex items-center gap-2">

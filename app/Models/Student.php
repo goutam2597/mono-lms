@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Notifications\PanelResetPassword;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'name', 'email', 'password', 'phone', 'avatar', 'locale', 'status',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token'])]
 class Student extends Authenticatable
 {
     protected function casts(): array
@@ -26,7 +29,7 @@ class Student extends Authenticatable
 
     public function sendPasswordResetNotification($token): void
     {
-        $this->notify(new \App\Notifications\PanelResetPassword($token, __('emails.panels.student'), 'student'));
+        $this->notify(new PanelResetPassword($token, __('emails.panels.student'), 'student'));
     }
 
     public function courses(): BelongsToMany

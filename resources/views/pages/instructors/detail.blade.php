@@ -8,7 +8,7 @@
                 <div class="space-y-3 text-center md:text-left">
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
                         <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Rolands Granger</h1>
-                        <span class="bg-[#ff4667] text-white text-xs font-bold px-3 py-1 rounded-full">Top Rated</span>
+                        <span class="bg-[#344c3d] text-white text-xs font-bold px-3 py-1 rounded-full">Top Rated</span>
                     </div>
                     <p class="text-gray-300 text-sm sm:text-base font-medium">Senior Full-Stack Engineer & Cloud Architect</p>
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 text-xs sm:text-sm text-gray-300 pt-2">
@@ -67,7 +67,7 @@
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-xs space-y-4">
                     <h4 class="font-bold text-[#191919] text-base">Contact Mentor</h4>
                     <p class="text-xs text-[#6d6d6d]">Have questions regarding a course? Reach out directly to discuss mentorship and syllabus queries.</p>
-                    <button class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white font-semibold text-xs py-3 rounded-full transition-colors shadow-sm">
+                    <button class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-semibold text-xs py-3 rounded-xl transition-colors shadow-sm">
                         Send Message
                     </button>
                     <div class="border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-600">

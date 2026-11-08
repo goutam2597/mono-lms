@@ -7,8 +7,8 @@
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.students.subtitle') }}</p>
             </div>
             <form method="GET" class="flex items-center gap-2">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search') }}..." class="border border-[#e7e7e7] rounded-full px-4 py-2 text-xs w-56 focus:outline-none focus:border-[#ff4667]">
-                <button type="submit" class="bg-[#08131e] text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-[#1b2737] transition-colors">{{ __('app.common.search') }}</button>
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search') }}..." class="border border-[#e7e7e7] rounded-full px-4 py-2 text-xs w-56 focus:outline-none focus:border-[#738a6e]">
+                <button type="submit" class="bg-[#08131e] text-white text-xs font-semibold px-4 py-2 rounded-xl hover:bg-[#1b2737] transition-colors">{{ __('app.common.search') }}</button>
             </form>
         </div>
 

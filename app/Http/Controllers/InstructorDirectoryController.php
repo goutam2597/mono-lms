@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Instructor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class InstructorDirectoryController extends Controller
 {
@@ -32,7 +33,7 @@ class InstructorDirectoryController extends Controller
         // Instructor "slug" is the URL-encoded name in this directory.
         $instructor = Instructor::where('status', 'active')
             ->get()
-            ->first(fn ($i) => \Illuminate\Support\Str::slug($i->name) === $name);
+            ->first(fn ($i) => Str::slug($i->name) === $name);
 
         abort_unless($instructor, 404);
 

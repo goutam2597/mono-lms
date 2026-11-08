@@ -21,7 +21,7 @@ class SetLocale
     public function handle(Request $request, Closure $next): Response
     {
         $languages = Language::active();
-        $default   = Language::defaultCode();
+        $default = Language::defaultCode();
 
         if ($request->is('admin') || $request->is('admin/*')) {
             $locale = $request->session()->get('admin_locale')

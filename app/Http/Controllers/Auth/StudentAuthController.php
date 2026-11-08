@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Student;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -29,6 +28,62 @@ class StudentAuthController extends PanelAuthController
     protected function panelLabelKey(): string
     {
         return 'student.panel';
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        $remember = $request->boolean('remember');
+
+        // 1. Try student
+        if (Auth::guard('student')->attempt($credentials, $remember)) {
+            $user = Auth::guard('student')->user();
+            if ($user->status !== 'active') {
+                Auth::guard('student')->logout();
+                throw ValidationException::withMessages([
+                    'email' => __('auth.account_inactive'),
+                ]);
+            }
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('student.dashboard'));
+        }
+
+        // 2. Fallback to admin (in case admin logs in via main /login)
+        if (Auth::guard('admin')->attempt($credentials, $remember)) {
+            $user = Auth::guard('admin')->user();
+            if ($user->status !== 'active') {
+                Auth::guard('admin')->logout();
+                throw ValidationException::withMessages([
+                    'email' => __('auth.account_inactive'),
+                ]);
+            }
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        // 3. Fallback to instructor
+        if (Auth::guard('instructor')->attempt($credentials, $remember)) {
+            $user = Auth::guard('instructor')->user();
+            if ($user->status !== 'active') {
+                Auth::guard('instructor')->logout();
+                throw ValidationException::withMessages([
+                    'email' => __('auth.account_inactive'),
+                ]);
+            }
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('instructor.dashboard'));
+        }
+
+        throw ValidationException::withMessages([
+            'email' => __('auth.invalid_credentials'),
+        ]);
     }
 
     public function showRegister()

@@ -24,7 +24,7 @@ class CourseController extends Controller
         $related = Course::published()
             ->where('category_id', $course->category_id)
             ->where('id', '!=', $course->id)
-            ->with('instructor')
+            ->with(['instructor', 'category'])
             ->take(3)
             ->get();
 

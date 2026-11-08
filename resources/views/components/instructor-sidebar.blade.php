@@ -10,29 +10,15 @@
     ];
 @endphp
 
-<div class="bg-white border border-[#e7e7e7] rounded-xl p-4 shadow-xs">
-    <div class="space-y-1">
-        @foreach($menu as $item)
-            @php $isActive = ($active === $item['id']); @endphp
-            <a href="{{ route($item['route']) }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors {{ $isActive ? 'bg-[#ff4667] text-white shadow-xs' : 'text-[#5d5d5d] hover:bg-[#f4f6f9] hover:text-[#191919]' }}">
-                <svg class="w-5 h-5 {{ $isActive ? 'text-white' : 'text-[#888888]' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/>
-                </svg>
-                <span>{{ $item['label'] }}</span>
-            </a>
-        @endforeach
-    </div>
-
-    <div class="border-t border-gray-100 my-4"></div>
-
-    <x-language-switcher panel="instructor" class="[&>button]:w-full [&>button]:text-[14px]" />
-
-    <form method="POST" action="{{ route('instructor.logout') }}" class="mt-1">
-        @csrf
-        <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors">
-            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-            <span>{{ __('instructor.nav.logout') }}</span>
-        </button>
-    </form>
-</div>
+<nav class="space-y-1">
+    @foreach($menu as $item)
+        @php $isActive = ($active === $item['id']); @endphp
+        <a href="{{ route($item['route']) }}"
+           class="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 {{ $isActive ? 'bg-[#344c3d] text-white shadow-xs font-semibold' : 'text-slate-300 hover:text-white hover:bg-slate-800/70' }}">
+            <svg class="w-5 h-5 shrink-0 transition-colors {{ $isActive ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['icon'] }}"/>
+            </svg>
+            <span class="truncate">{{ $item['label'] }}</span>
+        </a>
+    @endforeach
+</nav>

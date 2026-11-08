@@ -17,9 +17,9 @@
                     </div>
                     <div class="p-6 space-y-3 flex-1 flex flex-col">
                         <span class="text-xs text-gray-400">{{ $post->published_at?->format('d M Y') }}</span>
-                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors line-clamp-2">{{ $post->title }}</h3>
+                        <h3 class="text-lg font-bold text-[#191919] group-hover:text-[#344c3d] transition-colors line-clamp-2">{{ $post->title }}</h3>
                         <p class="text-sm text-[#6d6d6d] line-clamp-3 flex-1">{{ $post->excerpt }}</p>
-                        <span class="text-xs font-semibold text-[#ff4667]">{{ __('blog.read_more') }} →</span>
+                        <span class="text-xs font-semibold text-[#738a6e]">{{ __('blog.read_more') }} →</span>
                     </div>
                 </a>
             @empty

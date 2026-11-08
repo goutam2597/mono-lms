@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Language;
 use App\Models\Student;
+use Database\Seeders\LanguageSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,7 +16,7 @@ class LocaleTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed(\Database\Seeders\LanguageSeeder::class);
+        $this->seed(LanguageSeeder::class);
     }
 
     public function test_each_panel_keeps_its_own_locale_session(): void

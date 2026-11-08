@@ -14,13 +14,13 @@
                 <!-- 4 Digit Inputs -->
                 <div class="flex items-center justify-between gap-3 sm:gap-4">
                     <input type="text" maxlength="1" value="8" autofocus
-                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border-2 border-[#ff4667] text-[#191919] focus:outline-none focus:ring-2 focus:ring-[#ff4667]/20 shadow-sm">
+                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border-2 border-[#738a6e] text-[#191919] focus:outline-none focus:ring-2 focus:ring-[#738a6e]/20 shadow-sm">
                     <input type="text" maxlength="1" placeholder="•"
-                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#ff4667] focus:ring-2 focus:ring-[#ff4667]/20 shadow-sm">
+                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#738a6e] focus:ring-2 focus:ring-[#738a6e]/20 shadow-sm">
                     <input type="text" maxlength="1" placeholder="•"
-                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#ff4667] focus:ring-2 focus:ring-[#ff4667]/20 shadow-sm">
+                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#738a6e] focus:ring-2 focus:ring-[#738a6e]/20 shadow-sm">
                     <input type="text" maxlength="1" placeholder="•"
-                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#ff4667] focus:ring-2 focus:ring-[#ff4667]/20 shadow-sm">
+                        class="w-16 h-18 text-center text-2xl font-bold rounded-lg border border-[#e7e7e7] text-[#191919] focus:outline-none focus:border-[#738a6e] focus:ring-2 focus:ring-[#738a6e]/20 shadow-sm">
                 </div>
 
                 <!-- Timer Badge -->
@@ -35,7 +35,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white py-3 px-6 rounded-full font-medium text-sm transition-all shadow-md flex items-center justify-center gap-2">
+            <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#283a2f] text-white py-3 px-6 rounded-xl font-medium text-sm transition-all shadow-md flex items-center justify-center gap-2">
                 <span>Verify & Proceed</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -45,7 +45,7 @@
             <!-- Resend Link -->
             <p class="text-center text-sm text-[#5d5d5d]">
                 Didn't get the OTP? 
-                <a href="#" class="font-medium text-[#ff4667] hover:underline">Resend OTP</a>
+                <a href="#" class="font-medium text-[#738a6e] hover:underline">Resend OTP</a>
             </p>
         </form>
     </div>

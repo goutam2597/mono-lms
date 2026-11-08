@@ -8,13 +8,13 @@
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
         <div class="flex items-center gap-6">
             <div class="flex items-center gap-2 text-gray-300">
-                <svg class="w-3.5 h-3.5 text-[#ff4667]" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 text-[#738a6e]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
                 <span>{{ __('app.footer.address') }}</span>
             </div>
             <div class="hidden sm:flex items-center gap-2 text-gray-300">
-                <svg class="w-3.5 h-3.5 text-[#ff4667]" fill="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 text-[#738a6e]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.28-.28.36-.67.25-1.02A11.36 11.36 0 018.57 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.57c0-.55-.45-1-.99-1.05z"/>
                 </svg>
                 <span>{{ __('app.footer.phone') }}</span>
@@ -47,31 +47,26 @@
 <header class="bg-white border-b border-[#f4f6f9] sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <!-- Logo -->
-        <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-lg bg-[#392c7d] flex items-center justify-center text-white shadow-sm">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                </svg>
-            </div>
-            <span class="text-2xl font-bold tracking-tight text-[#191919]">Mono<span class="text-[#ff4667]">LMS</span></span>
+        <a href="{{ route('home') }}" class="flex items-center shrink-0">
+            <img src="{{ asset('images/logo.png') }}" alt="Mono LMS" width="150" height="40" fetchpriority="high" decoding="sync" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
         </a>
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-7 text-[14px] font-medium text-[#191919]">
-            <a href="{{ route('home') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'home' ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('home') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'home' ? 'text-[#344c3d] font-semibold' : '' }}">
                 {{ __('app.nav.home') }}
             </a>
-            <a href="{{ route('courses.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('courses.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#344c3d] font-semibold' : '' }}">
                 {{ __('app.nav.courses') }}
             </a>
-            <a href="{{ route('instructors.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'instructors' ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('instructors.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'instructors' ? 'text-[#344c3d] font-semibold' : '' }}">
                 {{ __('app.nav.instructors') }}
             </a>
-            <a href="{{ route('blog.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'blog' ? 'text-[#ff4667]' : '' }}">
+            <a href="{{ route('blog.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'blog' ? 'text-[#344c3d] font-semibold' : '' }}">
                 {{ __('app.nav.blog') }}
             </a>
             @if (\App\Models\Setting::get('membership_enabled'))
-                <a href="{{ route('membership.index') }}" class="py-2 hover:text-[#ff4667] transition-colors {{ $active === 'membership' ? 'text-[#ff4667]' : '' }}">
+                <a href="{{ route('membership.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'membership' ? 'text-[#344c3d] font-semibold' : '' }}">
                     {{ __('app.nav.membership') }}
                 </a>
             @endif
@@ -81,36 +76,36 @@
         <div class="flex items-center gap-3">
             <!-- Mobile Menu (below lg) -->
             <details class="lg:hidden relative">
-                <summary class="w-9 h-9 rounded-full border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#ff4667] hover:border-[#ff4667] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <summary class="w-9 h-9 rounded-xl border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#738a6e] hover:border-[#738a6e] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </summary>
                 <div class="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
-                    <a href="{{ route('home') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.home') }}</a>
-                    <a href="{{ route('courses.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.courses') }}</a>
-                    <a href="{{ route('instructors.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.instructors') }}</a>
-                    <a href="{{ route('blog.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.blog') }}</a>
+                    <a href="{{ route('home') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.home') }}</a>
+                    <a href="{{ route('courses.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.courses') }}</a>
+                    <a href="{{ route('instructors.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.instructors') }}</a>
+                    <a href="{{ route('blog.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.blog') }}</a>
                     @if (\App\Models\Setting::get('membership_enabled'))
-                        <a href="{{ route('membership.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.membership') }}</a>
+                        <a href="{{ route('membership.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.membership') }}</a>
                     @endif
                     <div class="border-t border-gray-100 my-1"></div>
                     @guest('student')
-                        <a href="{{ route('login') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.sign_in') }}</a>
-                        <a href="{{ route('register') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.register') }}</a>
+                        <a href="{{ route('login') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.sign_in') }}</a>
+                        <a href="{{ route('register') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.register') }}</a>
                     @else
-                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.dashboard') }}</a>
+                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
                     @endguest
                 </div>
             </details>
 
             @guest('student')
                 <!-- Sign In Button -->
-                <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center gap-1.5 bg-[#e7e7e7] text-[#191919] hover:bg-gray-300 px-4 py-2 rounded-full font-medium text-[13px] transition-colors">
+                <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center gap-1.5 bg-[#e7e7e7] text-[#191919] hover:bg-gray-300 px-4 py-2 rounded-xl font-medium text-[13px] transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
                     <span>{{ __('app.nav.sign_in') }}</span>
                 </a>
 
                 <!-- Register Button -->
-                <a href="{{ route('register') }}" class="inline-flex items-center gap-1.5 bg-[#ff4667] text-white hover:bg-[#e03a58] px-4 py-2 rounded-full font-medium text-[13px] shadow-sm transition-all hover:shadow">
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-1.5 bg-[#344c3d] text-white hover:bg-[#25372c] px-4 py-2 rounded-xl font-medium text-[13px] shadow-sm transition-all hover:shadow">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                     <span>{{ __('app.nav.register') }}</span>
                 </a>
@@ -129,8 +124,8 @@
                                 <p class="text-sm font-semibold text-[#191919] truncate">{{ $student->name }}</p>
                                 <p class="text-xs text-gray-500 truncate">{{ $student->email }}</p>
                             </div>
-                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.dashboard') }}</a>
-                            <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#ff4667]">{{ __('app.nav.profile') }}</a>
+                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
+                            <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>

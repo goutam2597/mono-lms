@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable(['student_id', 'plan_id', 'status', 'starts_at', 'ends_at'])]
+#[Fillable(['student_id', 'plan_id', 'status', 'starts_at', 'ends_at'])]
 class Subscription extends Model
 {
     protected function casts(): array

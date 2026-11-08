@@ -11,7 +11,7 @@
                     <h3 class="font-bold text-[#191919]">{{ __('admin.roles.title') }}</h3>
                     <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.roles.subtitle') }}</p>
                 </div>
-                <a href="{{ route('admin.roles.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.roles.create') }}</a>
+                <a href="{{ route('admin.roles.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.roles.create') }}</a>
             </div>
 
             <div class="divide-y divide-gray-100">

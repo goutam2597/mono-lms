@@ -8,7 +8,7 @@
             </div>
             <div class="flex items-center gap-2">
                 @foreach (['' => __('app.common.all'), 'pending' => __('app.common.pending'), 'approved' => __('app.common.approved'), 'rejected' => __('app.common.rejected')] as $key => $label)
-                    <a href="{{ route('admin.reviews.index', array_filter(['status' => $key])) }}" class="text-xs font-semibold px-4 py-2 rounded-full transition-colors {{ request('status') == $key ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ $label }}</a>
+                    <a href="{{ route('admin.reviews.index', array_filter(['status' => $key])) }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ request('status') == $key ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ $label }}</a>
                 @endforeach
             </div>
         </div>
@@ -57,7 +57,7 @@
                                     @if ($review->status !== 'rejected')
                                         <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
                                             @csrf
-                                            <button type="submit" class="text-xs font-semibold text-[#ff4667] hover:underline">{{ __('admin.reviews.reject') }}</button>
+                                            <button type="submit" class="text-xs font-semibold text-[#738a6e] hover:underline">{{ __('admin.reviews.reject') }}</button>
                                         </form>
                                     @endif
                                     <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">

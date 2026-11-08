@@ -22,6 +22,7 @@ return [
     'what_you_get' => 'आपको क्या मिलेगा',
     'about_instructor' => 'इंस्ट्रक्टर के बारे में',
     'related_courses' => 'संबंधित कोर्स',
+    'enroll' => 'एनरोल',
     'enroll_now' => 'अभी एनरोल करें',
     'go_to_course' => 'कोर्स में जाएँ',
     'enroll_free' => 'मुफ़्त एनरोल',

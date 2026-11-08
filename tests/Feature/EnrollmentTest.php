@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Category;
 use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\Student;

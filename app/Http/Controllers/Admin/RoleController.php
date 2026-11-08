@@ -21,7 +21,7 @@ class RoleController extends Controller
     public function create()
     {
         return view('pages.admin.roles-form', [
-            'role' => new Role(),
+            'role' => new Role,
             'permissions' => Permission::all()->groupBy('group'),
         ]);
     }

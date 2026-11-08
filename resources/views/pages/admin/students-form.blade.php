@@ -10,12 +10,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.name') }} *</label>
-                    <input type="text" name="name" value="{{ old('name', $student->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="text" name="name" value="{{ old('name', $student->name) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     @error('name')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.email') }} *</label>
-                    <input type="email" name="email" value="{{ old('email', $student->email) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="email" name="email" value="{{ old('email', $student->email) }}" required class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                     @error('email')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.phone') }}</label>
-                    <input type="text" name="phone" value="{{ old('phone', $student->phone) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#ff4667]">
+                    <input type="text" name="phone" value="{{ old('phone', $student->phone) }}" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.status') }}</label>
@@ -35,7 +35,7 @@
             </div>
 
             <div class="flex items-center gap-3 pt-2">
-                <button type="submit" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors">{{ __('app.common.save') }}</button>
+                <button type="submit" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">{{ __('app.common.save') }}</button>
                 <a href="{{ route('admin.students.index') }}" class="text-sm font-semibold text-[#5d5d5d] hover:text-[#191919] px-4 py-2.5">{{ __('app.common.cancel') }}</a>
             </div>
         </form>

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +15,7 @@ class ScreensTest extends TestCase
         parent::setUp();
 
         // Membership is admin-dependent; enable it for the public screens test.
-        \App\Models\Setting::set('membership_enabled', '1');
+        Setting::set('membership_enabled', '1');
     }
 
     /**

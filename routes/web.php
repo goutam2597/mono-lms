@@ -2,23 +2,35 @@
 
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PaymentGatewayController as AdminPaymentGatewayController;
+use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ServicesController as AdminServicesController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\SupportController as AdminSupportController;
+use App\Http\Controllers\Admin\SystemController as AdminSystemController;
+use App\Http\Controllers\Admin\UserDirectoryController as AdminUserDirectoryController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\InstructorAuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
 use App\Http\Controllers\Instructor\LessonController;
@@ -27,6 +39,7 @@ use App\Http\Controllers\Instructor\ReviewController as InstructorReviewControll
 use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
@@ -193,6 +206,67 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         Route::put('/plans/{plan}', [AdminPlanController::class, 'update'])->name('plans.update');
         Route::delete('/plans/{plan}', [AdminPlanController::class, 'destroy'])->name('plans.destroy');
     });
+
+    // Unified All Users Directory
+    Route::get('/users', [AdminUserDirectoryController::class, 'index'])->name('users.index');
+
+    // Orders & Sales Management
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+
+    // Coupons
+    Route::get('/coupons', [AdminCouponController::class, 'index'])->name('coupons.index');
+    Route::post('/coupons', [AdminCouponController::class, 'store'])->name('coupons.store');
+    Route::patch('/coupons/{coupon}/toggle', [AdminCouponController::class, 'toggle'])->name('coupons.toggle');
+    Route::delete('/coupons/{coupon}', [AdminCouponController::class, 'destroy'])->name('coupons.destroy');
+
+    // Payouts
+    Route::get('/payouts', [AdminPayoutController::class, 'index'])->name('payouts.index');
+    Route::patch('/payouts/{payout}', [AdminPayoutController::class, 'update'])->name('payouts.update');
+
+    // Certificate Templates
+    Route::get('/certificate-templates', [AdminCertificateController::class, 'index'])->name('certificates.index');
+    Route::post('/certificate-templates', [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::patch('/certificate-templates/{template}/default', [AdminCertificateController::class, 'makeDefault'])->name('certificates.default');
+
+    // Support Tickets & Contact Messages
+    Route::get('/tickets', [AdminSupportController::class, 'tickets'])->name('tickets.index');
+    Route::patch('/tickets/{ticket}/reply', [AdminSupportController::class, 'replyTicket'])->name('tickets.reply');
+    Route::get('/messages', [AdminSupportController::class, 'messages'])->name('messages.index');
+    Route::patch('/messages/{message}/toggle', [AdminSupportController::class, 'toggleMessageRead'])->name('messages.toggle');
+    Route::delete('/messages/{message}', [AdminSupportController::class, 'destroyMessage'])->name('messages.destroy');
+
+    // Payment Gateways
+    Route::get('/payment-gateways', [AdminPaymentGatewayController::class, 'index'])->name('payment-gateways.index');
+    Route::post('/payment-gateways', [AdminPaymentGatewayController::class, 'update'])->name('payment-gateways.update');
+
+    // Reports & Analytics
+    Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+
+    // General Settings
+    Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+
+    // Mail (SMTP) & Storage Services
+    Route::get('/services', [AdminServicesController::class, 'index'])->name('services.index');
+    Route::post('/services/mail', [AdminServicesController::class, 'updateMail'])->name('services.mail');
+    Route::post('/services/mail/test', [AdminServicesController::class, 'testMail'])->name('services.mail.test');
+    Route::post('/services/storage', [AdminServicesController::class, 'updateStorage'])->name('services.storage');
+
+    // Leads (CRM)
+    Route::get('/leads', [AdminLeadController::class, 'index'])->name('leads.index');
+    Route::patch('/leads/{lead}', [AdminLeadController::class, 'update'])->name('leads.update');
+    Route::delete('/leads/{lead}', [AdminLeadController::class, 'destroy'])->name('leads.destroy');
+
+    // Events / Webinars
+    Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
+    Route::post('/events', [AdminEventController::class, 'store'])->name('events.store');
+    Route::delete('/events/{event}', [AdminEventController::class, 'destroy'])->name('events.destroy');
+
+    // System Status & Updates
+    Route::get('/system', [AdminSystemController::class, 'index'])->name('system.index');
+    Route::post('/system/clear-cache', [AdminSystemController::class, 'clearCache'])->name('system.clear-cache');
 });
 
 // ---------------------------------------------------------- Instructor panel

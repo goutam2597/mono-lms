@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'name', 'slug', 'description', 'price', 'billing_period',
     'features', 'is_active', 'is_popular', 'sort_order',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Hidden([])]
+#[Hidden([])]
 class Plan extends Model
 {
     protected function casts(): array

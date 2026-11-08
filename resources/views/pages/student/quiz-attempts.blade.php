@@ -40,7 +40,7 @@
                                 <span class="bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full text-[10px]">Pass</span>
                             </td>
                             <td class="py-4 text-right">
-                                <button class="text-[#392c7d] hover:text-[#ff4667] font-semibold">View Answers →</button>
+                                <button class="text-[#392c7d] hover:text-[#344c3d] font-semibold">View Answers →</button>
                             </td>
                         </tr>
 
@@ -56,7 +56,7 @@
                                 <span class="bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full text-[10px]">Pass</span>
                             </td>
                             <td class="py-4 text-right">
-                                <button class="text-[#392c7d] hover:text-[#ff4667] font-semibold">View Answers →</button>
+                                <button class="text-[#392c7d] hover:text-[#344c3d] font-semibold">View Answers →</button>
                             </td>
                         </tr>
 
@@ -72,7 +72,7 @@
                                 <span class="bg-rose-100 text-rose-700 font-bold px-2.5 py-1 rounded-full text-[10px]">Fail</span>
                             </td>
                             <td class="py-4 text-right">
-                                <button class="text-[#ff4667] hover:underline font-semibold">Retake Quiz</button>
+                                <button class="text-[#738a6e] hover:underline font-semibold">Retake Quiz</button>
                             </td>
                         </tr>
 
@@ -88,7 +88,7 @@
                                 <span class="bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-full text-[10px]">Pass</span>
                             </td>
                             <td class="py-4 text-right">
-                                <button class="text-[#392c7d] hover:text-[#ff4667] font-semibold">View Answers →</button>
+                                <button class="text-[#392c7d] hover:text-[#344c3d] font-semibold">View Answers →</button>
                             </td>
                         </tr>
                     </tbody>

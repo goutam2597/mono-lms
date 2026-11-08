@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'code', 'name', 'native_name', 'direction', 'flag', 'is_active', 'is_default', 'sort_order',
 ])]
 class Language extends Model
@@ -17,6 +18,7 @@ class Language extends Model
             'is_default' => 'boolean',
         ];
     }
+
     public static function active()
     {
         // Cache plain attributes (not the Eloquent collection) so the

@@ -2,14 +2,14 @@
 
     <div class="space-y-8">
         <!-- Quiz Alert Banner -->
-        <div class="bg-gradient-to-r from-[#ff4667] to-[#ff6b84] rounded-2xl p-6 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative overflow-hidden">
+        <div class="bg-gradient-to-r from-[#738a6e] to-[#ff6b84] rounded-2xl p-6 text-white shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative overflow-hidden">
             <div class="flex items-center gap-4">
                 <span class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </span>
                 <p class="text-sm font-medium">{{ __('student.dashboard.browse_hint') }}</p>
             </div>
-            <a href="{{ route('courses.index') }}" class="bg-white text-[#ff4667] text-xs font-bold px-5 py-2.5 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap">{{ __('student.nav.browse') }}</a>
+            <a href="{{ route('courses.index') }}" class="bg-white text-[#738a6e] text-xs font-bold px-5 py-2.5 rounded-xl hover:bg-gray-100 transition-colors whitespace-nowrap">{{ __('student.nav.browse') }}</a>
         </div>
 
         <!-- Stats -->
@@ -31,7 +31,7 @@
         <div>
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-bold text-[#191919]">{{ __('student.dashboard.recently_enrolled') }}</h3>
-                <a href="{{ route('student.enrolled-courses') }}" class="text-xs font-semibold text-[#ff4667] hover:underline">{{ __('app.common.view_all') }}</a>
+                <a href="{{ route('student.enrolled-courses') }}" class="text-xs font-semibold text-[#738a6e] hover:underline">{{ __('app.common.view_all') }}</a>
             </div>
 
             @forelse ($enrollments->take(3) as $enrollment)
@@ -47,14 +47,14 @@
                             <span class="text-xs text-gray-400">{{ $enrollment->progress }}%</span>
                         </div>
                     </div>
-                    <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="bg-[#f4f6f9] hover:bg-[#392c7d] hover:text-white text-[#191919] text-xs font-bold py-2.5 px-5 rounded-full transition-colors whitespace-nowrap">
+                    <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="bg-[#f4f6f9] hover:bg-[#392c7d] hover:text-white text-[#191919] text-xs font-bold py-2.5 px-5 rounded-xl transition-colors whitespace-nowrap">
                         {{ __('student.dashboard.keep_learning') }}
                     </a>
                 </div>
             @empty
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-10 text-center shadow-xs">
                     <p class="text-sm text-gray-400">{{ __('student.dashboard.no_enrollments') }}</p>
-                    <a href="{{ route('courses.index') }}" class="inline-block mt-4 bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-bold px-5 py-2.5 rounded-full transition-colors">{{ __('student.nav.browse') }}</a>
+                    <a href="{{ route('courses.index') }}" class="inline-block mt-4 bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-colors">{{ __('student.nav.browse') }}</a>
                 </div>
             @endforelse
         </div>

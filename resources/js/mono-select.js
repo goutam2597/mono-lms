@@ -24,7 +24,7 @@
  *   [data-ms-empty]           "no matches" message
  *   [data-ms-autosubmit]      submit closest form on change (filter bars)
  */
-const ACTIVE_CLASS = ['bg-[#f4f6f9]', 'text-[#ff4667]'];
+const ACTIVE_CLASS = ['bg-[#f4f6f9]', 'text-[#344c3d]', 'font-semibold'];
 
 function initMonoSelects(root = document) {
     root.querySelectorAll('[data-mono-select]:not([data-ms-ready])').forEach((box) => {
@@ -103,8 +103,8 @@ function initMonoSelects(root = document) {
             hidden.value = option.getAttribute('value');
             label.textContent = option.querySelector('[data-ms-option-label]')?.textContent ?? option.textContent.trim();
             label.classList.remove('text-gray-400');
-            options.forEach((other) => other.classList.remove('text-[#ff4667]', 'font-semibold'));
-            option.classList.add('text-[#ff4667]', 'font-semibold');
+            options.forEach((other) => other.classList.remove('text-[#344c3d]', 'text-[#ff4667]', 'font-semibold'));
+            option.classList.add('text-[#344c3d]', 'font-semibold');
             close();
             box.dispatchEvent(new Event('change', { bubbles: true }));
         };

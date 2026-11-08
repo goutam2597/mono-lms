@@ -3,13 +3,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">
             <!-- Brand Column -->
             <div class="lg:col-span-4 space-y-4">
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-lg bg-[#392c7d] flex items-center justify-center text-white shadow-sm">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
-                        </svg>
-                    </div>
-                    <span class="text-2xl font-bold tracking-tight text-white">Mono<span class="text-[#ff4667]">LMS</span></span>
+                <a href="{{ route('home') }}" class="flex items-center shrink-0">
+                    <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" width="150" height="40" decoding="async" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
                     {{ __('app.footer.about') }}
@@ -37,10 +32,10 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.support') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.help_center') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.faq') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.contact') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.blog') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.help_center') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.faq') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.blog') }}</a></li>
                 </ul>
             </div>
 
@@ -48,11 +43,11 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.pages') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ route('courses.index') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.courses') }}</a></li>
-                    <li><a href="{{ route('instructors.index') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.instructors') }}</a></li>
-                    <li><a href="{{ route('screens') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.screens') }}</a></li>
-                    <li><a href="{{ route('login') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
-                    <li><a href="{{ route('register') }}" class="hover:text-[#ff4667] transition-colors">{{ __('app.nav.register') }}</a></li>
+                    <li><a href="{{ route('courses.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.courses') }}</a></li>
+                    <li><a href="{{ route('instructors.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.instructors') }}</a></li>
+                    <li><a href="{{ route('screens') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.screens') }}</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
+                    <li><a href="{{ route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
                 </ul>
             </div>
 
@@ -60,10 +55,10 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.useful') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.about_us') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.blog') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.pricing') }}</a></li>
-                    <li><a href="#" class="hover:text-[#ff4667] transition-colors">{{ __('app.footer.contact') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.blog') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.pricing') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
                 </ul>
             </div>
 
@@ -72,8 +67,8 @@
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.newsletter') }}</h4>
                 <p class="text-xs text-gray-400 mb-3">{{ __('app.footer.newsletter_hint') }}</p>
                 <div class="space-y-2">
-                    <input type="email" placeholder="{{ __('app.footer.email_placeholder') }}" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#ff4667]" />
-                    <button class="w-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
+                    <input type="email" placeholder="{{ __('app.footer.email_placeholder') }}" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#738a6e]" />
+                    <button class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
                         {{ __('app.footer.subscribe') }}
                     </button>
                 </div>

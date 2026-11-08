@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable(['student_id', 'course_id', 'progress', 'status'])]
+#[Fillable(['student_id', 'course_id', 'progress', 'status'])]
 class Enrollment extends Model
 {
     public function student(): BelongsTo

@@ -8,9 +8,9 @@
             </div>
             <div class="flex items-center gap-2">
                 @foreach (['' => __('app.common.all'), 'published' => __('app.common.published'), 'draft' => __('app.common.draft')] as $key => $label)
-                    <a href="{{ route('admin.blog.index', array_filter(['status' => $key])) }}" class="text-xs font-semibold px-4 py-2 rounded-full transition-colors {{ request('status') == $key ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ $label }}</a>
+                    <a href="{{ route('admin.blog.index', array_filter(['status' => $key])) }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ request('status') == $key ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ $label }}</a>
                 @endforeach
-                <a href="{{ route('admin.blog.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.blog.create') }}</a>
+                <a href="{{ route('admin.blog.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.blog.create') }}</a>
             </div>
         </div>
 

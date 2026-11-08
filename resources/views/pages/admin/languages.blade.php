@@ -44,7 +44,7 @@
                                 </td>
                                 <td class="px-6 py-3.5">
                                     @if ($language->is_default)
-                                        <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#ff4667]/10 text-[#ff4667]">★ {{ __('admin.languages.default') }}</span>
+                                        <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#738a6e]/10 text-[#738a6e]">★ {{ __('admin.languages.default') }}</span>
                                     @else
                                         <span class="text-xs text-gray-400">—</span>
                                     @endif
@@ -58,7 +58,7 @@
                                             </form>
                                             <form method="POST" action="{{ route('admin.languages.toggle', $language) }}">
                                                 @csrf
-                                                <button type="submit" class="text-xs font-semibold {{ $language->is_active ? 'text-[#ff4667]' : 'text-[#03c95a]' }} hover:underline">
+                                                <button type="submit" class="text-xs font-semibold {{ $language->is_active ? 'text-[#738a6e]' : 'text-[#03c95a]' }} hover:underline">
                                                     {{ $language->is_active ? __('admin.languages.disable') : __('admin.languages.enable') }}
                                                 </button>
                                             </form>

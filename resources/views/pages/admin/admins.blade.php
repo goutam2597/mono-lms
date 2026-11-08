@@ -6,7 +6,7 @@
                 <h3 class="font-bold text-[#191919]">{{ __('admin.admins.title') }}</h3>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.admins.subtitle') }}</p>
             </div>
-            <a href="{{ route('admin.admins.create') }}" class="bg-[#ff4667] hover:bg-[#e03a58] text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-colors whitespace-nowrap">+ {{ __('admin.admins.create') }}</a>
+            <a href="{{ route('admin.admins.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap">+ {{ __('admin.admins.create') }}</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -33,7 +33,7 @@
                             </td>
                             <td class="px-6 py-3.5">
                                 @if ($admin->is_super_admin)
-                                    <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#ff4667]/10 text-[#ff4667]">{{ __('admin.admins.super_admin') }}</span>
+                                    <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#738a6e]/10 text-[#738a6e]">{{ __('admin.admins.super_admin') }}</span>
                                 @else
                                     <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#392c7d]/10 text-[#392c7d]">{{ $admin->role?->name ?? '—' }}</span>
                                 @endif

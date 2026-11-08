@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Notifications\PanelResetPassword;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-#[\Illuminate\Database\Eloquent\Attributes\Fillable([
+#[Fillable([
     'role_id', 'name', 'email', 'password', 'phone', 'avatar',
     'locale', 'is_super_admin', 'status',
 ])]
-#[\Illuminate\Database\Eloquent\Attributes\Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token'])]
 class Admin extends Authenticatable
 {
     protected function casts(): array
@@ -33,7 +36,7 @@ class Admin extends Authenticatable
 
     public function sendPasswordResetNotification($token): void
     {
-        $this->notify(new \App\Notifications\PanelResetPassword($token, __('emails.panels.admin'), 'admin'));
+        $this->notify(new PanelResetPassword($token, __('emails.panels.admin'), 'admin'));
     }
 
     /**

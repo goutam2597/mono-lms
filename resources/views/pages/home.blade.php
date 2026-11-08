@@ -6,7 +6,7 @@
              category dropdown can overflow the section freely) -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute -top-32 right-0 w-[550px] h-[550px] rounded-full bg-[#392c7d]/5 blur-3xl anim-pulse-soft"></div>
-            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#ff4667]/5 blur-3xl anim-pulse-soft"></div>
+            <div class="absolute top-1/3 -left-32 w-[450px] h-[450px] rounded-full bg-[#738a6e]/8 blur-3xl anim-pulse-soft"></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
@@ -16,14 +16,14 @@
                 <div class="lg:col-span-6 space-y-7 text-left">
                     <!-- Top Pill Tagline -->
                     <div class="inline-block anim-fade-up">
-                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#ff4667] text-white shadow-sm">
+                        <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#344C3D] text-[#DCE7DA] shadow-sm">
                             {{ __('home.hero.badge') }}
                         </span>
                     </div>
 
                     <!-- Main Display Heading -->
                     <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight anim-fade-up anim-d1">
-                        {{ __('home.hero.title_line1') }} <span class="text-[#ff4667]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
+                        {{ __('home.hero.title_line1') }} <span class="text-[#738A6E]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
                     </h1>
 
                     <!-- Subtitle Description -->
@@ -32,9 +32,9 @@
                     </p>
 
                     <!-- Rounded Search Bar -->
-                    <form action="{{ route('courses.index') }}" method="GET" class="anim-fade-up anim-d3 bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl">
+                    <form action="{{ route('courses.index') }}" method="GET" class="relative z-40 anim-fade-up anim-d3 bg-white rounded-[10px] p-2.5 shadow-[0px_4px_18px_rgba(216,216,216,0.35)] border border-[#e9ecef] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 max-w-xl">
                         <!-- Category Select Pill (custom MonoSelect) -->
-                        <div class="bg-[#e7e7e7] rounded-[6px] flex items-center">
+                        <div class="bg-[#DCE7DA]/50 rounded-[6px] flex items-center relative z-10">
                             <x-select name="category"
                                 :options="$categories->pluck('name', 'slug')"
                                 :selected="request('category')"
@@ -48,25 +48,25 @@
 
                         <!-- Search Input with School/Building Icon -->
                         <div class="flex-1 flex items-center gap-2.5 px-2">
-                            <svg class="w-5 h-5 text-[#b0b0b0] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-[#8EA58C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
-                            <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search_placeholder') }}" class="w-full text-sm text-[#191919] placeholder-[#b0b0b0] bg-transparent focus:outline-none" />
+                            <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search_placeholder') }}" class="w-full text-sm text-[#191919] placeholder-[#888888] bg-transparent focus:outline-none" />
                         </div>
 
                         <!-- Arrow Submit Button -->
-                        <button type="submit" class="bg-[#392c7d] hover:bg-[#2c2263] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm cursor-pointer" aria-label="{{ __('app.common.search') }}">
+                        <button type="submit" class="bg-[#344C3D] hover:bg-[#25372c] text-white p-3 rounded-[10px] transition-colors flex items-center justify-center shrink-0 shadow-sm cursor-pointer" aria-label="{{ __('app.common.search') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </button>
                     </form>
 
-                    <!-- Quick Category Chips -->
-                    <div class="flex flex-wrap items-center gap-2 anim-fade-up anim-d4">
-                        <span class="text-xs text-gray-400 font-medium">{{ __('home.hero.popular') }}</span>
-                        @foreach ($categories->take(4) as $chipCategory)
-                            <a href="{{ route('courses.index', ['category' => $chipCategory->slug]) }}" class="px-3 py-1.5 rounded-full bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] hover:border-[#ff4667] hover:text-[#ff4667] transition-colors">
+                    <!-- Quick Category Chips (Single Row) -->
+                    <div class="flex items-center gap-2 anim-fade-up anim-d4 overflow-x-auto no-scrollbar py-0.5">
+                        <span class="text-xs text-gray-400 font-medium shrink-0">{{ __('home.hero.popular') }}</span>
+                        @foreach ($categories->take(3) as $chipCategory)
+                            <a href="{{ route('courses.index', ['category' => $chipCategory->slug]) }}" class="px-3 py-1.5 rounded-full bg-white border border-[#BFCFBB]/80 text-xs font-medium text-[#191919] hover:border-[#738A6E] hover:text-[#344C3D] hover:bg-[#DCE7DA]/30 transition-colors shrink-0 whitespace-nowrap">
                                 {{ $chipCategory->name }}
                             </a>
                         @endforeach
@@ -76,99 +76,169 @@
                     <div class="flex items-center gap-3 anim-fade-up anim-d5">
                         <div class="flex -space-x-2.5">
                             @foreach ($topInstructors->take(4) as $trustInstructor)
-                                <img src="{{ $trustInstructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($trustInstructor->name).'&background=392c7d&color=fff' }}" alt="{{ $trustInstructor->name }}" class="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
+                                <img src="{{ $trustInstructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($trustInstructor->name).'&background=344C3D&color=DCE7DA' }}" alt="{{ $trustInstructor->name }}" class="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
                             @endforeach
-                            <span class="w-9 h-9 rounded-full bg-[#ff4667] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">+{{ $stats['instructors'] }}</span>
+                            <span class="w-9 h-9 rounded-full bg-[#344C3D] text-[#DCE7DA] text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">+{{ $stats['instructors'] }}</span>
                         </div>
                         <div class="text-xs text-[#6d6d6d] leading-snug">
-                            <span class="text-[#ffc107]">★★★★★</span> <strong class="text-[#191919]">{{ __('home.hero.rating_label') }}</strong><br>
+                            <span class="text-[#738A6E]">★★★★★</span> <strong class="text-[#191919]">{{ __('home.hero.rating_label') }}</strong><br>
                             Trusted by <strong class="text-[#191919]">{{ $stats['students'] }}+ {{ __('home.hero.students_word') }}</strong>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Visual Column -->
-                <div class="lg:col-span-6 relative flex justify-center items-center">
-                    <!-- Dynamic curved background vectors -->
-                    <div data-hero-showcase class="relative w-full max-w-[540px] aspect-[4/4.5] flex items-center justify-center">
-                        <!-- Curved Decorative Ribbon Layers -->
-                        <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 540 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Vector 3 (Deep Indigo wave) -->
-                            <path d="M120 40C260 -20 460 20 520 180C580 340 480 520 340 580C200 640 40 560 10 420C-20 280 20 80 120 40Z" fill="#392C7D" fill-opacity="0.95" />
-                            <!-- Vector 2 (Coral wave) -->
-                            <path d="M160 140C280 90 480 160 510 320C540 480 400 580 270 570C140 560 30 460 60 320C90 180 80 170 160 140Z" fill="#FF4667" />
-                            <!-- Vector 1 (Cyan curved accent) -->
-                            <path d="M220 280C320 240 460 300 480 420C500 540 380 600 270 590C160 580 120 500 140 400C160 300 160 300 220 280Z" fill="#0DCAF0" />
-                                     <!-- Image Slides (student / instructors / courses — crossfade every 10s) -->
-                        <div class="relative z-10 w-[82%] aspect-square rounded-full overflow-hidden shadow-2xl ring-8 ring-white/40 border-4 border-white/60">
-                            @foreach ([
-                                ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
-                                ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
-                                ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
-                                ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
-                            ] as $slide)
-                                <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" />
-                            @endforeach
+                <!-- Right Visual Column (Orbital Showcase) -->
+                <div class="lg:col-span-6 relative flex justify-center items-center py-6 lg:py-0">
+                    <div data-hero-showcase class="relative w-full max-w-[500px] sm:max-w-[550px] lg:max-w-[580px] aspect-square flex items-center justify-center select-none">
+
+                        <!-- Ambient Soft Glow Blobs in the background -->
+                        <div class="absolute -top-6 -right-6 w-56 h-56 rounded-full bg-[#BFCFBB]/35 blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-8 -left-8 w-64 h-64 rounded-full bg-[#8EA58C]/25 blur-3xl pointer-events-none"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-[#344C3D]/15 blur-3xl pointer-events-none"></div>
+
+                        <!-- 1. Outer Concentric Dashed Ring -->
+                        <div class="absolute inset-[3%] rounded-full border border-dashed border-[#8EA58C]/40 pointer-events-none"></div>
+
+                        <!-- 2. Glowing Conic Sage Green Orbital Track -->
+                        <div class="absolute inset-[9%] rounded-full p-[2.5px] pointer-events-none"
+                             style="background: conic-gradient(from 0deg, #344C3D 0deg, #738A6E 72deg, #8EA58C 144deg, #BFCFBB 216deg, #DCE7DA 288deg, #344C3D 360deg);
+                                    mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #fff calc(100% - 2px));
+                                    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #fff calc(100% - 2px));
+                                    filter: drop-shadow(0 0 7px rgba(115,138,110,0.45));">
                         </div>
 
-                        <!-- 6 Floating Info Chips — rotate every 10s -->
-                        @php
-                            $heroItems = [
-                                ['value' => $stats['courses'].'+', 'label' => __('home.hero.items.courses'), 'color' => '#ff4667', 'icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
-                                ['value' => $stats['students'].'+', 'label' => __('home.hero.items.students'), 'color' => '#03c95a', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'],
-                                ['value' => $stats['instructors'].'+', 'label' => __('home.hero.items.instructors'), 'color' => '#5625e8', 'icon' => 'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z'],
-                                ['value' => $stats['enrollments'].'+', 'label' => __('home.hero.items.enrollments'), 'color' => '#0dcaf0', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4'],
-                                ['value' => $categories->count(), 'label' => __('home.hero.items.categories'), 'color' => '#ffc107', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
-                                ['value' => __('home.hero.items.live_value'), 'label' => __('home.hero.items.live'), 'color' => '#ff2d55', 'icon' => 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z'],
-                                ['value' => __('home.hero.items.certificates_value'), 'label' => __('home.hero.items.certificates'), 'color' => '#03c95a', 'icon' => 'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z'],
-                                ['value' => __('home.hero.items.rating_value'), 'label' => __('home.hero.items.rating'), 'color' => '#ffc107', 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
-                                ['value' => __('home.hero.items.support_value'), 'label' => __('home.hero.items.support'), 'color' => '#0dcaf0', 'icon' => 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z'],
-                                ['value' => __('home.hero.items.guidance_value'), 'label' => __('home.hero.items.guidance'), 'color' => '#5625e8', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-                                ['value' => __('home.hero.items.access_value'), 'label' => __('home.hero.items.access'), 'color' => '#03c95a', 'icon' => 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'],
-                                ['value' => __('home.hero.items.anywhere_value'), 'label' => __('home.hero.items.anywhere'), 'color' => '#ff4667', 'icon' => 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
-                            ];
-                        @endphp
+                        <!-- 3. SVG Beads flanking badges on the orbit ring (viewBox 500x500, R=205) -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 500 500" fill="none">
+                            <!-- Evergreen beads (Top) -->
+                            <circle cx="215" cy="49" r="4" fill="#344C3D" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="285" cy="49" r="4" fill="#344C3D" stroke="#ffffff" stroke-width="1.5" />
 
-                        @foreach ([
-                            ['pos' => '-top-5 right-0', 'item' => 4],
-                            ['pos' => '-bottom-5 left-6', 'item' => 0],
-                            ['pos' => 'top-1/3 -left-3 hidden lg:block', 'item' => 2],
-                            ['pos' => 'bottom-1/3 -right-3 hidden lg:block', 'item' => 3],
-                            ['pos' => '-top-6 left-14 hidden lg:block', 'item' => 4],
-                            ['pos' => 'bottom-10 -right-3 hidden lg:block', 'item' => 5],
-                        ] as $slotConfig)
-                            <div data-hero-slot class="absolute {{ $slotConfig['pos'] }} z-20">
-                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-full p-3.5 shadow-xl">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItems[$slotConfig['item']]['color'] }}15; color: {{ $heroItems[$slotConfig['item']]['color'] }};">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItems[$slotConfig['item']]['icon'] }}"/></svg>
-                                        </div>
-                                        <div>
-                                            <p class="text-base font-bold text-[#191919] leading-tight">{{ $heroItems[$slotConfig['item']]['value'] }}</p>
-                                            <p class="text-xs text-[#6d6d6d] font-medium">{{ $heroItems[$slotConfig['item']]['label'] }}</p>
-                                        </div>
-                                    </div>
+                            <!-- Moss beads (Top-Right) -->
+                            <circle cx="430" cy="155" r="4" fill="#738A6E" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="445" cy="225" r="4" fill="#738A6E" stroke="#ffffff" stroke-width="1.5" />
+
+                            <!-- Sage beads (Bottom-Right) -->
+                            <circle cx="395" cy="385" r="4" fill="#8EA58C" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="340" cy="435" r="4" fill="#8EA58C" stroke="#ffffff" stroke-width="1.5" />
+
+                            <!-- Mint beads (Bottom-Left) -->
+                            <circle cx="160" cy="435" r="4" fill="#BFCFBB" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="105" cy="385" r="4" fill="#BFCFBB" stroke="#ffffff" stroke-width="1.5" />
+
+                            <!-- Evergreen beads (Top-Left) -->
+                            <circle cx="55" cy="225" r="4" fill="#344C3D" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="70" cy="155" r="4" fill="#344C3D" stroke="#ffffff" stroke-width="1.5" />
+                        </svg>
+
+                        <!-- 4. Central Multi-Ring Photo Avatar Container -->
+                        <div class="relative z-10 w-[58%] aspect-square flex items-center justify-center">
+                            <!-- Outer Sage Green Gradient Rim -->
+                            <div class="absolute -inset-1.5 rounded-full p-[3.5px] pointer-events-none shadow-[0_20px_50px_rgba(52,76,61,0.22)]"
+                                 style="background: conic-gradient(from 180deg, #344C3D 0deg, #738A6E 90deg, #8EA58C 180deg, #BFCFBB 270deg, #344C3D 360deg);">
+                                <div class="w-full h-full rounded-full bg-white/40 backdrop-blur-xs"></div>
+                            </div>
+
+                            <!-- White Spacer Ring -->
+                            <div class="relative w-full h-full rounded-full p-2 bg-white/90 backdrop-blur-md shadow-2xl ring-1 ring-black/5">
+                                <!-- Photo Slides (crossfade) -->
+                                <div class="relative w-full h-full rounded-full overflow-hidden shadow-inner bg-slate-900">
+                                    @foreach ([
+                                        ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
+                                        ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
+                                        ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
+                                        ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
+                                    ] as $slide)
+                                        <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 transition-opacity duration-700 ease-in-out" />
+                                    @endforeach
+
+                                    <!-- Bottom Sage Luminous Arc Rim inside Photo -->
+                                    <div class="absolute inset-0 rounded-full pointer-events-none ring-[3px] ring-inset ring-[#8EA58C]/70 shadow-[inset_0_-22px_32px_rgba(52,76,61,0.50)]"></div>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
 
-                        <!-- Rotation templates (JS swaps chip content every 10s) -->
-                        @foreach ($heroItems as $heroItem)
-                            <template data-hero-item>
-                                <div class="hero-chip bg-white border border-[#e9ecef] rounded-full p-3.5 shadow-xl">
-                                    <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background: {{ $heroItem['color'] }}15; color: {{ $heroItem['color'] }};">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $heroItem['icon'] }}"/></svg>
+                        <!-- 5. Five Circular Floating Badge Pods (Pentagon Alignment) -->
+
+                        <!-- Pod 1: TOP (12 o'clock) — Categories (Evergreen) -->
+                        <div class="absolute left-[50%] top-[9%] -translate-x-1/2 -translate-y-1/2 z-20 group">
+                            <div class="anim-orbit-float-1 relative flex items-center justify-center">
+                                <div class="absolute -inset-2.5 rounded-full bg-[#344C3D]/18 blur-lg pointer-events-none group-hover:bg-[#344C3D]/30 transition-colors"></div>
+                                <div class="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-26 lg:h-26 rounded-full bg-white/95 backdrop-blur-md border border-white shadow-[0_10px_28px_rgba(0,0,0,0.06),0_2px_8px_rgba(52,76,61,0.18)] flex flex-col items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-[#DCE7DA] border border-[#BFCFBB] text-[#344C3D] flex items-center justify-center mb-0.5 shrink-0 shadow-2xs">
+                                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                        </svg>
                                     </div>
-                                    <div>
-                                        <p class="text-base font-bold text-[#191919] leading-tight">{{ $heroItem['value'] }}</p>
-                                        <p class="text-xs text-[#6d6d6d] font-medium">{{ $heroItem['label'] }}</p>
+                                    <p class="text-[11px] sm:text-xs lg:text-[13px] font-bold text-[#344C3D] leading-tight">{{ $categories->count() }}</p>
+                                    <p class="text-[7.5px] sm:text-[8.5px] lg:text-[9.5px] text-[#738A6E] font-medium leading-tight text-center px-1 max-w-[75px]">{{ __('home.hero.items.categories') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pod 2: TOP-RIGHT (2:24) — Total Enrollments (Moss) -->
+                        <div class="absolute left-[89%] top-[37%] -translate-x-1/2 -translate-y-1/2 z-20 group">
+                            <div class="anim-orbit-float-2 relative flex items-center justify-center">
+                                <div class="absolute -inset-2.5 rounded-full bg-[#738A6E]/20 blur-lg pointer-events-none group-hover:bg-[#738A6E]/32 transition-colors"></div>
+                                <div class="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-26 lg:h-26 rounded-full bg-white/95 backdrop-blur-md border border-white shadow-[0_10px_28px_rgba(0,0,0,0.06),0_2px_8px_rgba(115,138,110,0.18)] flex flex-col items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-[#DCE7DA] border border-[#BFCFBB] text-[#738A6E] flex items-center justify-center mb-0.5 shrink-0 shadow-2xs">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                        </svg>
                                     </div>
+                                    <p class="text-[11px] sm:text-xs lg:text-[13px] font-bold text-[#191919] leading-tight">{{ $stats['enrollments'] }}+</p>
+                                    <p class="text-[7.5px] sm:text-[8.5px] lg:text-[9.5px] text-[#738A6E] font-medium leading-tight text-center px-1 max-w-[75px]">{{ __('home.hero.items.enrollments') }}</p>
                                 </div>
-                            
+                            </div>
+                        </div>
+
+                        <!-- Pod 3: BOTTOM-RIGHT (4:48) — Live Classes (Sage) -->
+                        <div class="absolute left-[74%] top-[83%] -translate-x-1/2 -translate-y-1/2 z-20 group">
+                            <div class="anim-orbit-float-1 relative flex items-center justify-center">
+                                <div class="absolute -inset-2.5 rounded-full bg-[#8EA58C]/22 blur-lg pointer-events-none group-hover:bg-[#8EA58C]/35 transition-colors"></div>
+                                <div class="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-26 lg:h-26 rounded-full bg-white/95 backdrop-blur-md border border-white shadow-[0_10px_28px_rgba(0,0,0,0.06),0_2px_8px_rgba(142,165,140,0.22)] flex flex-col items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-[#DCE7DA] border border-[#8EA58C]/60 text-[#344C3D] flex items-center justify-center mb-0.5 shrink-0 shadow-2xs">
+                                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <p class="text-[11px] sm:text-xs lg:text-[13px] font-bold text-[#191919] leading-tight">{{ __('home.hero.items.live_value') }}</p>
+                                    <p class="text-[7.5px] sm:text-[8.5px] lg:text-[9.5px] text-[#738A6E] font-medium leading-tight text-center px-1 max-w-[75px]">{{ __('home.hero.items.live') }}</p>
                                 </div>
-                            </template>
-                        @endforeach            </div>
+                            </div>
+                        </div>
+
+                        <!-- Pod 4: BOTTOM-LEFT (7:12) — Online Courses (Mint) -->
+                        <div class="absolute left-[26%] top-[83%] -translate-x-1/2 -translate-y-1/2 z-20 group">
+                            <div class="anim-orbit-float-2 relative flex items-center justify-center">
+                                <div class="absolute -inset-2.5 rounded-full bg-[#BFCFBB]/28 blur-lg pointer-events-none group-hover:bg-[#BFCFBB]/45 transition-colors"></div>
+                                <div class="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-26 lg:h-26 rounded-full bg-white/95 backdrop-blur-md border border-white shadow-[0_10px_28px_rgba(0,0,0,0.06),0_2px_8px_rgba(115,138,110,0.16)] flex flex-col items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-[#DCE7DA] border border-[#BFCFBB] text-[#738A6E] flex items-center justify-center mb-0.5 shrink-0 shadow-2xs">
+                                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                        </svg>
+                                    </div>
+                                    <p class="text-[11px] sm:text-xs lg:text-[13px] font-bold text-[#191919] leading-tight">{{ $stats['courses'] }}+</p>
+                                    <p class="text-[7.5px] sm:text-[8.5px] lg:text-[9.5px] text-[#738A6E] font-medium leading-tight text-center px-1 max-w-[75px]">{{ __('home.hero.items.courses') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pod 5: TOP-LEFT (9:36) — Expert Instructors (Evergreen) -->
+                        <div class="absolute left-[11%] top-[37%] -translate-x-1/2 -translate-y-1/2 z-20 group">
+                            <div class="anim-orbit-float-1 relative flex items-center justify-center">
+                                <div class="absolute -inset-2.5 rounded-full bg-[#344C3D]/18 blur-lg pointer-events-none group-hover:bg-[#344C3D]/30 transition-colors"></div>
+                                <div class="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-26 lg:h-26 rounded-full bg-white/95 backdrop-blur-md border border-white shadow-[0_10px_28px_rgba(0,0,0,0.06),0_2px_8px_rgba(52,76,61,0.18)] flex flex-col items-center justify-center p-1.5 transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-full bg-[#DCE7DA] border border-[#BFCFBB] text-[#344C3D] flex items-center justify-center mb-0.5 shrink-0 shadow-2xs">
+                                        <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                                        </svg>
+                                    </div>
+                                    <p class="text-[11px] sm:text-xs lg:text-[13px] font-bold text-[#191919] leading-tight">{{ $stats['instructors'] }}+</p>
+                                    <p class="text-[7.5px] sm:text-[8.5px] lg:text-[9.5px] text-[#738A6E] font-medium leading-tight text-center px-1 max-w-[75px]">{{ __('home.hero.items.instructors') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -210,7 +280,8 @@
             <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#0dcaf0]/15 flex items-center justify-center text-[#0dcaf0] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        <circle cx="12" cy="8" r="6" stroke-width="2"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8l2 2 4-4M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>
                     </svg>
                 </div>
                 <div>
@@ -265,8 +336,8 @@
                         <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] tracking-tight leading-tight">
                             Master the skills to drive your career
                         </h2>
-                        <!-- Multi-color Rainbow Bar -->
-                        <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-4 mb-5"></div>
+                        <!-- Sage Green Gradient Bar -->
+                        <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-4 mb-5"></div>
                         <p class="text-[#6d6d6d] text-base leading-relaxed">
                             Get certified, master modern tech skills, and level up your career whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.
                         </p>
@@ -337,9 +408,9 @@
                         <h3 class="text-2xl sm:text-3xl font-bold text-[#191919]">
                             Choose Favourite Course From top Category
                         </h3>
-                        <div class="w-14 h-1 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                        <div class="w-14 h-1 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -347,36 +418,94 @@
                     </a>
                 </div>
 
-                <!-- Category Cards (DB-driven) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                    @foreach ($categories->take(5) as $category)
-                        <a href="{{ route('courses.index', ['category' => $category->slug]) }}"
-                           class="bg-white border border-[#e9ecef] rounded-[10px] p-5 shadow-[0px_4px_10px_rgba(231,231,231,0.25)] hover:shadow-xl transition-all group flex flex-col justify-between">
-                            <div class="flex flex-col items-center text-center space-y-3">
-                            <div class="w-16 h-16 rounded-[8px] flex items-center justify-center group-hover:scale-110 transition-transform" style="background: {{ $category->color }}15; color: {{ $category->color }};">
-                                @if ($category->icon && str_starts_with($category->icon, 'M'))
-                                    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor"><path d="{{ $category->icon }}" /></svg>
-                                @else
-                                    <span class="text-3xl">{{ $category->icon ?? '📚' }}</span>
-                                @endif
-                            </div>
-                                <h4 class="text-base font-bold text-[#191919] group-hover:text-[#ff4667] transition-colors">
-                                    {{ $category->name }}
-                                </h4>
-                            </div>
-                            <div class="mt-5 pt-4 border-t border-[#f1f3f5] flex items-center justify-between text-xs">
-                                <span class="text-[#6d6d6d] font-medium">{{ __('home.categories.courses_count', ['count' => $category->courses_count]) }}</span>
-                                <span class="w-7 h-7 rounded-full bg-[#392c7d] text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">{{ $category->courses_count }}</span>
-                            </div>
-                        </a>
-                    @endforeach
+                <!-- Category Slider (Single-line, Infinite Scroll, Arrows on Both Sides, Dynamic Pagination) -->
+                <div class="relative px-2 sm:px-0" data-category-slider>
+                    <!-- Left Arrow Button (Left Side) -->
+                    <button type="button"
+                            data-slider-prev
+                            aria-label="Previous categories"
+                            class="absolute -left-3 sm:-left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] border border-gray-100 flex items-center justify-center text-[#191919] hover:bg-[#344c3d] hover:text-white transition-all duration-200 cursor-pointer focus:outline-none group/btn">
+                        <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover/btn:-translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+                        </svg>
+                    </button>
+
+                    <!-- Slider Container & Track (Single Row) -->
+                    <div class="overflow-hidden py-3 px-1" data-slider-container>
+                        <div class="flex gap-5 sm:gap-6 select-none will-change-transform" data-slider-track>
+                            @foreach ($categories as $category)
+                                <div class="shrink-0 w-[240px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(20%-19.2px)]" data-slider-card>
+                                    <a href="{{ route('courses.index', ['category' => $category->slug]) }}"
+                                       class="h-full bg-white border border-gray-100 rounded-[22px] sm:rounded-[24px] p-4.5 sm:p-5 pb-3 sm:pb-3.5 shadow-[0_6px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_14px_32px_rgba(0,0,0,0.08)] transition-all duration-300 group flex flex-col justify-between relative overflow-hidden">
+
+                                        <!-- Top Section: Logo / Image Box & Title -->
+                                        <div class="flex flex-col items-center text-center">
+                                            <!-- Logo / Icon Square Container -->
+                                            <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-[20px] flex items-center justify-center mb-3 sm:mb-3.5 transition-transform duration-300 group-hover:scale-105"
+                                                 style="background-color: {{ $category->color ? $category->color.'10' : '#f0fdf4' }}; border: 1.5px solid {{ $category->color ? $category->color.'25' : '#dcfce7' }};">
+
+                                                <!-- Category Image / SVG / Emoji -->
+                                                @if ($category->imageUrl())
+                                                    <img src="{{ $category->imageUrl() }}" alt="{{ $category->name }}" class="w-11 h-11 sm:w-12 sm:h-12 object-contain pointer-events-none">
+                                                @elseif ($category->icon && str_starts_with($category->icon, 'M'))
+                                                    <svg class="w-10 h-10 pointer-events-none" viewBox="0 0 24 24" fill="currentColor" style="color: {{ $category->color ?: '#137547' }};">
+                                                        <path d="{{ $category->icon }}" />
+                                                    </svg>
+                                                @else
+                                                    <span class="text-3xl sm:text-4xl pointer-events-none">{{ $category->icon ?? '📚' }}</span>
+                                                @endif
+                                            </div>
+
+                                            <!-- Category Title -->
+                                            <h4 class="font-bold text-[15px] sm:text-[16px] text-[#0f172a] group-hover:text-[#344c3d] transition-colors leading-snug line-clamp-2 min-h-[2.4rem] flex items-center justify-center">
+                                                {{ $category->name }}
+                                            </h4>
+                                        </div>
+
+                                        <!-- Middle Section: Divider Line with Center Accent Bar -->
+                                        <div class="relative flex items-center justify-center my-2.5 sm:my-3">
+                                            <div class="w-full border-t border-gray-100"></div>
+                                            <div class="absolute w-10 sm:w-12 h-1 rounded-full" style="background-color: {{ $category->color ?: '#137547' }};"></div>
+                                        </div>
+
+                                        <!-- Bottom Row: Courses Count & Circular Arrow Button -->
+                                        <div class="flex items-center justify-between text-xs sm:text-[13px]">
+                                            <!-- Courses Count -->
+                                            <div class="flex items-center gap-1.5 font-semibold text-[#475569] min-w-0">
+                                                <svg class="w-4 h-4 text-[#475569] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                                </svg>
+                                                <span class="truncate">{{ __('home.categories.courses_count', ['count' => $category->courses_count]) }}</span>
+                                            </div>
+
+                                            <!-- Circular Action Button -->
+                                            <div class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center text-white transition-all shadow-sm group-hover:scale-110 group-hover:shadow-md shrink-0"
+                                                 style="background-color: {{ $category->color ?: '#137547' }};">
+                                                <svg class="w-4 h-4 text-white shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                    <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Right Arrow Button (Right Side) -->
+                    <button type="button"
+                            data-slider-next
+                            aria-label="Next categories"
+                            class="absolute -right-3 sm:-right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] border border-gray-100 flex items-center justify-center text-[#191919] hover:bg-[#344c3d] hover:text-white transition-all duration-200 cursor-pointer focus:outline-none group/btn">
+                        <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <!-- Carousel Dots -->
-                <div class="flex justify-center items-center gap-2 pt-4">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
-                    <span class="w-3 h-3 rounded-full bg-[#ff4667]"></span>
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
+                <!-- Dynamic Pagination Dots (Placed after/below the items) -->
+                <div class="flex justify-center items-center gap-2 pt-2" data-slider-dots>
+                    <!-- Populated dynamically by category-slider.js -->
                 </div>
             </div>
         </div>
@@ -393,9 +522,9 @@
                         <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                             Featured Courses
                         </h2>
-                        <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                        <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                     </div>
-                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                    <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                         <span>View All</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -405,7 +534,7 @@
 
                 <!-- Tabs -->
                 <div class="flex flex-wrap items-center gap-2.5 pt-2">
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium border border-[#ff4667] text-[#ff4667] bg-white shadow-xs">All</button>
+                    <button class="px-5 py-2 rounded-[5px] text-sm font-semibold border border-[#344c3d] text-[#344c3d] bg-[#dce7da]/40 shadow-xs">All</button>
                     <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Most popular</button>
                     <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Business</button>
                     <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Design</button>
@@ -423,21 +552,22 @@
                         :title="$course->title"
                         :category="$course->category?->name ?? ''"
                         :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
                         :rating="$course->averageRating() ?: '5.0'"
                         :reviews="$course->reviewCount()"
                         :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
                         :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
                         :lessons="$course->lessons->count()"
-                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
+                        :duration="$course->duration_minutes"
+                        :level="$course->level"
                     />
                 @endforeach
             </div>
 
             <!-- View All Courses Button -->
             <div class="flex justify-center mt-12">
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-semibold shadow-md transition-all">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-semibold shadow-md transition-all">
                     {{ __('app.common.view_all') }}
                     <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
@@ -448,10 +578,10 @@
 
     <!-- 5. TRANSFORM ACCESS TO EDUCATION BANNER -->
     <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
-        <div class="bg-[#392c7d] rounded-[20px] p-8 sm:p-12 lg:p-16 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
+        <div class="bg-[#192A20] rounded-[20px] p-8 sm:p-12 lg:p-16 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <!-- Background Waves -->
             <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/5 pointer-events-none"></div>
-            <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#ff4667]/10 pointer-events-none"></div>
+            <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#738a6e]/15 pointer-events-none"></div>
 
             <div class="space-y-3 max-w-2xl relative z-10 text-center lg:text-left">
                 <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
@@ -463,7 +593,7 @@
             </div>
 
             <div class="relative z-10 shrink-0">
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#ff4667] hover:bg-[#e03a58] text-white text-base font-medium shadow-lg transition-all">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-medium shadow-lg transition-all">
                     View all Courses
                 </a>
             </div>
@@ -528,7 +658,7 @@
     <section class="py-24 bg-[#071136] text-white relative overflow-hidden">
         <!-- Ambient background glows -->
         <div class="absolute top-1/4 -right-40 w-96 h-96 rounded-full bg-[#5625e8]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-1/4 -left-40 w-96 h-96 rounded-full bg-[#ff4667]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-1/4 -left-40 w-96 h-96 rounded-full bg-[#738a6e]/15 blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-20 relative z-10">
 
@@ -538,7 +668,7 @@
                     <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
                         Accelerate Cloud Success
                     </h2>
-                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
                 <p class="text-white/80 text-sm sm:text-base max-w-xl leading-relaxed">
                     96% of eLearning for Business customers see improved results within six months. Whether you’re a team of 10 or 10,000, faster cloud fluency starts here.
@@ -564,7 +694,7 @@
                 <div class="lg:col-span-6 space-y-6">
                     <div class="w-14 h-14 rounded-xl bg-[#ffc107]/15 flex items-center justify-center text-[#ffc107]">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9H4.5a2.5 2.5 0 010-5H6M18 9h1.5a2.5 2.5 0 000-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0012 0V2z" />
                         </svg>
                     </div>
 
@@ -651,7 +781,7 @@
                 <!-- Dual Images Right -->
                 <div class="lg:col-span-6 relative order-1 lg:order-2">
                     <div class="relative w-full max-w-[460px] mx-auto aspect-[4/4.5]">
-                        <div class="absolute -top-4 -right-4 w-32 h-32 rounded-full border-4 border-[#ff4667]/30 border-dashed pointer-events-none"></div>
+                        <div class="absolute -top-4 -right-4 w-32 h-32 rounded-full border-4 border-[#738a6e]/40 border-dashed pointer-events-none"></div>
                         <div class="absolute top-0 right-0 w-[78%] h-[82%] rounded-[30px] overflow-hidden shadow-2xl border-2 border-white/10">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80" alt="Student with laptop outdoors" class="w-full h-full object-cover" />
                         </div>
@@ -684,7 +814,8 @@
                 <div class="lg:col-span-6 space-y-6">
                     <div class="w-14 h-14 rounded-xl bg-[#03c95a]/15 flex items-center justify-center text-[#03c95a]">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z" />
+                            <circle cx="12" cy="8" r="6" stroke-width="2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8l2 2 4-4M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>
                         </svg>
                     </div>
 
@@ -735,9 +866,9 @@
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Most Trending Courses
                     </h2>
-                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -753,21 +884,22 @@
                         :title="$course->title"
                         :category="$course->category?->name ?? ''"
                         :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
                         :rating="$course->averageRating() ?: '5.0'"
                         :reviews="$course->reviewCount()"
                         :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
                         :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
                         :lessons="$course->lessons->count()"
-                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
+                        :duration="$course->duration_minutes"
+                        :level="$course->level"
                     />
                 @endforeach
             </div>
             <!-- Dots -->
             <div class="flex justify-center items-center gap-2 pt-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
-                <span class="w-3 h-3 rounded-full bg-[#ff4667]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#344c3d]"></span>
                 <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
             </div>
         </div>
@@ -783,9 +915,9 @@
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Courses Taught by Real Instructor
                     </h2>
-                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -814,7 +946,7 @@
                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&auto=format&fit=crop&q=80" alt="Hendriques" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-[#392c7d]/85 flex flex-col justify-between p-6 text-white">
                         <div class="flex justify-end">
-                            <span class="w-8 h-8 rounded-full bg-white/20 hover:bg-[#ff4667] flex items-center justify-center transition-colors cursor-pointer">
+                            <span class="w-8 h-8 rounded-full bg-white/20 hover:bg-[#738a6e] flex items-center justify-center transition-colors cursor-pointer">
                                 <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                             </span>
                         </div>
@@ -823,7 +955,7 @@
                                 <h3 class="text-2xl font-bold tracking-tight">Hendriques</h3>
                                 <p class="text-sm text-white/80 mt-1">Python Developer</p>
                             </div>
-                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:bg-[#ff4667] transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:bg-[#738a6e] transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </div>
                         </div>
@@ -833,11 +965,11 @@
                 <!-- Right 3-4 Instructor Photos (md:col-span-4) -->
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
                     @foreach ($topInstructors->skip(4) as $instructor)
-                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#ff4667]/10 flex items-center justify-center">
+                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#738a6e]/15 flex items-center justify-center">
                             @if($instructor->avatar)
                                 <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             @else
-                                <span class="text-4xl font-bold text-[#ff4667]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                                <span class="text-4xl font-bold text-[#344c3d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @endif
                         </a>
                     @endforeach
@@ -849,7 +981,7 @@
 
     <!-- 10. BECOME AN INSTRUCTOR BANNER -->
     <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
-        <div class="bg-[#ff4667] rounded-[20px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
+        <div class="bg-gradient-to-r from-[#344c3d] via-[#2d4235] to-[#738a6e] rounded-[20px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <div class="space-y-3 max-w-2xl text-center lg:text-left">
                 <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
                     Become An Instructor
@@ -860,7 +992,7 @@
             </div>
 
             <div class="shrink-0">
-                <a href="{{ route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
+                <a href="{{ route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
                     Join Our Community
                 </a>
             </div>
@@ -877,9 +1009,9 @@
                     <h2 class="text-2xl sm:text-3xl font-bold text-[#191919]">
                         500+ Leading Universities And Companies
                     </h2>
-                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -958,7 +1090,7 @@
                     </p>
 
                     <div>
-                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
                             Join Our Community
                         </a>
                     </div>
@@ -1004,10 +1136,10 @@
 
                     <!-- Carousel Controls -->
                     <div class="flex items-center gap-3 mt-8">
-                        <button class="w-10 h-10 rounded-full bg-white text-[#191919] hover:bg-[#ff4667] hover:text-white flex items-center justify-center transition-colors shadow-md" aria-label="Previous Review">
+                        <button class="w-10 h-10 rounded-xl bg-white text-[#191919] hover:bg-[#344c3d] hover:text-white flex items-center justify-center transition-colors shadow-md" aria-label="Previous Review">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         </button>
-                        <button class="w-10 h-10 rounded-full bg-white text-[#191919] hover:bg-[#ff4667] hover:text-white flex items-center justify-center transition-colors shadow-md" aria-label="Next Review">
+                        <button class="w-10 h-10 rounded-xl bg-white text-[#191919] hover:bg-[#344c3d] hover:text-white flex items-center justify-center transition-colors shadow-md" aria-label="Next Review">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                         </button>
                     </div>
@@ -1027,9 +1159,9 @@
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
                         Latest news &amp; Events
                     </h2>
-                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#ff4667] via-[#ffc107] to-[#0dcaf0] mt-3"></div>
+                    <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#ff4667] hover:text-[#e03a58] transition-colors">
+                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>View All</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1048,7 +1180,7 @@
                                         <span class="border border-white/80 rounded-full px-2 py-0.5">{{ $post->author?->name ?? 'MonoLMS' }}</span>
                                         <span class="opacity-80">{{ $post->published_at?->format('d M Y') }}</span>
                                     </div>
-                                    <h4 class="text-sm font-bold text-white group-hover:text-[#ff4667] transition-colors line-clamp-2">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-[#738a6e] transition-colors line-clamp-2">
                                         {{ $post->title }}
                                     </h4>
                                 </div>

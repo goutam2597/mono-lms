@@ -4,12 +4,23 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\CertificateTemplate;
+use App\Models\ContactMessage;
+use App\Models\Coupon;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Event;
 use App\Models\Instructor;
+use App\Models\Lead;
+use App\Models\Order;
+use App\Models\Payout;
+use App\Models\Plan;
+use App\Models\Post;
 use App\Models\Review;
 use App\Models\Role;
+use App\Models\Setting;
 use App\Models\Student;
+use App\Models\SupportTicket;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -36,6 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->seedAdmins();
         $this->seedCatalog();
         $this->seedBlogAndPlans();
+        $this->seedAdvancedLmsData();
 
         $this->command->info('Seeded logins (password: "password"):');
         $this->command->table(
@@ -66,6 +78,17 @@ class DatabaseSeeder extends Seeder
         );
 
         Admin::updateOrCreate(
+            ['email' => 'admin@learnify.test'],
+            [
+                'role_id' => $superRole?->id,
+                'name' => 'Administrator',
+                'password' => '12345678',
+                'is_super_admin' => true,
+                'status' => 'active',
+            ]
+        );
+
+        Admin::updateOrCreate(
             ['email' => 'manager@mono-lms.test'],
             [
                 'role_id' => $managerRole?->id,
@@ -85,6 +108,24 @@ class DatabaseSeeder extends Seeder
             ['email' => 'priya@mono-lms.test'],
             ['name' => 'Priya Sharma', 'password' => 'password', 'status' => 'active']
         );
+
+        $demoStudents = [
+            ['alice@mono-lms.test', 'Alice Student', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'],
+            ['ethan@mono-lms.test', 'Ethan Student', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80'],
+            ['elena@mono-lms.test', 'Elena Rossi', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'],
+            ['marcus@mono-lms.test', 'Marcus Bell', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'],
+            ['hannah@mono-lms.test', 'Hannah Student', 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80'],
+            ['diana@mono-lms.test', 'Diana Student', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80'],
+            ['julia@mono-lms.test', 'Julia Student', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80'],
+            ['fatima@mono-lms.test', 'Fatima Zahra', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80'],
+        ];
+
+        foreach ($demoStudents as [$sEmail, $sName, $sAvatar]) {
+            Student::updateOrCreate(
+                ['email' => $sEmail],
+                ['name' => $sName, 'password' => 'password', 'avatar' => $sAvatar, 'status' => 'active']
+            );
+        }
     }
 
     private function seedCatalog(): void
@@ -175,7 +216,9 @@ class DatabaseSeeder extends Seeder
                     'image' => 'https://images.unsplash.com/'.$photo.'?w=600&auto=format&fit=crop&q=80',
                     'price' => $price,
                     'old_price' => $oldPrice,
-                    'level' => match (true) { $price > 900 => 'advanced', $price > 400 => 'intermediate', default => 'beginner' },
+                    'level' => match (true) {
+                        $price > 900 => 'advanced', $price > 400 => 'intermediate', default => 'beginner'
+                    },
                     'duration_minutes' => $minutes,
                     'is_published' => $published,
                     'is_featured' => $featured,
@@ -203,10 +246,27 @@ class DatabaseSeeder extends Seeder
                     ['progress' => [40, 80][$i], 'status' => 'active']
                 );
             }
+
+            // Distribute demo enrollments across other demo students
+            $otherStudents = Student::whereNotIn('id', [$eugene?->id ?? 0, $priya?->id ?? 0])->get();
+            if ($otherStudents->isNotEmpty()) {
+                $studentForCourse = $otherStudents[$i % $otherStudents->count()];
+                Enrollment::updateOrCreate(
+                    ['student_id' => $studentForCourse->id, 'course_id' => $course->id],
+                    ['progress' => ($i * 15 + 20) % 100, 'status' => 'active']
+                );
+            }
+
             if ($i < 2 && $eugene) {
                 Review::updateOrCreate(
                     ['student_id' => $eugene->id, 'course_id' => $course->id],
                     ['rating' => 5 - $i, 'comment' => 'Excellent course, clearly explained and well structured.', 'status' => 'approved']
+                );
+            }
+            if ($i === 2 && $priya) {
+                Review::updateOrCreate(
+                    ['student_id' => $priya->id, 'course_id' => $course->id],
+                    ['rating' => 5, 'comment' => 'Very informative and practical! Would definitely recommend to my peers.', 'status' => 'pending']
                 );
             }
         }
@@ -216,7 +276,7 @@ class DatabaseSeeder extends Seeder
     {
         // Membership is admin-dependent: the super admin can switch it off
         // from Admin → Membership Plans.
-        \App\Models\Setting::set('membership_enabled', '1');
+        Setting::set('membership_enabled', '1');
 
         $plans = [
             ['Basic', 19.00, 'monthly', 'Start learning with the essentials.', ['Mobile & desktop learning', 'Progress tracking'], false, 1],
@@ -225,8 +285,8 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($plans as [$name, $price, $period, $description, $features, $popular, $order]) {
-            \App\Models\Plan::updateOrCreate(
-                ['slug' => \Illuminate\Support\Str::slug($name)],
+            Plan::updateOrCreate(
+                ['slug' => Str::slug($name)],
                 [
                     'name' => $name,
                     'description' => $description,
@@ -250,8 +310,8 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($posts as $i => [$title, $photo, $excerpt, $content]) {
-            \App\Models\Post::updateOrCreate(
-                ['slug' => \Illuminate\Support\Str::slug($title)],
+            Post::updateOrCreate(
+                ['slug' => Str::slug($title)],
                 [
                     'admin_id' => $admin?->id,
                     'title' => $title,
@@ -260,6 +320,176 @@ class DatabaseSeeder extends Seeder
                     'image' => 'https://images.unsplash.com/'.$photo.'?w=800&auto=format&fit=crop&q=80',
                     'status' => 'published',
                     'published_at' => now()->subDays($i * 5),
+                ]
+            );
+        }
+    }
+
+    private function seedAdvancedLmsData(): void
+    {
+        // 1. Seed Real Orders from Enrollments
+        $enrollments = Enrollment::with(['student', 'course'])->get();
+        foreach ($enrollments as $idx => $enrollment) {
+            $code = 'LRN-'.strtoupper(substr(md5((string) $enrollment->id.'mono-seed'), 0, 8));
+            $price = (float) ($enrollment->course?->price ?? 0);
+            Order::updateOrCreate(
+                ['order_number' => $code],
+                [
+                    'student_id' => $enrollment->student_id,
+                    'course_id' => $enrollment->course_id,
+                    'amount' => $price,
+                    'currency' => 'USD',
+                    'payment_method' => ['stripe', 'paypal', 'manual'][$idx % 3],
+                    'payment_status' => $idx === 0 ? 'pending' : ($idx === 1 ? 'refunded' : 'paid'),
+                    'created_at' => now()->subDays($idx * 2),
+                ]
+            );
+        }
+
+        // 2. Seed Coupons
+        $coupons = [
+            ['WELCOME10', 'Welcome 10% Discount', 'percent', 10.00, 100, 14, now()->addMonths(3), true],
+            ['SPRING2026', 'Spring Sale 25% Off', 'percent', 25.00, 50, 28, now()->addMonth(), true],
+            ['MASTERCLASS50', 'Masterclass $50 Flat Discount', 'fixed', 50.00, 20, 8, now()->addDays(15), true],
+            ['SUMMEREXP', 'Summer Early Bird (Expired)', 'percent', 15.00, 50, 50, now()->subDays(5), false],
+        ];
+        foreach ($coupons as [$cCode, $cTitle, $cType, $cVal, $cMax, $cUsed, $cExp, $cActive]) {
+            Coupon::updateOrCreate(
+                ['code' => $cCode],
+                [
+                    'title' => $cTitle,
+                    'discount_type' => $cType,
+                    'discount_value' => $cVal,
+                    'max_uses' => $cMax,
+                    'used_count' => $cUsed,
+                    'expires_at' => $cExp,
+                    'is_active' => $cActive,
+                ]
+            );
+        }
+
+        // 3. Seed Payouts
+        $instructors = Instructor::all();
+        if ($instructors->isNotEmpty()) {
+            $payouts = [
+                [$instructors->first()->id, 450.00, 'paypal', 'rolands.payout@gmail.com', 'pending', null, 'Pending monthly revenue share.'],
+                [$instructors->skip(1)->first()?->id ?? $instructors->first()->id, 320.00, 'bank_transfer', 'US44BANK0099881122', 'pending', null, 'Direct deposit requested.'],
+                [$instructors->first()->id, 1280.00, 'paypal', 'rolands.payout@gmail.com', 'processed', now()->subDays(14), 'Cleared batch #9842.'],
+                [$instructors->skip(1)->first()?->id ?? $instructors->first()->id, 890.00, 'stripe', 'acct_1Mnm8920Kks8', 'processed', now()->subMonth(), 'Cleared payout.'],
+            ];
+            foreach ($payouts as [$pInstId, $pAmt, $pMethod, $pAcc, $pStatus, $pProc, $pNotes]) {
+                Payout::updateOrCreate(
+                    ['instructor_id' => $pInstId, 'amount' => $pAmt, 'payout_account' => $pAcc],
+                    [
+                        'payment_method' => $pMethod,
+                        'status' => $pStatus,
+                        'processed_at' => $pProc,
+                        'notes' => $pNotes,
+                    ]
+                );
+            }
+        }
+
+        // 4. Seed Certificate Templates
+        $certTemplates = [
+            ['Accredited Professional Diploma', 'classic', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#344c3d', true],
+            ['Executive Modern Completion Award', 'modern', 'Dean of Academic Affairs', 'Sarah Jenkins, Ph.D.', '#f8fafc', '#0284c7', false],
+            ['Full-Stack Engineering Masterclass', 'elegant', 'Lead System Architect', 'Rolands Granger', '#ffffff', '#dd0031', false],
+        ];
+        foreach ($certTemplates as [$ctTitle, $ctType, $ctSig, $ctName, $ctBg, $ctBorder, $ctDef]) {
+            CertificateTemplate::updateOrCreate(
+                ['title' => $ctTitle],
+                [
+                    'template_type' => $ctType,
+                    'signature_title' => $ctSig,
+                    'signer_name' => $ctName,
+                    'bg_color' => $ctBg,
+                    'border_color' => $ctBorder,
+                    'is_default' => $ctDef,
+                ]
+            );
+        }
+
+        // 5. Seed Support Tickets
+        $tickets = [
+            ['TCK-8021', 'Eugene Andre', 'student@mono-lms.test', 'Course video buffering on lesson 3', 'high', 'open', 'When opening lesson 3 on modern browser, video buffers at 0:45. Could you check server bandwidth?'],
+            ['TCK-7840', 'Priya Sharma', 'priya@mono-lms.test', 'Question regarding invoice receipt for tax VAT', 'medium', 'in_progress', 'Hi, I need our company VAT ID added to our invoice #LRN-SERULLNZ.'],
+            ['TCK-6912', 'Alice Student', 'alice@mono-lms.test', 'Certificate name spelling correction', 'low', 'resolved', 'My certificate had a small spelling typo in middle name. Resolved with updated record.'],
+        ];
+        foreach ($tickets as [$tNum, $tName, $tEmail, $tSub, $tPrio, $tStat, $tMsg]) {
+            SupportTicket::updateOrCreate(
+                ['ticket_number' => $tNum],
+                [
+                    'user_name' => $tName,
+                    'user_email' => $tEmail,
+                    'subject' => $tSub,
+                    'priority' => $tPrio,
+                    'status' => $tStat,
+                    'message' => $tMsg,
+                ]
+            );
+        }
+
+        // 6. Seed Contact Messages
+        $messages = [
+            ['Marcus Vance', 'marcus.vance@company.com', '+1 555-0192', 'Enterprise LMS licensing for 250 engineers', 'Hello! We are looking to enroll our tech team in your full-stack and cloud tracks. Can we schedule a quick demo?'],
+            ['Elena Rostova', 'elena@academy.eu', '+44 20 7946 0991', 'Partnership inquiry for university students', 'We would love to integrate your certification curriculum into our graduate school courses.'],
+            ['David Kim', 'dkim@startuplab.io', null, 'Custom API webhooks integration', 'Inquiring if Mono LMS supports direct xAPI/LRS webhooks for external LMS sync.'],
+        ];
+        foreach ($messages as $idx => [$mName, $mEmail, $mPhone, $mSub, $mMsg]) {
+            ContactMessage::updateOrCreate(
+                ['email' => $mEmail, 'subject' => $mSub],
+                [
+                    'name' => $mName,
+                    'phone' => $mPhone,
+                    'message' => $mMsg,
+                    'is_read' => $idx > 0,
+                ]
+            );
+        }
+
+        // 7. Seed Leads (CRM)
+        $leads = [
+            ['Apex Innovations', 'hr@apexinnovate.com', '+1 800-555-0144', 'website', 'contacted', 'Interested in Enterprise Cohort package.'],
+            ['DevBridge Studio', 'talent@devbridge.com', '+1 415-555-0182', 'referral', 'interested', 'Requested customized syllabus.'],
+            ['Liam O\'Connor', 'liam.oc@outlook.com', null, 'google', 'new', 'Downloaded curriculum whitepaper.'],
+            ['Sophia Lin', 'sophia@cloudsphere.io', '+1 650-555-0199', 'facebook', 'enrolled', 'Converted to annual membership.'],
+        ];
+        foreach ($leads as [$lName, $lEmail, $lPhone, $lSource, $lStatus, $lNotes]) {
+            Lead::updateOrCreate(
+                ['email' => $lEmail],
+                [
+                    'name' => $lName,
+                    'phone' => $lPhone,
+                    'source' => $lSource,
+                    'status' => $lStatus,
+                    'notes' => $lNotes,
+                ]
+            );
+        }
+
+        // 8. Seed Live Events
+        if ($instructors->isNotEmpty()) {
+            Event::updateOrCreate(
+                ['title' => 'Live Q&A: Building Reactive Microservices with PHP 8.4'],
+                [
+                    'instructor_id' => $instructors->first()->id,
+                    'start_time' => now()->addDays(3)->setHour(17)->setMinute(0),
+                    'duration_minutes' => 90,
+                    'meeting_link' => 'https://zoom.us/j/98421045091',
+                    'capacity' => 100,
+                    'is_published' => true,
+                ]
+            );
+            Event::updateOrCreate(
+                ['title' => 'Mastering UI/UX Systems in Figma: From Design to Token Code'],
+                [
+                    'instructor_id' => $instructors->skip(1)->first()?->id ?? $instructors->first()->id,
+                    'start_time' => now()->addDays(7)->setHour(18)->setMinute(30),
+                    'duration_minutes' => 60,
+                    'meeting_link' => 'https://zoom.us/j/84920194821',
+                    'capacity' => 75,
+                    'is_published' => true,
                 ]
             );
         }

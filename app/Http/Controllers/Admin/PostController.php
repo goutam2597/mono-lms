@@ -20,7 +20,7 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('pages.admin.blog-form', ['post' => new Post()]);
+        return view('pages.admin.blog-form', ['post' => new Post]);
     }
 
     public function store(Request $request)

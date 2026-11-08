@@ -1,5 +1,6 @@
 import './mono-select';
 import './hero-showcase';
+import './category-slider';
 
 /**
  * Count-up animation for [data-countup] elements.

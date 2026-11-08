@@ -6,11 +6,11 @@
             <div>
                 <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('courses.title') }}</h1>
                 <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
-                    <a href="{{ route('home') }}" class="hover:text-[#ff4667]">Home</a>
+                    <a href="{{ route('home') }}" class="hover:text-[#344c3d]">Home</a>
                     <span>/</span>
-                    <a href="{{ route('courses.index') }}" class="hover:text-[#ff4667]">Courses</a>
+                    <a href="{{ route('courses.index') }}" class="hover:text-[#344c3d]">Courses</a>
                     <span>/</span>
-                    <span class="text-[#ff4667] font-medium">{{ __('courses.title') }}</span>
+                    <span class="text-[#738a6e] font-medium">{{ __('courses.title') }}</span>
                 </nav>
             </div>
         </div>
@@ -78,7 +78,7 @@
                             @endforeach
                         </div>
                     </form>
-                    <button class="mt-3 text-xs font-semibold text-[#ff4667] hover:underline">See More Categories</button>
+                    <button class="mt-3 text-xs font-semibold text-[#738a6e] hover:underline">See More Categories</button>
                 </div>
 
                 <!-- Instructors Filter -->
@@ -191,14 +191,15 @@
                         :title="$course->title"
                         :category="$course->category?->name ?? ''"
                         :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=392c7d&color=fff'"
+                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$course->image"
                         :rating="$course->averageRating() ?: '5.0'"
                         :reviews="$course->reviewCount()"
                         :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
                         :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
                         :lessons="$course->lessons->count()"
-                        :duration="$course->duration_minutes.' '.__('app.common.minutes')"
+                        :duration="$course->duration_minutes"
+                        :level="$course->level"
                     />
                 @empty
                     <div class="col-span-full bg-white border border-[#e7e7e7] rounded-2xl p-12 text-center">
@@ -208,8 +209,8 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-200">
-{{ $courses->appends(request()->query())->links() }}
+                <div class="w-full pt-6 border-t border-gray-200">
+                    {{ $courses->appends(request()->query())->links() }}
                 </div>
             </main>
 

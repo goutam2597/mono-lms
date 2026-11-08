@@ -7,9 +7,9 @@
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.courses.subtitle') }}</p>
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold px-4 py-2 rounded-full transition-colors {{ !request('status') ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.all') }}</a>
-                <a href="{{ route('admin.courses.index', ['status' => 'published']) }}" class="text-xs font-semibold px-4 py-2 rounded-full transition-colors {{ request('status') === 'published' ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.published') }}</a>
-                <a href="{{ route('admin.courses.index', ['status' => 'draft']) }}" class="text-xs font-semibold px-4 py-2 rounded-full transition-colors {{ request('status') === 'draft' ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.draft') }}</a>
+                <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ !request('status') ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.all') }}</a>
+                <a href="{{ route('admin.courses.index', ['status' => 'published']) }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ request('status') === 'published' ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.published') }}</a>
+                <a href="{{ route('admin.courses.index', ['status' => 'draft']) }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ request('status') === 'draft' ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ __('app.common.draft') }}</a>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                                         @if ($course->is_published)
                                             <form method="POST" action="{{ route('admin.courses.unpublish', $course) }}">
                                                 @csrf
-                                                <button type="submit" class="text-xs font-semibold text-[#ff4667] hover:underline">{{ __('admin.courses.unpublish') }}</button>
+                                                <button type="submit" class="text-xs font-semibold text-[#738a6e] hover:underline">{{ __('admin.courses.unpublish') }}</button>
                                             </form>
                                         @else
                                             <form method="POST" action="{{ route('admin.courses.publish', $course) }}">

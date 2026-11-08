@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -45,7 +46,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         foreach ($roles as $name => $slugs) {
             $role = Role::updateOrCreate(
-                ['slug' => \Illuminate\Support\Str::slug($name)],
+                ['slug' => Str::slug($name)],
                 ['name' => $name]
             );
             $role->permissions()->sync(collect($slugs)->map(fn ($slug) => $permissionIds[$slug]));

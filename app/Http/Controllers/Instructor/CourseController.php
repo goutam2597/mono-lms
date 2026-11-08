@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
 {
@@ -21,7 +20,7 @@ class CourseController extends Controller
     public function create()
     {
         return view('pages.instructor.courses-form', [
-            'course' => new Course(),
+            'course' => new Course,
             'categories' => Category::orderBy('name')->get(),
         ]);
     }
