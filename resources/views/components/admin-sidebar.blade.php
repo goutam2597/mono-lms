@@ -3,144 +3,262 @@
 @php
     $admin ??= auth('admin')->user();
 
-    $groups = [
+    $sections = [
         [
-            'title' => 'Overview',
-            'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+            'heading' => 'Core',
             'items' => [
-                ['id' => 'dashboard', 'label' => 'Dashboard', 'route' => 'admin.dashboard'],
+                [
+                    'type' => 'link',
+                    'id' => 'dashboard',
+                    'label' => 'Dashboard',
+                    'route' => 'admin.dashboard',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />',
+                ],
             ],
         ],
         [
-            'title' => 'Courses & Learning',
-            'icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+            'heading' => 'Academics & Content',
             'items' => [
-                ['id' => 'courses', 'label' => 'All Courses', 'route' => 'admin.courses.index'],
-                ['id' => 'categories', 'label' => 'Categories', 'route' => 'admin.categories.index'],
-                ['id' => 'reviews', 'label' => 'Reviews', 'route' => 'admin.reviews.index', 'badge' => \App\Models\Review::where('status', 'pending')->count()],
-                ['id' => 'certificates', 'label' => 'Certificate Templates', 'route' => 'admin.certificates.index'],
-                ['id' => 'events', 'label' => 'Events & Webinars', 'route' => 'admin.events.index'],
+                [
+                    'type' => 'group',
+                    'id' => 'group_courses',
+                    'title' => 'Courses & Learning',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />',
+                    'children' => [
+                        ['id' => 'courses', 'label' => 'All Courses', 'route' => 'admin.courses.index'],
+                        ['id' => 'categories', 'label' => 'Categories', 'route' => 'admin.categories.index'],
+                        ['id' => 'reviews', 'label' => 'Student Reviews', 'route' => 'admin.reviews.index', 'badge' => \App\Models\Review::where('status', 'pending')->count()],
+                        ['id' => 'certificates', 'label' => 'Certificate Templates', 'route' => 'admin.certificates.index'],
+                        ['id' => 'events', 'label' => 'Live Events & Webinars', 'route' => 'admin.events.index'],
+                    ],
+                ],
             ],
         ],
         [
-            'title' => 'Users & Staff',
-            'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+            'heading' => 'People & Access',
             'items' => [
-                ['id' => 'users', 'label' => 'All Users', 'route' => 'admin.users.index'],
-                ['id' => 'students', 'label' => 'Students', 'route' => 'admin.students.index'],
-                ['id' => 'instructors', 'label' => 'Instructors', 'route' => 'admin.instructors.index'],
-                ['id' => 'admins', 'label' => 'Administrators', 'route' => 'admin.admins.index', 'super' => true],
-                ['id' => 'roles', 'label' => 'Roles & Permissions', 'route' => 'admin.roles.index', 'super' => true],
+                [
+                    'type' => 'group',
+                    'id' => 'group_users',
+                    'title' => 'Users & Directory',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />',
+                    'children' => [
+                        ['id' => 'users', 'label' => 'All Users Directory', 'route' => 'admin.users.index'],
+                        ['id' => 'students', 'label' => 'Enrolled Students', 'route' => 'admin.students.index'],
+                        ['id' => 'instructors', 'label' => 'Course Instructors', 'route' => 'admin.instructors.index'],
+                        ['id' => 'admins', 'label' => 'Administrators', 'route' => 'admin.admins.index', 'super' => true],
+                        ['id' => 'roles', 'label' => 'Roles & Permissions', 'route' => 'admin.roles.index', 'super' => true],
+                    ],
+                ],
             ],
         ],
         [
-            'title' => 'Orders & Sales',
-            'icon' => 'M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z',
+            'heading' => 'Sales & Finance',
             'items' => [
-                ['id' => 'orders', 'label' => 'All Orders', 'route' => 'admin.orders.index'],
-                ['id' => 'coupons', 'label' => 'Coupons', 'route' => 'admin.coupons.index'],
-                ['id' => 'plans', 'label' => 'Memberships & Plans', 'route' => 'admin.plans.index'],
+                [
+                    'type' => 'group',
+                    'id' => 'group_sales',
+                    'title' => 'Orders & Commerce',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />',
+                    'children' => [
+                        ['id' => 'orders', 'label' => 'All Orders & Invoices', 'route' => 'admin.orders.index'],
+                        ['id' => 'coupons', 'label' => 'Coupons & Discounts', 'route' => 'admin.coupons.index'],
+                        ['id' => 'plans', 'label' => 'Memberships & Plans', 'route' => 'admin.plans.index'],
+                    ],
+                ],
+                [
+                    'type' => 'group',
+                    'id' => 'group_finance',
+                    'title' => 'Payments & Payouts',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
+                    'children' => [
+                        ['id' => 'payment-gateways', 'label' => 'Payment Gateways', 'route' => 'admin.payment-gateways.index'],
+                        ['id' => 'payouts', 'label' => 'Instructor Payouts', 'route' => 'admin.payouts.index', 'badge' => \App\Models\Payout::where('status', 'pending')->count()],
+                    ],
+                ],
             ],
         ],
         [
-            'title' => 'Payments & Payouts',
-            'icon' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+            'heading' => 'Analytics & CRM',
             'items' => [
-                ['id' => 'payment-gateways', 'label' => 'Payment Gateways', 'route' => 'admin.payment-gateways.index'],
-                ['id' => 'payouts', 'label' => 'Instructor Payouts', 'route' => 'admin.payouts.index', 'badge' => \App\Models\Payout::where('status', 'pending')->count()],
+                [
+                    'type' => 'group',
+                    'id' => 'group_reports',
+                    'title' => 'Reports & Leads',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />',
+                    'children' => [
+                        ['id' => 'reports', 'label' => 'Analytics Overview', 'route' => 'admin.reports.index'],
+                        ['id' => 'leads', 'label' => 'Leads (CRM)', 'route' => 'admin.leads.index'],
+                    ],
+                ],
+                [
+                    'type' => 'group',
+                    'id' => 'group_support',
+                    'title' => 'Support & Help Desk',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a.75.75 0 01-.874-.874 5.972 5.972 0 011.057-3.035C4.03 15.656 3 13.916 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />',
+                    'children' => [
+                        ['id' => 'tickets', 'label' => 'Support Tickets', 'route' => 'admin.tickets.index', 'badge' => \App\Models\SupportTicket::where('status', 'open')->count()],
+                        ['id' => 'messages', 'label' => 'Contact Messages', 'route' => 'admin.messages.index', 'badge' => \App\Models\ContactMessage::where('is_read', false)->count()],
+                    ],
+                ],
             ],
         ],
         [
-            'title' => 'Reports & CRM',
-            'icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+            'heading' => 'Settings & System',
             'items' => [
-                ['id' => 'reports', 'label' => 'Analytics Overview', 'route' => 'admin.reports.index'],
-                ['id' => 'leads', 'label' => 'Leads (CRM)', 'route' => 'admin.leads.index'],
-            ],
-        ],
-        [
-            'title' => 'Support & Inbound',
-            'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
-            'items' => [
-                ['id' => 'tickets', 'label' => 'Support Tickets', 'route' => 'admin.tickets.index', 'badge' => \App\Models\SupportTicket::where('status', 'open')->count()],
-                ['id' => 'messages', 'label' => 'Contact Messages', 'route' => 'admin.messages.index', 'badge' => \App\Models\ContactMessage::where('is_read', false)->count()],
-            ],
-        ],
-        [
-            'title' => 'Settings & System',
-            'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',
-            'items' => [
-                ['id' => 'settings', 'label' => 'General Settings', 'route' => 'admin.settings.index'],
-                ['id' => 'services', 'label' => 'Mail (SMTP) & Storage', 'route' => 'admin.services.index'],
-                ['id' => 'languages', 'label' => 'Languages', 'route' => 'admin.languages.index'],
-                ['id' => 'blog', 'label' => 'Blog Articles', 'route' => 'admin.blog.index'],
-                ['id' => 'system', 'label' => 'System Diagnostics', 'route' => 'admin.system.index'],
+                [
+                    'type' => 'group',
+                    'id' => 'group_settings',
+                    'title' => 'Platform Settings',
+                    'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />',
+                    'children' => [
+                        ['id' => 'settings', 'label' => 'General Settings', 'route' => 'admin.settings.index'],
+                        ['id' => 'services', 'label' => 'Mail (SMTP) & Storage', 'route' => 'admin.services.index'],
+                        ['id' => 'languages', 'label' => 'Languages & Translations', 'route' => 'admin.languages.index'],
+                        ['id' => 'blog', 'label' => 'Blog & Articles', 'route' => 'admin.blog.index'],
+                        ['id' => 'system', 'label' => 'System Diagnostics', 'route' => 'admin.system.index'],
+                    ],
+                ],
             ],
         ],
     ];
 @endphp
 
-<nav class="space-y-4 text-xs">
-    @foreach($groups as $gIndex => $group)
+<div class="space-y-5 text-[13px]" data-sidebar-accordion>
+    @foreach($sections as $secIndex => $section)
         @php
-            $visibleItems = collect($group['items'])->filter(function ($item) use ($admin) {
-                if (! $admin) return false;
-                if (!empty($item['super']) && ! $admin->isSuperAdmin()) return false;
-                return true;
-            })->all();
+            $visibleSectionItems = [];
+            foreach($section['items'] as $item) {
+                if ($item['type'] === 'link') {
+                    $visibleSectionItems[] = $item;
+                } else {
+                    $filteredChildren = collect($item['children'])->filter(function ($child) use ($admin) {
+                        if (! $admin) return false;
+                        if (!empty($child['super']) && ! $admin->isSuperAdmin()) return false;
+                        return true;
+                    })->values()->all();
 
-            $hasActiveChild = collect($visibleItems)->contains(fn ($i) => $i['id'] === $active);
+                    if (count($filteredChildren) > 0) {
+                        $item['children'] = $filteredChildren;
+                        $visibleSectionItems[] = $item;
+                    }
+                }
+            }
         @endphp
 
-        @if(count($visibleItems) > 0)
+        @if(count($visibleSectionItems) > 0)
             <div class="space-y-1">
-                @if(count($visibleItems) === 1 && $group['title'] === 'Overview')
-                    <!-- Standalone Dashboard link -->
-                    @php $item = $visibleItems[0]; $isActive = ($active === $item['id']); @endphp
-                    <a href="{{ route($item['route']) }}"
-                       class="group flex items-center justify-between px-3.5 py-2.5 rounded-xl font-semibold transition-all {{ $isActive ? 'bg-[#344c3d] text-white shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            <svg class="w-4 h-4 shrink-0 {{ $isActive ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $group['icon'] }}"/>
-                            </svg>
-                            <span class="truncate">{{ $item['label'] }}</span>
-                        </div>
-                    </a>
-                @else
-                    <!-- Collapsible Accordion Group (Learnify style) -->
-                    <div class="rounded-xl overflow-hidden">
-                        <button type="button"
-                                onclick="const sub = document.getElementById('group-sub-{{ $gIndex }}'); const chev = document.getElementById('chev-{{ $gIndex }}'); sub.classList.toggle('hidden'); chev.classList.toggle('rotate-180');"
-                                class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/40 font-bold text-[11px] uppercase tracking-wider transition-colors cursor-pointer">
-                            <div class="flex items-center gap-2 min-w-0">
-                                <svg class="w-3.5 h-3.5 shrink-0 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $group['icon'] }}"/>
+                <!-- Section Category Header -->
+                <div class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 select-none flex items-center justify-between">
+                    <span>{{ $section['heading'] }}</span>
+                </div>
+
+                @foreach($visibleSectionItems as $itemIndex => $item)
+                    @if($item['type'] === 'link')
+                        @php $isActive = ($active === $item['id']); @endphp
+                        <a href="{{ route($item['route']) }}"
+                           class="group flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-medium transition-all duration-150 {{ $isActive ? 'bg-[#344c3d] text-white font-semibold shadow-[0_4px_16px_rgba(52,76,61,0.45)] ring-1 ring-emerald-500/25' : 'text-slate-300 hover:text-white hover:bg-white/[0.05]' }}">
+                            <!-- Icon Box -->
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors {{ $isActive ? 'bg-white/15 text-white' : 'bg-white/[0.04] text-slate-400 group-hover:bg-white/[0.08] group-hover:text-white' }}">
+                                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                    {!! $item['icon'] !!}
                                 </svg>
-                                <span class="truncate">{{ $group['title'] }}</span>
                             </div>
-                            <svg id="chev-{{ $gIndex }}" class="w-3.5 h-3.5 text-slate-500 transition-transform duration-200 {{ $hasActiveChild ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
+                            <span class="truncate flex-1">{{ $item['label'] }}</span>
 
-                        <div id="group-sub-{{ $gIndex }}" class="space-y-0.5 pt-0.5 pl-2 {{ $hasActiveChild ? '' : 'hidden' }}">
-                            @foreach($visibleItems as $item)
-                                @php $isActive = ($active === $item['id']); @endphp
-                                <a href="{{ route($item['route']) }}"
-                                   class="group flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all {{ $isActive ? 'bg-[#344c3d] text-white font-semibold shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
-                                    <span class="truncate">{{ $item['label'] }}</span>
+                            @if($isActive)
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                            @endif
+                        </a>
+                    @else
+                        @php
+                            $hasActiveChild = collect($item['children'])->contains(fn ($c) => $c['id'] === $active);
+                            $totalBadge = collect($item['children'])->sum(fn ($c) => $c['badge'] ?? 0);
+                            $accordionId = 'sb-acc-' . $secIndex . '-' . $itemIndex;
+                        @endphp
 
-                                    @if(!empty($item['badge']) && $item['badge'] > 0)
-                                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full {{ $isActive ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">
-                                            {{ $item['badge'] }}
-                                        </span>
-                                    @endif
-                                </a>
-                            @endforeach
+                        <div class="rounded-xl overflow-hidden group/acc {{ $hasActiveChild ? 'is-expanded' : '' }}" data-accordion-item>
+                            <!-- Group Toggle Button -->
+                            <button type="button"
+                                    data-accordion-toggle
+                                    aria-expanded="{{ $hasActiveChild ? 'true' : 'false' }}"
+                                    class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-medium transition-all duration-150 cursor-pointer select-none text-left {{ $hasActiveChild ? 'text-white bg-white/[0.04]' : 'text-slate-300 hover:text-white hover:bg-white/[0.05]' }}">
+                                <!-- Icon Box -->
+                                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors {{ $hasActiveChild ? 'bg-[#344c3d]/60 text-emerald-300 ring-1 ring-emerald-500/30' : 'bg-white/[0.04] text-slate-400 group-hover/acc:bg-white/[0.08] group-hover/acc:text-white' }}">
+                                    <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                        {!! $item['icon'] !!}
+                                    </svg>
+                                </div>
+
+                                <span class="truncate flex-1 text-[13px]">{{ $item['title'] }}</span>
+
+                                @if($totalBadge > 0)
+                                    <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
+                                        {{ $totalBadge }}
+                                    </span>
+                                @endif
+
+                                <!-- Chevron Indicator -->
+                                <svg class="w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 chevron-arrow {{ $hasActiveChild ? 'rotate-180 text-slate-300' : '' }}"
+                                     fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </button>
+
+                            <!-- Submenu List with Connector Track Line -->
+                            <div class="submenu-container pl-5 pr-1 py-1 space-y-0.5 transition-all duration-200 {{ $hasActiveChild ? '' : 'hidden' }}">
+                                <div class="border-l border-white/[0.08] pl-3.5 space-y-0.5 my-0.5">
+                                    @foreach($item['children'] as $child)
+                                        @php $isChildActive = ($active === $child['id']); @endphp
+                                        <a href="{{ route($child['route']) }}"
+                                           class="group/item flex items-center justify-between px-3 py-1.5 rounded-lg text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[#344c3d] text-white font-semibold shadow-[0_3px_12px_rgba(52,76,61,0.4)] ring-1 ring-emerald-500/25' : 'text-slate-400 hover:text-white hover:bg-white/[0.05]' }}">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <span class="w-1.5 h-1.5 rounded-full shrink-0 transition-colors {{ $isChildActive ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]' : 'bg-slate-600 group-hover/item:bg-slate-400' }}"></span>
+                                                <span class="truncate">{{ $child['label'] }}</span>
+                                            </div>
+
+                                            @if(!empty($child['badge']) && $child['badge'] > 0)
+                                                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full shrink-0 {{ $isChildActive ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30' }}">
+                                                    {{ $child['badge'] }}
+                                                </span>
+                                            @endif
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
+                @endforeach
             </div>
         @endif
     @endforeach
-</nav>
+</div>
+
+<script>
+    (function() {
+        // Toggle Accordions smoothly
+        document.querySelectorAll('[data-accordion-toggle]').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const container = this.closest('[data-accordion-item]');
+                if (!container) return;
+                const submenu = container.querySelector('.submenu-container');
+                const chevron = container.querySelector('.chevron-arrow');
+                if (!submenu) return;
+
+                const isHidden = submenu.classList.contains('hidden');
+                if (isHidden) {
+                    submenu.classList.remove('hidden');
+                    if (chevron) chevron.classList.add('rotate-180');
+                    button.setAttribute('aria-expanded', 'true');
+                    container.classList.add('is-expanded');
+                } else {
+                    submenu.classList.add('hidden');
+                    if (chevron) chevron.classList.remove('rotate-180');
+                    button.setAttribute('aria-expanded', 'false');
+                    container.classList.remove('is-expanded');
+                }
+            });
+        });
+    })();
+</script>

@@ -15,31 +15,51 @@
         <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+            .custom-sidebar-scroll {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+            }
+            .custom-sidebar-scroll::-webkit-scrollbar {
+                width: 5px;
+            }
+            .custom-sidebar-scroll::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            .custom-sidebar-scroll::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.12);
+                border-radius: 9999px;
+            }
+            .custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.24);
+            }
+        </style>
     </head>
     <body class="font-sans antialiased text-[#0f172a] min-h-screen bg-[#f8fafc] flex">
 
         <!-- Mobile Sidebar Backdrop -->
-        <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/60 z-40 hidden lg:hidden transition-opacity backdrop-blur-xs"></div>
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/70 z-40 hidden lg:hidden transition-opacity backdrop-blur-xs"></div>
 
-        <!-- Full-height Dedicated Standalone Sidebar -->
-        <aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 sm:w-68 bg-[#0c141d] text-slate-300 flex flex-col justify-between border-r border-slate-800/80 transition-transform duration-300 -translate-x-full lg:translate-x-0 shadow-xl lg:shadow-none">
-            <!-- Sidebar Header & Nav -->
+        <!-- Full-height Dedicated Standalone Sidebar (Learnify Enterprise Style) -->
+        <aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-[#090f17] text-slate-300 flex flex-col justify-between border-r border-white/[0.07] transition-transform duration-300 -translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none select-none">
+            <!-- Sidebar Header & Scrollable Nav -->
             <div class="flex-1 flex flex-col min-h-0">
                 <!-- Top Brand Header -->
-                <div class="h-16 px-5 flex items-center justify-between border-b border-slate-800/80 bg-[#090f17] shrink-0">
-                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : route('instructor.dashboard') }}" class="flex items-center gap-2.5">
-                        <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" class="h-7 w-auto object-contain" />
-                        <span class="text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full {{ $userType === 'admin' ? 'bg-[#344c3d] text-[#dce7da] border border-[#738a6e]/40' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
-                            {{ $userType === 'admin' ? 'Admin' : 'Instructor' }}
+                <div class="h-16 px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#070b12] shrink-0">
+                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : route('instructor.dashboard') }}" class="flex items-center gap-2.5 group">
+                        <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" class="h-7 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-md {{ $userType === 'admin' ? 'bg-[#344c3d]/70 text-emerald-300 border border-emerald-500/30' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
+                            {{ $userType === 'admin' ? 'ADMIN CONSOLE' : 'INSTRUCTOR' }}
                         </span>
                     </a>
-                    <button type="button" id="sidebar-close" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800" aria-label="Close sidebar">
+                    <button type="button" id="sidebar-close" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors" aria-label="Close sidebar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
 
                 <!-- Navigation Links List (Scrollable) -->
-                <div class="flex-1 p-3.5 overflow-y-auto">
+                <div class="flex-1 p-3.5 overflow-y-auto custom-sidebar-scroll">
                     @if ($userType === 'admin')
                         <x-admin-sidebar :active="$active" />
                     @else
@@ -48,62 +68,72 @@
                 </div>
             </div>
 
-            <!-- Sidebar Bottom: User Profile & Quick Sign Out -->
-            <div class="p-3.5 border-t border-slate-800/80 bg-[#090f17]/90 shrink-0">
+            <!-- Sidebar Bottom: Polished User Profile Card -->
+            <div class="p-3 border-t border-white/[0.07] bg-[#070b12] shrink-0">
                 @if ($userType === 'admin')
                     @php $admin = auth('admin')->user(); @endphp
-                    <div class="flex items-center justify-between gap-2.5">
+                    <div class="bg-white/[0.03] border border-white/[0.06] rounded-xl p-2.5 flex items-center justify-between gap-2.5">
                         <div class="flex items-center gap-2.5 min-w-0">
-                            <div class="relative">
-                                <span class="w-8.5 h-8.5 rounded-full bg-[#344c3d] text-white font-bold text-xs flex items-center justify-center shrink-0 ring-2 ring-slate-800">
+                            <div class="relative shrink-0">
+                                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#344c3d] to-[#1e2c23] text-emerald-200 font-bold text-xs flex items-center justify-center ring-1 ring-emerald-500/30 shadow-xs">
                                     {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
-                                </span>
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#0c141d]"></span>
+                                </div>
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#070b12]"></span>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white truncate">{{ $admin->name ?? 'Admin' }}</p>
-                                <p class="text-[11px] text-slate-400 truncate">{{ $admin->isSuperAdmin() ? __('admin.admins.super_admin') : ($admin->role?->name ?? 'Admin') }}</p>
+                                <p class="text-xs font-semibold text-white truncate leading-tight">{{ $admin->name ?? 'Administrator' }}</p>
+                                <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $admin->isSuperAdmin() ? 'Super Admin' : ($admin->role?->name ?? 'Administrator') }}</p>
                             </div>
                         </div>
-                        <form method="POST" action="{{ route('admin.logout') }}" class="shrink-0">
-                            @csrf
-                            <button type="submit" title="{{ __('app.nav.sign_out') }}" class="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800/80 transition-colors cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                            </button>
-                        </form>
+                        <div class="flex items-center gap-0.5 shrink-0">
+                            <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                            <form method="POST" action="{{ route('admin.logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" title="{{ __('app.nav.sign_out') }}" class="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @else
                     @php $instructor = auth('instructor')->user(); @endphp
-                    <div class="flex items-center justify-between gap-2.5">
+                    <div class="bg-white/[0.03] border border-white/[0.06] rounded-xl p-2.5 flex items-center justify-between gap-2.5">
                         <div class="flex items-center gap-2.5 min-w-0">
-                            <div class="relative">
+                            <div class="relative shrink-0">
                                 @if ($instructor?->avatar)
-                                    <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-8.5 h-8.5 rounded-full object-cover shrink-0 ring-2 ring-slate-800">
+                                    <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-9 h-9 rounded-xl object-cover ring-1 ring-emerald-500/30">
                                 @else
-                                    <span class="w-8.5 h-8.5 rounded-full bg-[#344c3d] text-white font-bold text-xs flex items-center justify-center shrink-0 ring-2 ring-slate-800">
+                                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#344c3d] to-[#1e2c23] text-emerald-200 font-bold text-xs flex items-center justify-center ring-1 ring-emerald-500/30 shadow-xs">
                                         {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
-                                    </span>
+                                    </div>
                                 @endif
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#0c141d]"></span>
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#070b12]"></span>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white truncate">{{ $instructor->name ?? 'Instructor' }}</p>
-                                <p class="text-[11px] text-slate-400 truncate">{{ $instructor->designation ?? __('app.common.instructor') }}</p>
+                                <p class="text-xs font-semibold text-white truncate leading-tight">{{ $instructor->name ?? 'Instructor' }}</p>
+                                <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $instructor->designation ?? __('app.common.instructor') }}</p>
                             </div>
                         </div>
-                        <form method="POST" action="{{ route('instructor.logout') }}" class="shrink-0">
-                            @csrf
-                            <button type="submit" title="{{ __('instructor.nav.logout') }}" class="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-800/80 transition-colors cursor-pointer">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                            </button>
-                        </form>
+                        <div class="flex items-center gap-0.5 shrink-0">
+                            <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                            <form method="POST" action="{{ route('instructor.logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" title="{{ __('instructor.nav.logout') }}" class="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 @endif
             </div>
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-w-0 lg:pl-64 sm:lg:pl-68 min-h-screen">
+        <div class="flex-1 flex flex-col min-w-0 lg:pl-72 min-h-screen">
             <!-- Full-width Sticky Top Header -->
             <header class="h-16 bg-white border-b border-slate-200/90 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                 <div class="flex items-center gap-3 min-w-0">
