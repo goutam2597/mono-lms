@@ -156,5 +156,24 @@ php artisan test --compact
 
 ---
 
+## 🚧 Roadmap — Shared cPanel Hosting Deployment (planned)
+
+> **TODO:** make the app installable on shared cPanel hosting **without terminal/SSH access**. Not implemented yet — pending until the core project is complete.
+
+Key facts already handled:
+
+- **Vite never runs on the server.** It is a build-time tool only — the compiled assets (`public/build/` + `manifest.json`) are **committed to the repo**, and Laravel's `@vite` directive just reads the manifest at runtime (plain PHP). Uploading the repo gives a working UI, no Node/npm needed on the host.
+- After changing CSS/JS: rebuild locally (`npm run build`) and commit/upload `public/build/`.
+
+Remaining blockers & planned solutions:
+
+1. **Composer dependencies** — `/vendor` is not committed. Plan: build a release ZIP locally (`composer install --no-dev`) that includes `vendor/`, `public/build/`, and `.env.example`; upload via cPanel File Manager.
+2. **Database migration + seeding without SSH** — Plan: a **one-time web installer** (`/install` wizard route) that checks server requirements, tests the DB connection from a web form, runs `migrate` + seed, creates the super admin, writes a lock file, and disables itself.
+3. **`php artisan storage:link`** — not required yet (no public disk usage). If needed later: auto-create in the installer or fallback route.
+
+Alternative stopgap: export a schema + seed SQL dump for phpMyAdmin import (static — breaks when the schema changes; the web installer is preferred).
+
+---
+
 ## 📄 License
 The MIT License (MIT).
