@@ -23,8 +23,7 @@
         <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
             @foreach ($activeLanguages as $lang)
                 <a href="{{ route($routeName, $lang->code) }}"
-                   class="flex items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d] {{ $lang->code === $currentLocale ? 'font-semibold text-[#344c3d]' : 'text-[#191919]' }}"
-                   dir="{{ $lang->direction }}">
+                   class="flex items-center justify-between gap-2 px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d] {{ $lang->code === $currentLocale ? 'font-semibold text-[#344c3d]' : 'text-[#191919]' }}">
                     <span class="flex items-center gap-2">
                         <img src="{{ asset('images/flags/'.$lang->flag.'.png') }}" alt="{{ $lang->name }} flag" class="w-4 h-3 inline-block rounded-xs object-cover" />
                         <span>{{ $lang->native_name }}</span>

@@ -21,12 +21,12 @@
                             <th class="px-6 py-3">{{ __('admin.languages.direction') }}</th>
                             <th class="px-6 py-3">{{ __('app.common.status') }}</th>
                             <th class="px-6 py-3">{{ __('admin.languages.default') }}</th>
-                            <th class="px-6 py-3">{{ __('app.common.actions') }}</th>
+                            <th class="px-6 py-3 text-right">{{ __('app.common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach ($languages as $language)
-                            <tr class="hover:bg-slate-50/60 transition-colors" dir="{{ $language->direction }}">
+                            <tr class="hover:bg-slate-50/60 transition-colors">
                                 <td class="px-6 py-3.5">
                                     <div class="flex items-center gap-2.5">
                                         <img src="{{ asset('images/flags/'.$language->flag.'.png') }}" alt="{{ $language->name }} flag" class="w-6 h-4 object-cover border border-slate-200" />
@@ -37,7 +37,11 @@
                                     <p class="font-bold text-[#191919] text-xs">{{ $language->native_name }}</p>
                                     <p class="text-xs text-slate-400 mt-0.5">{{ $language->name }}</p>
                                 </td>
-                                <td class="px-6 py-3.5 text-xs text-slate-600 font-mono uppercase">{{ $language->direction }}</td>
+                                <td class="px-6 py-3.5 text-xs text-slate-600 font-mono uppercase">
+                                    <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] bg-slate-100 text-slate-600 border border-slate-200">
+                                        {{ strtoupper($language->direction) }}
+                                    </span>
+                                </td>
                                 <td class="px-6 py-3.5">
                                     @if ($language->is_active)
                                         <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] bg-emerald-50 text-emerald-800 border border-emerald-200">
@@ -58,20 +62,20 @@
                                         <span class="text-xs text-slate-400">—</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-3.5">
-                                    <div class="flex items-center gap-2">
+                                <td class="px-6 py-3.5 text-right">
+                                    <div class="flex items-center justify-end gap-2">
                                         @unless ($language->is_default)
                                             <form method="POST" action="{{ route('admin.languages.default', $language) }}">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="action-btn action-btn-ghost text-xs cursor-pointer">
+                                                <button type="submit" class="action-btn action-btn-ghost h-7 px-3 text-[10px] cursor-pointer">
                                                     {{ __('admin.languages.make_default') }}
                                                 </button>
                                             </form>
                                             <form method="POST" action="{{ route('admin.languages.toggle', $language) }}">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="action-btn {{ $language->is_active ? 'action-btn-danger' : 'action-btn-primary' }} text-xs cursor-pointer">
+                                                <button type="submit" class="action-btn {{ $language->is_active ? 'action-btn-danger' : 'action-btn-primary' }} h-7 px-3 text-[10px] cursor-pointer">
                                                     {{ $language->is_active ? __('admin.languages.disable') : __('admin.languages.enable') }}
                                                 </button>
                                             </form>
