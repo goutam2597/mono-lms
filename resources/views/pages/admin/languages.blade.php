@@ -63,12 +63,14 @@
                                         @unless ($language->is_default)
                                             <form method="POST" action="{{ route('admin.languages.default', $language) }}">
                                                 @csrf
+                                                @method('PATCH')
                                                 <button type="submit" class="action-btn action-btn-ghost text-xs cursor-pointer">
                                                     {{ __('admin.languages.make_default') }}
                                                 </button>
                                             </form>
                                             <form method="POST" action="{{ route('admin.languages.toggle', $language) }}">
                                                 @csrf
+                                                @method('PATCH')
                                                 <button type="submit" class="action-btn {{ $language->is_active ? 'action-btn-danger' : 'action-btn-primary' }} text-xs cursor-pointer">
                                                     {{ $language->is_active ? __('admin.languages.disable') : __('admin.languages.enable') }}
                                                 </button>

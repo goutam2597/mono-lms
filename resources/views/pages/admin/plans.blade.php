@@ -15,6 +15,7 @@
             </div>
             <form method="POST" action="{{ route('admin.plans.membership-toggle') }}">
                 @csrf
+                @method('PATCH')
                 <button type="submit" class="relative inline-flex h-7 w-14 items-center transition-colors cursor-pointer {{ $membershipEnabled ? 'bg-[#03c95a]' : 'bg-gray-300' }}" aria-label="{{ __('admin.plans.membership') }}">
                     <span class="inline-block h-5 w-5 transform bg-white shadow transition-transform {{ $membershipEnabled ? 'translate-x-8' : 'translate-x-1' }}"></span>
                 </button>

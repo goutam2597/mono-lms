@@ -184,18 +184,18 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:courses.manage')->name('courses.lessons.destroy');
     Route::post('/courses/bulk-destroy', [AdminCourseController::class, 'bulkDestroy'])
         ->middleware('permission:courses.manage')->name('courses.bulk-destroy');
-    Route::patch('/courses/{course}/publish', [AdminCourseController::class, 'publish'])
+    Route::match(['post', 'patch'], '/courses/{course}/publish', [AdminCourseController::class, 'publish'])
         ->middleware('permission:courses.publish')->name('courses.publish');
-    Route::patch('/courses/{course}/unpublish', [AdminCourseController::class, 'unpublish'])
+    Route::match(['post', 'patch'], '/courses/{course}/unpublish', [AdminCourseController::class, 'unpublish'])
         ->middleware('permission:courses.publish')->name('courses.unpublish');
     Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])
         ->middleware('permission:courses.manage')->name('courses.destroy');
 
     Route::get('/reviews', [AdminReviewController::class, 'index'])
         ->middleware('permission:reviews.moderate')->name('reviews.index');
-    Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])
+    Route::match(['post', 'patch'], '/reviews/{review}/approve', [AdminReviewController::class, 'approve'])
         ->middleware('permission:reviews.moderate')->name('reviews.approve');
-    Route::patch('/reviews/{review}/reject', [AdminReviewController::class, 'reject'])
+    Route::match(['post', 'patch'], '/reviews/{review}/reject', [AdminReviewController::class, 'reject'])
         ->middleware('permission:reviews.moderate')->name('reviews.reject');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])
         ->middleware('permission:reviews.moderate')->name('reviews.destroy');
@@ -204,9 +204,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 
     Route::get('/languages', [LanguageController::class, 'index'])
         ->middleware('permission:languages.manage')->name('languages.index');
-    Route::patch('/languages/{language}/toggle', [LanguageController::class, 'toggle'])
+    Route::match(['post', 'patch'], '/languages/{language}/toggle', [LanguageController::class, 'toggle'])
         ->middleware('permission:languages.manage')->name('languages.toggle');
-    Route::patch('/languages/{language}/default', [LanguageController::class, 'makeDefault'])
+    Route::match(['post', 'patch'], '/languages/{language}/default', [LanguageController::class, 'makeDefault'])
         ->middleware('permission:languages.manage')->name('languages.default');
 
     // Blog
@@ -233,7 +233,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // Membership plans + the master enable/disable switch
     Route::middleware('permission:plans.manage')->group(function () {
         Route::get('/plans', [AdminPlanController::class, 'index'])->name('plans.index');
-        Route::patch('/plans/membership/toggle', [AdminPlanController::class, 'toggleMembership'])->name('plans.membership-toggle');
+        Route::match(['post', 'patch'], '/plans/membership/toggle', [AdminPlanController::class, 'toggleMembership'])->name('plans.membership-toggle');
         Route::get('/plans/create', [AdminPlanController::class, 'create'])->name('plans.create');
         Route::post('/plans', [AdminPlanController::class, 'store'])->name('plans.store');
         Route::get('/plans/{plan}/edit', [AdminPlanController::class, 'edit'])->name('plans.edit');

@@ -59,12 +59,14 @@
                                     @if ($review->status !== 'approved')
                                         <form method="POST" action="{{ route('admin.reviews.approve', $review) }}">
                                             @csrf
+                                            @method('PATCH')
                                             <button type="submit" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('admin.reviews.approve') }}</button>
                                         </form>
                                     @endif
                                     @if ($review->status !== 'rejected')
                                         <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
                                             @csrf
+                                            @method('PATCH')
                                             <button type="submit" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('admin.reviews.reject') }}</button>
                                         </form>
                                     @endif

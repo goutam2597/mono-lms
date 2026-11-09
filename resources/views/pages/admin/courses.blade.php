@@ -59,11 +59,13 @@
                                         @if ($course->is_published)
                                             <form method="POST" action="{{ route('admin.courses.unpublish', $course) }}">
                                                 @csrf
+                                                @method('PATCH')
                                                 <button type="submit" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('admin.courses.unpublish') }}</button>
                                             </form>
                                         @else
                                             <form method="POST" action="{{ route('admin.courses.publish', $course) }}">
                                                 @csrf
+                                                @method('PATCH')
                                                 <button type="submit" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('admin.courses.approve') }}</button>
                                             </form>
                                         @endif
