@@ -97,8 +97,11 @@
                                 </td>
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-2.5">
-                                        @if(!empty($order->student?->avatarUrl() ?? $order->student?->avatar))
-                                            <img src="{{ $order->student?->avatarUrl() ?? $order->student?->avatar }}" alt="" class="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
+                                        @if($order->student?->avatarUrl())
+                                            <img src="{{ $order->student->avatarUrl() }}" alt="" class="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                            <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] items-center justify-center shrink-0 hidden">
+                                                {{ strtoupper(substr($order->student?->name ?? 'S', 0, 1)) }}
+                                            </span>
                                         @else
                                             <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center shrink-0">
                                                 {{ strtoupper(substr($order->student?->name ?? 'S', 0, 1)) }}

@@ -40,7 +40,7 @@
                 <x-instructor-card
                     :name="$instructor->name"
                     :role="$instructor->designation ?? ''"
-                    :image="$instructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&background=392c7d&color=fff&size=400'"
+                    :image="$instructor->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&background=392c7d&color=fff&size=400'"
                     :rating="$instructor->courses_reviews_avg_rating ? number_format($instructor->courses_reviews_avg_rating, 1) : null"
                     :reviews="$instructor->courses_reviews_count ?: null"
                     :lessons="__('instructors.courses_count', ['count' => $instructor->courses_count])"

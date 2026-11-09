@@ -27,7 +27,7 @@
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.help_center') }}</a></li>
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.faq') }}</a></li>
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.blog') }}</a></li>
+                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
                 </ul>
             </div>
 
@@ -37,11 +37,8 @@
                 <ul class="space-y-2.5 text-sm text-gray-400">
                     <li><a href="{{ route('courses.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.courses') }}</a></li>
                     <li><a href="{{ route('instructors.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.instructors') }}</a></li>
-                    <li><a href="{{ route('screens') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.screens') }}</a></li>
-                    <li><a href="{{ route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
-                    <li><a href="{{ route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
-                    <li><a href="{{ route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">Become an Instructor</a></li>
-                    <li><a href="{{ route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">Instructor Portal</a></li>
+                    <li><a href="{{ route('blog.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.blog') }}</a></li>
+                    <li><a href="{{ route('membership.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.membership') }}</a></li>
                 </ul>
             </div>
 
@@ -49,10 +46,10 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.useful') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.blog') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.pricing') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
+                    <li><a href="{{ route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.become_instructor') }}</a></li>
+                    <li><a href="{{ route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.instructor_portal') }}</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.student_portal') }}</a></li>
+                    <li><a href="{{ route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
                 </ul>
             </div>
 

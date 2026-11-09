@@ -35,4 +35,5 @@ return [
     'certificate_completion' => 'شهادة إتمام',
     'not_found' => 'الدورة غير موجودة.',
     'price_free' => 'مجاني',
+    'lessons' => 'الدروس',
 ];

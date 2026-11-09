@@ -122,7 +122,7 @@ class ThemeTest extends TestCase
         $response->assertSee('theme-toggle-btn', false);
     }
 
-    public function test_student_portal_renders_student_theme_toggle(): void
+    public function test_student_portal_is_strictly_light_without_theme_toggle(): void
     {
         $student = Student::create([
             'name' => 'Test Student',
@@ -132,12 +132,12 @@ class ThemeTest extends TestCase
         ]);
 
         $response = $this->actingAs($student, 'student')
-            ->withSession(['student_theme' => 'dark'])
             ->get(route('student.dashboard'));
 
         $response->assertOk();
-        $response->assertSee('mono_theme_student', false);
-        $response->assertSee('student-theme-toggle', false);
+        $response->assertDontSee('student-theme-toggle', false);
+        $response->assertDontSee('student-sidebar-theme-toggle', false);
+        $response->assertSee("document.documentElement.classList.remove('dark')", false);
     }
 
     public function test_storefront_strictly_removes_dark_mode(): void

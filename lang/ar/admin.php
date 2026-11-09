@@ -111,6 +111,8 @@ return [
     'courses' => [
         'title' => 'إدارة الدورات',
         'subtitle' => 'مراجعة ونشر والإشراف على جميع الدورات',
+        'create' => 'إنشاء دورة',
+        'edit' => 'تعديل الدورة',
         'instructor' => 'المدرّب',
         'price' => 'السعر',
         'enrolled' => 'المسجلون',
@@ -191,7 +193,9 @@ return [
         'cancel' => 'إلغاء',
         'delete' => 'حذف',
         'selected' => 'محدد',
+        'select_all' => 'تحديد الكل',
         'delete_selected' => 'حذف المحدد',
+        'no_results' => 'لم يتم العثور على نتائج.',
     ],
 
     'media' => [

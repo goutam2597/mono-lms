@@ -1,20 +1,33 @@
-<x-layouts.app title="Rolands Granger - Instructor Profile" active="instructors">
+<x-layouts.app :title="($instructor->name ?? 'Instructor') . ' - Instructor Profile'" active="instructors">
+
+    @php
+        $avatarUrl = $instructor->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&background=392c7d&color=fff&size=400';
+        $rating = $instructor->reviews()->avg('rating');
+        $reviewsCount = $instructor->reviews()->count();
+        $studentsCount = $instructor->enrollments()->count();
+        $coursesCount = $courses->count();
+    @endphp
 
     <!-- Instructor Hero Header -->
-    <div class="bg-[#392c7d] text-white py-14">
+    <div class="bg-[#344c3d] text-white py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="flex flex-col md:flex-row items-center gap-8">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80" class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl object-cover border-4 border-white/20 shadow-xl">
+                <div class="relative w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-4 border-white/20 shadow-xl shrink-0 bg-slate-800">
+                    <img src="{{ $avatarUrl }}"
+                         alt="{{ $instructor->name }}"
+                         class="w-full h-full object-cover"
+                         onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($instructor->name) }}&background=392c7d&color=fff&size=400';">
+                </div>
                 <div class="space-y-3 text-center md:text-left">
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Rolands Granger</h1>
-                        <span class="bg-[#344c3d] text-white text-xs font-bold px-3 py-1 rounded-full">Top Rated</span>
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-white">{{ $instructor->name }}</h1>
+                        <span class="bg-[#738a6e] text-white text-xs font-bold px-3 py-1 rounded-full">Top Rated</span>
                     </div>
-                    <p class="text-gray-300 text-sm sm:text-base font-medium">Senior Full-Stack Engineer & Cloud Architect</p>
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 text-xs sm:text-sm text-gray-300 pt-2">
-                        <div>⭐ <strong class="text-white">4.9</strong> Rating (200 Reviews)</div>
-                        <div>👥 <strong class="text-white">12,450</strong> Students</div>
-                        <div>📚 <strong class="text-white">12</strong> Active Courses</div>
+                    <p class="text-gray-200 text-sm sm:text-base font-medium">{{ $instructor->designation ?? 'Lead Instructor & Mentor' }}</p>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 text-xs sm:text-sm text-gray-200 pt-2">
+                        <div>⭐ <strong class="text-white">{{ $rating ? number_format($rating, 1) : '5.0' }}</strong> Rating ({{ $reviewsCount }} Reviews)</div>
+                        <div>👥 <strong class="text-white">{{ number_format($studentsCount) }}</strong> Students</div>
+                        <div>📚 <strong class="text-white">{{ $coursesCount }}</strong> Active Courses</div>
                     </div>
                 </div>
             </div>
@@ -28,51 +41,47 @@
             <div class="lg:col-span-8 space-y-10">
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-8 shadow-xs space-y-4">
                     <h2 class="text-2xl font-bold text-[#191919]">Biography</h2>
-                    <p class="text-sm text-[#5d5d5d] leading-relaxed">
-                        Hello! I am Rolands Granger, a passionate software architect with more than a decade of experience designing and building enterprise distributed systems, web applications, and cloud infrastructures.
-                    </p>
-                    <p class="text-sm text-[#5d5d5d] leading-relaxed">
-                        My mission as an educator is to break down complex architectural patterns, modern backend engineering, and clean code principles into bite-sized, practical project lessons that you can directly apply in your everyday job.
-                    </p>
+                    <div class="text-sm text-[#5d5d5d] leading-relaxed whitespace-pre-line">
+                        {{ $instructor->bio ?: 'A passionate instructor and industry expert sharing knowledge on Mono LMS.' }}
+                    </div>
                 </div>
 
                 <!-- Courses by this instructor -->
                 <div>
-                    <h3 class="text-2xl font-bold text-[#191919] mb-6">Courses by Rolands (12)</h3>
+                    <h3 class="text-2xl font-bold text-[#191919] mb-6">Courses by {{ $instructor->name }} ({{ $coursesCount }})</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <x-course-card 
-                            title="Complete Python Bootcamp From Zero to Hero"
-                            category="Programming"
-                            instructor="Rolands Granger"
-                            price="$150"
-                            rating="4.8"
-                            reviews="340"
-                            image="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80"
-                        />
-                        <x-course-card 
-                            title="Laravel 12 API Development and Testing Masterclass"
-                            category="Backend"
-                            instructor="Rolands Granger"
-                            price="$145"
-                            rating="4.9"
-                            reviews="95"
-                            image="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80"
-                        />
+                        @forelse ($courses as $c)
+                            <x-course-card
+                                :slug="$c->slug"
+                                :title="$c->title"
+                                :category="$c->category?->name ?? 'Course'"
+                                :instructor="$instructor->name"
+                                :instructorAvatar="$instructor->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($instructor->name).'&background=344C3D&color=DCE7DA'"
+                                :price="$c->price > 0 ? '$'.number_format($c->price, 2) : 'Free'"
+                                :rating="(string) ($c->averageRating() ?: '5.0')"
+                                :reviews="(string) $c->reviewCount()"
+                                :image="$c->image ?? 'https://picsum.photos/seed/course-'.$c->id.'/600/400'"
+                            />
+                        @empty
+                            <p class="col-span-full py-8 text-center text-slate-400">No active courses published yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column: Contact / Social Details -->
+            <!-- Right Column: Contact / Details -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-xs space-y-4">
                     <h4 class="font-bold text-[#191919] text-base">Contact Mentor</h4>
                     <p class="text-xs text-[#6d6d6d]">Have questions regarding a course? Reach out directly to discuss mentorship and syllabus queries.</p>
-                    <button class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-semibold text-xs py-3 rounded-xl transition-colors shadow-sm">
-                        Send Message
-                    </button>
+                    <a href="mailto:{{ $instructor->email }}" class="block text-center w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-semibold text-xs py-3 rounded-xl transition-colors shadow-sm">
+                        Send Email
+                    </a>
                     <div class="border-t border-gray-100 pt-4 space-y-2 text-xs text-gray-600">
-                        <div>🌐 <strong>Website:</strong> rolandsgranger.dev</div>
-                        <div>✉️ <strong>Email:</strong> rolands@dreamslms.com</div>
+                        <div>✉️ <strong>Email:</strong> {{ $instructor->email }}</div>
+                        @if ($instructor->phone)
+                            <div>📞 <strong>Phone:</strong> {{ $instructor->phone }}</div>
+                        @endif
                     </div>
                 </div>
             </div>

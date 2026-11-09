@@ -1,18 +1,24 @@
 <x-layouts.dashboard title="My Certificates - Mono LMS" active="certificates" userType="student">
 
-    <div class="space-y-6">
-        <!-- Header -->
-        <div class="bg-white border border-[#e7e7e7] rounded-xl p-4 shadow-xs flex items-center justify-between">
+    @php
+        $studentUser = auth('student')->user();
+        $studentName = $studentUser?->name ?? 'Student';
+    @endphp
+
+    <div class="space-y-5">
+        <!-- Header (Boxy) -->
+        <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-                <h2 class="text-xl font-bold text-[#191919]">My Certificates (05)</h2>
-                <p class="text-xs text-[#6d6d6d] mt-0.5">Accredited verified certificates earned from completed LMS curricula.</p>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">My Certificates (05)</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Accredited verified certificates earned from completed LMS curricula</p>
             </div>
-            <button class="bg-[#392c7d] hover:bg-[#344c3d] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
-                Verify Credential ID
+            <button type="button" class="inline-flex items-center gap-1.5 bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold px-4 py-2 rounded-[6px] transition-colors shadow-xs cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Verify Credential ID</span>
             </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @php
                 $certs = [
                     ['title' => 'The Complete Business & Management Masterclass', 'code' => 'CERT-LMS-98214', 'date' => 'October 15, 2026', 'grade' => 'Grade A+ (94%)'],
@@ -24,34 +30,34 @@
             @endphp
 
             @foreach($certs as $cert)
-                <div class="bg-white border border-[#e7e7e7] rounded-xl p-5 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+                <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-4 sm:p-5 shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between">
                     <div>
                         <!-- Certificate Thumbnail Preview -->
-                        <div class="relative h-40 bg-gradient-to-br from-indigo-50 to-purple-100 rounded-lg border-2 border-dashed border-[#392c7d]/30 p-4 flex flex-col justify-between text-center mb-4">
-                            <div class="text-[10px] font-bold tracking-widest text-[#392c7d] uppercase">Mono LMS Certificate</div>
+                        <div class="relative h-36 bg-gradient-to-br from-slate-50 to-emerald-50/40 rounded-[6px] border border-dashed border-[var(--theme-primary,#344c3d)]/40 p-4 flex flex-col justify-between text-center mb-4">
+                            <div class="text-[9px] font-bold tracking-widest text-[var(--theme-primary,#344c3d)] uppercase">Mono LMS Accredited Certificate</div>
                             <div>
-                                <div class="text-xs font-extrabold text-[#191919] line-clamp-1">{{ $cert['title'] }}</div>
-                                <div class="text-[10px] text-gray-500 mt-1">Presented to Eugene Andre</div>
+                                <div class="text-xs font-bold text-slate-900 line-clamp-1">{{ $cert['title'] }}</div>
+                                <div class="text-[10px] text-slate-500 mt-0.5">Presented to {{ $studentName }}</div>
                             </div>
-                            <div class="flex items-center justify-between text-[9px] text-[#738a6e] font-mono">
+                            <div class="flex items-center justify-between text-[9px] text-[var(--theme-accent,#738a6e)] font-mono">
                                 <span>{{ $cert['code'] }}</span>
-                                <span>Verified ✓</span>
+                                <span class="font-bold text-emerald-600">Verified ✓</span>
                             </div>
                         </div>
 
-                        <h4 class="font-bold text-sm text-[#191919] mb-1.5">{{ $cert['title'] }}</h4>
-                        <div class="text-xs text-[#6d6d6d] space-y-1 mb-4">
-                            <div>Issued: <strong class="text-gray-800">{{ $cert['date'] }}</strong></div>
-                            <div>Score: <strong class="text-[#03c95a]">{{ $cert['grade'] }}</strong></div>
+                        <h4 class="font-bold text-xs sm:text-sm text-slate-900 mb-1.5 leading-snug">{{ $cert['title'] }}</h4>
+                        <div class="text-xs text-slate-500 space-y-1 mb-4">
+                            <div>Issued: <strong class="text-slate-800 font-semibold">{{ $cert['date'] }}</strong></div>
+                            <div>Score: <strong class="text-emerald-600 font-semibold">{{ $cert['grade'] }}</strong></div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 pt-2 border-t border-gray-100">
-                        <button class="flex-1 bg-[#392c7d] hover:bg-[#344c3d] text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5">
+                    <div class="flex items-center gap-2 pt-3 border-t border-slate-100">
+                        <button type="button" class="flex-1 bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold py-2 rounded-[5px] transition-colors flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                             <span>Download PDF</span>
                         </button>
-                        <button class="bg-[#f4f6f9] hover:bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-2 rounded-lg transition-colors" title="Share on LinkedIn">
+                        <button type="button" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-[5px] transition-colors cursor-pointer" title="Share credential">
                             Share
                         </button>
                     </div>

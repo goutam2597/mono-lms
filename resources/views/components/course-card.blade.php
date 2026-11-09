@@ -35,6 +35,33 @@
     if (!str_contains(strtolower($formattedLessons), 'lesson')) {
         $formattedLessons .= ' Lessons';
     }
+
+    $studentUser = auth('student')->user();
+    $isSaved = false;
+    $toggleUrl = null;
+
+    if (isset($course) && $course instanceof \App\Models\Course) {
+        $isSaved = $studentUser ? $studentUser->hasWishlisted($course) : false;
+        $toggleUrl = route('courses.wishlist.toggle', $course);
+    } elseif ($slug) {
+        if ($studentUser) {
+            $isSaved = $studentUser->wishlists()->whereHas('course', fn($q) => $q->where('slug', $slug))->exists();
+        }
+        $toggleUrl = route('courses.wishlist.toggle', $slug);
+    } elseif ($id && is_numeric($id)) {
+        if ($studentUser) {
+            $isSaved = $studentUser->wishlists()->where('course_id', $id)->exists();
+        }
+        $toggleUrl = route('courses.wishlist.toggle', $id);
+    }
+    $priceLength = strlen(trim((string)$price));
+    if ($priceLength >= 11) {
+        $priceTextSize = 'text-xs sm:text-sm';
+    } elseif ($priceLength >= 8) {
+        $priceTextSize = 'text-sm sm:text-base';
+    } else {
+        $priceTextSize = 'text-base sm:text-lg';
+    }
 @endphp
 
 <div class="bg-white rounded-[22px] sm:rounded-[26px] overflow-hidden shadow-[0_8px_24px_rgba(19,117,71,0.06)] hover:shadow-[0_14px_36px_rgba(19,117,71,0.12)] border border-gray-100 transition-all duration-300 flex flex-col justify-between relative group">
@@ -43,9 +70,19 @@
     <div class="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
         <img src="{{ $image }}" alt="{{ $title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
 
-        <!-- Top Left: Wishlist Button -->
-        <button type="button" class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 w-8 h-8 rounded-full bg-white/95 hover:bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-[#137547] hover:scale-105 transition-all cursor-pointer z-20" aria-label="Add to wishlist">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- Top Left: Wishlist / Save Button -->
+        <button type="button"
+                data-wishlist-toggle="{{ $toggleUrl ?? route('login') }}"
+                data-saved="{{ $isSaved ? '1' : '0' }}"
+                data-guest="{{ $studentUser ? '0' : '1' }}"
+                title="{{ $isSaved ? 'Remove from Saved Courses' : 'Save Course' }}"
+                class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 w-8 h-8 rounded-full bg-white/95 hover:bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] flex items-center justify-center transition-all cursor-pointer z-30 group/wishlist {{ $isSaved ? 'text-rose-500' : 'text-slate-600 hover:text-rose-500' }}"
+                aria-label="{{ $isSaved ? 'Remove from Saved Courses' : 'Save Course' }}">
+            <svg class="w-4 h-4 transition-transform group-hover/wishlist:scale-110 pointer-events-none {{ $isSaved ? 'fill-rose-500 text-rose-500 stroke-rose-500' : 'fill-none text-slate-600 group-hover/wishlist:text-rose-500' }}"
+                 fill="{{ $isSaved ? 'currentColor' : 'none' }}"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
             </svg>
         </button>
@@ -76,7 +113,7 @@
             <div class="flex items-center justify-between gap-2 mb-2">
                 <!-- Instructor Info -->
                 <div class="flex items-center gap-2 min-w-0">
-                    <img src="{{ $instructorAvatar }}" alt="{{ $instructor }}" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full object-cover shrink-0 border-2 border-white ring-2 ring-[#eaf5ee] shadow-2xs">
+                    <img src="{{ $instructorAvatar }}" alt="{{ $instructor }}" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full object-cover shrink-0 border-2 border-white ring-2 ring-[#eaf5ee] shadow-2xs" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($instructor) }}&background=344C3D&color=FFFFFF';">
                     <div class="min-w-0">
                         <span class="block font-bold text-xs sm:text-[13px] text-[#0f172a] hover:text-[#137547] transition-colors truncate leading-tight">
                             {{ $instructor }}
@@ -136,17 +173,21 @@
         </div>
 
         <!-- Footer Row: Price + Enroll Now Button -->
-        <div class="flex items-center justify-between gap-2 pt-3 border-t border-gray-100 relative z-10">
-            <!-- Price Section -->
-            <div class="flex items-baseline min-w-0">
-                <span class="text-[#137547] font-extrabold text-base sm:text-lg tracking-tight leading-none">{{ $price }}</span>
+        <div class="flex items-center justify-between gap-2.5 pt-3 border-t border-gray-100 relative z-10">
+            <!-- Price Section: Stacked, flexible, never hidden under the button -->
+            <div class="flex flex-col justify-center min-w-0 flex-1 pr-1">
+                <span class="text-[#137547] font-extrabold {{ $priceTextSize }} tracking-tight leading-tight truncate" title="{{ $price }}">
+                    {{ $price }}
+                </span>
                 @if($oldPrice)
-                    <span class="text-[11px] sm:text-xs text-gray-400 line-through font-medium leading-none ml-1.5">{{ $oldPrice }}</span>
+                    <span class="text-[10px] sm:text-[11px] text-gray-400 line-through font-medium leading-tight truncate" title="{{ $oldPrice }}">
+                        {{ $oldPrice }}
+                    </span>
                 @endif
             </div>
 
-            <!-- Action Button: Enroll Now Pill (Increased comfortable height) -->
-            <a href="{{ route('courses.show', $slug ?? $id) }}" class="group/btn inline-flex items-center justify-center gap-1.5 h-9 sm:h-9.5 px-3.5 sm:px-4 bg-gradient-to-r from-[#178546] to-[#0f6834] hover:from-[#137547] hover:to-[#0a5229] text-white text-xs sm:text-[13px] font-bold rounded-full shadow-[0_4px_14px_rgba(23,133,70,0.30)] hover:shadow-[0_6px_18px_rgba(23,133,70,0.40)] active:scale-[0.98] transition-all duration-200 leading-none shrink-0 cursor-pointer">
+            <!-- Action Button: Enroll Now Pill (Compact, self-contained, fixed) -->
+            <a href="{{ route('courses.show', $slug ?? $id) }}" class="group/btn inline-flex items-center justify-center gap-1.5 h-8.5 sm:h-9 px-3 sm:px-3.5 bg-gradient-to-r from-[#178546] to-[#0f6834] hover:from-[#137547] hover:to-[#0a5229] text-white text-xs sm:text-[12.5px] font-bold rounded-full shadow-[0_3px_12px_rgba(23,133,70,0.28)] hover:shadow-[0_5px_16px_rgba(23,133,70,0.38)] active:scale-[0.98] transition-all duration-200 leading-none shrink-0 cursor-pointer">
                 <span>{{ __('courses.enroll_now') }}</span>
                 <svg class="w-3.5 h-3.5 text-white shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                     <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>

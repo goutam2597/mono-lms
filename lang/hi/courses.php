@@ -35,4 +35,5 @@ return [
     'certificate_completion' => 'पूर्णता प्रमाणपत्र',
     'not_found' => 'कोर्स नहीं मिला।',
     'price_free' => 'मुफ़्त',
+    'lessons' => 'पाठ',
 ];

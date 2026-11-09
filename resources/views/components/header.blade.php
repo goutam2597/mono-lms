@@ -4,7 +4,7 @@
 @endphp
 
 <!-- Top Bar -->
-<div class="bg-[#08131e] text-white text-xs py-2 px-4 sm:px-8 border-b border-[#1b2737]">
+<div class="bg-[#08131e] text-white text-xs py-2 px-4 sm:px-8 border-b border-[#1b2737] relative z-50">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
         <div class="flex items-center gap-6">
             <div class="flex items-center gap-2 text-gray-300">
@@ -44,7 +44,7 @@
 </div>
 
 <!-- Main Navbar -->
-<header class="bg-white border-b border-[#f4f6f9] sticky top-0 z-50">
+<header class="bg-white border-b border-[#f4f6f9] sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex items-center shrink-0">
@@ -73,7 +73,22 @@
         </nav>
 
         <!-- Right Action Buttons -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Global Search Icon Button -->
+            <button type="button"
+                    id="global-search-toggle"
+                    aria-label="Search courses"
+                    aria-expanded="false"
+                    title="Search courses (Press /)"
+                    class="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-700 hover:text-black transition-colors flex items-center justify-center cursor-pointer shrink-0">
+                <svg id="global-search-icon-open" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z" fill="currentColor"/>
+                </svg>
+                <svg id="global-search-icon-close" class="w-4 h-4 hidden text-slate-700" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
             <!-- Mobile Menu (below lg) -->
             <details class="lg:hidden relative">
                 <summary class="w-9 h-9 rounded-xl border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#738a6e] hover:border-[#738a6e] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
@@ -88,16 +103,131 @@
                         <a href="{{ route('membership.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.membership') }}</a>
                     @endif
                     <div class="border-t border-gray-100 my-1"></div>
-                    @guest('student')
+                    @if (auth('instructor')->check())
+                        <a href="{{ route('instructor.dashboard') }}" class="block px-4 py-2 text-sm font-semibold text-[#344c3d] hover:bg-[#f4f6f9]">{{ __('instructor.panel') ?? 'Instructor Dashboard' }}</a>
+                        <a href="{{ route('instructor.courses.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.courses') }}</a>
+                        <a href="{{ route('instructor.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
+                        <form method="POST" action="{{ route('instructor.logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>
+                        </form>
+                    @elseif (auth('admin')->check())
+                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm font-semibold text-[#344c3d] hover:bg-[#f4f6f9]">{{ __('admin.panel') ?? 'Admin Dashboard' }}</a>
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>
+                        </form>
+                    @elseif (auth('student')->check())
+                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
+                        <a href="{{ route('student.wishlist') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('student.nav.saved_courses') }}</a>
+                        <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>
+                        </form>
+                    @else
                         <a href="{{ route('login') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.sign_in') }}</a>
                         <a href="{{ route('register') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.register') }}</a>
-                    @else
-                        <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
-                    @endguest
+                        <a href="{{ route('instructor.login') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#f4f6f9] hover:text-[#344c3d]">Instructor Portal</a>
+                    @endif
                 </div>
             </details>
 
-            @guest('student')
+            @if (auth('instructor')->check())
+                @php $instructor = auth('instructor')->user(); @endphp
+                <!-- Instructor Account Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center py-1 cursor-pointer focus:outline-none" aria-label="{{ $instructor->name }}" title="{{ $instructor->name }}">
+                        @if ($instructor->avatarUrl())
+                            <img src="{{ $instructor->avatarUrl() }}" alt="{{ $instructor->name }}" class="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-[var(--theme-primary,#344c3d)]/40 transition-all shadow-xs" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm items-center justify-center hidden shadow-xs">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                        @else
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm flex items-center justify-center shadow-xs">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                        @endif
+                    </button>
+                    <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
+                            <div class="px-4 py-2.5 border-b border-gray-100">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="text-sm font-semibold text-[#191919] truncate">{{ $instructor->name }}</p>
+                                    <span class="text-[10px] bg-[#344c3d]/10 text-[#344c3d] font-semibold px-1.5 py-0.5 rounded shrink-0">Instructor</span>
+                                </div>
+                                <p class="text-xs text-gray-500 truncate mt-0.5">{{ $instructor->email }}</p>
+                            </div>
+                            <a href="{{ route('instructor.dashboard') }}" class="block px-4 py-2 text-sm font-semibold text-[#344c3d] hover:bg-[#f4f6f9] flex items-center justify-between">
+                                <span>{{ __('app.nav.dashboard') }}</span>
+                                <span class="text-[10px] bg-[#344c3d]/10 text-[#344c3d] px-1.5 py-0.5 rounded">Panel</span>
+                            </a>
+                            <a href="{{ route('instructor.courses.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.courses') }}</a>
+                            <a href="{{ route('instructor.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
+                            <form method="POST" action="{{ route('instructor.logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer">{{ __('app.nav.sign_out') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @elseif (auth('admin')->check())
+                @php $admin = auth('admin')->user(); @endphp
+                <!-- Admin Account Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center py-1 cursor-pointer focus:outline-none" aria-label="{{ $admin->name }}" title="{{ $admin->name }}">
+                        @if ($admin->avatarUrl())
+                            <img src="{{ $admin->avatarUrl() }}" alt="{{ $admin->name }}" class="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-[var(--theme-primary,#344c3d)]/40 transition-all shadow-xs" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm items-center justify-center hidden shadow-xs">{{ strtoupper(substr($admin->name, 0, 1)) }}</span>
+                        @else
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm flex items-center justify-center shadow-xs">{{ strtoupper(substr($admin->name, 0, 1)) }}</span>
+                        @endif
+                    </button>
+                    <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
+                            <div class="px-4 py-2.5 border-b border-gray-100">
+                                <div class="flex items-center justify-between gap-2">
+                                    <p class="text-sm font-semibold text-[#191919] truncate">{{ $admin->name }}</p>
+                                    <span class="text-[10px] bg-amber-100 text-amber-800 font-semibold px-1.5 py-0.5 rounded shrink-0">Admin</span>
+                                </div>
+                                <p class="text-xs text-gray-500 truncate mt-0.5">{{ $admin->email }}</p>
+                            </div>
+                            <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm font-semibold text-[#344c3d] hover:bg-[#f4f6f9] flex items-center justify-between">
+                                <span>{{ __('app.nav.dashboard') }}</span>
+                                <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">Admin</span>
+                            </a>
+                            <form method="POST" action="{{ route('admin.logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer">{{ __('app.nav.sign_out') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @elseif (auth('student')->check())
+                @php $student = auth('student')->user(); @endphp
+                <!-- Student Account Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center py-1 cursor-pointer focus:outline-none" aria-label="{{ $student->name }}" title="{{ $student->name }}">
+                        @if ($student->avatarUrl())
+                            <img src="{{ $student->avatarUrl() }}" alt="{{ $student->name }}" class="w-9 h-9 rounded-full object-cover ring-2 ring-transparent group-hover:ring-[var(--theme-primary,#344c3d)]/40 transition-all shadow-xs" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm items-center justify-center hidden shadow-xs">{{ strtoupper(substr($student->name, 0, 1)) }}</span>
+                        @else
+                            <span class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm flex items-center justify-center shadow-xs">{{ strtoupper(substr($student->name, 0, 1)) }}</span>
+                        @endif
+                    </button>
+                    <div class="absolute right-0 top-full pt-2 w-56 hidden group-hover:block z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
+                            <div class="px-4 py-2.5 border-b border-gray-100">
+                                <p class="text-sm font-semibold text-[#191919] truncate">{{ $student->name }}</p>
+                                <p class="text-xs text-gray-500 truncate mt-0.5">{{ $student->email }}</p>
+                            </div>
+                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
+                            <a href="{{ route('student.wishlist') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('student.nav.saved_courses') }}</a>
+                            <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer">{{ __('app.nav.sign_out') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @else
                 <!-- Sign In Button -->
                 <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center gap-1.5 bg-[#e7e7e7] text-[#191919] hover:bg-gray-300 px-4 py-2 rounded-xl font-medium text-[13px] transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
@@ -109,31 +239,66 @@
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                     <span>{{ __('app.nav.register') }}</span>
                 </a>
-            @else
-                @php $student = auth('student')->user(); @endphp
-                <!-- Student Account Dropdown -->
-                <div class="relative group">
-                    <button class="flex items-center gap-2 py-1.5">
-                        <span class="w-9 h-9 rounded-full bg-[#392c7d] text-white font-bold text-sm flex items-center justify-center">{{ strtoupper(substr($student->name, 0, 1)) }}</span>
-                        <span class="hidden md:inline text-[13px] font-medium text-[#191919] max-w-[110px] truncate">{{ $student->name }}</span>
-                        <svg class="w-4 h-4 text-gray-500 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-                    <div class="absolute right-0 top-full pt-2 w-52 hidden group-hover:block z-50">
-                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">
-                            <div class="px-4 py-2 border-b border-gray-100">
-                                <p class="text-sm font-semibold text-[#191919] truncate">{{ $student->name }}</p>
-                                <p class="text-xs text-gray-500 truncate">{{ $student->email }}</p>
-                            </div>
-                            <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
-                            <a href="{{ route('student.profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.profile') }}</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="w-full text-start px-4 py-2 text-sm text-red-500 hover:bg-red-50">{{ __('app.nav.sign_out') }}</button>
-                            </form>
-                        </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Global Full Search Bar Drawer (Expands below navbar on click) -->
+    <div id="global-search-bar"
+         class="hidden border-t border-slate-100 bg-white/98 backdrop-blur-md shadow-xl transition-all duration-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-8 py-4 sm:py-5">
+            <form action="{{ route('courses.index') }}" method="GET" class="relative">
+                <div class="relative flex items-center">
+                    <div class="absolute left-4 text-slate-400 pointer-events-none flex items-center">
+                        <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.8487 19 14.551 18.3729 15.9056 17.3199L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.3199 15.9056C18.3729 14.551 19 12.8487 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+
+                    <input type="text"
+                           name="q"
+                           id="global-search-input"
+                           value="{{ request('q') }}"
+                           placeholder="{{ __('app.common.search_placeholder') ?? 'What do you want to learn today?' }}"
+                           autocomplete="off"
+                           class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm sm:text-base font-medium rounded-xl border border-slate-200 focus:border-[var(--theme-primary,#344c3d)] focus:ring-3 focus:ring-[var(--theme-primary,#344c3d)]/10 pl-11 sm:pl-12 pr-28 sm:pr-32 py-3 sm:py-3.5 transition-all outline-none">
+
+                    <div class="absolute right-2 sm:right-2.5 flex items-center gap-1.5">
+                        <button type="submit"
+                                class="bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs sm:text-[13px] font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg transition-colors cursor-pointer shadow-xs">
+                            {{ __('app.common.search') }}
+                        </button>
+                        <button type="button"
+                                id="global-search-cancel"
+                                aria-label="Close search"
+                                title="Close (Esc)"
+                                class="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-            @endguest
+
+                <!-- Popular search tags -->
+                @php
+                    $searchCategories = \App\Models\Category::take(5)->get();
+                @endphp
+                @if ($searchCategories->isNotEmpty())
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-3 text-xs text-slate-500">
+                        <span class="font-semibold text-slate-400 text-[11px] uppercase tracking-wider mr-1">Popular:</span>
+                        @foreach ($searchCategories as $cat)
+                            <a href="{{ route('courses.index', ['category' => $cat->id]) }}"
+                               class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors">
+                                {{ $cat->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </form>
         </div>
     </div>
 </header>
+
+<!-- Backdrop overlay when search is open -->
+<div id="global-search-backdrop" class="hidden fixed inset-0 bg-slate-950/20 backdrop-blur-2xs z-30 transition-opacity"></div>

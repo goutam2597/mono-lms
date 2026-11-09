@@ -64,5 +64,13 @@
     </main>
 
     <x-footer />
+
+    @if (session('success'))
+        <div data-flash-toast data-type="success" data-message="{{ session('success') }}" data-title="Success" class="hidden"></div>
+    @elseif (session('error'))
+        <div data-flash-toast data-type="error" data-message="{{ session('error') }}" data-title="Error" class="hidden"></div>
+    @elseif (session('status'))
+        <div data-flash-toast data-type="info" data-message="{{ session('status') }}" data-title="Notice" class="hidden"></div>
+    @endif
 </body>
 </html>

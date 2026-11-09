@@ -1,8 +1,11 @@
+import './toast';
+import './global-search';
 import './mselect';
 import './mono-select';
 import './hero-showcase';
 import './category-slider';
 import './featured-tabs';
+import './wishlist';
 
 /**
  * Count-up animation for [data-countup] elements.

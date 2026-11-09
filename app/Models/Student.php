@@ -45,8 +45,62 @@ class Student extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-    public function avatarUrl(): ?string
+    public function wishlists(): HasMany
     {
-        return $this->avatar ? PublicMedia::url($this->avatar) : null;
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function activeSubscription(): ?Subscription
+    {
+        return $this->subscriptions()
+            ->with('plan')
+            ->where('status', 'active')
+            ->latest('id')
+            ->first();
+    }
+
+    public function isSubscribed(): bool
+    {
+        return $this->activeSubscription() !== null;
+    }
+
+    public function wishlistCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'wishlists')
+            ->withTimestamps();
+    }
+
+    public function hasWishlisted(int|Course $course): bool
+    {
+        $courseId = $course instanceof Course ? $course->id : $course;
+
+        return $this->wishlists()->where('course_id', $courseId)->exists();
+    }
+
+    public function avatarUrl(?string $fallback = null): ?string
+    {
+        if ($this->avatar && trim((string) $this->avatar) !== '') {
+            $url = PublicMedia::url($this->avatar);
+            if ($url !== '') {
+                return $url;
+            }
+        }
+
+        return $fallback;
+    }
+
+    public function avatarOrDefault(): string
+    {
+        return $this->avatarUrl() ?: 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=344C3D&color=FFFFFF&size=200&bold=true';
     }
 }

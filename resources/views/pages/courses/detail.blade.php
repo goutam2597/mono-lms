@@ -64,8 +64,9 @@
                     <!-- Instructor & Meta Row -->
                     <div class="flex flex-wrap items-center gap-y-3 gap-x-6 pt-3 text-xs sm:text-sm text-gray-300">
                         <div class="flex items-center gap-2.5">
-                            @if ($course->instructor?->avatar)
-                                <img src="{{ $course->instructor->avatar }}" class="w-8 h-8 rounded-full object-cover border border-[#bfcabb]/40" alt="{{ $course->instructor->name }}">
+                            @if ($course->instructor?->avatarUrl())
+                                <img src="{{ $course->instructor->avatarUrl() }}" class="w-8 h-8 rounded-full object-cover border border-[#bfcabb]/40" alt="{{ $course->instructor->name }}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                <span class="w-8 h-8 rounded-full bg-[#344c3d] border border-[#bfcabb]/40 items-center justify-center text-xs font-bold text-white hidden">{{ strtoupper(substr($course->instructor?->name ?? 'I', 0, 1)) }}</span>
                             @else
                                 <span class="w-8 h-8 rounded-full bg-[#344c3d] border border-[#bfcabb]/40 flex items-center justify-center text-xs font-bold text-white">{{ strtoupper(substr($course->instructor?->name ?? 'I', 0, 1)) }}</span>
                             @endif
@@ -262,8 +263,9 @@
                 <div id="instructor" class="bg-white border border-[#e7e7e7] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
                     <h2 class="text-xl font-bold text-[#191919]">{{ __('courses.about_instructor') }}</h2>
                     <div class="flex flex-col sm:flex-row items-start gap-6">
-                        @if ($course->instructor?->avatar)
-                            <img src="{{ $course->instructor->avatar }}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover shrink-0 border border-[#e7e7e7] shadow-xs" alt="{{ $course->instructor->name }}">
+                        @if ($course->instructor?->avatarUrl())
+                            <img src="{{ $course->instructor->avatarUrl() }}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover shrink-0 border border-[#e7e7e7] shadow-xs" alt="{{ $course->instructor->name }}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <span class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#344c3d] text-white items-center justify-center text-2xl font-bold shrink-0 shadow-xs hidden">{{ strtoupper(substr($course->instructor?->name ?? 'I', 0, 1)) }}</span>
                         @else
                             <span class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#344c3d] text-white flex items-center justify-center text-2xl font-bold shrink-0 shadow-xs">{{ strtoupper(substr($course->instructor?->name ?? 'I', 0, 1)) }}</span>
                         @endif
@@ -434,6 +436,25 @@
                                 {{ __('courses.guest_enroll_hint') }}
                             </p>
                         @endauth
+
+                        @php
+                            $studentAuth = auth('student')->user();
+                            $isSavedCourse = $studentAuth ? $studentAuth->hasWishlisted($course) : false;
+                        @endphp
+                        <button type="button"
+                                data-wishlist-toggle="{{ route('courses.wishlist.toggle', $course) }}"
+                                data-saved="{{ $isSavedCourse ? '1' : '0' }}"
+                                data-guest="{{ $studentAuth ? '0' : '1' }}"
+                                class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold py-3 rounded-xl transition-all shadow-2xs text-xs flex items-center justify-center gap-2 cursor-pointer group/wishlist {{ $isSavedCourse ? 'text-rose-500' : '' }}">
+                            <svg class="w-4 h-4 transition-transform group-hover/wishlist:scale-110 pointer-events-none {{ $isSavedCourse ? 'fill-rose-500 stroke-rose-500 text-rose-500' : 'fill-none text-slate-500 group-hover/wishlist:text-rose-500' }}"
+                                 fill="{{ $isSavedCourse ? 'currentColor' : 'none' }}"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                            <span data-wishlist-label>{{ $isSavedCourse ? 'Saved in Wishlist' : 'Save to Wishlist' }}</span>
+                        </button>
                     </div>
 
                     <!-- Guarantee Note -->
@@ -500,7 +521,7 @@
                         :title="$rel->title"
                         :category="$rel->category?->name ?? 'Course'"
                         :instructor="$rel->instructor?->name ?? 'Instructor'"
-                        :instructorAvatar="$rel->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($rel->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                        :instructorAvatar="$rel->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($rel->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$rel->image ?? 'https://picsum.photos/seed/course-'.$rel->id.'/640/420'"
                         :rating="(string) ($rel->averageRating() ?: '5.0')"
                         :reviews="(string) $rel->reviewCount()"

@@ -54,7 +54,7 @@
 
     <!-- Top Area: Full-bleed photo with Organic Wave & Action Overlays -->
     <div class="relative w-full aspect-[16/13] sm:aspect-[16/12] overflow-hidden bg-gray-100">
-        <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($name) }}&background=392c7d&color=fff&size=400';">
 
         <!-- Top Left: Wishlist / Favorite Button -->
         <button type="button" class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 w-8.5 h-8.5 rounded-full bg-white/95 hover:bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-[#137547] hover:scale-105 transition-all cursor-pointer z-20" aria-label="Favorite instructor">

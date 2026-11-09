@@ -12,15 +12,14 @@ class DashboardController extends Controller
     {
         $instructor = auth('instructor')->user();
 
-        $courses = $instructor->courses();
-        $courseIds = $courses->pluck('id');
+        $courseIds = $instructor->courses()->pluck('id');
 
         $stats = [
             'revenue' => (float) Enrollment::whereIn('course_id', $courseIds)
                 ->join('courses', 'courses.id', '=', 'enrollments.course_id')
                 ->sum('courses.price'),
             'students' => Enrollment::whereIn('course_id', $courseIds)->count(),
-            'courses' => $courses->count(),
+            'courses' => $instructor->courses()->count(),
             'rating' => round((float) DB::table('reviews')->whereIn('course_id', $courseIds)->where('status', 'approved')->avg('rating'), 1),
         ];
 
@@ -44,7 +43,7 @@ class DashboardController extends Controller
         return view('pages.instructor.dashboard', [
             'stats' => $stats,
             'bars' => $bars,
-            'topCourses' => $courses->withCount('enrollments')->orderByDesc('enrollments_count')->take(5)->get(),
+            'topCourses' => $instructor->courses()->withCount('enrollments')->orderByDesc('enrollments_count')->take(5)->get(),
             'recentEnrollments' => Enrollment::with(['student', 'course'])
                 ->whereIn('course_id', $courseIds)
                 ->latest()->take(5)->get(),

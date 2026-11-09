@@ -1,76 +1,101 @@
 @props([
+    'student' => null,
     'name' => 'Eugene Andre',
     'role' => 'Student',
-    'avatar' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
-    'enrolled' => '12',
-    'certificates' => '05',
-    'completed' => '10'
+    'avatar' => '',
+    'enrolled' => '00',
+    'certificates' => '00',
+    'completed' => '00'
 ])
 
-<div class="relative bg-gradient-to-r from-[#392c7d] to-[#1f1947] rounded-2xl p-6 sm:p-8 text-white mb-8 overflow-hidden shadow-md">
-    <!-- Decorative background elements -->
-    <div class="absolute -right-10 -bottom-10 w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
-    <div class="absolute right-32 top-0 w-32 h-32 rounded-full bg-[#738a6e]/15 pointer-events-none"></div>
+@php
+    $student = $student ?? auth('student')->user();
+    $name = $student?->name ?? $name;
+    $email = $student?->email ?? 'student@mono-lms.com';
+    $avatar = $avatar ?: ($student?->avatarUrl() ?? '');
+    $enrolledCount = $student ? $student->enrollments()->count() : (int) $enrolled;
+    $completedCount = $student ? $student->enrollments()->where('status', 'completed')->count() : (int) $completed;
+    $initial = strtoupper(substr($name, 0, 1) ?: 'S');
+@endphp
 
-    <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-            <div class="relative">
-                <img src="{{ $avatar }}" alt="{{ $name }}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-white/20 shadow-lg">
-                <span class="absolute bottom-1 right-1 w-4 h-4 bg-[#03c95a] border-2 border-[#392c7d] rounded-full"></span>
-            </div>
-            <div>
-                <div class="flex items-center gap-2">
-                    <h1 class="text-2xl sm:text-3xl font-bold">{{ $name }}</h1>
-                    <span class="bg-[#344c3d] text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">{{ $role }}</span>
+<div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 sm:p-6 shadow-xs mb-6 relative overflow-hidden">
+    <!-- Top Brand Accent Strip -->
+    <div class="absolute top-0 left-0 right-0 h-1 bg-[var(--theme-primary,#344c3d)]"></div>
+
+    <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pt-1">
+        <!-- Student Info -->
+        <div class="flex items-start sm:items-center gap-4 sm:gap-5 min-w-0">
+            <div class="relative shrink-0">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-[8px] overflow-hidden ring-1 ring-slate-200 bg-slate-100 flex items-center justify-center shadow-xs">
+                    @if ($avatar)
+                        <img src="{{ $avatar }}"
+                             alt="{{ $name }}"
+                             class="w-full h-full object-cover"
+                             onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-2xl items-center justify-center hidden">
+                            {{ $initial }}
+                        </div>
+                    @else
+                        <div class="w-full h-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-2xl flex items-center justify-center">
+                            {{ $initial }}
+                        </div>
+                    @endif
                 </div>
-                <p class="text-gray-300 text-sm mt-1">student@dreamslms.com</p>
+                <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full" title="Active"></span>
+            </div>
 
-                <!-- Quick Stats -->
-                <div class="flex items-center gap-4 sm:gap-6 mt-3 text-xs sm:text-sm text-gray-300">
-                    <div><strong class="text-white font-bold">{{ $enrolled }}</strong> Enrolled Courses</div>
-                    <div>•</div>
-                    <div><strong class="text-white font-bold">{{ $certificates }}</strong> Certificates</div>
-                    <div>•</div>
-                    <div><strong class="text-white font-bold">{{ $completed }}</strong> Completed</div>
+            <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                    <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight truncate">{{ $name }}</h1>
+                    <span class="inline-flex items-center gap-1 bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] border border-[var(--theme-primary,#344c3d)]/20 text-[11px] font-semibold px-2 py-0.5 rounded-[4px]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--theme-primary,#344c3d)]"></span>
+                        {{ $role }}
+                    </span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 mt-1">
+                    <span class="flex items-center gap-1.5 truncate">
+                        <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span class="truncate">{{ $email }}</span>
+                    </span>
+                    <span class="hidden sm:inline text-slate-300">•</span>
+                    <span class="text-slate-400">
+                        {{ __('app.common.joined') ?? 'Joined' }}: {{ $student?->created_at?->format('M Y') ?? '2026' }}
+                    </span>
+                </div>
+
+                <!-- Quick Inline Stat Pills -->
+                <div class="flex flex-wrap items-center gap-3 mt-3 pt-2 border-t border-slate-100 text-xs">
+                    <div class="flex items-center gap-1.5 text-slate-600">
+                        <span class="font-bold text-slate-900">{{ str_pad((string) $enrolledCount, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="text-slate-400">{{ __('student.nav.enrolled') }}</span>
+                    </div>
+                    <span class="text-slate-200">|</span>
+                    <div class="flex items-center gap-1.5 text-slate-600">
+                        <span class="font-bold text-emerald-600">{{ str_pad((string) $completedCount, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="text-slate-400">{{ __('student.dashboard.completed') }}</span>
+                    </div>
+                    <span class="text-slate-200">|</span>
+                    <div class="flex items-center gap-1.5 text-slate-600">
+                        <span class="font-bold text-amber-600">{{ str_pad((string) $completedCount, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="text-slate-400">{{ __('student.dashboard.certificates') }}</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 w-full md:w-auto flex-wrap">
-            <a href="{{ route('student.profile') }}" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors w-full sm:w-auto">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                <span>Edit Profile</span>
+        <!-- Action Buttons (No Theme Button) -->
+        <div class="flex items-center gap-2.5 w-full lg:w-auto shrink-0 justify-start lg:justify-end">
+            <a href="{{ route('student.profile') }}"
+               class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-xs font-semibold px-3.5 py-2 rounded-[6px] transition-colors shadow-2xs">
+                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>{{ __('student.profile.title') }}</span>
             </a>
-            <a href="{{ route('courses.index') }}" class="bg-[#344c3d] hover:bg-[#25372c] text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors w-full sm:w-auto shadow-sm">
-                <span>Browse Courses</span>
+            <a href="{{ route('courses.index') }}"
+               class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold px-4 py-2 rounded-[6px] transition-colors shadow-xs">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>{{ __('student.nav.browse') }}</span>
             </a>
-            <button type="button" id="student-theme-toggle" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-semibold px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer w-full sm:w-auto" title="Toggle Dark/Light Mode">
-                <svg class="w-4 h-4 hidden dark:inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
-                <svg class="w-4 h-4 inline-block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
-                <span class="inline">Theme</span>
-            </button>
         </div>
     </div>
 </div>
-
-<script>
-    (function () {
-        var btn = document.getElementById('student-theme-toggle');
-        if (!btn) return;
-        var csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-        btn.addEventListener('click', function () {
-            var isDark = document.documentElement.classList.toggle('dark');
-            var nextTheme = isDark ? 'dark' : 'light';
-            try { localStorage.setItem('mono_theme_student', nextTheme); } catch (e) {}
-            fetch('{{ route('theme.toggle', 'student') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ theme: nextTheme })
-            }).catch(function () {});
-        });
-    })();
-</script>

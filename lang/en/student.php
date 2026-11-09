@@ -8,6 +8,7 @@ return [
         'dashboard' => 'Dashboard',
         'profile' => 'My Profile',
         'enrolled' => 'Enrolled Courses',
+        'saved_courses' => 'Saved Courses',
         'certificates' => 'My Certificates',
         'quiz' => 'My Quiz Attempts',
         'browse' => 'Browse Courses',
@@ -17,8 +18,7 @@ return [
 
     'dashboard' => [
         'title' => 'Student Dashboard',
-        'welcome' => 'Welcome back, :name',
-        'enrolled' => 'Enrolled Courses',
+        'welcome' => 'Welcome back, :name',        'enrolled' => 'Enrolled Courses',
         'in_progress' => 'In Progress',
         'completed' => 'Completed',
         'certificates' => 'Certificates',
@@ -50,6 +50,7 @@ return [
 
     'profile' => [
         'title' => 'My Profile',
+        'subtitle' => 'Manage your personal information and account security.',
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
         'username' => 'User Name',
@@ -60,6 +61,9 @@ return [
         'new_password_hint' => 'Leave blank to keep your current password.',
         'password_updated' => 'Password changed successfully.',
         'current_password_incorrect' => 'The current password is incorrect.',
+        'avatar_hint' => 'Upload a profile photo',
+        'upload_avatar' => 'Upload New Photo',
+        'remove_avatar' => 'Remove',
     ],
 
     'certificates' => [

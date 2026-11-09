@@ -190,6 +190,7 @@ export function createSlider(root) {
 
     function onPointerDown(e) {
         if (e.button !== undefined && e.button !== 0) return;
+        if (e.target.closest('button, [data-wishlist-toggle], a, input, select')) return;
         isDragging = true;
         dragMoved = false;
         dragDistancePassed = false;
@@ -242,6 +243,9 @@ export function createSlider(root) {
 
     // Prevent navigation click when user was dragging
     track.addEventListener('click', (e) => {
+        if (e.target.closest('button, [data-wishlist-toggle]')) {
+            return;
+        }
         if (dragDistancePassed) {
             e.preventDefault();
             e.stopPropagation();

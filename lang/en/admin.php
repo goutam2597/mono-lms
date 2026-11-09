@@ -111,6 +111,8 @@ return [
     'courses' => [
         'title' => 'Manage Courses',
         'subtitle' => 'Review, publish and moderate all courses',
+        'create' => 'Add Course',
+        'edit' => 'Edit Course',
         'instructor' => 'Instructor',
         'price' => 'Price',
         'enrolled' => 'Enrolled',
@@ -298,8 +300,10 @@ return [
         'enabled' => 'Enabled',
         'disabled' => 'Disabled',
         'selected' => 'selected',
+        'select_all' => 'Select All',
         'delete_selected' => 'Delete Selected',
         'confirm_delete' => 'Are you sure? This cannot be undone.',
+        'no_results' => 'No results found.',
         'flag' => 'Flag / Country Code',
     ],
 

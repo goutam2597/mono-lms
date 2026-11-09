@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\GoogleSettingsController;
 use App\Http\Controllers\Admin\HomePageController as AdminHomePageController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\SystemController as AdminSystemController;
 use App\Http\Controllers\Admin\UserDirectoryController as AdminUserDirectoryController;
 use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\InstructorAuthController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
@@ -47,6 +49,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\Student\WishlistController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
@@ -78,6 +81,7 @@ Route::prefix('courses')->name('courses.')->group(function () {
     Route::get('/{slug}', [CourseController::class, 'show'])->name('show');
     Route::post('/{course:slug}/enroll', [CourseController::class, 'enroll'])
         ->middleware('auth:student')->name('enroll');
+    Route::post('/{course}/wishlist', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
@@ -137,6 +141,18 @@ Route::middleware('guest:student')->group(function () {
     Route::post('/register', [StudentAuthController::class, 'register'])->name('register.attempt');
 });
 Route::post('/logout', [StudentAuthController::class, 'logout'])->middleware('auth:student')->name('logout');
+
+// Google OAuth (student + instructor panels)
+Route::get('/auth/google/{panel}/redirect', [GoogleAuthController::class, 'redirect'])
+    ->whereIn('panel', ['student', 'instructor'])
+    ->name('login.google.redirect');
+Route::get('/auth/google/{panel}/callback', [GoogleAuthController::class, 'callback'])
+    ->whereIn('panel', ['student', 'instructor'])
+    ->name('login.google.callback');
+Route::get('/instructor/auth/google/redirect', fn () => redirect()->route('login.google.redirect', ['panel' => 'instructor']))
+    ->name('instructor.login.google.redirect');
+Route::get('/instructor/auth/google/callback', fn () => redirect()->route('login.google.callback', ['panel' => 'instructor']))
+    ->name('instructor.login.google.callback');
 
 // Shared password reset (?panel=student|instructor|admin)
 Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
@@ -323,6 +339,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // Reports & Analytics
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
 
+    // Google Login Settings
+    Route::middleware('permission:settings.manage')->group(function () {
+        Route::get('/settings/google', [GoogleSettingsController::class, 'index'])->name('settings.google');
+        Route::post('/settings/google', [GoogleSettingsController::class, 'store'])->name('settings.google.store');
+    });
+
     // General Settings
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
@@ -382,6 +404,9 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
 Route::prefix('student')->name('student.')->middleware('auth:student')->group(function () {
     Route::get('/', [StudentDashboardController::class, 'index'])->name('dashboard');
     Route::get('/enrolled-courses', [EnrollmentController::class, 'index'])->name('enrolled-courses');
+    Route::get('/saved-courses', [WishlistController::class, 'index'])->name('wishlist');
+    Route::get('/wishlist', fn () => redirect()->route('student.wishlist'))->name('wishlist.alias');
+    Route::delete('/saved-courses/{course}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');

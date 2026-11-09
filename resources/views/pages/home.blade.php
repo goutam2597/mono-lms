@@ -80,7 +80,7 @@
                     <div class="flex items-center gap-3 anim-fade-up anim-d5">
                         <div class="flex -space-x-2.5">
                             @foreach ($topInstructors->take(4) as $trustInstructor)
-                                <img src="{{ $trustInstructor->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($trustInstructor->name).'&background=344C3D&color=DCE7DA' }}" alt="{{ $trustInstructor->name }}" class="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" />
+                                <img src="{{ $trustInstructor->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($trustInstructor->name).'&background=344C3D&color=DCE7DA' }}" alt="{{ $trustInstructor->name }}" class="w-9 h-9 rounded-full border-2 border-white object-cover shadow-sm" onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($trustInstructor->name) }}&background=344C3D&color=DCE7DA';" />
                             @endforeach
                             <span class="w-9 h-9 rounded-full bg-[#344C3D] text-[#DCE7DA] text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">+{{ $stats['instructors'] }}</span>
                         </div>
@@ -633,7 +633,7 @@
                             :title="$course->title"
                             :category="$course->category?->name ?? ''"
                             :instructor="$course->instructor?->name ?? ''"
-                            :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                            :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                             :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
                             :rating="$course->averageRating() ?: '5.0'"
                             :reviews="$course->reviewCount()"
@@ -1001,7 +1001,7 @@
                                         :title="$course->title"
                                         :category="$course->category?->name ?? ''"
                                         :instructor="$course->instructor?->name ?? ''"
-                                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                                        :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                                         :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
                                         :rating="$course->averageRating() ?: '5.0'"
                                         :reviews="$course->reviewCount()"
@@ -1040,7 +1040,7 @@
                             :title="$course->title"
                             :category="$course->category?->name ?? ''"
                             :instructor="$course->instructor?->name ?? ''"
-                            :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                            :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                             :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
                             :rating="$course->averageRating() ?: '5.0'"
                             :reviews="$course->reviewCount()"
@@ -1100,10 +1100,11 @@
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
                     @foreach ($leftInstructors as $instructor)
                         <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#392c7d]/10 flex items-center justify-center relative">
-                            @if($instructor->avatar)
-                                <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            @if($instructor->avatarUrl())
+                                <img src="{{ $instructor->avatarUrl() }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+                                <span class="text-4xl font-bold text-[#392c7d] hidden items-center justify-center w-full h-full">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @else
-                                <span class="text-4xl font-bold text-[#392c7d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                                <span class="text-4xl font-bold text-[#392c7d] flex items-center justify-center w-full h-full">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @endif
                             <div class="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/70 to-transparent text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p class="font-semibold truncate">{{ $instructor->name }}</p>
@@ -1137,10 +1138,11 @@
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
                     @foreach ($rightInstructors as $instructor)
                         <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#738a6e]/15 flex items-center justify-center relative">
-                            @if($instructor->avatar)
-                                <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            @if($instructor->avatarUrl())
+                                <img src="{{ $instructor->avatarUrl() }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+                                <span class="text-4xl font-bold text-[#344c3d] hidden items-center justify-center w-full h-full">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @else
-                                <span class="text-4xl font-bold text-[#344c3d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
+                                <span class="text-4xl font-bold text-[#344c3d] flex items-center justify-center w-full h-full">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @endif
                             <div class="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/70 to-transparent text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                                 <p class="font-semibold truncate">{{ $instructor->name }}</p>

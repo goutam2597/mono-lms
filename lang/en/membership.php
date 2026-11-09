@@ -7,6 +7,7 @@ return [
     'subtitle' => 'Unlock unlimited access to the full catalog with one membership — learn anything, anytime.',
     'monthly' => 'month',
     'yearly' => 'year',
+    'lifetime' => 'lifetime',
     'most_popular' => 'Most Popular',
     'subscribe' => 'Get Started',
     'current_plan' => 'Your Current Plan',

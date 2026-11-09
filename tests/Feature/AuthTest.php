@@ -109,4 +109,55 @@ class AuthTest extends TestCase
             ->assertSee('Courses by Category')
             ->assertSee('Top Courses');
     }
+
+    public function test_authenticated_instructor_visiting_login_or_register_redirects_to_panel_dashboard(): void
+    {
+        $instructor = Instructor::create([
+            'name' => 'Dr. Smith',
+            'email' => 'smith@test.dev',
+            'password' => 'password123',
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($instructor, 'instructor')
+            ->get(route('instructor.login'))
+            ->assertRedirect(route('instructor.dashboard'));
+
+        $this->actingAs($instructor, 'instructor')
+            ->get(route('instructor.register'))
+            ->assertRedirect(route('instructor.dashboard'));
+    }
+
+    public function test_authenticated_student_visiting_login_or_register_redirects_to_panel_dashboard(): void
+    {
+        $student = Student::create([
+            'name' => 'Alice Student',
+            'email' => 'alice@test.dev',
+            'password' => 'password123',
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($student, 'student')
+            ->get(route('login'))
+            ->assertRedirect(route('student.dashboard'));
+
+        $this->actingAs($student, 'student')
+            ->get(route('register'))
+            ->assertRedirect(route('student.dashboard'));
+    }
+
+    public function test_authenticated_admin_visiting_login_redirects_to_panel_dashboard(): void
+    {
+        $admin = Admin::create([
+            'name' => 'Super Admin',
+            'email' => 'super@test.dev',
+            'password' => 'password123',
+            'is_super_admin' => true,
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($admin, 'admin')
+            ->get(route('admin.login'))
+            ->assertRedirect(route('admin.dashboard'));
+    }
 }

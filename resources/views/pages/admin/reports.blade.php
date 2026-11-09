@@ -79,7 +79,7 @@
                                 <span class="w-6 h-6 bg-slate-100 text-slate-600 font-bold font-mono text-[11px] flex items-center justify-center shrink-0 border border-slate-200">
                                     {{ $idx + 1 }}
                                 </span>
-                                <img src="{{ $inst->avatar ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150' }}" alt="" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
+                                <img src="{{ $inst->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($inst->name).'&background=344C3D&color=FFFFFF' }}" alt="{{ $inst->name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-slate-200" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($inst->name) }}&background=344C3D&color=FFFFFF';">
                                 <div class="min-w-0">
                                     <p class="font-bold text-slate-900 truncate">{{ $inst->name }}</p>
                                     <p class="text-[11px] text-slate-400 truncate mt-0.5">{{ $inst->courses_count }} courses published</p>

@@ -101,7 +101,10 @@
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-2.5">
                                         @if(!empty($user['avatar_url']))
-                                            <img src="{{ $user['avatar_url'] }}" alt="{{ $user['name'] }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
+                                            <img src="{{ $user['avatar_url'] }}" alt="{{ $user['name'] }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-slate-200" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                            <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs items-center justify-center shrink-0 hidden">
+                                                {{ strtoupper(substr($user['name'], 0, 1)) }}
+                                            </span>
                                         @else
                                             <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
                                                 {{ strtoupper(substr($user['name'], 0, 1)) }}

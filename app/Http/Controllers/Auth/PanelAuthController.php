@@ -57,6 +57,11 @@ abstract class PanelAuthController extends Controller
 
         $request->session()->regenerate();
 
+        $intended = $request->session()->get('url.intended');
+        if ($intended && (str_contains($intended, '/login') || str_contains($intended, '/register'))) {
+            $request->session()->forget('url.intended');
+        }
+
         return redirect()->intended(route($this->panelHome()));
     }
 

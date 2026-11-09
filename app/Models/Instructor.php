@@ -49,8 +49,20 @@ class Instructor extends Authenticatable
         return $this->status === 'active';
     }
 
-    public function avatarUrl(): ?string
+    public function avatarUrl(?string $fallback = null): ?string
     {
-        return $this->avatar ? PublicMedia::url($this->avatar) : null;
+        if ($this->avatar && trim((string) $this->avatar) !== '') {
+            $url = PublicMedia::url($this->avatar);
+            if ($url !== '') {
+                return $url;
+            }
+        }
+
+        return $fallback;
+    }
+
+    public function avatarOrDefault(): string
+    {
+        return $this->avatarUrl() ?: 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=344C3D&color=FFFFFF&size=200&bold=true';
     }
 }

@@ -76,6 +76,19 @@ final class PublicMedia
         return asset('images/'.ltrim($name, '/'));
     }
 
+    /** Return a valid avatar URL for a given avatar string or generate a brand UI-avatar */
+    public static function avatarUrl(?string $avatar, string $name = 'User'): string
+    {
+        if ($avatar !== null && trim($avatar) !== '') {
+            $url = self::url($avatar);
+            if ($url !== '') {
+                return $url;
+            }
+        }
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($name).'&background=344C3D&color=FFFFFF&size=200&bold=true';
+    }
+
     private static function normalizePath(string $value): string
     {
         $path = str_replace('\\', '/', trim($value));

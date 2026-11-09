@@ -38,6 +38,9 @@ return [
         'blog' => 'Blog',
         'pricing' => 'Pricing',
         'useful' => 'Useful Links',
+        'become_instructor' => 'Become an Instructor',
+        'instructor_portal' => 'Instructor Portal',
+        'student_portal' => 'Student Portal',
         'newsletter' => 'Newsletter',
         'newsletter_hint' => 'Get the latest courses and offers in your inbox.',
         'subscribe' => 'Subscribe',
@@ -97,11 +100,15 @@ return [
         'no_matches' => 'No matches',
         'welcome' => 'Welcome',
         'currency' => '$',
+        'joined' => 'Joined',
+        'browse' => 'Browse Courses',
     ],
 
     'levels' => [
         'beginner' => 'Beginner',
         'intermediate' => 'Intermediate',
         'advanced' => 'Advanced',
+        'expert' => 'Expert',
+        'all' => 'All Levels',
     ],
 ];

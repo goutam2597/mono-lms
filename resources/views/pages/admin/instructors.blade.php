@@ -40,7 +40,8 @@
                             <td class="px-6 py-3.5">
                                 <div class="flex items-center gap-3">
                                     @if ($instructor->avatarUrl())
-                                        <img src="{{ $instructor->avatarUrl() }}" alt="{{ $instructor->name }}" class="w-9 h-9 rounded-full object-cover border border-slate-200">
+                                        <img src="{{ $instructor->avatarUrl() }}" alt="{{ $instructor->name }}" class="w-9 h-9 rounded-full object-cover border border-slate-200" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                        <span class="w-9 h-9 rounded-full bg-[#738a6e]/10 text-[#738a6e] font-bold text-sm items-center justify-center hidden">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                                     @else
                                         <span class="w-9 h-9 rounded-full bg-[#738a6e]/10 text-[#738a6e] font-bold text-sm flex items-center justify-center">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                                     @endif

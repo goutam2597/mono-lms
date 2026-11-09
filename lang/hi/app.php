@@ -38,6 +38,9 @@ return [
         'blog' => 'ब्लॉग',
         'pricing' => 'मूल्य',
         'useful' => 'उपयोगी लिंक',
+        'become_instructor' => 'प्रशिक्षक बनें',
+        'instructor_portal' => 'प्रशिक्षक पोर्टल',
+        'student_portal' => 'छात्र पोर्टल',
         'newsletter' => 'न्यूज़लेटर',
         'newsletter_hint' => 'नवीनतम कोर्स और ऑफ़र सीधे अपने इनबॉक्स में पाएँ।',
         'subscribe' => 'सब्सक्राइब करें',
@@ -97,11 +100,15 @@ return [
         'no_matches' => 'कोई मेल नहीं मिला',
         'welcome' => 'स्वागत है',
         'currency' => '$',
+        'joined' => 'जुड़े',
+        'browse' => 'पाठ्यक्रम ब्राउज़ करें',
     ],
 
     'levels' => [
         'beginner' => 'शुरुआती',
         'intermediate' => 'मध्यम',
         'advanced' => 'उन्नत',
+        'expert' => 'विशेषज्ञ',
+        'all' => 'सभी स्तर',
     ],
 ];

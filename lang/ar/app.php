@@ -38,6 +38,9 @@ return [
         'blog' => 'المدونة',
         'pricing' => 'الأسعار',
         'useful' => 'روابط مفيدة',
+        'become_instructor' => 'كن مدرباً',
+        'instructor_portal' => 'بوابة المدربين',
+        'student_portal' => 'بوابة الطلاب',
         'newsletter' => 'النشرة البريدية',
         'newsletter_hint' => 'احصل على أحدث الدورات والعروض في بريدك الوارد.',
         'subscribe' => 'اشترك',
@@ -97,11 +100,15 @@ return [
         'no_matches' => 'لا توجد نتائج',
         'welcome' => 'مرحباً',
         'currency' => '$',
+        'joined' => 'تاريخ الانضمام',
+        'browse' => 'تصفح الدورات',
     ],
 
     'levels' => [
         'beginner' => 'مبتدئ',
         'intermediate' => 'متوسط',
         'advanced' => 'متقدم',
+        'expert' => 'خبير',
+        'all' => 'جميع المستويات',
     ],
 ];

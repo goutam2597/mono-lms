@@ -593,10 +593,11 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-8">
                 @php $student = auth('student')->user(); @endphp
                 <x-student-header-banner
-                    :name="$student->name"
-                    :avatar="$student->avatar"
-                    :enrolled="str_pad((string) $student->enrollments()->count(), 2, '0', STR_PAD_LEFT)"
-                    :completed="str_pad((string) $student->enrollments()->where('status', 'completed')->count(), 2, '0', STR_PAD_LEFT)"
+                    :student="$student"
+                    :name="$student?->name ?? 'Student'"
+                    :avatar="$student?->avatarUrl()"
+                    :enrolled="str_pad((string) ($student?->enrollments()->count() ?? 0), 2, '0', STR_PAD_LEFT)"
+                    :completed="str_pad((string) ($student?->enrollments()->where('status', 'completed')->count() ?? 0), 2, '0', STR_PAD_LEFT)"
                 />
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">

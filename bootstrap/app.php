@@ -34,6 +34,35 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return route('login');
         });
+
+        // Send already-authenticated users to their respective panel dashboard.
+        $middleware->redirectUsersTo(function (Request $request) {
+            if ($request->is('instructor') || $request->is('instructor/*')) {
+                return route('instructor.dashboard');
+            }
+
+            if ($request->is('admin') || $request->is('admin/*')) {
+                return route('admin.dashboard');
+            }
+
+            if ($request->is('student') || $request->is('student/*') || $request->routeIs('login', 'register')) {
+                return route('student.dashboard');
+            }
+
+            if (auth('instructor')->check()) {
+                return route('instructor.dashboard');
+            }
+
+            if (auth('admin')->check()) {
+                return route('admin.dashboard');
+            }
+
+            if (auth('student')->check()) {
+                return route('student.dashboard');
+            }
+
+            return route('home');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

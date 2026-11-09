@@ -35,4 +35,5 @@ return [
     'certificate_completion' => 'Certificate of completion',
     'not_found' => 'Course not found.',
     'price_free' => 'Free',
+    'lessons' => 'Lessons',
 ];

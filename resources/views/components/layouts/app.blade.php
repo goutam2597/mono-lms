@@ -17,27 +17,11 @@
     <!-- Preload Nav Logo for instant render on refresh -->
     <link rel="preload" as="image" href="{{ \App\Models\Setting::logoUrl() }}" fetchpriority="high">
 
-    <!-- Theme Script: Storefront is strictly light only; Student portal supports independent dark mode -->
-    @php
-        $isStudentPortal = request()->is('student*');
-        $studentTheme = $isStudentPortal ? session('student_theme', 'light') : 'light';
-    @endphp
+    <!-- Storefront and Student Portal are light theme -->
     <script>
         (function () {
-            var isStudent = @json($isStudentPortal);
-            if (isStudent) {
-                var stored = null;
-                try { stored = localStorage.getItem('mono_theme_student'); } catch (e) {}
-                var theme = stored || @json($studentTheme) || 'light';
-                if (theme === 'dark') {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            } else {
-                // Public storefront is strictly light theme only
-                document.documentElement.classList.remove('dark');
-            }
+            document.documentElement.classList.remove('dark');
+            try { localStorage.removeItem('mono_theme_student'); } catch (e) {}
         })();
     </script>
 
@@ -64,5 +48,13 @@
     </main>
 
     <x-footer />
+
+    @if (session('success'))
+        <div data-flash-toast data-type="success" data-message="{{ session('success') }}" data-title="Success" class="hidden"></div>
+    @elseif (session('error'))
+        <div data-flash-toast data-type="error" data-message="{{ session('error') }}" data-title="Error" class="hidden"></div>
+    @elseif (session('status'))
+        <div data-flash-toast data-type="info" data-message="{{ session('status') }}" data-title="Notice" class="hidden"></div>
+    @endif
 </body>
 </html>

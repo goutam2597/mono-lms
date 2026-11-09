@@ -191,7 +191,7 @@
                         :title="$course->title"
                         :category="$course->category?->name ?? ''"
                         :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                        :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$course->image"
                         :rating="$course->averageRating() ?: '5.0'"
                         :reviews="$course->reviewCount()"
