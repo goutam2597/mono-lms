@@ -412,6 +412,18 @@ html.dark .mediap-card:hover {
 /* ==================================================================
    12. Badges & Status Pills
    ================================================================== */
+html.dark .bg-\[\#bfcfbb\] {
+    background-color: rgba(191, 207, 187, 0.25) !important;
+}
+
+html.dark .border-dashed.border-gray-200 {
+    border-color: #1f1f1f !important;
+}
+
+html.dark .border-\[\#cbd5e1\] {
+    border-color: #262626 !important;
+}
+
 html.dark .bg-emerald-50,
 html.dark .bg-\[\#eef9f1\] {
     background-color: rgba(16, 185, 129, 0.12) !important;

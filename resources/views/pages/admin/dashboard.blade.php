@@ -303,52 +303,55 @@
                     </div>
 
                     <!-- Column Chart Canvas with Y-Axis & Gridlines (Figma Dev Mode Node 10060:83589) -->
-                    <div class="relative mt-2">
-                        <!-- Y-Axis Labels & Horizontal Dashed Gridlines (100, 80, 60, 40, 20, 0) -->
-                        <div class="h-[200px] flex flex-col justify-between select-none">
-                            @foreach(['100', '80', '60', '40', '20', '0'] as $yVal)
-                                <div class="flex items-center gap-2.5">
-                                    <span class="w-6 text-[11px] font-medium text-[#64748b] text-right shrink-0">{{ $yVal }}</span>
-                                    <div class="flex-1 border-b {{ $yVal === '0' ? 'border-[#cbd5e1]' : 'border-dashed border-gray-200' }}"></div>
-                                </div>
-                            @endforeach
-                        </div>
+                    <div class="mt-2">
+                        <!-- Chart Plot Area (Fixed 200px Height) -->
+                        <div class="relative h-[200px]">
+                            <!-- Y-Axis Labels & Horizontal Dashed Gridlines (100, 80, 60, 40, 20, 0) -->
+                            <div class="h-full flex flex-col justify-between select-none">
+                                @foreach(['100', '80', '60', '40', '20', '0'] as $yVal)
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-6 text-[11px] font-medium text-[#64748b] text-right shrink-0">{{ $yVal }}</span>
+                                        <div class="flex-1 border-b {{ $yVal === '0' ? 'border-[#cbd5e1]' : 'border-dashed border-gray-200' }}"></div>
+                                    </div>
+                                @endforeach
+                            </div>
 
-                        <!-- Bar Columns Layer (Overlay aligned above baseline) -->
-                        @php
-                            $days = [
-                                ['day' => '25 May', 'new' => 30, 'total' => 60],
-                                ['day' => '26 May', 'new' => 38, 'total' => 70],
-                                ['day' => '27 May', 'new' => 75, 'total' => 90],
-                                ['day' => '28 May', 'new' => 32, 'total' => 100],
-                                ['day' => '29 May', 'new' => 28, 'total' => 85],
-                                ['day' => '30 May', 'new' => 52, 'total' => 78],
-                                ['day' => '31 May', 'new' => 45, 'total' => 65],
-                            ];
-                        @endphp
+                            <!-- Bar Columns Layer (Overlay scoped to the 200px plot area only, resting on 0 baseline) -->
+                            @php
+                                $days = [
+                                    ['day' => '25 May', 'new' => 30, 'total' => 60],
+                                    ['day' => '26 May', 'new' => 38, 'total' => 70],
+                                    ['day' => '27 May', 'new' => 75, 'total' => 90],
+                                    ['day' => '28 May', 'new' => 32, 'total' => 100],
+                                    ['day' => '29 May', 'new' => 28, 'total' => 85],
+                                    ['day' => '30 May', 'new' => 52, 'total' => 78],
+                                    ['day' => '31 May', 'new' => 45, 'total' => 65],
+                                ];
+                            @endphp
 
-                        <div class="absolute inset-0 left-8 flex items-end justify-between gap-2 px-2 pb-[1px]">
-                            @foreach($days as $bar)
-                                <div class="flex-1 flex flex-col items-center h-[200px] justify-end group cursor-pointer relative">
-                                    <!-- Bar Graphic -->
-                                    <div class="w-full max-w-[28px] sm:max-w-[34px] h-full flex items-end justify-center relative">
-                                        <!-- Sage Mint Background Bar (Total) -->
-                                        <div class="w-full bg-[#bfcfbb] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#aebd9d] relative flex items-end justify-center" style="height: {{ $bar['total'] }}%;">
-                                            <!-- Vibrant Evergreen Foreground Bar (New) -->
-                                            <div class="w-full bg-[var(--theme-primary,#344c3d)] rounded-t-[5px] transition-all duration-300 group-hover:bg-[var(--theme-primary-hover,#25372c)]" style="height: {{ min(100, round(($bar['new'] / $bar['total']) * 100)) }}%;"></div>
+                            <div class="absolute inset-0 left-8 flex items-end justify-between gap-2 px-2 pb-[1px]">
+                                @foreach($days as $bar)
+                                    <div class="flex-1 flex flex-col items-center h-full justify-end group cursor-pointer relative">
+                                        <!-- Bar Graphic -->
+                                        <div class="w-full max-w-[28px] sm:max-w-[34px] h-full flex items-end justify-center relative">
+                                            <!-- Sage Mint Background Bar (Total) -->
+                                            <div class="w-full bg-[#bfcfbb] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#aebd9d] relative flex items-end justify-center" style="height: {{ $bar['total'] }}%;">
+                                                <!-- Vibrant Evergreen Foreground Bar (New) -->
+                                                <div class="w-full bg-[var(--theme-primary,#344c3d)] rounded-t-[5px] transition-all duration-300 group-hover:bg-[var(--theme-primary-hover,#25372c)]" style="height: {{ min(100, round(($bar['new'] / $bar['total']) * 100)) }}%;"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Interactive Tooltip -->
+                                        <div class="absolute -top-7 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
+                                            New: {{ $bar['new'] }} | Total: {{ $bar['total'] }}
                                         </div>
                                     </div>
-
-                                    <!-- Interactive Tooltip -->
-                                    <div class="absolute -top-7 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-                                        New: {{ $bar['new'] }} | Total: {{ $bar['total'] }}
-                                    </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
 
-                        <!-- X-Axis Date Labels -->
-                        <div class="flex justify-between pl-8 px-2 pt-2 text-[12px] text-[#64748b] font-medium select-none">
+                        <!-- X-Axis Date Labels (Outside and below the 200px plot area) -->
+                        <div class="flex justify-between pl-8 px-2 pt-2.5 text-[12px] text-[#64748b] font-medium select-none">
                             @foreach($days as $bar)
                                 <span class="flex-1 text-center truncate">{{ $bar['day'] }}</span>
                             @endforeach
