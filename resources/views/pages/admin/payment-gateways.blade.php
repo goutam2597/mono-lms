@@ -1,5 +1,5 @@
 <x-layouts.dashboard title="Payment Gateways - Mono LMS" active="payment-gateways" userType="admin">
-    <div class="space-y-6 max-w-7xl">
+    <div class="space-y-6 w-full">
         <!-- Top Title Bar & Breadcrumbs -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-[#0d0d0d] border border-slate-200 dark:border-[#1f1f1f] rounded-[6px] p-5 sm:p-6 shadow-xs">
             <div>
@@ -48,7 +48,7 @@
             </div>
             <div class="flex items-center gap-2 self-start md:self-auto w-full md:w-auto">
                 <div class="flex-1 md:flex-none flex items-center gap-2 bg-white dark:bg-[#0a0a0a] border border-slate-200 dark:border-[#262626] rounded-[4px] px-3 py-1.5">
-                    <span class="font-mono text-xs text-slate-700 dark:text-neutral-200 select-all truncate max-w-[260px] sm:max-w-xs" id="webhook-url-text">{{ url('/api/v1/payments/webhook') }}</span>
+                    <span class="font-mono text-xs text-slate-700 dark:text-neutral-200 select-all" id="webhook-url-text">{{ url('/api/v1/payments/webhook') }}</span>
                     <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('webhook-url-text').innerText); this.innerText='Copied!'; setTimeout(() => this.innerText='Copy', 2000)" class="text-[10px] font-bold uppercase tracking-wider text-[var(--theme-primary,#344c3d)] dark:text-[#86efac] hover:underline cursor-pointer shrink-0">
                         Copy
                     </button>
