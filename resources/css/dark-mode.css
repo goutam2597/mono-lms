@@ -85,20 +85,65 @@ html.dark .bg-white {
 html.dark .bg-slate-50,
 html.dark .bg-gray-50,
 html.dark .bg-neutral-50,
-html.dark .bg-zinc-50 {
-    background-color: #050505 !important;
+html.dark .bg-zinc-50,
+html.dark .bg-\[\#f8fafc\],
+html.dark .bg-\[\#f8fafb\],
+html.dark .bg-\[\#f8faf8\],
+html.dark .hover\:bg-\[\#f8fafb\]:hover {
+    background-color: #121212 !important;
+    border-color: #1f1f1f !important;
+    color: #ededed;
 }
 
 html.dark .bg-slate-100,
 html.dark .bg-gray-100,
 html.dark .bg-neutral-100,
 html.dark .bg-zinc-100 {
-    background-color: #141414 !important;
+    background-color: #171717 !important;
+}
+
+/* Card white-glow shadow reset */
+html.dark [class*="shadow-\[0px_4px_7px"] {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7) !important;
+}
+html.dark [class*="shadow-\[0px_1px_3px"] {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Quick Action Hub Cards Icon Backgrounds (User Image 1 Fix) */
+html.dark .bg-\[\#fff8ef\] {
+    background-color: rgba(217, 119, 6, 0.16) !important;
+}
+html.dark .bg-\[\#f1ebf7\] {
+    background-color: rgba(124, 58, 237, 0.16) !important;
+}
+html.dark .bg-\[\#e0f2fe\] {
+    background-color: rgba(2, 132, 199, 0.16) !important;
+}
+html.dark .bg-\[\#fbecea\] {
+    background-color: rgba(220, 38, 38, 0.16) !important;
+}
+html.dark .bg-\[\#fdf4ff\] {
+    background-color: rgba(192, 38, 211, 0.16) !important;
+}
+html.dark .bg-\[\#ebf2f1\] {
+    background-color: rgba(13, 148, 136, 0.16) !important;
+}
+html.dark .bg-\[\#eef9f1\] {
+    background-color: rgba(19, 117, 71, 0.16) !important;
+}
+html.dark .bg-\[\#08131e\] {
+    background-color: #222222 !important;
+    border-color: #333333 !important;
 }
 
 /* ==================================================================
    5. Borders & Dividers (Neutral Grey, No Blue)
    ================================================================== */
+html.dark .border-slate-300,
+html.dark .border-gray-300,
+html.dark .border-neutral-300,
+html.dark .border-zinc-300,
 html.dark .border-slate-200,
 html.dark .border-gray-200,
 html.dark .border-slate-100,
@@ -116,6 +161,7 @@ html.dark .border-\[\#f0f0f0\] {
 html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-\[\#e2e8f0\] > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-neutral-200 > :not([hidden]) ~ :not([hidden]) {
     border-color: #1f1f1f !important;
