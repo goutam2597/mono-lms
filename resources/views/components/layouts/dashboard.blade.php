@@ -2,7 +2,7 @@
 
 @if ($userType === 'admin' || $userType === 'instructor')
     <!DOCTYPE html>
-    <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[#f8fafc]">
+    <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[var(--theme-bg,#f4f6f9)]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,18 @@
         <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style id="dynamic-theme-vars">
+            :root {
+                --theme-primary: {{ \App\Models\Setting::get('theme_primary', '#344c3d') }};
+                --theme-primary-hover: {{ \App\Models\Setting::get('theme_primary_hover', '#25372c') }};
+                --theme-accent: {{ \App\Models\Setting::get('theme_accent', '#738a6e') }};
+                --theme-dark: {{ \App\Models\Setting::get('theme_dark', '#08131e') }};
+                --theme-bg: {{ \App\Models\Setting::get('theme_bg', '#f4f6f9') }};
+                --color-sage-evergreen: var(--theme-primary);
+                --color-sage-moss: var(--theme-accent);
+            }
+        </style>
 
         <style>
             .custom-sidebar-scroll {
@@ -38,8 +50,8 @@
             /* ---------------- Action buttons (mono_market pattern) ---------------- */
             .action-btn { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 32px; padding: 0 14px; font-size: 10px; font-weight: 500; line-height: 1.2; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; cursor: pointer; font-family: inherit; text-decoration: none; box-sizing: border-box; transition: color .15s, background .15s, border-color .15s; }
             .action-btn:hover { color: #fff; background: #404040; border-color: #404040; }
-            .action-btn-primary { color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; }
-            .action-btn-primary:hover { color: #fff; background: #404040; border-color: #404040; }
+            .action-btn-primary { color: #fff; background: var(--theme-primary, #344c3d); border: 1px solid var(--theme-primary, #344c3d); }
+            .action-btn-primary:hover { color: #fff; background: var(--theme-primary-hover, #25372c); border-color: var(--theme-primary-hover, #25372c); }
             .action-btn-ghost { color: #0a0a0a; background: #fff; border: 1px solid #e5e5e5; }
             .action-btn-ghost:hover { background: #f5f5f5; border-color: #d4d4d4; color: #0a0a0a; }
             .action-btn-danger { color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; }
@@ -59,7 +71,7 @@
             .row-action-menu .menu-sep { height: 1px; margin: 4px 0; background: #f0f0f0; }
         </style>
     </head>
-    <body class="font-sans antialiased text-[#0f172a] min-h-screen bg-[#f8fafc] flex">
+    <body class="font-sans antialiased text-[#191919] min-h-screen bg-[var(--theme-bg,#f4f6f9)] flex">
 
         <!-- Mobile Sidebar Backdrop -->
         <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/70 z-40 hidden lg:hidden transition-opacity backdrop-blur-xs"></div>
@@ -72,7 +84,7 @@
                 <div class="h-[60px] px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#07090a] shrink-0">
                     <a href="{{ $userType === 'admin' ? route('admin.dashboard') : route('instructor.dashboard') }}" class="flex items-center gap-2.5 group">
                         <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
-                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[#1f6db2]/30 text-[#60a5fa] border border-[#1f6db2]/50' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
+                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[var(--theme-primary,#344c3d)]/20 text-[var(--theme-accent,#738a6e)] border border-[var(--theme-primary,#344c3d)]/40' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
                             {{ $userType === 'admin' ? 'ADMIN' : 'INSTRUCTOR' }}
                         </span>
                     </a>
@@ -98,7 +110,7 @@
                     <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="relative shrink-0">
-                                <div class="w-8 h-8 rounded-[5px] bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#1f6db2]/40 shadow-xs">
+                                <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
                                     {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
                                 </div>
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
@@ -128,7 +140,7 @@
                                 @if ($instructor?->avatar)
                                     <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700">
                                 @else
-                                    <div class="w-8 h-8 rounded-[5px] bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#1f6db2]/40 shadow-xs">
+                                    <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs">
                                         {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
                                     </div>
                                 @endif
@@ -166,7 +178,7 @@
                     </button>
                     <div class="bg-white border border-[#e2e8f0] flex items-center gap-2 h-[34px] px-3 rounded-[5px] w-52 sm:w-68">
                         <input type="text" placeholder="Search Keyword..." class="flex-1 text-[13px] text-slate-700 placeholder-slate-400 bg-transparent border-0 focus:outline-none min-w-0">
-                        <span class="bg-[#1f6db2] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[4px] shrink-0">⌘</span>
+                        <span class="bg-[var(--theme-primary,#344c3d)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[4px] shrink-0">⌘</span>
                     </div>
                 </div>
 
@@ -199,7 +211,7 @@
                         @if ($u?->avatar)
                             <img src="{{ $u->avatar }}" alt="{{ $u->name }}" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200">
                         @else
-                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#1f6db2]/40 shadow-xs">
+                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
                                 {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
                             </div>
                         @endif

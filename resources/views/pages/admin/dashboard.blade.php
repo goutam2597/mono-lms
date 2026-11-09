@@ -5,18 +5,18 @@
         <!-- Top Welcome & Date Filter Header (Figma Dev Mode Node 10060:83402) -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <div class="text-[11px] font-semibold text-[#1f6db2] uppercase tracking-wider mb-0.5">Admin overview</div>
+                <div class="text-[11px] font-semibold text-[var(--theme-primary,#344c3d)] uppercase tracking-wider mb-0.5">Admin overview</div>
                 <h1 class="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight">
                     Welcome back, {{ auth('admin')->user()?->name ?? 'Administrator' }}
                 </h1>
                 <p class="text-xs sm:text-[13px] text-[#64748b] mt-0.5">
                     Today you have <span class="font-semibold text-[#0f172a]">{{ $stats['action_items'] ?? 0 }} action items</span> and <span class="font-semibold text-[#0f172a]">{{ $stats['reviews'] ?? 0 }} reviews</span>,
-                    <a href="{{ route('admin.courses.index') }}" class="text-[#1f6db2] font-semibold hover:underline">View Details</a>
+                    <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] font-semibold hover:underline">View Details</a>
                 </p>
             </div>
             <!-- Date Range Filter Pill -->
             <div class="inline-flex items-center gap-2 bg-white border border-[#e2e8f0] px-3.5 py-2 rounded-[5px] text-xs font-medium text-[#334155] shadow-2xs self-start sm:self-auto">
-                <svg class="w-3.5 h-3.5 text-[#1f6db2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 text-[var(--theme-primary,#344c3d)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" />
                 </svg>
                 <span>{{ now()->subDays(6)->format('d M Y') }} - {{ now()->format('d M Y') }}</span>
@@ -25,11 +25,11 @@
 
         <!-- 1. Four Metric Cards with Wave Sparklines (Figma Dev Mode Node 10060:83410) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <!-- Card 1: All Students (Blue) -->
+            <!-- Card 1: All Students (Primary Brand) -->
             <div class="bg-white border border-[#e2e8f0] rounded-[5px] shadow-[0px_4px_7px_rgba(238,238,238,0.25)] p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-[#1f6db2] text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <div class="w-10 h-10 rounded-full bg-[var(--theme-primary,#344c3d)] text-white flex items-center justify-center shrink-0 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                             </svg>
@@ -43,17 +43,17 @@
                         +20%
                     </span>
                 </div>
-                <!-- Sparkline Wave SVG (Blue) -->
+                <!-- Sparkline Wave SVG (Primary Brand) -->
                 <div class="mt-4 -mx-5 -mb-5 h-11 overflow-hidden">
                     <svg class="w-full h-full" viewBox="0 0 260 50" preserveAspectRatio="none">
                         <defs>
                             <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#1f6db2" stop-opacity="0.25"/>
-                                <stop offset="100%" stop-color="#1f6db2" stop-opacity="0"/>
+                                <stop offset="0%" stop-color="var(--theme-primary,#344c3d)" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="var(--theme-primary,#344c3d)" stop-opacity="0"/>
                             </linearGradient>
                         </defs>
                         <path d="M0,35 Q30,15 65,30 T130,20 T195,35 T260,15 L260,50 L0,50 Z" fill="url(#gradBlue)"/>
-                        <path d="M0,35 Q30,15 65,30 T130,20 T195,35 T260,15" fill="none" stroke="#1f6db2" stroke-width="2"/>
+                        <path d="M0,35 Q30,15 65,30 T130,20 T195,35 T260,15" fill="none" stroke="var(--theme-primary,#344c3d)" stroke-width="2"/>
                     </svg>
                 </div>
             </div>
@@ -178,7 +178,7 @@
                                     <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                                     Courses Awaiting Publication
                                 </span>
-                                <a href="{{ route('admin.courses.index') }}" class="text-[#1f6db2] hover:underline">View All</a>
+                                <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">View All</a>
                             </div>
                             @foreach($pendingCourses->take(3) as $pCourse)
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
@@ -205,7 +205,7 @@
                                     <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
                                     Reviews to Moderate
                                 </span>
-                                <a href="{{ route('admin.reviews.index') }}" class="text-[#1f6db2] hover:underline">View All</a>
+                                <a href="{{ route('admin.reviews.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">View All</a>
                             </div>
                             @foreach($pendingReviews->take(3) as $pRev)
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
@@ -216,7 +216,7 @@
                                     <form action="{{ route('admin.reviews.approve', $pRev) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-[#1f6db2] hover:bg-[#18558a] text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
+                                        <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
                                             Approve
                                         </button>
                                     </form>
@@ -244,7 +244,7 @@
                         @forelse($recentOrders->take(5) as $order)
                             <div class="py-3 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3 min-w-0">
-                                    <div class="w-9 h-9 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] font-bold text-xs flex items-center justify-center shrink-0">
+                                    <div class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] font-bold text-xs flex items-center justify-center shrink-0">
                                         {{ strtoupper(substr($order['customer'], 0, 1)) }}
                                     </div>
                                     <div class="min-w-0">
@@ -253,10 +253,10 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2 shrink-0">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[#ebf2f9] text-[#1f6db2]' : 'bg-[#eef9f1] text-[#137547]' }}">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)]' : 'bg-[#eef9f1] text-[#137547]' }}">
                                         {{ $order['status'] }}
                                     </span>
-                                    <a href="{{ route('admin.orders.index') }}" title="View" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[#1f6db2] hover:border-[#1f6db2] flex items-center justify-center transition-colors">
+                                    <a href="{{ route('admin.orders.index') }}" title="View" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[var(--theme-primary,#344c3d)] hover:border-[var(--theme-primary,#344c3d)] flex items-center justify-center transition-colors">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
                                     </a>
                                 </div>
@@ -268,7 +268,7 @@
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">
+                    <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">
                         View All Orders & Invoices &rarr;
                     </a>
                 </div>
@@ -288,15 +288,15 @@
                     <!-- Subheader: Total Count & Color Legends (Figma Node 10060:83581) -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 pb-2 text-xs">
                         <p class="font-semibold text-sm text-[#0f172a]">
-                            Total No of Students: <span class="font-bold text-[#1f6db2]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span>
+                            Total No of Students: <span class="font-bold text-[var(--theme-primary,#344c3d)]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span>
                         </p>
                         <div class="flex items-center gap-4 text-xs font-medium">
                             <span class="flex items-center gap-1.5 text-[#334155]">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#1f6db2]"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-[var(--theme-primary,#344c3d)]"></span>
                                 New Students
                             </span>
                             <span class="flex items-center gap-1.5 text-[#334155]">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#bcd3e8]"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#bfcfbb]"></span>
                                 Total Enrollments
                             </span>
                         </div>
@@ -332,10 +332,10 @@
                                 <div class="flex-1 flex flex-col items-center h-[200px] justify-end group cursor-pointer relative">
                                     <!-- Bar Graphic -->
                                     <div class="w-full max-w-[28px] sm:max-w-[34px] h-full flex items-end justify-center relative">
-                                        <!-- Light Blue Pastel Background Bar (Total) -->
-                                        <div class="w-full bg-[#bcd3e8] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#a6c5df] relative flex items-end justify-center" style="height: {{ $bar['total'] }}%;">
-                                            <!-- Vibrant Dark Blue Foreground Bar (New) -->
-                                            <div class="w-full bg-[#1f6db2] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#18558a]" style="height: {{ min(100, round(($bar['new'] / $bar['total']) * 100)) }}%;"></div>
+                                        <!-- Sage Mint Background Bar (Total) -->
+                                        <div class="w-full bg-[#bfcfbb] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#aebd9d] relative flex items-end justify-center" style="height: {{ $bar['total'] }}%;">
+                                            <!-- Vibrant Evergreen Foreground Bar (New) -->
+                                            <div class="w-full bg-[var(--theme-primary,#344c3d)] rounded-t-[5px] transition-all duration-300 group-hover:bg-[var(--theme-primary-hover,#25372c)]" style="height: {{ min(100, round(($bar['new'] / $bar['total']) * 100)) }}%;"></div>
                                         </div>
                                     </div>
 
@@ -373,7 +373,7 @@
                     </div>
                     <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
                         <p class="text-[11px] text-[#64748b] font-medium truncate">Completion Rate</p>
-                        <p class="text-[14px] font-bold text-[#1f6db2] mt-0.5">
+                        <p class="text-[14px] font-bold text-[var(--theme-primary,#344c3d)] mt-0.5">
                             88.4%
                         </p>
                     </div>
@@ -385,10 +385,10 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3.5">
             <!-- 1. All Students -->
             <a href="{{ route('admin.students.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#ebf2f9] w-full py-3 rounded-[5px] text-[#1f6db2] flex items-center justify-center transition-transform group-hover:scale-105">
+                <div class="bg-[var(--theme-primary,#344c3d)]/10 w-full py-3 rounded-[5px] text-[var(--theme-primary,#344c3d)] flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#1f6db2] mt-2.5 truncate w-full">Students</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[var(--theme-primary,#344c3d)] mt-2.5 truncate w-full">Students</p>
             </a>
 
             <!-- 2. Instructors -->
@@ -455,13 +455,13 @@
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-[#0f172a]">Course Reports</h2>
-                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
                     </div>
                     <div class="divide-y divide-gray-100 mt-2">
                         @foreach($coursesByCategory->take(5) as $cat)
                             <div class="py-3 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-8 h-8 rounded-full bg-[#ebf2f9] text-[#1f6db2] flex items-center justify-center shrink-0">
+                                    <div class="w-8 h-8 rounded-full bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                                     </div>
                                     <div class="min-w-0">
@@ -469,7 +469,7 @@
                                         <p class="text-[11px] text-[#64748b]">{{ $cat->courses_count }} Active Courses</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('admin.courses.index', ['category' => $cat->slug]) }}" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[#1f6db2] hover:border-[#1f6db2] flex items-center justify-center transition-colors">
+                                <a href="{{ route('admin.courses.index', ['category' => $cat->slug]) }}" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[var(--theme-primary,#344c3d)] hover:border-[var(--theme-primary,#344c3d)] flex items-center justify-center transition-colors">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                                 </a>
                             </div>
@@ -477,7 +477,7 @@
                     </div>
                 </div>
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.categories.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Categories &rarr;</a>
+                    <a href="{{ route('admin.categories.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Categories &rarr;</a>
                 </div>
             </div>
 
@@ -502,10 +502,10 @@
 
                         <!-- Demographic Breakdown (Figma Dev Mode Node 10060:83868) -->
                         <div class="flex flex-col gap-3.5 w-full mt-4 pt-3.5 border-t border-gray-100">
-                            <!-- Male (Blue Outer Track: 69%) -->
+                            <!-- Male (Primary Outer Track: 69%) -->
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-9 h-9 rounded-full bg-[#1f6db2] flex items-center justify-center p-2 text-white shrink-0 shadow-xs">
+                                    <div class="w-9 h-9 rounded-full bg-[var(--theme-primary,#344c3d)] flex items-center justify-center p-2 text-white shrink-0 shadow-xs">
                                         <img src="{{ asset('images/icon-male.svg') }}" alt="Male" class="w-4 h-4 pointer-events-none">
                                     </div>
                                     <div class="min-w-0">
@@ -548,7 +548,7 @@
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-[#0f172a]">Top Instructors</h2>
-                        <a href="{{ route('admin.instructors.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                        <a href="{{ route('admin.instructors.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
                     </div>
                     <div class="divide-y divide-gray-100 mt-2">
                         @foreach(\App\Models\Instructor::take(5)->get() as $inst)
@@ -557,7 +557,7 @@
                                     @if($inst->avatar)
                                         <img src="{{ $inst->avatar }}" alt="{{ $inst->name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-gray-200">
                                     @else
-                                        <div class="w-8 h-8 rounded-full bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center shrink-0">
+                                        <div class="w-8 h-8 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center shrink-0">
                                             {{ strtoupper(substr($inst->name, 0, 1)) }}
                                         </div>
                                     @endif
@@ -574,7 +574,7 @@
                     </div>
                 </div>
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.instructors.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Instructors &rarr;</a>
+                    <a href="{{ route('admin.instructors.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Instructors &rarr;</a>
                 </div>
             </div>
         </div>
@@ -586,14 +586,14 @@
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-[#0f172a]">Courses by Category</h2>
-                        <a href="{{ route('admin.categories.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">All Categories</a>
+                        <a href="{{ route('admin.categories.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">All Categories</a>
                     </div>
 
                     <!-- Donut Chart with Center Text -->
                     <div class="py-4 flex flex-col items-center justify-center">
                         <div class="relative w-36 h-36 flex items-center justify-center">
                             <svg class="w-36 h-36 -rotate-90" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="38" stroke="#1f6db2" stroke-width="12" fill="transparent" stroke-dasharray="70 240"/>
+                                <circle cx="50" cy="50" r="38" stroke="var(--theme-primary,#344c3d)" stroke-width="12" fill="transparent" stroke-dasharray="70 240"/>
                                 <circle cx="50" cy="50" r="38" stroke="#0d9488" stroke-width="12" fill="transparent" stroke-dasharray="50 240" stroke-dashoffset="-70"/>
                                 <circle cx="50" cy="50" r="38" stroke="#7c3aed" stroke-width="12" fill="transparent" stroke-dasharray="45 240" stroke-dashoffset="-120"/>
                                 <circle cx="50" cy="50" r="38" stroke="#f97316" stroke-width="12" fill="transparent" stroke-dasharray="40 240" stroke-dashoffset="-165"/>
@@ -608,7 +608,7 @@
                         <!-- Legend Items (Figma style) -->
                         <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 w-full mt-4 text-[11px] text-[#334155]">
                             @php
-                                $colors = ['#1f6db2', '#0d9488', '#7c3aed', '#f97316', '#eab308'];
+                                $colors = [\App\Models\Setting::get('theme_primary', '#344c3d'), '#0d9488', '#7c3aed', '#f97316', '#eab308'];
                             @endphp
                             @foreach($coursesByCategory->take(5) as $idx => $cat)
                                 <div class="flex items-center gap-1.5 truncate">
@@ -638,7 +638,7 @@
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-[#0f172a]">Top Courses &amp; Performance</h2>
-                        <a href="{{ route('admin.courses.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                        <a href="{{ route('admin.courses.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
                     </div>
 
                     <div class="overflow-x-auto mt-2">
@@ -662,14 +662,14 @@
                                             {{ $course->instructor?->name ?? 'Instructor' }}
                                         </td>
                                         <td class="py-3 px-3">
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold bg-[#ebf2f9] text-[#1f6db2]">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)]">
                                                 {{ $course->category?->name ?? 'General' }}
                                             </span>
                                         </td>
                                         <td class="py-3 px-3 font-semibold text-[#0f172a]">
                                             ${{ number_format($course->price, 2) }}
                                         </td>
-                                        <td class="py-3 px-3 text-right font-bold text-[#1f6db2]">
+                                        <td class="py-3 px-3 text-right font-bold text-[var(--theme-primary,#344c3d)]">
                                             {{ $course->enrollments_count }}
                                         </td>
                                     </tr>
@@ -684,7 +684,7 @@
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Courses &rarr;</a>
+                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Courses &rarr;</a>
                 </div>
             </div>
         </div>
@@ -693,7 +693,7 @@
         <div class="bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)]">
             <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                 <h2 class="text-sm font-bold text-[#0f172a]">Recent Orders &amp; Latest Enrollments</h2>
-                <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
             </div>
 
             <div class="overflow-x-auto mt-3">
@@ -712,12 +712,12 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse($recentOrders as $order)
                             <tr class="hover:bg-[#f8fafc]/80 transition-colors">
-                                <td class="py-3 px-3.5 font-bold text-[#1f6db2]">
+                                <td class="py-3 px-3.5 font-bold text-[var(--theme-primary,#344c3d)]">
                                     {{ $order['code'] }}
                                 </td>
                                 <td class="py-3 px-3.5">
                                     <div class="flex items-center gap-2.5">
-                                        <div class="w-7 h-7 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] font-bold text-xs flex items-center justify-center shrink-0">
+                                        <div class="w-7 h-7 rounded-full bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] font-bold text-xs flex items-center justify-center shrink-0">
                                             {{ strtoupper(substr($order['customer'], 0, 1)) }}
                                         </div>
                                         <span class="font-semibold text-[#0f172a]">{{ $order['customer'] }}</span>
@@ -730,7 +730,7 @@
                                     ${{ number_format($order['total'], 2) }}
                                 </td>
                                 <td class="py-3 px-3.5">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[#eef9f1] text-[#137547]' : 'bg-[#ebf2f9] text-[#1f6db2]' }}">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[#eef9f1] text-[#137547]' : 'bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)]' }}">
                                         {{ $order['status'] }}
                                     </span>
                                 </td>

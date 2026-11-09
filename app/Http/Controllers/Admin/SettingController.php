@@ -29,6 +29,11 @@ class SettingController extends Controller
             'certificates_enabled' => Setting::get('certificates_enabled', '1') === '1',
             'seo_meta_title' => Setting::get('seo_meta_title', 'Mono LMS - Transform Your Learning Experience'),
             'seo_meta_description' => Setting::get('seo_meta_description', 'High performance enterprise LMS platform built with Laravel 12 & Tailwind CSS.'),
+            'theme_primary' => Setting::get('theme_primary', '#344c3d'),
+            'theme_primary_hover' => Setting::get('theme_primary_hover', '#25372c'),
+            'theme_accent' => Setting::get('theme_accent', '#738a6e'),
+            'theme_dark' => Setting::get('theme_dark', '#08131e'),
+            'theme_bg' => Setting::get('theme_bg', '#f4f6f9'),
         ];
 
         return view('pages.admin.settings', [
@@ -51,6 +56,11 @@ class SettingController extends Controller
             'footer_copyright',
             'seo_meta_title',
             'seo_meta_description',
+            'theme_primary',
+            'theme_primary_hover',
+            'theme_accent',
+            'theme_dark',
+            'theme_bg',
         ];
 
         foreach ($fields as $field) {

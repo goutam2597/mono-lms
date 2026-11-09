@@ -181,7 +181,7 @@
                     @if($item['type'] === 'link')
                         @php $isActive = ($active === $item['id']); @endphp
                         <a href="{{ route($item['route']) }}"
-                           class="group flex items-center gap-2.5 px-2.5 py-2 rounded-[5px] font-medium transition-all duration-150 {{ $isActive ? 'bg-[#1f6db2] text-white shadow-xs font-semibold' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.05]' }}">
+                           class="group flex items-center gap-2.5 px-2.5 py-2 rounded-[5px] font-medium transition-all duration-150 {{ $isActive ? 'bg-[var(--theme-primary,#344c3d)] text-white shadow-xs font-semibold' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.05]' }}">
                             <div class="w-4.5 h-4.5 flex items-center justify-center shrink-0">
                                 <svg class="w-4 h-4 {{ $isActive ? 'text-white' : 'text-[#94a3b8] group-hover:text-white' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     {!! $item['icon'] !!}
@@ -202,7 +202,7 @@
                                     aria-expanded="{{ $hasActiveChild ? 'true' : 'false' }}"
                                     class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[5px] font-medium transition-all duration-150 cursor-pointer select-none text-left {{ $hasActiveChild ? 'text-white bg-white/[0.04]' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.05]' }}">
                                 <div class="w-4.5 h-4.5 flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4 {{ $hasActiveChild ? 'text-[#1f6db2]' : 'text-[#94a3b8] group-hover/acc:text-white' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 {{ $hasActiveChild ? 'text-[var(--theme-accent,#738a6e)]' : 'text-[#94a3b8] group-hover/acc:text-white' }}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         {!! $item['icon'] !!}
                                     </svg>
                                 </div>
@@ -228,7 +228,7 @@
                                     @foreach($item['children'] as $child)
                                         @php $isChildActive = ($active === $child['id']); @endphp
                                         <a href="{{ route($child['route']) }}"
-                                           class="group/item flex items-center justify-between px-2.5 py-1.5 rounded-[5px] text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[#1f6db2] text-white font-semibold shadow-xs' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]' }}">
+                                           class="group/item flex items-center justify-between px-2.5 py-1.5 rounded-[5px] text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[var(--theme-primary,#344c3d)] text-white font-semibold shadow-xs' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]' }}">
                                             <div class="flex items-center gap-2 min-w-0">
                                                 <span class="w-1.5 h-1.5 rounded-full shrink-0 transition-colors {{ $isChildActive ? 'bg-white' : 'bg-slate-600 group-hover/item:bg-slate-400' }}"></span>
                                                 <span class="truncate">{{ $child['label'] }}</span>

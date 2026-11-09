@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Role;
+use App\Models\Setting;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -149,5 +150,36 @@ class AdminPanelPagesTest extends TestCase
         $this->post(route('admin.system.clear-cache'))
             ->assertRedirect()
             ->assertSessionHas('success');
+    }
+
+    public function test_admin_can_update_color_stack_theme_settings(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->get(route('admin.settings.index'))
+            ->assertOk()
+            ->assertSee('Core Color Stack & Appearance', false)
+            ->assertSee('Mono Sage')
+            ->assertSee('theme_primary');
+
+        $this->post(route('admin.settings.update'), [
+            'site_name' => 'Mono LMS Customized',
+            'theme_primary' => '#065f46',
+            'theme_primary_hover' => '#044e39',
+            'theme_accent' => '#10b981',
+            'theme_dark' => '#064e3b',
+            'theme_bg' => '#f0fdf4',
+        ])->assertRedirect();
+
+        $this->assertEquals('#065f46', Setting::get('theme_primary'));
+        $this->assertEquals('#044e39', Setting::get('theme_primary_hover'));
+        $this->assertEquals('#10b981', Setting::get('theme_accent'));
+        $this->assertEquals('#064e3b', Setting::get('theme_dark'));
+        $this->assertEquals('#f0fdf4', Setting::get('theme_bg'));
+
+        // Check dashboard reflects the injected dynamic theme vars
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('--theme-primary: #065f46', false);
     }
 }

@@ -321,13 +321,13 @@
 }
 .action-btn-primary {
     color: #fff;
-    background: #0a0a0a;
-    border: 1px solid #0a0a0a;
+    background: var(--theme-primary, #344c3d);
+    border: 1px solid var(--theme-primary, #344c3d);
 }
 .action-btn-primary:hover {
     color: #fff;
-    background: #404040;
-    border-color: #404040;
+    background: var(--theme-primary-hover, #25372c);
+    border-color: var(--theme-primary-hover, #25372c);
 }
 .action-btn-ghost {
     color: #0a0a0a;

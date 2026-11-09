@@ -110,7 +110,192 @@
                     </div>
                 </div>
 
-                <!-- 2. Commerce & Regional Settings -->
+                <!-- 2. Core Color Stack & Appearance -->
+                <div class="border border-neutral-200 bg-white p-6 shadow-xs">
+                    <div class="flex items-center justify-between border-b border-neutral-100 pb-4 mb-5">
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-9 w-9 flex-none items-center justify-center bg-neutral-900 text-white">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+                            </span>
+                            <div>
+                                <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900">Core Color Stack & Appearance</h2>
+                                <p class="text-[11px] text-neutral-400">Manage brand color tokens for frontend and dashboard with instant live preview.</p>
+                            </div>
+                        </div>
+                        <button type="button" id="btn-reset-default-theme" class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 hover:text-neutral-900 border border-neutral-200 px-2.5 py-1 transition-colors cursor-pointer">
+                            Reset to Default
+                        </button>
+                    </div>
+
+                    <!-- Preset Themes Chips -->
+                    <div class="mb-5">
+                        <label class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">1-Click Curated Presets</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="theme-presets-container">
+                            <button type="button" data-preset="sage" data-primary="#344c3d" data-hover="#25372c" data-accent="#738a6e" data-dark="#08131e" data-bg="#f4f6f9"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Mono Sage</span>
+                                    <span class="text-[10px] text-neutral-400">Default Brand</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#344c3d"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#738a6e"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f4f6f9"></span>
+                                </div>
+                            </button>
+
+                            <button type="button" data-preset="emerald" data-primary="#065f46" data-hover="#044e39" data-accent="#10b981" data-dark="#064e3b" data-bg="#f0fdf4"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Emerald Forest</span>
+                                    <span class="text-[10px] text-neutral-400">Deep Pine</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#065f46"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#10b981"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f0fdf4"></span>
+                                </div>
+                            </button>
+
+                            <button type="button" data-preset="navy" data-primary="#1e3a8a" data-hover="#172554" data-accent="#3b82f6" data-dark="#0f172a" data-bg="#f8fafc"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Classic Navy</span>
+                                    <span class="text-[10px] text-neutral-400">Corporate Blue</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#1e3a8a"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#3b82f6"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f8fafc"></span>
+                                </div>
+                            </button>
+
+                            <button type="button" data-preset="slate" data-primary="#18181b" data-hover="#09090b" data-accent="#71717a" data-dark="#09090b" data-bg="#fafafa"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Obsidian Slate</span>
+                                    <span class="text-[10px] text-neutral-400">Monochrome</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#18181b"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#71717a"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#fafafa"></span>
+                                </div>
+                            </button>
+
+                            <button type="button" data-preset="indigo" data-primary="#4338ca" data-hover="#3730a3" data-accent="#6366f1" data-dark="#1e1b4b" data-bg="#f5f3ff"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Royal Indigo</span>
+                                    <span class="text-[10px] text-neutral-400">Modern Tech</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#4338ca"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#6366f1"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f5f3ff"></span>
+                                </div>
+                            </button>
+
+                            <button type="button" data-preset="amber" data-primary="#b45309" data-hover="#92400e" data-accent="#f59e0b" data-dark="#451a03" data-bg="#fffbeb"
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                <div>
+                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Warm Amber</span>
+                                    <span class="text-[10px] text-neutral-400">Sunset Ochre</span>
+                                </div>
+                                <div class="flex items-center -space-x-1 shrink-0">
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#b45309"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f59e0b"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#fffbeb"></span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Color Pickers Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 border-t border-neutral-100 pt-4">
+                        <!-- 1. Primary Brand -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Primary Brand *</label>
+                            <div class="flex items-center border border-neutral-300 bg-white">
+                                <input type="color" id="theme-primary-picker" value="{{ $settings['theme_primary'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
+                                <input type="text" name="theme_primary" id="theme-primary-input" value="{{ $settings['theme_primary'] }}" maxlength="7"
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                            </div>
+                            <p class="text-[10px] text-neutral-400">Main brand color for active items and buttons.</p>
+                        </div>
+
+                        <!-- 2. Primary Hover -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Primary Hover *</label>
+                            <div class="flex items-center border border-neutral-300 bg-white">
+                                <input type="color" id="theme-hover-picker" value="{{ $settings['theme_primary_hover'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
+                                <input type="text" name="theme_primary_hover" id="theme-hover-input" value="{{ $settings['theme_primary_hover'] }}" maxlength="7"
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                            </div>
+                            <p class="text-[10px] text-neutral-400">Interaction state on buttons & links.</p>
+                        </div>
+
+                        <!-- 3. Accent / Moss -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Accent / Highlights *</label>
+                            <div class="flex items-center border border-neutral-300 bg-white">
+                                <input type="color" id="theme-accent-picker" value="{{ $settings['theme_accent'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
+                                <input type="text" name="theme_accent" id="theme-accent-input" value="{{ $settings['theme_accent'] }}" maxlength="7"
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                            </div>
+                            <p class="text-[10px] text-neutral-400">Secondary brand accent & indicators.</p>
+                        </div>
+
+                        <!-- 4. Dark Nav / Ink -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Dark Nav / Ink *</label>
+                            <div class="flex items-center border border-neutral-300 bg-white">
+                                <input type="color" id="theme-dark-picker" value="{{ $settings['theme_dark'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
+                                <input type="text" name="theme_dark" id="theme-dark-input" value="{{ $settings['theme_dark'] }}" maxlength="7"
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                            </div>
+                            <p class="text-[10px] text-neutral-400">Dark elements, contrast text, and nav.</p>
+                        </div>
+
+                        <!-- 5. Page Background -->
+                        <div class="space-y-1.5 sm:col-span-2 md:col-span-2">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Page Background *</label>
+                            <div class="flex items-center border border-neutral-300 bg-white max-w-xs">
+                                <input type="color" id="theme-bg-picker" value="{{ $settings['theme_bg'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
+                                <input type="text" name="theme_bg" id="theme-bg-input" value="{{ $settings['theme_bg'] }}" maxlength="7"
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                            </div>
+                            <p class="text-[10px] text-neutral-400">Dashboard & light canvas background color.</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Dynamic Preview -->
+                    <div class="mt-5 border border-neutral-200 p-4 bg-neutral-50/70" id="theme-live-preview-box">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-3">Live Component Preview</span>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button type="button" id="preview-primary-btn" class="h-8 px-4 text-[10px] font-medium uppercase tracking-[0.12em] text-white transition-colors"
+                                    style="background: {{ $settings['theme_primary'] }}; border: 1px solid {{ $settings['theme_primary'] }};">
+                                Primary Button
+                            </button>
+                            <span id="preview-badge" class="inline-flex items-center h-6 px-2.5 text-[10px] font-bold uppercase tracking-wider"
+                                  style="background: {{ $settings['theme_primary'] }}20; color: {{ $settings['theme_primary'] }}; border: 1px solid {{ $settings['theme_primary'] }}40;">
+                                Active Badge
+                            </span>
+                            <span id="preview-accent-chip" class="inline-flex items-center h-6 px-2.5 text-[10px] font-bold uppercase tracking-wider text-white"
+                                  style="background: {{ $settings['theme_accent'] }};">
+                                Accent Chip
+                            </span>
+                            <span class="text-xs font-semibold" id="preview-link" style="color: {{ $settings['theme_primary'] }}">
+                                Dynamic Link &rarr;
+                            </span>
+                            <span class="text-[11px] font-mono px-2 py-1 rounded-[3px]" id="preview-bg-sample" style="background: {{ $settings['theme_bg'] }}; color: {{ $settings['theme_dark'] }}; border: 1px solid #e5e5e5;">
+                                Canvas Sample
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Commerce & Regional Settings -->
                 <div class="border border-neutral-200 bg-white p-6 shadow-xs">
                     <div class="flex items-center gap-3 border-b border-neutral-100 pb-4 mb-5">
                         <span class="flex h-9 w-9 flex-none items-center justify-center bg-neutral-900 text-white">
@@ -356,6 +541,131 @@
     if (titleInput) titleInput.addEventListener('input', updateSerp);
     if (descInput) descInput.addEventListener('input', updateSerp);
     updateSerp();
+
+    // ---------------- Theme & Color Stack Live System ----------------
+    var themeTokens = [
+        { key: 'primary', picker: 'theme-primary-picker', input: 'theme-primary-input', cssVar: '--theme-primary', def: '#344c3d' },
+        { key: 'hover', picker: 'theme-hover-picker', input: 'theme-hover-input', cssVar: '--theme-primary-hover', def: '#25372c' },
+        { key: 'accent', picker: 'theme-accent-picker', input: 'theme-accent-input', cssVar: '--theme-accent', def: '#738a6e' },
+        { key: 'dark', picker: 'theme-dark-picker', input: 'theme-dark-input', cssVar: '--theme-dark', def: '#08131e' },
+        { key: 'bg', picker: 'theme-bg-picker', input: 'theme-bg-input', cssVar: '--theme-bg', def: '#f4f6f9' }
+    ];
+
+    function applyThemePreview() {
+        var pInput = document.getElementById('theme-primary-input');
+        var hInput = document.getElementById('theme-hover-input');
+        var aInput = document.getElementById('theme-accent-input');
+        var dInput = document.getElementById('theme-dark-input');
+        var bInput = document.getElementById('theme-bg-input');
+
+        var p = pInput ? pInput.value.trim() : '#344c3d';
+        var h = hInput ? hInput.value.trim() : '#25372c';
+        var a = aInput ? aInput.value.trim() : '#738a6e';
+        var d = dInput ? dInput.value.trim() : '#08131e';
+        var b = bInput ? bInput.value.trim() : '#f4f6f9';
+
+        // Update live preview components inside the card
+        var btn = document.getElementById('preview-primary-btn');
+        if (btn) {
+            btn.style.backgroundColor = p;
+            btn.style.borderColor = p;
+        }
+        var badge = document.getElementById('preview-badge');
+        if (badge) {
+            badge.style.backgroundColor = p + '25';
+            badge.style.color = p;
+            badge.style.borderColor = p + '50';
+        }
+        var chip = document.getElementById('preview-accent-chip');
+        if (chip) {
+            chip.style.backgroundColor = a;
+        }
+        var link = document.getElementById('preview-link');
+        if (link) {
+            link.style.color = p;
+        }
+        var bgSample = document.getElementById('preview-bg-sample');
+        if (bgSample) {
+            bgSample.style.backgroundColor = b;
+            bgSample.style.color = d;
+        }
+
+        // Apply dynamically to document root so current page reacts live
+        document.documentElement.style.setProperty('--theme-primary', p);
+        document.documentElement.style.setProperty('--theme-primary-hover', h);
+        document.documentElement.style.setProperty('--theme-accent', a);
+        document.documentElement.style.setProperty('--theme-dark', d);
+        document.documentElement.style.setProperty('--theme-bg', b);
+        document.documentElement.style.setProperty('--color-sage-evergreen', p);
+        document.documentElement.style.setProperty('--color-sage-moss', a);
+    }
+
+    themeTokens.forEach(function (token) {
+        var picker = document.getElementById(token.picker);
+        var input = document.getElementById(token.input);
+
+        if (picker && input) {
+            picker.addEventListener('input', function () {
+                input.value = picker.value.toUpperCase();
+                applyThemePreview();
+            });
+            input.addEventListener('input', function () {
+                var val = input.value.trim();
+                if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+                    picker.value = val;
+                }
+                applyThemePreview();
+            });
+        }
+    });
+
+    // Preset buttons
+    var presetBtns = document.querySelectorAll('.theme-preset-btn');
+    presetBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var primary = btn.getAttribute('data-primary');
+            var hover = btn.getAttribute('data-hover');
+            var accent = btn.getAttribute('data-accent');
+            var dark = btn.getAttribute('data-dark');
+            var bg = btn.getAttribute('data-bg');
+
+            var pIn = document.getElementById('theme-primary-input');
+            var pPick = document.getElementById('theme-primary-picker');
+            var hIn = document.getElementById('theme-hover-input');
+            var hPick = document.getElementById('theme-hover-picker');
+            var aIn = document.getElementById('theme-accent-input');
+            var aPick = document.getElementById('theme-accent-picker');
+            var dIn = document.getElementById('theme-dark-input');
+            var dPick = document.getElementById('theme-dark-picker');
+            var bIn = document.getElementById('theme-bg-input');
+            var bPick = document.getElementById('theme-bg-picker');
+
+            if (pIn && pPick) { pIn.value = primary; pPick.value = primary; }
+            if (hIn && hPick) { hIn.value = hover; hPick.value = hover; }
+            if (aIn && aPick) { aIn.value = accent; aPick.value = accent; }
+            if (dIn && dPick) { dIn.value = dark; dPick.value = dark; }
+            if (bIn && bPick) { bIn.value = bg; bPick.value = bg; }
+
+            // Highlight selected preset visually
+            presetBtns.forEach(function (b) { b.classList.remove('border-neutral-900', 'bg-white', 'shadow-xs'); });
+            btn.classList.add('border-neutral-900', 'bg-white', 'shadow-xs');
+
+            applyThemePreview();
+        });
+    });
+
+    // Reset button
+    var resetBtn = document.getElementById('btn-reset-default-theme');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+            var defaultPreset = document.querySelector('.theme-preset-btn[data-preset="sage"]');
+            if (defaultPreset) {
+                defaultPreset.click();
+            }
+        });
+    }
+
+    applyThemePreview();
 })();
 </script>
 
