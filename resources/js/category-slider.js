@@ -1,15 +1,14 @@
 /**
- * Category Carousel Slider:
+ * Carousel Slider:
  * - Single-line horizontal presentation
  * - Dual navigation arrows on both sides
  * - Seamless infinite looping with buffer clones
  * - Dynamic pagination dots with animated active pill
  * - Touch swipe & mouse drag support
- * - Responsive layout adaptation (1 mobile, 2 sm, 3 md, 5 lg)
+ * - Responsive layout adaptation (supports categories: 5-desktop & trending courses: 4-desktop)
  */
 
-export function initCategorySlider() {
-    const root = document.querySelector('[data-category-slider]');
+export function createSlider(root) {
     if (!root || root.dataset.sliderReady === '1') return;
     root.dataset.sliderReady = '1';
 
@@ -17,13 +16,16 @@ export function initCategorySlider() {
     const track = root.querySelector('[data-slider-track]');
     const prevBtn = root.querySelector('[data-slider-prev]');
     const nextBtn = root.querySelector('[data-slider-next]');
-    const dotsContainer = document.querySelector('[data-slider-dots]');
+    const dotsContainer = root.parentElement ? root.parentElement.querySelector('[data-slider-dots]') : root.querySelector('[data-slider-dots]');
 
     if (!container || !track) return;
 
     const originalCards = Array.from(track.querySelectorAll('[data-slider-card]'));
     const totalOriginals = originalCards.length;
     if (totalOriginals === 0) return;
+
+    const isTrending = root.hasAttribute('data-trending-slider');
+    const maxVisibleDesktop = isTrending ? 4 : 5;
 
     let currentIndex = 0;
     let isTransitioning = false;
@@ -34,9 +36,9 @@ export function initCategorySlider() {
 
     function getVisibleCount() {
         const w = window.innerWidth;
-        if (w >= 1024) return 5;
-        if (w >= 768) return 3;
-        if (w >= 640) return 2;
+        if (w >= 1024) return maxVisibleDesktop;
+        if (w >= 768) return Math.min(3, maxVisibleDesktop);
+        if (w >= 640) return Math.min(2, maxVisibleDesktop);
         return 1;
     }
 
@@ -45,7 +47,7 @@ export function initCategorySlider() {
     }
 
     // Clone items for infinite looping buffer
-    const cloneCount = Math.min(totalOriginals, Math.max(visibleCount, 5));
+    const cloneCount = Math.min(totalOriginals, Math.max(visibleCount, maxVisibleDesktop));
 
     const prefixClones = originalCards.slice(-cloneCount).map((card) => {
         const clone = card.cloneNode(true);
@@ -72,7 +74,7 @@ export function initCategorySlider() {
         const containerWidth = container.clientWidth;
 
         if (window.innerWidth < 640) {
-            cardWidth = Math.min(270, Math.floor(containerWidth * 0.8));
+            cardWidth = Math.min(isTrending ? 300 : 270, Math.floor(containerWidth * 0.85));
         } else {
             cardWidth = (containerWidth - (visibleCount - 1) * gap) / visibleCount;
         }
@@ -147,7 +149,7 @@ export function initCategorySlider() {
             const dot = document.createElement('button');
             dot.type = 'button';
             dot.className = 'slider-dot transition-all duration-300 rounded-full cursor-pointer focus:outline-none';
-            dot.setAttribute('aria-label', `Go to category page ${p + 1}`);
+            dot.setAttribute('aria-label', `Go to slide page ${p + 1}`);
             dot.dataset.page = String(p);
 
             dot.addEventListener('click', () => {
@@ -180,16 +182,16 @@ export function initCategorySlider() {
         });
     }
 
-    // Touch & Pointer Drag support
-    let isPointerDown = false;
+    // Touch & Mouse Drag / Swipe
     let isDragging = false;
+    let dragMoved = false;
     let dragDistancePassed = false;
     let startX = 0;
 
     function onPointerDown(e) {
         if (e.button !== undefined && e.button !== 0) return;
-        isPointerDown = true;
-        isDragging = false;
+        isDragging = true;
+        dragMoved = false;
         dragDistancePassed = false;
         startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
         track.style.transition = 'none';
@@ -197,45 +199,43 @@ export function initCategorySlider() {
     }
 
     function onPointerMove(e) {
-        if (!isPointerDown) return;
+        if (!isDragging) return;
         const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-        const diff = currentX - startX;
+        const deltaX = currentX - startX;
 
-        if (Math.abs(diff) > 6) {
-            isDragging = true;
+        if (Math.abs(deltaX) > 6) {
+            dragMoved = true;
             dragDistancePassed = true;
         }
 
-        if (isDragging) {
+        if (dragMoved) {
             const step = cardWidth + gap;
-            const currentBase = -(currentIndex * step);
-            track.style.transform = `translateX(${currentBase + diff}px)`;
+            const currentTranslate = -(currentIndex * step);
+            track.style.transform = `translateX(${currentTranslate + deltaX}px)`;
         }
     }
 
     function onPointerUp(e) {
-        if (!isPointerDown) return;
-        isPointerDown = false;
+        if (!isDragging) return;
+        isDragging = false;
         track.style.cursor = '';
 
-        if (!isDragging) return;
+        if (!dragMoved) return;
 
-        const endX = e.type.includes('mouse')
-            ? e.pageX
-            : (e.changedTouches ? e.changedTouches[0].clientX : startX);
-        const diff = endX - startX;
+        const endX = e.type.includes('mouse') ? e.pageX : (e.changedTouches ? e.changedTouches[0].clientX : startX);
+        const deltaX = endX - startX;
         const threshold = cardWidth * 0.22;
 
-        if (diff < -threshold) {
+        if (deltaX < -threshold) {
             slideNext();
-        } else if (diff > threshold) {
+        } else if (deltaX > threshold) {
             slidePrev();
         } else {
             moveToIndex(currentIndex, true);
         }
 
         setTimeout(() => {
-            isDragging = false;
+            dragMoved = false;
             dragDistancePassed = false;
         }, 80);
     }
@@ -272,4 +272,12 @@ export function initCategorySlider() {
     measure();
 }
 
-document.addEventListener('DOMContentLoaded', initCategorySlider);
+export function initSliders() {
+    document.querySelectorAll('[data-category-slider], [data-trending-slider]').forEach(createSlider);
+}
+
+export function initCategorySlider() {
+    initSliders();
+}
+
+document.addEventListener('DOMContentLoaded', initSliders);

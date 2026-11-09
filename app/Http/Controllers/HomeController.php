@@ -18,11 +18,12 @@ class HomeController extends Controller
         $home = $homePageContent->all();
 
         $featuredLimit = (int) ($home['featured_courses']['limit'] ?? 8);
-        $trendingLimit = (int) ($home['trending_courses']['limit'] ?? 4);
+        $trendingLimit = (int) ($home['trending_courses']['limit'] ?? 8);
 
         $featuredCourses = Course::published()
             ->featured()
             ->with(['instructor', 'category'])
+            ->withCount('enrollments')
             ->latest()
             ->take($featuredLimit)
             ->get();
@@ -30,6 +31,7 @@ class HomeController extends Controller
         if ($featuredCourses->isEmpty()) {
             $featuredCourses = Course::published()
                 ->with(['instructor', 'category'])
+                ->withCount('enrollments')
                 ->latest()
                 ->take($featuredLimit)
                 ->get();
@@ -38,6 +40,7 @@ class HomeController extends Controller
         $trendingCourses = Course::published()
             ->trending()
             ->with(['instructor', 'category'])
+            ->withCount('enrollments')
             ->latest()
             ->take($trendingLimit)
             ->get();

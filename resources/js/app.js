@@ -2,6 +2,7 @@ import './mselect';
 import './mono-select';
 import './hero-showcase';
 import './category-slider';
+import './featured-tabs';
 
 /**
  * Count-up animation for [data-countup] elements.

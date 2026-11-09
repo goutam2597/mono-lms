@@ -107,7 +107,7 @@ class HomePageContent
                 'eyebrow' => 'Trending Now',
                 'heading' => 'Most Trending Courses',
                 'subtitle' => 'The most popular courses chosen by thousands of learners this week.',
-                'limit' => 4,
+                'limit' => 8,
             ],
             'instructors' => [
                 'enabled' => true,

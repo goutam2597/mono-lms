@@ -584,36 +584,79 @@
                 </div>
 
                 <!-- Tabs -->
-                <div class="flex flex-wrap items-center gap-2.5 pt-2">
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-semibold border border-[#344c3d] text-[#344c3d] bg-[#dce7da]/40 shadow-xs">All</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Most popular</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Business</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Design</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Music</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Programming</button>
-                    <button class="px-5 py-2 rounded-[5px] text-sm font-medium text-[#191919] hover:bg-white hover:shadow-xs transition">Database</button>
+                <div class="flex flex-wrap items-center gap-2.5 pt-2" data-featured-tabs>
+                    <button type="button" data-filter="all" aria-pressed="true" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-semibold border border-[#344c3d] text-[#344c3d] bg-[#dce7da]/40 shadow-xs cursor-pointer transition-all">All</button>
+                    <button type="button" data-filter="popular" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Most popular</button>
+                    <button type="button" data-filter="business" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Business</button>
+                    <button type="button" data-filter="design" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Design</button>
+                    <button type="button" data-filter="music" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Music</button>
+                    <button type="button" data-filter="programming" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Programming</button>
+                    <button type="button" data-filter="database" aria-pressed="false" class="featured-tab-btn px-5 py-2 rounded-[5px] text-sm font-medium border border-transparent text-[#191919] hover:bg-white hover:shadow-xs cursor-pointer transition-all">Database</button>
                 </div>
             </div>
 
             <!-- Featured Course Cards (DB-driven) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-featured-grid>
                 @foreach ($featuredCourses as $course)
-                    <x-course-card
-                        :slug="$course->slug"
-                        :title="$course->title"
-                        :category="$course->category?->name ?? ''"
-                        :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
-                        :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
-                        :rating="$course->averageRating() ?: '5.0'"
-                        :reviews="$course->reviewCount()"
-                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
-                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
-                        :lessons="$course->lessons->count()"
-                        :duration="$course->duration_minutes"
-                        :level="$course->level"
-                    />
+                    @php
+                        $catSlug = Str::slug($course->category?->slug ?? $course->category?->name ?? '');
+                        $catName = strtolower($course->category?->name ?? '');
+                        $titleLower = strtolower($course->title);
+                        $tags = ['all'];
+
+                        if (($course->enrollments_count ?? 0) >= 2 || $course->is_trending || $course->reviewCount() > 0) {
+                            $tags[] = 'popular';
+                        }
+                        if (str_contains($catName, 'business') || str_contains($catSlug, 'business') || str_contains($titleLower, 'business') || str_contains($titleLower, 'manage') || str_contains($titleLower, 'market')) {
+                            $tags[] = 'business';
+                        }
+                        if (str_contains($catName, 'design') || str_contains($catSlug, 'design') || str_contains($catName, 'ui/ux') || str_contains($titleLower, 'design') || str_contains($titleLower, 'ui/ux')) {
+                            $tags[] = 'design';
+                        }
+                        if (str_contains($catName, 'music') || str_contains($catName, 'art') || str_contains($catSlug, 'creative') || str_contains($catSlug, 'media') || str_contains($titleLower, 'music') || str_contains($titleLower, 'art')) {
+                            $tags[] = 'music';
+                        }
+                        if (str_contains($catName, 'program') || str_contains($catName, 'develop') || str_contains($catSlug, 'python') || str_contains($catSlug, 'angular') || str_contains($catSlug, 'node') || str_contains($catSlug, 'php') || str_contains($catSlug, 'laravel') || str_contains($catSlug, 'web') || str_contains($titleLower, 'developer') || str_contains($titleLower, 'python') || str_contains($titleLower, 'html') || str_contains($titleLower, 'angular') || str_contains($titleLower, 'code')) {
+                            $tags[] = 'programming';
+                        }
+                        if (str_contains($catName, 'data') || str_contains($catSlug, 'data') || str_contains($catSlug, 'docker') || str_contains($catSlug, 'database') || str_contains($catSlug, 'sql') || str_contains($titleLower, 'data') || str_contains($titleLower, 'docker') || str_contains($titleLower, 'database') || str_contains($titleLower, 'server')) {
+                            $tags[] = 'database';
+                        }
+                        if ($catSlug) {
+                            $tags[] = $catSlug;
+                        }
+                        $tagsAttr = implode(' ', array_unique($tags));
+                    @endphp
+                    <div class="featured-course-card transition-all duration-300" data-tags="{{ $tagsAttr }}">
+                        <x-course-card
+                            :slug="$course->slug"
+                            :title="$course->title"
+                            :category="$course->category?->name ?? ''"
+                            :instructor="$course->instructor?->name ?? ''"
+                            :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                            :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
+                            :rating="$course->averageRating() ?: '5.0'"
+                            :reviews="$course->reviewCount()"
+                            :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                            :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                            :lessons="$course->lessons->count()"
+                            :duration="$course->duration_minutes"
+                            :level="$course->level"
+                        />
+                    </div>
                 @endforeach
+            </div>
+
+            <!-- Empty State for tab filtering -->
+            <div data-featured-empty class="hidden text-center py-16 px-4 bg-white border border-gray-100 rounded-2xl shadow-xs">
+                <div class="w-12 h-12 mx-auto rounded-full bg-[#DCE7DA] text-[#344C3D] flex items-center justify-center mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <h4 class="text-base font-bold text-[#191919]">No courses found for this category</h4>
+                <p class="text-xs text-gray-500 mt-1 max-w-sm mx-auto">There are currently no featured courses matching this selection. Check back soon or explore our complete catalog.</p>
+                <button type="button" data-featured-reset class="mt-4 px-5 py-2 rounded-lg bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer">
+                    Show All Featured Courses
+                </button>
             </div>
 
             <!-- View All Courses Button -->
@@ -935,32 +978,81 @@
                 </a>
             </div>
 
-            <!-- Trending Course Cards (DB-driven) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($trendingCourses as $course)
-                    <x-course-card
-                        :slug="$course->slug"
-                        :title="$course->title"
-                        :category="$course->category?->name ?? ''"
-                        :instructor="$course->instructor?->name ?? ''"
-                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
-                        :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
-                        :rating="$course->averageRating() ?: '5.0'"
-                        :reviews="$course->reviewCount()"
-                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
-                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
-                        :lessons="$course->lessons->count()"
-                        :duration="$course->duration_minutes"
-                        :level="$course->level"
-                    />
-                @endforeach
-            </div>
-            <!-- Dots -->
-            <div class="flex justify-center items-center gap-2 pt-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
-                <span class="w-3 h-3 rounded-full bg-[#344c3d]"></span>
-                <span class="w-2.5 h-2.5 rounded-full bg-[#e9ecef]"></span>
-            </div>
+            @if ($trendingCourses->count() > 4)
+                <!-- Trending Courses Slider (Single-line, Infinite Scroll, Arrows on Both Sides, Dynamic Pagination) -->
+                <div class="relative px-2 sm:px-0" data-trending-slider>
+                    <!-- Left Arrow Button (Left Side) -->
+                    <button type="button"
+                            data-slider-prev
+                            aria-label="Previous trending courses"
+                            class="absolute -left-3 sm:-left-5 lg:-left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] border border-gray-100 flex items-center justify-center text-[#191919] hover:bg-[#344c3d] hover:text-white transition-all duration-200 cursor-pointer focus:outline-none group/btn">
+                        <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover/btn:-translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+                        </svg>
+                    </button>
+
+                    <!-- Slider Container & Track (Single Row) -->
+                    <div class="overflow-hidden py-3 px-1" data-slider-container>
+                        <div class="flex gap-5 sm:gap-6 select-none will-change-transform" data-slider-track>
+                            @foreach ($trendingCourses as $course)
+                                <div class="shrink-0 w-[280px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]" data-slider-card>
+                                    <x-course-card
+                                        :slug="$course->slug"
+                                        :title="$course->title"
+                                        :category="$course->category?->name ?? ''"
+                                        :instructor="$course->instructor?->name ?? ''"
+                                        :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                                        :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
+                                        :rating="$course->averageRating() ?: '5.0'"
+                                        :reviews="$course->reviewCount()"
+                                        :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                                        :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                                        :lessons="$course->lessons->count()"
+                                        :duration="$course->duration_minutes"
+                                        :level="$course->level"
+                                    />
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Right Arrow Button (Right Side) -->
+                    <button type="button"
+                            data-slider-next
+                            aria-label="Next trending courses"
+                            class="absolute -right-3 sm:-right-5 lg:-right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] border border-gray-100 flex items-center justify-center text-[#191919] hover:bg-[#344c3d] hover:text-white transition-all duration-200 cursor-pointer focus:outline-none group/btn">
+                        <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Dynamic Pagination Dots -->
+                <div class="flex justify-center items-center gap-2 pt-2" data-slider-dots>
+                    <!-- Populated dynamically by category-slider.js -->
+                </div>
+            @else
+                <!-- Trending Course Cards Grid (<= 4 items) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @foreach ($trendingCourses as $course)
+                        <x-course-card
+                            :slug="$course->slug"
+                            :title="$course->title"
+                            :category="$course->category?->name ?? ''"
+                            :instructor="$course->instructor?->name ?? ''"
+                            :instructorAvatar="$course->instructor?->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
+                            :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
+                            :rating="$course->averageRating() ?: '5.0'"
+                            :reviews="$course->reviewCount()"
+                            :price="$course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free')"
+                            :oldPrice="$course->old_price ? __('app.common.currency').number_format($course->old_price, 2) : null"
+                            :lessons="$course->lessons->count()"
+                            :duration="$course->duration_minutes"
+                            :level="$course->level"
+                        />
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
     @endif

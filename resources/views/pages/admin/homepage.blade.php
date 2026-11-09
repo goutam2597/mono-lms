@@ -621,7 +621,7 @@
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Max Courses to Display (Limit)</label>
-                                <input type="number" min="1" max="12" name="sections[trending_courses][limit]" value="{{ $sections['trending_courses']['limit'] ?? 4 }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
+                                <input type="number" min="1" max="12" name="sections[trending_courses][limit]" value="{{ $sections['trending_courses']['limit'] ?? 8 }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
                             <div class="sm:col-span-2">
                                 <label class="block font-semibold text-slate-700 mb-1">Heading</label>

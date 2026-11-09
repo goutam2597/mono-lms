@@ -212,4 +212,41 @@ class HomePageEditorTest extends TestCase
             ->assertOk()
             ->assertSee('Mastering Laravel &amp; Vue', false);
     }
+
+    public function test_homepage_featured_course_tabs_and_trending_slider(): void
+    {
+        $category = Category::create(['name' => 'Programming', 'slug' => 'programming']);
+        $instructor = Instructor::create([
+            'name' => 'Demo Instructor',
+            'email' => 'demo.instructor@mono-lms.test',
+            'password' => '12345678',
+            'status' => 'active',
+        ]);
+
+        for ($i = 1; $i <= 6; $i++) {
+            Course::create([
+                'title' => 'Trending Course '.$i,
+                'slug' => 'trending-course-'.$i,
+                'category_id' => $category->id,
+                'instructor_id' => $instructor->id,
+                'price' => 100.00,
+                'is_published' => true,
+                'is_featured' => true,
+                'is_trending' => true,
+            ]);
+        }
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk();
+        $response->assertSee('data-featured-tabs', false);
+        $response->assertSee('data-filter="all"', false);
+        $response->assertSee('data-filter="popular"', false);
+        $response->assertSee('data-filter="business"', false);
+        $response->assertSee('data-filter="design"', false);
+        $response->assertSee('data-filter="programming"', false);
+        $response->assertSee('data-featured-grid', false);
+        $response->assertSee('data-trending-slider', false);
+        $response->assertSee('data-slider-track', false);
+    }
 }
