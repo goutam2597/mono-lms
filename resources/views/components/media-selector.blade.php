@@ -13,9 +13,9 @@
     $resolvedUrl = \App\Support\PublicMedia::url($value, $defaultUrl);
     $hasImage = ! empty($resolvedUrl);
     $boxClasses = match ($shape) {
-        'circle' => 'w-14 h-14 rounded-full border border-neutral-300 overflow-hidden bg-neutral-100 shrink-0 flex items-center justify-center',
-        'wide'   => 'w-28 h-16 border border-neutral-300 overflow-hidden bg-neutral-50 shrink-0 flex items-center justify-center p-1',
-        default  => 'w-14 h-14 border border-neutral-300 overflow-hidden bg-neutral-50 shrink-0 flex items-center justify-center p-1',
+        'circle' => 'w-14 h-14 rounded-full border border-neutral-300 dark:border-neutral-800 overflow-hidden bg-neutral-100 dark:bg-neutral-900 shrink-0 flex items-center justify-center',
+        'wide'   => 'w-28 h-16 border border-neutral-300 dark:border-neutral-800 overflow-hidden bg-neutral-50 dark:bg-neutral-900 shrink-0 flex items-center justify-center p-1',
+        default  => 'w-14 h-14 border border-neutral-300 dark:border-neutral-800 overflow-hidden bg-neutral-50 dark:bg-neutral-900 shrink-0 flex items-center justify-center p-1',
     };
     $imgClasses = match ($shape) {
         'circle' => 'w-full h-full object-cover',
@@ -26,7 +26,7 @@
 
 <div class="space-y-1.5" data-media-selector data-default-url="{{ $defaultUrl ?? '' }}">
     @if ($label)
-        <label class="text-xs font-semibold text-[#191919] block">
+        <label class="text-xs font-semibold text-[#191919] dark:text-neutral-300 block">
             {{ $label }}
             @if ($required)
                 <span class="text-red-500">*</span>
@@ -42,7 +42,7 @@
                  alt="Preview"
                  class="{{ $imgClasses }} {{ $hasImage ? '' : 'hidden' }}">
 
-            <div data-media-placeholder class="{{ $hasImage ? 'hidden' : 'flex' }} items-center justify-center text-slate-300">
+            <div data-media-placeholder class="{{ $hasImage ? 'hidden' : 'flex' }} items-center justify-center text-slate-300 dark:text-neutral-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
                     <circle cx="8.5" cy="8.5" r="1.5"/>
@@ -67,7 +67,7 @@
 
                 <button type="button"
                         data-media-remove
-                        class="text-xs text-red-600 hover:underline cursor-pointer {{ ($value || ($defaultUrl && $value)) ? '' : 'hidden' }}">
+                        class="text-xs text-red-600 dark:text-red-400 hover:underline cursor-pointer {{ ($value || ($defaultUrl && $value)) ? '' : 'hidden' }}">
                     Remove
                 </button>
             </div>

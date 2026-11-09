@@ -121,7 +121,7 @@
             .row-action-menu .menu-sep { height: 1px; margin: 4px 0; background: #f0f0f0; }
         </style>
     </head>
-    <body class="font-sans antialiased text-[#191919] min-h-screen bg-[var(--theme-bg,#f4f6f9)] flex">
+    <body class="font-sans antialiased text-[#191919] dark:text-[#ededed] min-h-screen bg-[var(--theme-bg,#f4f6f9)] dark:bg-[#000000] flex">
 
         <!-- Mobile Sidebar Backdrop -->
         <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/70 z-40 hidden lg:hidden transition-opacity backdrop-blur-xs"></div>
@@ -242,14 +242,14 @@
         <!-- Main Content Area -->
         <div class="flex-1 flex flex-col min-w-0 lg:pl-64 min-h-screen">
             <!-- Full-width Sticky Top Header (Figma Dev Mode Node 10073:144208) -->
-            <header class="h-[60px] bg-white border-b border-[#e2e8f0] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-[0px_1px_3px_rgba(0,0,0,0.02)]">
+            <header class="h-[60px] bg-white dark:bg-[#0a0a0a] border-b border-[#e2e8f0] dark:border-[#1f1f1f] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-[0px_1px_3px_rgba(0,0,0,0.02)]">
                 <!-- Search Keyword with ⌘ Badge -->
                 <div class="flex items-center gap-3">
-                    <button type="button" id="sidebar-toggle" class="lg:hidden p-2 rounded-[5px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 focus:outline-none" aria-label="Toggle navigation">
+                    <button type="button" id="sidebar-toggle" class="lg:hidden p-2 rounded-[5px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 focus:outline-none" aria-label="Toggle navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <div class="bg-white border border-[#e2e8f0] flex items-center gap-2 h-[34px] px-3 rounded-[5px] w-52 sm:w-68">
-                        <input type="text" placeholder="Search Keyword..." class="flex-1 text-[13px] text-slate-700 placeholder-slate-400 bg-transparent border-0 focus:outline-none min-w-0">
+                    <div class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#222222] flex items-center gap-2 h-[34px] px-3 rounded-[5px] w-52 sm:w-68">
+                        <input type="text" placeholder="Search Keyword..." class="flex-1 text-[13px] text-slate-700 dark:text-neutral-200 placeholder-slate-400 dark:placeholder-neutral-500 bg-transparent border-0 focus:outline-none min-w-0">
                         <span class="bg-[var(--theme-primary,#344c3d)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[4px] shrink-0">⌘</span>
                     </div>
                 </div>
@@ -257,23 +257,23 @@
                 <!-- Right Toolbar Icons (Figma Dev Mode specs) -->
                 <div class="flex items-center gap-2 sm:gap-2.5">
                     <!-- Minimus / Fullscreen -->
-                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="Toggle Fullscreen" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
+                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="Toggle Fullscreen" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
                     </button>
 
                     <!-- Language Switcher Flag (Unified 34px height) -->
-                    <div class="h-[34px] border border-[#e2e8f0] rounded-[5px] px-2.5 flex items-center bg-white hover:bg-slate-50 transition-colors shrink-0">
-                        <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700 h-full flex items-center [&>button]:h-full [&>button]:py-0 [&>button]:gap-1.5" />
+                    <div class="h-[34px] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] px-2.5 flex items-center bg-white dark:bg-[#0d0d0d] hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors shrink-0">
+                        <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700 dark:text-neutral-200 h-full flex items-center [&>button]:h-full [&>button]:py-0 [&>button]:gap-1.5" />
                     </div>
 
                     <!-- Notification Bell with Red Dot Indicator -->
-                    <a href="{{ route('admin.messages.index') }}" title="Notifications" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0">
+                    <a href="{{ route('admin.messages.index') }}" title="Notifications" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0d0d0d]"></span>
                     </a>
 
                     <!-- Dark/Light Mode Toggle (independent per panel) -->
-                    <button type="button" id="theme-toggle-btn" title="Toggle Theme" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
+                    <button type="button" id="theme-toggle-btn" title="Toggle Theme" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
                         <svg id="theme-icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
                         <svg id="theme-icon-moon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
                     </button>
@@ -311,7 +311,7 @@
 
                         <!-- Dropdown Menu -->
                         <div id="header-user-menu-dropdown"
-                             class="hidden absolute right-0 top-full mt-2 w-64 bg-white dark:bg-[#0d0d0d] border border-slate-200 dark:border-[#222222] rounded-[8px] shadow-2xl py-1 z-50 text-xs text-slate-700 dark:text-neutral-300 transform origin-top-right transition-all">
+                             class="hidden absolute right-0 top-full mt-2 w-64 bg-white dark:bg-[#0d0d0d] border border-slate-200 dark:border-[#222222] rounded-[8px] shadow-2xl py-1 z-[70] text-xs text-slate-700 dark:text-neutral-300 transform origin-top-right transition-all">
                             <!-- User Identity Header -->
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-[#1f1f1f]">
                                 <div class="flex items-center gap-3">
@@ -404,7 +404,7 @@
             </main>
 
             <!-- Footer (Figma Dev Mode Node 10060:84225) -->
-            <footer class="border-t border-[#e2e8f0] py-3.5 px-6 text-center text-xs text-[#94a3b8] bg-white">
+            <footer class="border-t border-[#e2e8f0] dark:border-[#1f1f1f] py-3.5 px-6 text-center text-xs text-[#94a3b8] dark:text-neutral-500 bg-white dark:bg-[#0a0a0a]">
                 <p>&copy; {{ date('Y') }} Mono LMS. All Rights Reserved</p>
             </footer>
         </div>
