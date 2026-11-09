@@ -17,6 +17,30 @@
     <!-- Preload Nav Logo for instant render on refresh -->
     <link rel="preload" as="image" href="{{ \App\Models\Setting::logoUrl() }}" fetchpriority="high">
 
+    <!-- Theme Script: Storefront is strictly light only; Student portal supports independent dark mode -->
+    @php
+        $isStudentPortal = request()->is('student*');
+        $studentTheme = $isStudentPortal ? session('student_theme', 'light') : 'light';
+    @endphp
+    <script>
+        (function () {
+            var isStudent = @json($isStudentPortal);
+            if (isStudent) {
+                var stored = null;
+                try { stored = localStorage.getItem('mono_theme_student'); } catch (e) {}
+                var theme = stored || @json($studentTheme) || 'light';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } else {
+                // Public storefront is strictly light theme only
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
     <!-- Scripts & Styles via Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

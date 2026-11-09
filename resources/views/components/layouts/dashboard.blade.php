@@ -14,6 +14,22 @@
         <link rel="shortcut icon" href="{{ \App\Models\Setting::faviconUrl() }}">
         <link rel="apple-touch-icon" href="{{ \App\Models\Setting::faviconUrl() }}">
 
+        <!-- Pre-render theme initialization script (prevents white flash, per-panel independent) -->
+        @php $panelTheme = session($userType . '_theme', 'light'); @endphp
+        <script>
+            (function () {
+                var panel = @json($userType);
+                var stored = null;
+                try { stored = localStorage.getItem('mono_theme_' + panel); } catch (e) {}
+                var theme = stored || @json($panelTheme) || 'light';
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+        </script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style id="dynamic-theme-vars">
@@ -148,7 +164,7 @@
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="relative shrink-0">
                                 @if ($adminAvatar)
-                                    <img src="{{ $adminAvatar }}" alt="{{ $admin->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <img src="{{ $adminAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
                                     <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
                                         {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
                                     </div>
@@ -185,7 +201,7 @@
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="relative shrink-0">
                                 @if ($instructorAvatar)
-                                    <img src="{{ $instructorAvatar }}" alt="{{ $instructor->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <img src="{{ $instructorAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
                                     <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs hidden">
                                         {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
                                     </div>
@@ -250,9 +266,10 @@
                         <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                     </a>
 
-                    <!-- Dark/Light Mode Toggle -->
-                    <button type="button" title="Light Theme Active" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                    <!-- Dark/Light Mode Toggle (independent per panel) -->
+                    <button type="button" id="theme-toggle-btn" title="Toggle Theme" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
+                        <svg id="theme-icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                        <svg id="theme-icon-moon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
                     </button>
 
                     <!-- User Profile Avatar (Figma rectangle with 5px radius) -->
@@ -262,7 +279,7 @@
                             $navAvatar = $u?->avatarUrl();
                         @endphp
                         @if ($navAvatar)
-                            <img src="{{ $navAvatar }}" alt="{{ $u->name }}" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <img src="{{ $navAvatar }}" alt="" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
                             <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
                                 {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
                             </div>
@@ -387,6 +404,53 @@
                         if (openModal) openModal.classList.remove('open');
                     }
                 });
+            })();
+        </script>
+
+        <!-- Theme toggle controller (independent per panel: admin, instructor) -->
+        <script>
+            (function () {
+                var panel = @json($userType);
+                var toggleBtn = document.getElementById('theme-toggle-btn');
+                var sunIcon = document.getElementById('theme-icon-sun');
+                var moonIcon = document.getElementById('theme-icon-moon');
+                var csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+                function updateIcons(isDark) {
+                    if (isDark) {
+                        if (sunIcon) sunIcon.classList.remove('hidden');
+                        if (moonIcon) moonIcon.classList.add('hidden');
+                        if (toggleBtn) toggleBtn.setAttribute('title', 'Switch to Light Mode');
+                    } else {
+                        if (sunIcon) sunIcon.classList.add('hidden');
+                        if (moonIcon) moonIcon.classList.remove('hidden');
+                        if (toggleBtn) toggleBtn.setAttribute('title', 'Switch to Dark Mode');
+                    }
+                }
+
+                updateIcons(document.documentElement.classList.contains('dark'));
+
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function () {
+                        var isDark = document.documentElement.classList.toggle('dark');
+                        var nextTheme = isDark ? 'dark' : 'light';
+                        updateIcons(isDark);
+
+                        try {
+                            localStorage.setItem('mono_theme_' + panel, nextTheme);
+                        } catch (e) {}
+
+                        fetch('{{ route('theme.toggle', $userType) }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({ theme: nextTheme })
+                        }).catch(function () {});
+                    });
+                }
             })();
         </script>
 

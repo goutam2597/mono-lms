@@ -1,0 +1,327 @@
+/* ------------------------------------------------------------------
+   Mono LMS - Comprehensive Dark Mode Theme
+   Scoped under `html.dark`. Kept strictly independent per panel:
+   - Admin Panel (/admin/*)
+   - Instructor Panel (/instructor/*)
+   - Student Learning Portal (/student/*)
+   Note: Storefront web front is strictly light mode only.
+------------------------------------------------------------------ */
+
+html.dark {
+    color-scheme: dark;
+}
+
+/* Base Body and Page Background */
+html.dark,
+html.dark body {
+    background-color: #090d16 !important;
+    color: #e2e8f0;
+}
+
+/* Main Dashboard Wrapper & Main Area */
+html.dark .bg-\[var\(--theme-bg\,\#f4f6f9\)\] {
+    background-color: #090d16 !important;
+}
+html.dark main {
+    background-color: #090d16;
+}
+
+/* Header & Top Bar */
+html.dark header {
+    background-color: #0d1424 !important;
+    border-color: #1e293b !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark header input {
+    background-color: transparent !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark header input::placeholder {
+    color: #64748b !important;
+}
+
+html.dark header .bg-white {
+    background-color: #0d1424 !important;
+    border-color: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+html.dark header button,
+html.dark header a:not([class*="bg-"]) {
+    border-color: #1e293b !important;
+    color: #94a3b8 !important;
+}
+
+html.dark header button:hover,
+html.dark header a:not([class*="bg-"]):hover {
+    background-color: #1a2335 !important;
+    color: #ffffff !important;
+}
+
+/* Footer */
+html.dark footer {
+    background-color: #0d1424 !important;
+    border-color: #1e293b !important;
+    color: #64748b !important;
+}
+
+/* Generic White Cards & Containers */
+html.dark .bg-white {
+    background-color: #111827 !important;
+    color: #e2e8f0;
+}
+
+/* Generic Borders & Dividers */
+html.dark .border-slate-200,
+html.dark .border-gray-200,
+html.dark .border-slate-100,
+html.dark .border-gray-100,
+html.dark .border-neutral-200,
+html.dark .border-\[\#e2e8f0\],
+html.dark .border-\[\#e5e5e5\],
+html.dark .border-\[\#d4d4d4\] {
+    border-color: #1f293d !important;
+}
+
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-\[\#e2e8f0\] > :not([hidden]) ~ :not([hidden]) {
+    border-color: #1f293d !important;
+}
+
+/* Primary Text Colors */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-neutral-900,
+html.dark .text-neutral-800,
+html.dark .text-black,
+html.dark .text-\[\#0a0a0a\],
+html.dark .text-\[\#191919\] {
+    color: #f1f5f9 !important;
+}
+
+/* Muted / Secondary Text Colors */
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-neutral-600,
+html.dark .text-neutral-500 {
+    color: #94a3b8 !important;
+}
+
+/* Sub-muted Text */
+html.dark .text-slate-400,
+html.dark .text-gray-400 {
+    color: #64748b !important;
+}
+
+/* Tables */
+html.dark table {
+    color: #e2e8f0;
+}
+
+html.dark table thead,
+html.dark table thead tr,
+html.dark table thead th {
+    background-color: #0b111e !important;
+    color: #94a3b8 !important;
+    border-color: #1f293d !important;
+}
+
+html.dark table tbody tr {
+    border-color: #1a2335 !important;
+    background-color: transparent;
+}
+
+html.dark table tbody tr:hover {
+    background-color: #141d2e !important;
+}
+
+html.dark table tbody td {
+    border-color: #1a2335 !important;
+}
+
+/* Form Controls (Inputs, Textareas, Selects) */
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+html.dark textarea,
+html.dark select {
+    background-color: #0d131f !important;
+    border-color: #27354a !important;
+    color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #64748b !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+    border-color: var(--theme-primary, #344c3d) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(52, 76, 61, 0.35) !important;
+}
+
+/* Custom Dropdowns (mselect) */
+html.dark .mselect-btn {
+    background: #0d131f !important;
+    border-color: #27354a !important;
+    color: #f8fafc !important;
+}
+
+html.dark .mselect-btn:hover {
+    background: #141d2e !important;
+    border-color: #3b4d66 !important;
+}
+
+html.dark .mselect-list {
+    background: #111827 !important;
+    border-color: #27354a !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+}
+
+html.dark .mselect-search-wrap {
+    background: #0d131f !important;
+    border-color: #1f293d !important;
+}
+
+html.dark .mselect-search {
+    background: transparent !important;
+    color: #f8fafc !important;
+}
+
+html.dark .mselect-opt {
+    color: #cbd5e1 !important;
+}
+
+html.dark .mselect-opt:hover,
+html.dark .mselect-opt.is-highlighted {
+    background: #1a2538 !important;
+    color: #ffffff !important;
+}
+
+html.dark .mselect-opt.is-selected {
+    background: rgba(52, 76, 61, 0.35) !important;
+    color: #ffffff !important;
+}
+
+/* Action Buttons (mono_market pattern) */
+html.dark .action-btn-ghost {
+    background: #111827 !important;
+    border-color: #27354a !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .action-btn-ghost:hover {
+    background: #1e293b !important;
+    border-color: #3b4d66 !important;
+    color: #ffffff !important;
+}
+
+/* Row Action Dropdown Menu */
+html.dark .row-action-menu {
+    background: #111827 !important;
+    border-color: #27354a !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark .row-action-menu .menu-item {
+    color: #cbd5e1 !important;
+}
+
+html.dark .row-action-menu .menu-item:hover {
+    background: #1a2538 !important;
+    color: #ffffff !important;
+}
+
+html.dark .row-action-menu .menu-sep {
+    background: #1f293d !important;
+}
+
+/* Modals System (.modal-overlay .panel) */
+html.dark .modal-overlay {
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+html.dark .modal-overlay .panel {
+    background: #111827 !important;
+    border-color: #27354a !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75) !important;
+}
+
+html.dark .modal-overlay .panel h2,
+html.dark .modal-overlay .panel h3,
+html.dark .modal-overlay .panel h4 {
+    color: #f8fafc !important;
+}
+
+/* Media Picker */
+html.dark .mediap-card {
+    background: #0d131f !important;
+    border-color: #1f293d !important;
+}
+
+html.dark .mediap-card:hover {
+    border-color: var(--theme-primary, #344c3d) !important;
+    background: #141d2e !important;
+}
+
+/* Subtle backgrounds / light slate surfaces */
+html.dark .bg-slate-50,
+html.dark .bg-gray-50,
+html.dark .bg-neutral-50 {
+    background-color: #0e1523 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-gray-100 {
+    background-color: #141c2c !important;
+}
+
+/* Badges & Status Pills */
+html.dark .bg-emerald-50 {
+    background-color: rgba(5, 150, 105, 0.15) !important;
+    color: #6ee7b7 !important;
+    border-color: rgba(5, 150, 105, 0.3) !important;
+}
+
+html.dark .bg-red-50 {
+    background-color: rgba(220, 38, 38, 0.15) !important;
+    color: #fca5a5 !important;
+    border-color: rgba(220, 38, 38, 0.3) !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-yellow-50 {
+    background-color: rgba(217, 119, 6, 0.15) !important;
+    color: #fcd34d !important;
+    border-color: rgba(217, 119, 6, 0.3) !important;
+}
+
+html.dark .bg-blue-50,
+html.dark .bg-sky-50 {
+    background-color: rgba(2, 132, 199, 0.15) !important;
+    color: #7dd3fc !important;
+    border-color: rgba(2, 132, 199, 0.3) !important;
+}
+
+/* Student Learning Portal Specific Adjustments */
+html.dark .student-portal,
+html.dark .bg-\[\#f4f6f9\] {
+    background-color: #090d16 !important;
+}
+
+html.dark .student-card {
+    background-color: #111827 !important;
+    border-color: #1e293b !important;
+}

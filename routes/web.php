@@ -46,6 +46,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -105,6 +106,13 @@ Route::post('/membership/{plan:slug}/subscribe', [MembershipController::class, '
 Route::get('/admin/locale/{code}', [LocaleController::class, 'switchAdmin'])->name('admin.locale.switch');
 Route::get('/instructor/locale/{code}', [LocaleController::class, 'switchInstructor'])->name('instructor.locale.switch');
 Route::get('/student/locale/{code}', [LocaleController::class, 'switchStudent'])->name('student.locale.switch');
+
+// ------------------------------------------------------------ Theme switch
+// Independent panel theme toggles (admin, instructor, student).
+// Storefront is excluded and remains strictly light.
+Route::post('/theme/{panel}', [ThemeController::class, 'toggle'])
+    ->whereIn('panel', ['admin', 'instructor', 'student'])
+    ->name('theme.toggle');
 
 // ----------------------------------------------------------------- Panel auth
 Route::middleware('guest:admin')->group(function () {
