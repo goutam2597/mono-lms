@@ -50,11 +50,13 @@ class AdminPanelPagesTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        // 1. Dashboard
+        // 1. Dashboard & Pages dropdown
         $this->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('Admin overview')
-            ->assertSee('Welcome back, Administrator');
+            ->assertSee('Welcome back, Administrator')
+            ->assertSee('Pages')
+            ->assertSee('Home Page');
 
         // 2. Courses, Categories, Reviews, Certificates, Events
         $this->get(route('admin.courses.index'))->assertOk();
