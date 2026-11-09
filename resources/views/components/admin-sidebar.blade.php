@@ -123,6 +123,7 @@
                         ['id' => 'homepage', 'label' => 'Home Page Editor', 'route' => 'admin.homepage.index'],
                         ['id' => 'services', 'label' => 'Mail (SMTP) & Storage', 'route' => 'admin.services.index'],
                         ['id' => 'languages', 'label' => 'Languages & Translations', 'route' => 'admin.languages.index'],
+                        ['id' => 'ai_settings', 'label' => 'AI Suite & Settings', 'route' => 'admin.settings.ai'],
                         ['id' => 'blog', 'label' => 'Blog & Articles', 'route' => 'admin.blog.index'],
                         ['id' => 'system', 'label' => 'System Diagnostics', 'route' => 'admin.system.index'],
                     ],

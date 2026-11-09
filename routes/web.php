@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AiSettingsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
@@ -202,12 +203,31 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/reviews/bulk-destroy', [AdminReviewController::class, 'bulkDestroy'])
         ->middleware('permission:reviews.moderate')->name('reviews.bulk-destroy');
 
-    Route::get('/languages', [LanguageController::class, 'index'])
-        ->middleware('permission:languages.manage')->name('languages.index');
-    Route::match(['post', 'patch'], '/languages/{language}/toggle', [LanguageController::class, 'toggle'])
-        ->middleware('permission:languages.manage')->name('languages.toggle');
-    Route::match(['post', 'patch'], '/languages/{language}/default', [LanguageController::class, 'makeDefault'])
-        ->middleware('permission:languages.manage')->name('languages.default');
+    // Languages & Translations
+    Route::middleware('permission:languages.manage')->group(function () {
+        Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
+        Route::post('/languages', [LanguageController::class, 'store'])->name('languages.store');
+        Route::put('/languages/{language}', [LanguageController::class, 'update'])->name('languages.update');
+        Route::match(['post', 'patch'], '/languages/{language}/toggle', [LanguageController::class, 'toggle'])->name('languages.toggle');
+        Route::match(['post', 'patch'], '/languages/{language}/default', [LanguageController::class, 'makeDefault'])->name('languages.default');
+        Route::delete('/languages/{language}', [LanguageController::class, 'destroy'])->name('languages.destroy');
+        Route::get('/languages/{language}/translations', [LanguageController::class, 'translations'])->name('languages.translations');
+        Route::match(['post', 'put'], '/languages/{language}/translations', [LanguageController::class, 'updateTranslations'])->name('languages.translations.update');
+        Route::post('/languages/{language}/translate', [LanguageController::class, 'translate'])->name('languages.translate');
+    });
+
+    // AI Providers & Suite Settings
+    Route::middleware('permission:languages.manage')->group(function () {
+        Route::get('/settings/ai', [AiSettingsController::class, 'index'])->name('settings.ai');
+        Route::post('/settings/ai', [AiSettingsController::class, 'store'])->name('settings.ai.store');
+        Route::post('/settings/ai/models', [AiSettingsController::class, 'fetchModels'])->name('settings.ai.models');
+        Route::post('/settings/ai/playground', [AiSettingsController::class, 'playground'])->name('settings.ai.playground');
+        Route::put('/settings/ai/translator', [AiSettingsController::class, 'updateTranslator'])->name('settings.ai.translator');
+        Route::put('/settings/ai/generator', [AiSettingsController::class, 'updateGenerator'])->name('settings.ai.generator');
+        Route::put('/settings/ai/image', [AiSettingsController::class, 'updateImage'])->name('settings.ai.image');
+        Route::put('/settings/ai/{aiProvider}', [AiSettingsController::class, 'update'])->name('settings.ai.update');
+        Route::delete('/settings/ai/{aiProvider}', [AiSettingsController::class, 'destroy'])->name('settings.ai.destroy');
+    });
 
     // Blog
     Route::middleware('permission:blog.manage')->group(function () {
