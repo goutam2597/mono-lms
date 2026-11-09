@@ -68,8 +68,8 @@
                             <tr class="hover:bg-slate-50/80 transition-colors">
                                 <td class="py-3.5 px-4">
                                     <div class="flex items-center gap-2.5">
-                                        @if(!empty($payout->instructor?->avatar))
-                                            <img src="{{ $payout->instructor->avatar }}" alt="" class="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
+                                        @if(!empty($payout->instructor?->avatarUrl() ?? $payout->instructor?->avatar))
+                                            <img src="{{ $payout->instructor?->avatarUrl() ?? $payout->instructor?->avatar }}" alt="" class="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
                                         @else
                                             <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center shrink-0">
                                                 {{ strtoupper(substr($payout->instructor?->name ?? 'I', 0, 1)) }}

@@ -256,4 +256,22 @@ class AdminPanelPagesTest extends TestCase
             ->assertSee('<link rel="icon" href="'.$faviconUrl.'">', false)
             ->assertSee($logoUrl, false);
     }
+
+    public function test_admin_avatar_rendered_in_navbar_and_sidebar_bottom(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // Without avatar: renders initial badges
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Administrator')
+            ->assertSee('Super Admin');
+
+        // With avatar: renders proper resolved URL in both header and sidebar
+        $this->admin->update(['avatar' => 'media/2026/11/super-admin.png']);
+        $avatarUrl = $this->admin->avatarUrl();
+
+        $response = $this->get(route('admin.dashboard'))->assertOk();
+        $response->assertSee($avatarUrl, false);
+    }
 }

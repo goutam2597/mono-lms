@@ -554,8 +554,8 @@
                         @foreach(\App\Models\Instructor::take(5)->get() as $inst)
                             <div class="py-2.5 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2.5 min-w-0">
-                                    @if($inst->avatar)
-                                        <img src="{{ $inst->avatar }}" alt="{{ $inst->name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-gray-200">
+                                    @if($inst->avatarUrl())
+                                        <img src="{{ $inst->avatarUrl() }}" alt="{{ $inst->name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-gray-200">
                                     @else
                                         <div class="w-8 h-8 rounded-full bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center shrink-0">
                                             {{ strtoupper(substr($inst->name, 0, 1)) }}

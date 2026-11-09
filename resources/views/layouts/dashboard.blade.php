@@ -140,13 +140,23 @@
             <!-- Sidebar Bottom: User Profile Card -->
             <div class="p-3 border-t border-white/[0.07] bg-[#07090a] shrink-0">
                 @if ($userType === 'admin')
-                    @php $admin = auth('admin')->user(); @endphp
+                    @php
+                        $admin = auth('admin')->user();
+                        $adminAvatar = $admin?->avatarUrl();
+                    @endphp
                     <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="relative shrink-0">
-                                <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
-                                    {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
-                                </div>
+                                @if ($adminAvatar)
+                                    <img src="{{ $adminAvatar }}" alt="{{ $admin->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
+                                        {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
+                                    </div>
+                                @else
+                                    <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
+                                        {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
+                                    </div>
+                                @endif
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
                             </div>
                             <div class="min-w-0">
@@ -167,12 +177,18 @@
                         </div>
                     </div>
                 @else
-                    @php $instructor = auth('instructor')->user(); @endphp
+                    @php
+                        $instructor = auth('instructor')->user();
+                        $instructorAvatar = $instructor?->avatarUrl();
+                    @endphp
                     <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <div class="relative shrink-0">
-                                @if ($instructor?->avatar)
-                                    <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700">
+                                @if ($instructorAvatar)
+                                    <img src="{{ $instructorAvatar }}" alt="{{ $instructor->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs hidden">
+                                        {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
+                                    </div>
                                 @else
                                     <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs">
                                         {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
@@ -241,9 +257,15 @@
 
                     <!-- User Profile Avatar (Figma rectangle with 5px radius) -->
                     <div class="flex items-center pl-1 shrink-0">
-                        @php $u = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user(); @endphp
-                        @if ($u?->avatar)
-                            <img src="{{ $u->avatar }}" alt="{{ $u->name }}" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200">
+                        @php
+                            $u = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user();
+                            $navAvatar = $u?->avatarUrl();
+                        @endphp
+                        @if ($navAvatar)
+                            <img src="{{ $navAvatar }}" alt="{{ $u->name }}" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
+                                {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
+                            </div>
                         @else
                             <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
                                 {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
