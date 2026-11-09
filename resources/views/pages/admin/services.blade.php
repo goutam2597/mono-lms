@@ -1,131 +1,257 @@
 <x-layouts.dashboard title="Mail & Storage - Mono LMS" active="services" userType="admin">
 
-    <div class="space-y-6 max-w-4xl">
-        <!-- Top Title Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-6 shadow-xs">
-            <div>
-                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Mail & Storage Services</h1>
-                <p class="text-xs sm:text-sm text-slate-500 mt-1">Configure SMTP email delivery (for password resets, receipts, notifications) and cloud file storage.</p>
+<style>
+    .action-btn { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 38px; padding: 0 16px; font-size: 11px; font-weight: 500; line-height: 1.2; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; cursor: pointer; font-family: inherit; transition: color .15s, background .15s, border-color .15s; }
+    .action-btn:hover { color: #fff; background: #404040; border-color: #404040; }
+    .action-btn:disabled { opacity: .5; cursor: wait; }
+    .action-btn-ghost { color: #525252; background: #fff; border-color: #d4d4d4; }
+    .action-btn-ghost:hover { color: #0a0a0a; background: #fafafa; border-color: #0a0a0a; }
+</style>
+
+<div class="space-y-6">
+    <!-- Top Header Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-neutral-200 bg-white p-6 shadow-xs">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-medium tracking-tight text-neutral-900">Mail & Storage Services</h1>
+                <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    Active
+                </span>
             </div>
+            <p class="text-xs text-neutral-500 mt-1">Configure SMTP email delivery (student receipts, password resets, alerts) and cloud or local file storage.</p>
         </div>
 
-        <!-- Outgoing Mail (SMTP) Card -->
-        <div class="bg-white border border-slate-200 p-6 shadow-xs space-y-5">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-slate-900">Outgoing Mail (SMTP)</h3>
-                        <p class="text-[11px] text-slate-400">Essential for student receipts, password resets, and admin alerts.</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-2 border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs text-neutral-600">
+                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                <span>Mail: <strong class="font-mono">{{ $mail['host'] ?: 'Unset' }}</strong></span>
+            </div>
+            <div class="flex items-center gap-2 border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-xs text-neutral-600">
+                <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                <span>Storage: <strong class="font-mono uppercase">{{ $storage['driver'] ?? 'public' }}</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main 2-Column Full Width Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <!-- 1. Outgoing Mail (SMTP) -->
+        <div class="space-y-6">
+            <div class="border border-neutral-200 bg-white p-6 shadow-xs">
+                <div class="flex items-center justify-between border-b border-neutral-100 pb-4 mb-5">
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-9 w-9 flex-none items-center justify-center bg-neutral-900 text-white">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900">Outgoing Mail (SMTP)</h2>
+                            <p class="text-[11px] text-neutral-400">Essential for student receipts, password resets, and notifications.</p>
+                        </div>
                     </div>
                 </div>
+
+                <form method="POST" action="{{ route('admin.services.mail') }}" class="space-y-4">
+                    @csrf
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Server Host *</label>
+                            <input type="text" name="mail_host" value="{{ $mail['host'] }}" placeholder="e.g. smtp.mailgun.org, smtp.sendgrid.net" required
+                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Port *</label>
+                            <input type="text" name="mail_port" value="{{ $mail['port'] }}" placeholder="587" required
+                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Username</label>
+                            <input type="text" name="mail_username" value="{{ $mail['username'] }}" placeholder="SMTP username / API key user"
+                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Password</label>
+                            <div class="relative">
+                                <input type="password" name="mail_password" id="input-mail-pass" value="{{ $mail['password'] }}" placeholder="••••••••"
+                                       class="h-10 w-full font-mono border border-neutral-300 pl-3.5 pr-10 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                <button type="button" id="btn-toggle-mail-pass" class="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-700">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Encryption *</label>
+                            <select name="mail_encryption" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                <option value="tls" @selected($mail['encryption'] === 'tls')>TLS (Recommended)</option>
+                                <option value="ssl" @selected($mail['encryption'] === 'ssl')>SSL</option>
+                                <option value="none" @selected($mail['encryption'] === 'none')>None (Plain)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">From Email Address *</label>
+                            <input type="email" name="mail_from_address" value="{{ $mail['from_address'] }}" required
+                                   class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">From Sender Name *</label>
+                            <input type="text" name="mail_from_name" value="{{ $mail['from_name'] }}" required
+                                   class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end pt-3 border-t border-neutral-100">
+                        <button type="submit" class="action-btn h-10 px-6">
+                            Save Mail Settings
+                        </button>
+                    </div>
+                </form>
             </div>
 
-            <form method="POST" action="{{ route('admin.services.mail') }}" class="space-y-4 text-xs">
-                @csrf
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Test Email Dispatch Card -->
+            <div class="border border-neutral-200 bg-white p-6 shadow-xs">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="flex h-8 w-8 flex-none items-center justify-center bg-neutral-100 text-neutral-700">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </span>
                     <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">SMTP Server Host</label>
-                        <input type="text" name="mail_host" value="{{ $mail['host'] }}" placeholder="smtp.mailgun.org" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">SMTP Port</label>
-                        <input type="text" name="mail_port" value="{{ $mail['port'] }}" placeholder="587" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">SMTP Username</label>
-                        <input type="text" name="mail_username" value="{{ $mail['username'] }}" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">SMTP Password</label>
-                        <input type="password" name="mail_password" value="{{ $mail['password'] }}" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900">Send Test Email</h3>
+                        <p class="text-[11px] text-neutral-400">Verify your SMTP credentials by dispatching a test message.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">Encryption Protocol</label>
-                        <select name="mail_encryption" class="w-full px-3.5 py-2.5 border border-slate-200 bg-white focus:outline-none focus:border-[#344c3d]">
-                            <option value="tls" {{ $mail['encryption'] === 'tls' ? 'selected' : '' }}>TLS</option>
-                            <option value="ssl" {{ $mail['encryption'] === 'ssl' ? 'selected' : '' }}>SSL</option>
-                            <option value="none" {{ $mail['encryption'] === 'none' ? 'selected' : '' }}>None</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">From Email Address</label>
-                        <input type="email" name="mail_from_address" value="{{ $mail['from_address'] }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">From Sender Name</label>
-                        <input type="text" name="mail_from_name" value="{{ $mail['from_name'] }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-2">
-                    <span class="text-[11px] font-mono text-slate-400">Settings are saved in system key-value registry.</span>
-                    <button type="submit" class="action-btn action-btn-primary cursor-pointer">
-                        Save Mail Settings
-                    </button>
-                </div>
-            </form>
-
-            <!-- Test Email Bar -->
-            <div class="pt-4 border-t border-slate-200">
-                <form method="POST" action="{{ route('admin.services.mail.test') }}" class="flex flex-col sm:flex-row items-center gap-2.5">
+                <form method="POST" action="{{ route('admin.services.mail.test') }}" class="flex flex-col sm:flex-row items-center gap-3">
                     @csrf
-                    <input type="email" name="test_email" required value="{{ auth('admin')->user()?->email ?? 'admin@learnify.test' }}" placeholder="Enter recipient email..." class="text-xs flex-1 px-3.5 py-2 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    <button type="submit" class="action-btn action-btn-ghost cursor-pointer shrink-0">
-                        Send Test Email
+                    <input type="email" name="test_email" required value="{{ auth('admin')->user()?->email ?? 'admin@learnify.test' }}" placeholder="Enter recipient email..."
+                           class="h-10 w-full sm:flex-1 border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                    <button type="submit" class="action-btn action-btn-ghost h-10 px-5 shrink-0 w-full sm:w-auto">
+                        Dispatch Test Email
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- File Storage Configuration Card -->
-        <div class="bg-white border border-slate-200 p-6 shadow-xs space-y-5">
-            <div class="flex items-center gap-2.5 pb-3 border-b border-slate-200">
-                <div class="w-8 h-8 bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <!-- 2. File & Cloud Storage -->
+        <div class="space-y-6">
+            <div class="border border-neutral-200 bg-white p-6 shadow-xs">
+                <div class="flex items-center justify-between border-b border-neutral-100 pb-4 mb-5">
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-9 w-9 flex-none items-center justify-center bg-neutral-900 text-white">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </span>
+                        <div>
+                            <h2 class="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900">Media & File Storage</h2>
+                            <p class="text-[11px] text-neutral-400">Configure file storage disk for course videos, PDFs, and certificates.</p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-sm font-bold text-slate-900">Media & File Storage</h3>
-                    <p class="text-[11px] text-slate-400">Configure disk storage driver for course videos, PDF resources, and certificates.</p>
-                </div>
+
+                <form method="POST" action="{{ route('admin.services.storage') }}" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Storage Driver *</label>
+                        <select name="storage_driver" id="storage-driver-select"
+                                class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            <option value="public" @selected(($storage['driver'] ?? 'public') === 'public')>Local Disk Storage (public/storage)</option>
+                            <option value="s3" @selected(($storage['driver'] ?? '') === 's3')>Amazon S3 / DigitalOcean Spaces / MinIO</option>
+                        </select>
+                    </div>
+
+                    <div id="s3-config-fields" class="{{ ($storage['driver'] ?? 'public') === 's3' ? '' : 'hidden' }} space-y-4 border border-neutral-200 bg-neutral-50/60 p-4">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">S3 / S3-Compatible Bucket Settings</span>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Bucket Name</label>
+                                <input type="text" name="storage_s3_bucket" value="{{ $storage['s3_bucket'] }}" placeholder="e.g. mono-lms-assets"
+                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Region</label>
+                                <input type="text" name="storage_s3_region" value="{{ $storage['s3_region'] }}" placeholder="e.g. us-east-1"
+                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Access Key ID</label>
+                                <input type="text" name="storage_s3_key" value="{{ $storage['s3_key'] }}" placeholder="AKIA..."
+                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Secret Access Key</label>
+                                <input type="password" name="storage_s3_secret" value="{{ $storage['s3_secret'] }}" placeholder="••••••••••••••••••••••••"
+                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Paths Overview -->
+                    <div class="border border-neutral-200 bg-white p-4">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-2.5">Asset Directory Structure</span>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-mono text-[11px] text-neutral-600">/courses</span>
+                                <span class="text-[10px] text-neutral-400">— Lessons & Attachments</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-mono text-[11px] text-neutral-600">/avatars</span>
+                                <span class="text-[10px] text-neutral-400">— Profile Photos</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-mono text-[11px] text-neutral-600">/certificates</span>
+                                <span class="text-[10px] text-neutral-400">— Generated Diplomas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                <span class="font-mono text-[11px] text-neutral-600">/media</span>
+                                <span class="text-[10px] text-neutral-400">— Media Library Assets</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end pt-3 border-t border-neutral-100">
+                        <button type="submit" class="action-btn h-10 px-6">
+                            Save Storage Settings
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <form method="POST" action="{{ route('admin.services.storage') }}" class="space-y-4 text-xs">
-                @csrf
-                <div>
-                    <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">Storage Driver</label>
-                    <select name="storage_driver" class="w-full px-3.5 py-2.5 border border-slate-200 bg-white focus:outline-none focus:border-[#344c3d]">
-                        <option value="public" {{ $storage['driver'] === 'public' ? 'selected' : '' }}>Local Disk Storage (public/storage)</option>
-                        <option value="s3" {{ $storage['driver'] === 's3' ? 'selected' : '' }}>Amazon S3 / DigitalOcean Spaces Cloud</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">S3 / Spaces Bucket Name</label>
-                        <input type="text" name="storage_s3_bucket" value="{{ $storage['s3_bucket'] }}" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                    <div>
-                        <label class="block font-bold uppercase tracking-wider text-slate-700 mb-1">S3 Region</label>
-                        <input type="text" name="storage_s3_region" value="{{ $storage['s3_region'] }}" class="w-full font-mono text-[11px] px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344c3d]">
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-end pt-2">
-                    <button type="submit" class="action-btn action-btn-primary cursor-pointer">
-                        Save Storage Settings
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
+</div>
+
+<script>
+(function () {
+    var passInput = document.getElementById('input-mail-pass');
+    var toggleBtn = document.getElementById('btn-toggle-mail-pass');
+    if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', function () {
+            var isPass = passInput.type === 'password';
+            passInput.type = isPass ? 'text' : 'password';
+        });
+    }
+
+    var driverSelect = document.getElementById('storage-driver-select');
+    var s3Fields = document.getElementById('s3-config-fields');
+    if (driverSelect && s3Fields) {
+        driverSelect.addEventListener('change', function () {
+            if (driverSelect.value === 's3') {
+                s3Fields.classList.remove('hidden');
+            } else {
+                s3Fields.classList.add('hidden');
+            }
+        });
+    }
+})();
+</script>
 
 </x-layouts.dashboard>
