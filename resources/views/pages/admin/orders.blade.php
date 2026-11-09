@@ -136,22 +136,9 @@
                                     {{ $order->created_at?->format('M d, Y') }}
                                 </td>
                                 <td class="py-3.5 px-4 text-right">
-                                    <div class="flex items-center justify-end gap-1.5">
-                                        <a href="{{ route('admin.orders.show', $order) }}" title="View receipt" class="action-btn action-btn-ghost h-7 px-2 text-[10px]">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </a>
-
-                                        <!-- Quick Status Dropdown -->
-                                        <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="inline">
-                                            @csrf
-                                            @method('PATCH')
-                                            <select name="payment_status" onchange="this.form.submit()" class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-2 py-1 bg-white cursor-pointer hover:border-slate-300">
-                                                <option value="paid" {{ $order->payment_status === 'paid' ? 'selected' : '' }}>Paid</option>
-                                                <option value="pending" {{ $order->payment_status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="refunded" {{ $order->payment_status === 'refunded' ? 'selected' : '' }}>Refund</option>
-                                            </select>
-                                        </form>
-                                    </div>
+                                    <button type="button" class="action-btn" data-menu-toggle="order-menu-{{ $order->id }}" aria-haspopup="true">
+                                        Actions ▾
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -172,5 +159,37 @@
             @endif
         </div>
     </div>
+
+    {{-- Row action menus (fixed position via JS, kept outside table overflow) --}}
+    @foreach ($orders as $order)
+        <div class="row-action-menu" id="order-menu-{{ $order->id }}" role="menu">
+            <a href="{{ route('admin.orders.show', $order) }}" class="menu-item">View Receipt</a>
+            <div class="menu-sep"></div>
+            @if ($order->payment_status !== 'paid')
+                <form method="POST" action="{{ route('admin.orders.status', $order) }}">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="payment_status" value="paid">
+                    <button type="submit" class="menu-item">Mark Paid</button>
+                </form>
+            @endif
+            @if ($order->payment_status !== 'pending')
+                <form method="POST" action="{{ route('admin.orders.status', $order) }}">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="payment_status" value="pending">
+                    <button type="submit" class="menu-item">Mark Pending</button>
+                </form>
+            @endif
+            @if ($order->payment_status !== 'refunded')
+                <form method="POST" action="{{ route('admin.orders.status', $order) }}" onsubmit="return confirm('Refund this order?')">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="payment_status" value="refunded">
+                    <button type="submit" class="menu-item danger">Mark Refunded</button>
+                </form>
+            @endif
+        </div>
+    @endforeach
 
 </x-layouts.dashboard>

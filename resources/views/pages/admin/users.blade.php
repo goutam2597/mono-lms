@@ -141,7 +141,7 @@
                                 <td class="py-3.5 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1.5">
                                         <button type="button"
-                                                class="edit-user-btn action-btn action-btn-ghost text-xs cursor-pointer"
+                                                class="edit-user-btn action-btn action-btn-ghost h-7 px-3 text-[10px] cursor-pointer"
                                                 data-user="{{ json_encode($user) }}">
                                             Edit
                                         </button>
@@ -149,7 +149,7 @@
                                             <form method="POST" action="{{ route('admin.users.destroy', ['type' => $user['type'], 'id' => $user['raw_id']]) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')" class="inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="action-btn action-btn-danger text-xs cursor-pointer">
+                                                <button type="submit" class="action-btn action-btn-danger h-7 px-3 text-[10px] cursor-pointer">
                                                     Delete
                                                 </button>
                                             </form>

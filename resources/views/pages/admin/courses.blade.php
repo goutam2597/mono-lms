@@ -30,7 +30,7 @@
                         <th class="px-6 py-3 font-semibold">{{ __('admin.courses.price') }}</th>
                         <th class="px-6 py-3 font-semibold">{{ __('admin.courses.enrolled') }}</th>
                         <th class="px-6 py-3 font-semibold">{{ __('app.common.status') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('app.common.actions') }}</th>
+                        <th class="px-6 py-3 font-semibold text-right">{{ __('app.common.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -51,31 +51,10 @@
                                     {{ $course->is_published ? __('app.common.published') : __('app.common.draft') }}
                                 </span>
                             </td>
-                            <td class="px-6 py-3.5">
-                                <div class="flex items-center gap-2">
-                                    <a href="{{ route('courses.show', $course->slug) }}" target="_blank" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('student.dashboard.view') }}</a>
-                                    <a href="{{ route('admin.courses.edit', $course) }}" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('app.common.edit') }}</a>
-                                    @canany(['courses.publish'])
-                                        @if ($course->is_published)
-                                            <form method="POST" action="{{ route('admin.courses.unpublish', $course) }}">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('admin.courses.unpublish') }}</button>
-                                            </form>
-                                        @else
-                                            <form method="POST" action="{{ route('admin.courses.publish', $course) }}">
-                                                @csrf
-                                                @method('PATCH')
-                                                <button type="submit" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('admin.courses.approve') }}</button>
-                                            </form>
-                                        @endif
-                                    @endcanany
-                                    <form method="POST" action="{{ route('admin.courses.destroy', $course) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn action-btn-danger h-7 px-2.5 text-[10px]">{{ __('app.common.delete') }}</button>
-                                    </form>
-                                </div>
+                            <td class="px-6 py-3.5 text-right">
+                                <button type="button" class="action-btn" data-menu-toggle="course-menu-{{ $course->id }}" aria-haspopup="true">
+                                    {{ __('app.common.actions') }} ▾
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -87,5 +66,34 @@
 
         <div class="px-6 py-4 border-t border-gray-100">{{ $courses->appends(request()->query())->links() }}</div>
     </div>
+
+    {{-- Row action menus (fixed position via JS, kept outside table overflow) --}}
+    @foreach ($courses as $course)
+        <div class="row-action-menu" id="course-menu-{{ $course->id }}" role="menu">
+            <a href="{{ route('courses.show', $course->slug) }}" target="_blank" rel="noopener" class="menu-item">{{ __('student.dashboard.view') }}</a>
+            <a href="{{ route('admin.courses.edit', $course) }}" class="menu-item">{{ __('app.common.edit') }}</a>
+            @canany(['courses.publish'])
+                @if ($course->is_published)
+                    <form method="POST" action="{{ route('admin.courses.unpublish', $course) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="menu-item">{{ __('admin.courses.unpublish') }}</button>
+                    </form>
+                @else
+                    <form method="POST" action="{{ route('admin.courses.publish', $course) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="menu-item">{{ __('admin.courses.approve') }}</button>
+                    </form>
+                @endif
+            @endcanany
+            <div class="menu-sep"></div>
+            <form method="POST" action="{{ route('admin.courses.destroy', $course) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="menu-item danger">{{ __('app.common.delete') }}</button>
+            </form>
+        </div>
+    @endforeach
 
 </x-layouts.dashboard>

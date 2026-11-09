@@ -35,13 +35,13 @@
                             <p class="text-[11px] text-slate-400 font-mono mt-2">{{ __('admin.roles.admins_with_role') }}: {{ $role->admins_count }}</p>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <a href="{{ route('admin.roles.edit', $role) }}" class="action-btn action-btn-ghost text-xs">
+                            <a href="{{ route('admin.roles.edit', $role) }}" class="action-btn action-btn-ghost h-7 px-3 text-[10px]">
                                 {{ __('app.common.edit') }}
                             </a>
                             <form method="POST" action="{{ route('admin.roles.destroy', $role) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="action-btn action-btn-danger text-xs cursor-pointer">
+                                <button type="submit" class="action-btn action-btn-danger h-7 px-3 text-[10px] cursor-pointer">
                                     {{ __('app.common.delete') }}
                                 </button>
                             </form>

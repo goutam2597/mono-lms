@@ -55,27 +55,9 @@
                                 </span>
                             </td>
                             <td class="px-6 py-3.5 text-right">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    @if ($review->status !== 'approved')
-                                        <form method="POST" action="{{ route('admin.reviews.approve', $review) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('admin.reviews.approve') }}</button>
-                                        </form>
-                                    @endif
-                                    @if ($review->status !== 'rejected')
-                                        <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('admin.reviews.reject') }}</button>
-                                        </form>
-                                    @endif
-                                    <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn action-btn-danger h-7 px-2.5 text-[10px]">{{ __('app.common.delete') }}</button>
-                                    </form>
-                                </div>
+                                <button type="button" class="action-btn" data-menu-toggle="review-menu-{{ $review->id }}" aria-haspopup="true">
+                                    {{ __('app.common.actions') }} ▾
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -87,5 +69,31 @@
 
         <div class="px-6 py-4 border-t border-slate-100">{{ $reviews->appends(request()->query())->links() }}</div>
     </div>
+
+    {{-- Row action menus (fixed position via JS, kept outside table overflow) --}}
+    @foreach ($reviews as $review)
+        <div class="row-action-menu" id="review-menu-{{ $review->id }}" role="menu">
+            @if ($review->status !== 'approved')
+                <form method="POST" action="{{ route('admin.reviews.approve', $review) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="menu-item">{{ __('admin.reviews.approve') }}</button>
+                </form>
+            @endif
+            @if ($review->status !== 'rejected')
+                <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="menu-item">{{ __('admin.reviews.reject') }}</button>
+                </form>
+            @endif
+            <div class="menu-sep"></div>
+            <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="menu-item danger">{{ __('app.common.delete') }}</button>
+            </form>
+        </div>
+    @endforeach
 
 </x-layouts.dashboard>

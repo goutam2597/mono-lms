@@ -1,12 +1,12 @@
 <x-layouts.dashboard :title="__('instructor.courses.title').' - Mono LMS'" active="courses" userType="instructor">
 
-    <div class="bg-white border border-[#e7e7e7] rounded-xl p-6 shadow-xs space-y-6">
+    <div class="bg-white border border-[#e7e7e7] rounded-none p-6 shadow-xs space-y-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-bold text-[#191919]">{{ __('instructor.courses.title') }}</h2>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.instructors.count', ['count' => $courses->total()]) }}</p>
             </div>
-            <a href="{{ route('instructor.courses.create') }}" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors">+ {{ __('instructor.courses.create') }}</a>
+            <a href="{{ route('instructor.courses.create') }}" class="action-btn action-btn-primary h-9 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">+ {{ __('instructor.courses.create') }}</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -18,7 +18,7 @@
                         <th class="px-4 py-3 font-semibold">{{ __('instructor.courses.lessons') }}</th>
                         <th class="px-4 py-3 font-semibold">{{ __('admin.courses.price') }}</th>
                         <th class="px-4 py-3 font-semibold">{{ __('app.common.status') }}</th>
-                        <th class="px-4 py-3 font-semibold">{{ __('app.common.actions') }}</th>
+                        <th class="px-4 py-3 font-semibold text-right">{{ __('app.common.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -29,20 +29,14 @@
                             <td class="px-4 py-3.5 text-[#5d5d5d]">{{ $course->lessons_count }}</td>
                             <td class="px-4 py-3.5 font-semibold text-[#392c7d]">{{ __('app.common.currency') }}{{ number_format($course->price, 2) }}</td>
                             <td class="px-4 py-3.5">
-                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full {{ $course->is_published ? 'bg-[#03c95a]/10 text-[#0d7a38]' : 'bg-gray-100 text-gray-500' }}">
+                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-none {{ $course->is_published ? 'bg-[#03c95a]/10 text-[#0d7a38]' : 'bg-gray-100 text-gray-500' }}">
                                     {{ $course->is_published ? __('app.common.published') : __('app.common.draft') }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3.5">
-                                <div class="flex items-center gap-2">
-                                    <a href="{{ route('instructor.courses.edit', $course) }}" class="text-xs font-semibold text-[#392c7d] hover:underline">{{ __('app.common.edit') }}</a>
-                                    <a href="{{ route('courses.show', $course->slug) }}" target="_blank" class="text-xs font-semibold text-[#5d5d5d] hover:underline">{{ __('student.dashboard.view') }}</a>
-                                    <form method="POST" action="{{ route('instructor.courses.destroy', $course) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-xs font-semibold text-red-500 hover:underline">{{ __('app.common.delete') }}</button>
-                                    </form>
-                                </div>
+                            <td class="px-4 py-3.5 text-right">
+                                <button type="button" class="action-btn" data-menu-toggle="inst-course-menu-{{ $course->id }}" aria-haspopup="true">
+                                    {{ __('app.common.actions') }} ▾
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -54,5 +48,19 @@
 
         <div class="pt-2">{{ $courses->links() }}</div>
     </div>
+
+    {{-- Row action menus (fixed position via JS, kept outside table overflow) --}}
+    @foreach ($courses as $course)
+        <div class="row-action-menu" id="inst-course-menu-{{ $course->id }}" role="menu">
+            <a href="{{ route('courses.show', $course->slug) }}" target="_blank" rel="noopener" class="menu-item">{{ __('student.dashboard.view') }}</a>
+            <a href="{{ route('instructor.courses.edit', $course) }}" class="menu-item">{{ __('app.common.edit') }}</a>
+            <div class="menu-sep"></div>
+            <form method="POST" action="{{ route('instructor.courses.destroy', $course) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="menu-item danger">{{ __('app.common.delete') }}</button>
+            </form>
+        </div>
+    @endforeach
 
 </x-layouts.dashboard>

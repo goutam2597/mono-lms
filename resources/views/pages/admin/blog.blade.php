@@ -57,23 +57,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-3.5 text-right">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    @if ($post->status === 'published')
-                                        <a href="{{ route('blog.show', $post->slug) }}" target="_blank" class="action-btn action-btn-ghost text-xs">
-                                            {{ __('student.dashboard.view') }}
-                                        </a>
-                                    @endif
-                                    <a href="{{ route('admin.blog.edit', $post) }}" class="action-btn action-btn-ghost text-xs">
-                                        {{ __('app.common.edit') }}
-                                    </a>
-                                    <form method="POST" action="{{ route('admin.blog.destroy', $post) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn action-btn-danger text-xs cursor-pointer">
-                                            {{ __('app.common.delete') }}
-                                        </button>
-                                    </form>
-                                </div>
+                                <button type="button" class="action-btn" data-menu-toggle="post-menu-{{ $post->id }}" aria-haspopup="true">
+                                    {{ __('app.common.actions') }} ▾
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -85,5 +71,21 @@
 
         <div class="px-6 py-4 border-t border-slate-200">{{ $posts->appends(request()->query())->links() }}</div>
     </div>
+
+    {{-- Row action menus (fixed position via JS, kept outside table overflow) --}}
+    @foreach ($posts as $post)
+        <div class="row-action-menu" id="post-menu-{{ $post->id }}" role="menu">
+            @if ($post->status === 'published')
+                <a href="{{ route('blog.show', $post->slug) }}" target="_blank" rel="noopener" class="menu-item">{{ __('student.dashboard.view') }}</a>
+            @endif
+            <a href="{{ route('admin.blog.edit', $post) }}" class="menu-item">{{ __('app.common.edit') }}</a>
+            <div class="menu-sep"></div>
+            <form method="POST" action="{{ route('admin.blog.destroy', $post) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="menu-item danger">{{ __('app.common.delete') }}</button>
+            </form>
+        </div>
+    @endforeach
 
 </x-layouts.dashboard>

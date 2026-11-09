@@ -34,6 +34,29 @@
             .custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
                 background: rgba(255, 255, 255, 0.24);
             }
+
+            /* ---------------- Action buttons (mono_market pattern) ---------------- */
+            .action-btn { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 32px; padding: 0 14px; font-size: 10px; font-weight: 500; line-height: 1.2; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; cursor: pointer; font-family: inherit; text-decoration: none; box-sizing: border-box; transition: color .15s, background .15s, border-color .15s; }
+            .action-btn:hover { color: #fff; background: #404040; border-color: #404040; }
+            .action-btn-primary { color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; }
+            .action-btn-primary:hover { color: #fff; background: #404040; border-color: #404040; }
+            .action-btn-ghost { color: #0a0a0a; background: #fff; border: 1px solid #e5e5e5; }
+            .action-btn-ghost:hover { background: #f5f5f5; border-color: #d4d4d4; color: #0a0a0a; }
+            .action-btn-danger { color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; }
+            .action-btn-danger:hover { color: #fff; background: #dc2626; border-color: #dc2626; }
+            .action-btn-success { color: #fff; background: #059669; border: 1px solid #059669; }
+            .action-btn-success:hover { color: #fff; background: #047857; border-color: #047857; }
+            .action-btn.sm, .action-btn.h-7 { height: 28px; padding: 0 10px; font-size: 9px; }
+
+            /* ---------------- Row actions dropdown (mono_market pattern) ---------------- */
+            .row-action-menu { position: fixed; z-index: 130; display: none; padding: 4px; background: #fff; border: 1px solid #e5e5e5; box-shadow: 0 12px 32px rgba(10,10,10,.14); min-width: 130px; }
+            .row-action-menu.open { display: block; }
+            .row-action-menu form { margin: 0; padding: 0; display: block; }
+            .row-action-menu .menu-item { display: block; width: 100%; padding: 6px 14px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; text-align: start; white-space: nowrap; color: #525252; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-decoration: none; transition: background .12s, color .12s; }
+            .row-action-menu .menu-item:hover { background: #f5f5f5; color: #0a0a0a; }
+            .row-action-menu .menu-item.danger { color: #b91c1c; }
+            .row-action-menu .menu-item.danger:hover { background: #fef2f2; color: #991b1b; }
+            .row-action-menu .menu-sep { height: 1px; margin: 4px 0; background: #f0f0f0; }
         </style>
     </head>
     <body class="font-sans antialiased text-[#0f172a] min-h-screen bg-[#f8fafc] flex">
@@ -235,6 +258,45 @@
                 toggle.addEventListener('click', open);
                 if (closeBtn) closeBtn.addEventListener('click', close);
                 if (backdrop) backdrop.addEventListener('click', close);
+            })();
+        </script>
+
+        <!-- Global row action dropdown positioning script (mono_market pattern) -->
+        <script>
+            (function () {
+                var openMenu = null;
+                function closeMenu() {
+                    if (openMenu) { openMenu.classList.remove('open'); openMenu = null; }
+                }
+                document.addEventListener('click', function (e) {
+                    var toggle = e.target.closest('[data-menu-toggle]');
+                    if (toggle) {
+                        e.stopPropagation();
+                        var targetId = toggle.getAttribute('data-menu-toggle');
+                        var menu = document.getElementById(targetId);
+                        if (! menu) return;
+                        if (openMenu === menu) { closeMenu(); return; }
+                        closeMenu();
+                        menu.style.minWidth = Math.max(toggle.offsetWidth, 130) + 'px';
+                        menu.classList.add('open');
+                        var r = toggle.getBoundingClientRect();
+                        var left = r.right - menu.offsetWidth;
+                        var top = r.bottom + 6;
+                        if (left < 8) left = 8;
+                        if (top + menu.offsetHeight > window.innerHeight - 8) {
+                            top = r.top - menu.offsetHeight - 6;
+                        }
+                        menu.style.left = left + 'px';
+                        menu.style.top = top + 'px';
+                        openMenu = menu;
+                        return;
+                    }
+                    if (openMenu && ! openMenu.contains(e.target)) {
+                        closeMenu();
+                    }
+                });
+                window.addEventListener('scroll', closeMenu, true);
+                window.addEventListener('resize', closeMenu);
             })();
         </script>
     </body>
