@@ -82,6 +82,10 @@ html.dark .bg-white {
     color: #ededed;
 }
 
+html.dark [class*="bg-neutral-50"],
+html.dark [class*="bg-slate-50"],
+html.dark [class*="bg-gray-50"],
+html.dark [class*="bg-zinc-50"],
 html.dark .bg-slate-50,
 html.dark .bg-gray-50,
 html.dark .bg-neutral-50,
@@ -89,10 +93,24 @@ html.dark .bg-zinc-50,
 html.dark .bg-\[\#f8fafc\],
 html.dark .bg-\[\#f8fafb\],
 html.dark .bg-\[\#f8faf8\],
-html.dark .hover\:bg-\[\#f8fafb\]:hover {
+html.dark .hover\:bg-\[\#f8fafb\]:hover,
+html.dark #theme-live-preview-box,
+html.dark .theme-preset-btn {
     background-color: #121212 !important;
     border-color: #1f1f1f !important;
     color: #ededed;
+}
+
+html.dark .theme-preset-btn:hover {
+    border-color: #383838 !important;
+}
+
+html.dark #serp-title-preview {
+    color: #60a5fa !important;
+}
+
+html.dark #serp-desc-preview {
+    color: #a3a3a3 !important;
 }
 
 html.dark .bg-slate-100,

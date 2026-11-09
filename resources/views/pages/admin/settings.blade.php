@@ -122,7 +122,7 @@
                                 <p class="text-[11px] text-neutral-400">Manage brand color tokens for frontend and dashboard with instant live preview.</p>
                             </div>
                         </div>
-                        <button type="button" id="btn-reset-default-theme" class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 hover:text-neutral-900 border border-neutral-200 px-2.5 py-1 transition-colors cursor-pointer">
+                        <button type="button" id="btn-reset-default-theme" class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white border border-neutral-200 dark:border-[#262626] px-2.5 py-1 transition-colors cursor-pointer">
                             Reset to Default
                         </button>
                     </div>
@@ -132,80 +132,80 @@
                         <label class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">1-Click Curated Presets</label>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="theme-presets-container">
                             <button type="button" data-preset="sage" data-primary="#344c3d" data-hover="#25372c" data-accent="#738a6e" data-dark="#08131e" data-bg="#f4f6f9"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Mono Sage</span>
-                                    <span class="text-[10px] text-neutral-400">Default Brand</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Mono Sage</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Default Brand</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#344c3d"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#738a6e"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f4f6f9"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#344c3d"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#738a6e"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#f4f6f9"></span>
                                 </div>
                             </button>
 
                             <button type="button" data-preset="emerald" data-primary="#065f46" data-hover="#044e39" data-accent="#10b981" data-dark="#064e3b" data-bg="#f0fdf4"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Emerald Forest</span>
-                                    <span class="text-[10px] text-neutral-400">Deep Pine</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Emerald Forest</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Deep Pine</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#065f46"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#10b981"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f0fdf4"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#065f46"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#10b981"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#f0fdf4"></span>
                                 </div>
                             </button>
 
                             <button type="button" data-preset="navy" data-primary="#1e3a8a" data-hover="#172554" data-accent="#3b82f6" data-dark="#0f172a" data-bg="#f8fafc"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Classic Navy</span>
-                                    <span class="text-[10px] text-neutral-400">Corporate Blue</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Classic Navy</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Corporate Blue</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#1e3a8a"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#3b82f6"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f8fafc"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#1e3a8a"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#3b82f6"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#f8fafc"></span>
                                 </div>
                             </button>
 
                             <button type="button" data-preset="slate" data-primary="#18181b" data-hover="#09090b" data-accent="#71717a" data-dark="#09090b" data-bg="#fafafa"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Obsidian Slate</span>
-                                    <span class="text-[10px] text-neutral-400">Monochrome</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Obsidian Slate</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Monochrome</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#18181b"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#71717a"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#fafafa"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#18181b"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#71717a"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#fafafa"></span>
                                 </div>
                             </button>
 
                             <button type="button" data-preset="indigo" data-primary="#4338ca" data-hover="#3730a3" data-accent="#6366f1" data-dark="#1e1b4b" data-bg="#f5f3ff"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Royal Indigo</span>
-                                    <span class="text-[10px] text-neutral-400">Modern Tech</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Royal Indigo</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Modern Tech</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#4338ca"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#6366f1"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f5f3ff"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#4338ca"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#6366f1"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#f5f3ff"></span>
                                 </div>
                             </button>
 
                             <button type="button" data-preset="amber" data-primary="#b45309" data-hover="#92400e" data-accent="#f59e0b" data-dark="#451a03" data-bg="#fffbeb"
-                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 bg-neutral-50/50 hover:border-neutral-900 transition-all text-left cursor-pointer">
+                                    class="theme-preset-btn flex items-center justify-between p-2.5 border border-neutral-200 dark:border-[#222222] bg-neutral-50/50 dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-600 transition-all text-left cursor-pointer">
                                 <div>
-                                    <span class="text-xs font-semibold text-neutral-900 block leading-tight">Warm Amber</span>
-                                    <span class="text-[10px] text-neutral-400">Sunset Ochre</span>
+                                    <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block leading-tight">Warm Amber</span>
+                                    <span class="text-[10px] text-neutral-400 dark:text-neutral-500">Sunset Ochre</span>
                                 </div>
                                 <div class="flex items-center -space-x-1 shrink-0">
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#b45309"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#f59e0b"></span>
-                                    <span class="w-3.5 h-3.5 rounded-full border border-white" style="background:#fffbeb"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#b45309"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#f59e0b"></span>
+                                    <span class="w-3.5 h-3.5 rounded-full border border-white dark:border-[#121212]" style="background:#fffbeb"></span>
                                 </div>
                             </button>
                         </div>
@@ -216,10 +216,10 @@
                         <!-- 1. Primary Brand -->
                         <div class="space-y-1.5">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Primary Brand *</label>
-                            <div class="flex items-center border border-neutral-300 bg-white">
+                            <div class="flex items-center border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#121212]">
                                 <input type="color" id="theme-primary-picker" value="{{ $settings['theme_primary'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
                                 <input type="text" name="theme_primary" id="theme-primary-input" value="{{ $settings['theme_primary'] }}" maxlength="7"
-                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 dark:text-neutral-100 bg-transparent uppercase focus:outline-none">
                             </div>
                             <p class="text-[10px] text-neutral-400">Main brand color for active items and buttons.</p>
                         </div>
@@ -227,10 +227,10 @@
                         <!-- 2. Primary Hover -->
                         <div class="space-y-1.5">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Primary Hover *</label>
-                            <div class="flex items-center border border-neutral-300 bg-white">
+                            <div class="flex items-center border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#121212]">
                                 <input type="color" id="theme-hover-picker" value="{{ $settings['theme_primary_hover'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
                                 <input type="text" name="theme_primary_hover" id="theme-hover-input" value="{{ $settings['theme_primary_hover'] }}" maxlength="7"
-                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 dark:text-neutral-100 bg-transparent uppercase focus:outline-none">
                             </div>
                             <p class="text-[10px] text-neutral-400">Interaction state on buttons & links.</p>
                         </div>
@@ -238,10 +238,10 @@
                         <!-- 3. Accent / Moss -->
                         <div class="space-y-1.5">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Accent / Highlights *</label>
-                            <div class="flex items-center border border-neutral-300 bg-white">
+                            <div class="flex items-center border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#121212]">
                                 <input type="color" id="theme-accent-picker" value="{{ $settings['theme_accent'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
                                 <input type="text" name="theme_accent" id="theme-accent-input" value="{{ $settings['theme_accent'] }}" maxlength="7"
-                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 dark:text-neutral-100 bg-transparent uppercase focus:outline-none">
                             </div>
                             <p class="text-[10px] text-neutral-400">Secondary brand accent & indicators.</p>
                         </div>
@@ -249,10 +249,10 @@
                         <!-- 4. Dark Nav / Ink -->
                         <div class="space-y-1.5">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Dark Nav / Ink *</label>
-                            <div class="flex items-center border border-neutral-300 bg-white">
+                            <div class="flex items-center border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#121212]">
                                 <input type="color" id="theme-dark-picker" value="{{ $settings['theme_dark'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
                                 <input type="text" name="theme_dark" id="theme-dark-input" value="{{ $settings['theme_dark'] }}" maxlength="7"
-                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 dark:text-neutral-100 bg-transparent uppercase focus:outline-none">
                             </div>
                             <p class="text-[10px] text-neutral-400">Dark elements, contrast text, and nav.</p>
                         </div>
@@ -260,18 +260,18 @@
                         <!-- 5. Page Background -->
                         <div class="space-y-1.5 sm:col-span-2 md:col-span-2">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Page Background *</label>
-                            <div class="flex items-center border border-neutral-300 bg-white max-w-xs">
+                            <div class="flex items-center border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#121212] max-w-xs">
                                 <input type="color" id="theme-bg-picker" value="{{ $settings['theme_bg'] }}" class="w-9 h-9 p-1 border-0 bg-transparent cursor-pointer">
                                 <input type="text" name="theme_bg" id="theme-bg-input" value="{{ $settings['theme_bg'] }}" maxlength="7"
-                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 uppercase focus:outline-none">
+                                       class="h-9 w-full border-0 px-2 text-xs font-mono text-neutral-900 dark:text-neutral-100 bg-transparent uppercase focus:outline-none">
                             </div>
                             <p class="text-[10px] text-neutral-400">Dashboard & light canvas background color.</p>
                         </div>
                     </div>
 
                     <!-- Live Dynamic Preview -->
-                    <div class="mt-5 border border-neutral-200 p-4 bg-neutral-50/70" id="theme-live-preview-box">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-3">Live Component Preview</span>
+                    <div class="mt-5 border border-neutral-200 dark:border-[#1f1f1f] p-4 bg-neutral-50/70 dark:bg-[#121212]" id="theme-live-preview-box">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block mb-3">Live Component Preview</span>
                         <div class="flex flex-wrap items-center gap-3">
                             <button type="button" id="preview-primary-btn" class="h-8 px-4 text-[10px] font-medium uppercase tracking-[0.12em] text-white transition-colors"
                                     style="background: {{ $settings['theme_primary'] }}; border: 1px solid {{ $settings['theme_primary'] }};">
@@ -288,7 +288,7 @@
                             <span class="text-xs font-semibold" id="preview-link" style="color: {{ $settings['theme_primary'] }}">
                                 Dynamic Link &rarr;
                             </span>
-                            <span class="text-[11px] font-mono px-2 py-1 rounded-[3px]" id="preview-bg-sample" style="background: {{ $settings['theme_bg'] }}; color: {{ $settings['theme_dark'] }}; border: 1px solid #e5e5e5;">
+                            <span class="text-[11px] font-mono px-2 py-1 rounded-[3px] border border-neutral-200 dark:border-[#262626]" id="preview-bg-sample" style="background: {{ $settings['theme_bg'] }}; color: {{ $settings['theme_dark'] }};">
                                 Canvas Sample
                             </span>
                         </div>
@@ -322,9 +322,9 @@
                         </div>
                     </div>
 
-                    <div class="mt-4 flex items-center gap-3 border border-neutral-100 bg-neutral-50 p-3.5">
-                        <span class="text-[11px] font-medium text-neutral-500">Sample Price Rendering:</span>
-                        <span id="preview-price-sample" class="inline-flex items-center px-2.5 py-1 text-xs font-bold text-neutral-900 bg-white border border-neutral-200">
+                    <div class="mt-4 flex items-center gap-3 border border-neutral-100 dark:border-[#1f1f1f] bg-neutral-50 dark:bg-[#121212] p-3.5">
+                        <span class="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">Sample Price Rendering:</span>
+                        <span id="preview-price-sample" class="inline-flex items-center px-2.5 py-1 text-xs font-bold text-neutral-900 dark:text-neutral-100 bg-white dark:bg-[#181818] border border-neutral-200 dark:border-[#262626]">
                             {{ $settings['currency_symbol'] }} 99.00 {{ $settings['currency_code'] }}
                         </span>
                     </div>
@@ -383,61 +383,61 @@
 
                     <div class="space-y-3">
                         <!-- Membership Subscriptions -->
-                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
+                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="membership_enabled" value="1" @checked($settings['membership_enabled'])
                                        class="control mt-0.5">
                                 <div>
-                                    <span class="font-bold text-xs text-neutral-900 block">Membership Subscriptions</span>
+                                    <span class="font-bold text-xs text-neutral-900 dark:text-white block">Membership Subscriptions</span>
                                     <span class="text-[11px] text-neutral-400">Recurring unlimited subscription access plans</span>
                                 </div>
                             </div>
-                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['membership_enabled'] ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-neutral-100 text-neutral-500' }}">
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['membership_enabled'] ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40' : 'bg-neutral-100 dark:bg-[#1a1a1a] text-neutral-500 dark:text-neutral-400 border border-transparent dark:border-[#262626]' }}">
                                 {{ $settings['membership_enabled'] ? 'Active' : 'Disabled' }}
                             </span>
                         </label>
 
                         <!-- Blog & Articles -->
-                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
+                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="blog_enabled" value="1" @checked($settings['blog_enabled'])
                                        class="control mt-0.5">
                                 <div>
-                                    <span class="font-bold text-xs text-neutral-900 block">Blog & Knowledge Base</span>
+                                    <span class="font-bold text-xs text-neutral-900 dark:text-white block">Blog & Knowledge Base</span>
                                     <span class="text-[11px] text-neutral-400">Public articles, news updates, and tutorials</span>
                                 </div>
                             </div>
-                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['blog_enabled'] ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-neutral-100 text-neutral-500' }}">
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['blog_enabled'] ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40' : 'bg-neutral-100 dark:bg-[#1a1a1a] text-neutral-500 dark:text-neutral-400 border border-transparent dark:border-[#262626]' }}">
                                 {{ $settings['blog_enabled'] ? 'Active' : 'Disabled' }}
                             </span>
                         </label>
 
                         <!-- Certificates -->
-                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
+                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="certificates_enabled" value="1" @checked($settings['certificates_enabled'])
                                        class="control mt-0.5">
                                 <div>
-                                    <span class="font-bold text-xs text-neutral-900 block">Accredited Certificates</span>
+                                    <span class="font-bold text-xs text-neutral-900 dark:text-white block">Accredited Certificates</span>
                                     <span class="text-[11px] text-neutral-400">Generate completion certificates & verification</span>
                                 </div>
                             </div>
-                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['certificates_enabled'] ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-neutral-100 text-neutral-500' }}">
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['certificates_enabled'] ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40' : 'bg-neutral-100 dark:bg-[#1a1a1a] text-neutral-500 dark:text-neutral-400 border border-transparent dark:border-[#262626]' }}">
                                 {{ $settings['certificates_enabled'] ? 'Active' : 'Disabled' }}
                             </span>
                         </label>
 
                         <!-- Forums -->
-                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
+                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="forums_enabled" value="1" @checked($settings['forums_enabled'])
                                        class="control mt-0.5">
                                 <div>
-                                    <span class="font-bold text-xs text-neutral-900 block">Community Forums</span>
+                                    <span class="font-bold text-xs text-neutral-900 dark:text-white block">Community Forums</span>
                                     <span class="text-[11px] text-neutral-400">Student & instructor Q&A discussion channels</span>
                                 </div>
                             </div>
-                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['forums_enabled'] ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-neutral-100 text-neutral-500' }}">
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ $settings['forums_enabled'] ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40' : 'bg-neutral-100 dark:bg-[#1a1a1a] text-neutral-500 dark:text-neutral-400 border border-transparent dark:border-[#262626]' }}">
                                 {{ $settings['forums_enabled'] ? 'Active' : 'Disabled' }}
                             </span>
                         </label>
@@ -476,14 +476,14 @@
                         </div>
 
                         <!-- Live SERP Preview -->
-                        <div class="border border-neutral-200 bg-neutral-50/70 p-4">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-2">Live Search Snippet Preview</span>
+                        <div class="border border-neutral-200 dark:border-[#1f1f1f] bg-neutral-50/70 dark:bg-[#121212] p-4">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block mb-2">Live Search Snippet Preview</span>
                             <div class="space-y-1">
-                                <p class="text-xs text-neutral-400 truncate">{{ url('/') }}</p>
-                                <h4 id="serp-title-preview" class="text-sm font-medium text-blue-700 hover:underline cursor-pointer truncate">
+                                <p class="text-xs text-neutral-400 dark:text-neutral-500 truncate">{{ url('/') }}</p>
+                                <h4 id="serp-title-preview" class="text-sm font-medium text-blue-700 dark:text-blue-400 hover:underline cursor-pointer truncate">
                                     {{ $settings['seo_meta_title'] ?: $settings['site_name'] }}
                                 </h4>
-                                <p id="serp-desc-preview" class="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
+                                <p id="serp-desc-preview" class="text-xs text-neutral-600 dark:text-neutral-300 line-clamp-2 leading-relaxed">
                                     {{ $settings['seo_meta_description'] ?: 'High performance enterprise LMS platform.' }}
                                 </p>
                             </div>
@@ -647,8 +647,8 @@
             if (bIn && bPick) { bIn.value = bg; bPick.value = bg; }
 
             // Highlight selected preset visually
-            presetBtns.forEach(function (b) { b.classList.remove('border-neutral-900', 'bg-white', 'shadow-xs'); });
-            btn.classList.add('border-neutral-900', 'bg-white', 'shadow-xs');
+            presetBtns.forEach(function (b) { b.classList.remove('border-neutral-900', 'dark:border-white', 'bg-white', 'dark:bg-[#181818]', 'shadow-xs'); });
+            btn.classList.add('border-neutral-900', 'dark:border-white', 'bg-white', 'dark:bg-[#181818]', 'shadow-xs');
 
             applyThemePreview();
         });
