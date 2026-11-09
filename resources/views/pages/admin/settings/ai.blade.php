@@ -116,7 +116,7 @@
                 @method('PUT')
                 <div>
                     <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">{{ __('admin.settings.ai_model') }}</label>
-                    <select name="selection" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                    <select name="selection" data-mselect class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                         <option value="">{{ __('admin.settings.ai_none') }}</option>
                         @foreach ($providers as $provider)
                             @foreach ($provider->availableModels() as $m)
@@ -160,7 +160,7 @@
                 @method('PUT')
                 <div>
                     <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">{{ __('admin.settings.ai_model') }}</label>
-                    <select name="selection" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                    <select name="selection" data-mselect class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                         <option value="">{{ __('admin.settings.ai_none') }}</option>
                         @foreach ($providers as $provider)
                             @foreach ($provider->availableModels() as $m)
@@ -204,7 +204,7 @@
                 @method('PUT')
                 <div>
                     <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">{{ __('admin.settings.ai_model') }}</label>
-                    <select name="selection" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                    <select name="selection" data-mselect class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                         <option value="">{{ __('admin.settings.ai_none') }}</option>
                         @foreach ($providers->where('type', 'openai') as $provider)
                             @foreach ($provider->availableModels() as $m)
@@ -248,7 +248,7 @@
                 </div>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <select id="ai-pg-model" class="h-10 max-w-[320px] cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                <select id="ai-pg-model" data-mselect class="h-10 max-w-[320px] cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                     @forelse ($providers as $provider)
                         @if ($provider->availableModels())
                             <optgroup label="{{ $provider->name }}@unless($provider->is_active) — (disabled)@endunless">
@@ -331,7 +331,7 @@
                             </div>
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">{{ __('admin.settings.ai_type') }}</label>
-                                <select name="type" data-ai-type class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                                <select name="type" data-ai-type data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                                     <option value="openai" @selected($provider->type === 'openai')>OpenAI / Compatible</option>
                                     <option value="anthropic" @selected($provider->type === 'anthropic')>Anthropic</option>
                                 </select>
@@ -369,7 +369,7 @@
                                             <div class="ai-ms-items" id="ai-models-{{ $provider->id }}">
                                                 @forelse ($fetched as $m)
                                                     <label class="ai-ms-item">
-                                                        <input type="checkbox" name="selected_models[]" value="{{ $m }}" @checked(in_array($m, $selected, true))>
+                                                        <input type="checkbox" name="selected_models[]" value="{{ $m }}" @checked(in_array($m, $selected, true)) class="control">
                                                         <span>{{ $m }}</span>
                                                     </label>
                                                 @empty
@@ -392,7 +392,7 @@
 
                             <div class="lg:col-span-2 flex items-center justify-between pt-2">
                                 <label class="flex cursor-pointer items-center gap-2 text-xs text-neutral-700">
-                                    <input type="checkbox" name="is_active" value="1" @checked($provider->is_active) class="h-4 w-4">
+                                    <input type="checkbox" name="is_active" value="1" @checked($provider->is_active) class="control">
                                     {{ __('admin.common.enabled') }}
                                 </label>
                                 <button type="submit" class="action-btn h-9 px-5">{{ __('admin.common.save') }}</button>
@@ -423,7 +423,7 @@
                     </div>
                     <div>
                         <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-400">{{ __('admin.settings.ai_type') }} *</label>
-                        <select name="type" data-ai-type class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
+                        <select name="type" data-ai-type data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs focus:border-neutral-900 focus:outline-none">
                             <option value="openai">OpenAI / Compatible</option>
                             <option value="anthropic">Anthropic</option>
                         </select>
@@ -601,6 +601,7 @@
                     label.className = 'ai-ms-item';
                     var cb = document.createElement('input');
                     cb.type = 'checkbox';
+                    cb.className = 'control';
                     cb.name = 'selected_models[]';
                     cb.value = m;
                     cb.checked = !! checked[m];

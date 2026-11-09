@@ -125,7 +125,7 @@
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Host Instructor</label>
-                    <select name="instructor_id" id="event-instructor" class="w-full px-3 py-2.5 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                    <select name="instructor_id" id="event-instructor" data-mselect class="w-full px-3 py-2.5 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                         <option value="">Mono LMS Staff Team</option>
                         @foreach($instructors as $inst)
                             <option value="{{ $inst->id }}">{{ $inst->name }}</option>

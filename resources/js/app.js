@@ -1,3 +1,4 @@
+import './mselect';
 import './mono-select';
 import './hero-showcase';
 import './category-slider';

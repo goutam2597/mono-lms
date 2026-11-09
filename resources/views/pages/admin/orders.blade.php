@@ -46,14 +46,14 @@
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by order #, student or course..." class="w-full pl-9 pr-3.5 py-2 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                 </div>
 
-                <select name="status" onchange="this.form.submit()" class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
+                <select name="status" onchange="this.form.submit()" data-mselect data-mselect-no-search class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
                     <option value="">All Statuses</option>
                     <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
                     <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="refunded" {{ request('status') === 'refunded' ? 'selected' : '' }}>Refunded</option>
                 </select>
 
-                <select name="method" onchange="this.form.submit()" class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
+                <select name="method" onchange="this.form.submit()" data-mselect data-mselect-no-search class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
                     <option value="">All Methods</option>
                     <option value="stripe" {{ request('method') === 'stripe' ? 'selected' : '' }}>Stripe</option>
                     <option value="paypal" {{ request('method') === 'paypal' ? 'selected' : '' }}>PayPal</option>

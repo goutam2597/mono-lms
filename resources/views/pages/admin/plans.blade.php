@@ -136,7 +136,7 @@
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.plans.billing_period') }}</label>
-                        <select name="billing_period" id="plan-billing-period" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="billing_period" id="plan-billing-period" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="monthly">{{ __('membership.monthly') }}</option>
                             <option value="yearly">{{ __('membership.yearly') }}</option>
                         </select>

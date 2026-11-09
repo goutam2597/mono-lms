@@ -53,7 +53,7 @@
             </div>
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.languages.direction') }} *</label>
-                <select name="direction" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
+                <select name="direction" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
                     <option value="ltr">{{ __('admin.languages.ltr') }}</option>
                     <option value="rtl">{{ __('admin.languages.rtl') }}</option>
                 </select>
@@ -112,8 +112,8 @@
                                        class="h-8 w-36 border border-transparent bg-transparent px-2 text-xs text-neutral-600 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
                             </td>
                             <td class="px-6 py-3.5">
-                                <select name="direction" form="lang-{{ $language->id }}"
-                                        class="h-8 cursor-pointer border border-transparent bg-transparent px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-600 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
+                                <select name="direction" form="lang-{{ $language->id }}" data-mselect data-mselect-no-search
+                                        class="h-8 w-20 cursor-pointer border border-neutral-200 bg-white px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-600 transition hover:border-neutral-900 focus:border-neutral-900 focus:outline-none">
                                     <option value="ltr" @selected($language->direction === 'ltr')>LTR</option>
                                     <option value="rtl" @selected($language->direction === 'rtl')>RTL</option>
                                 </select>

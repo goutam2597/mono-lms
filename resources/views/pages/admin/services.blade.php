@@ -86,7 +86,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Encryption *</label>
-                            <select name="mail_encryption" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            <select name="mail_encryption" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                 <option value="tls" @selected($mail['encryption'] === 'tls')>TLS (Recommended)</option>
                                 <option value="ssl" @selected($mail['encryption'] === 'ssl')>SSL</option>
                                 <option value="none" @selected($mail['encryption'] === 'none')>None (Plain)</option>
@@ -154,7 +154,7 @@
                     @csrf
                     <div>
                         <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Storage Driver *</label>
-                        <select name="storage_driver" id="storage-driver-select"
+                        <select name="storage_driver" id="storage-driver-select" data-mselect data-mselect-no-search
                                 class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                             <option value="public" @selected(($storage['driver'] ?? 'public') === 'public')>Local Disk Storage (public/storage)</option>
                             <option value="s3" @selected(($storage['driver'] ?? '') === 's3')>Amazon S3 / DigitalOcean Spaces / MinIO</option>

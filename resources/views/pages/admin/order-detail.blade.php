@@ -115,7 +115,7 @@
                 <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="flex items-center gap-2">
                     @csrf
                     @method('PATCH')
-                    <select name="payment_status" class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-3 py-2 bg-white">
+                    <select name="payment_status" data-mselect data-mselect-no-search class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-3 py-2 bg-white">
                         <option value="paid" {{ $order->payment_status === 'paid' ? 'selected' : '' }}>Paid</option>
                         <option value="pending" {{ $order->payment_status === 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="refunded" {{ $order->payment_status === 'refunded' ? 'selected' : '' }}>Refunded</option>

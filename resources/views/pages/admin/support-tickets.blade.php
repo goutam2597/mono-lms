@@ -81,7 +81,7 @@
                             @csrf
                             @method('PATCH')
                             <input type="text" name="reply" placeholder="Type staff response..." required class="text-xs flex-1 px-3.5 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
-                            <select name="status" class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
+                            <select name="status" data-mselect data-mselect-no-search class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
                                 <option value="in_progress" {{ $ticket->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="resolved" {{ $ticket->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
                                 <option value="closed" {{ $ticket->status === 'closed' ? 'selected' : '' }}>Closed</option>

@@ -42,7 +42,7 @@
                             $isAssignedToAdmin = $course->exists && $course->instructor && $course->instructor->email === ($currentAdmin->email ?? '');
                             $selectedInstructor = old('instructor_id', $isAssignedToAdmin ? 'self' : ($course->instructor_id ?? 'self'));
                         @endphp
-                        <select name="instructor_id" required class="h-11 w-full border border-neutral-300 px-3.5 text-sm focus:outline-none focus:border-neutral-900 bg-white font-medium">
+                        <select name="instructor_id" required data-mselect class="h-11 w-full border border-neutral-300 px-3.5 text-sm focus:outline-none focus:border-neutral-900 bg-white font-medium">
                             <option value="self" @selected($selectedInstructor === 'self')>
                                 ⭐ Myself ({{ $currentAdmin->name ?? 'Administrator' }})
                             </option>

@@ -136,7 +136,7 @@
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.status') }}</label>
-                        <select name="status" id="student-status" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="status" id="student-status" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="active">{{ __('app.common.active') }}</option>
                             <option value="inactive">{{ __('app.common.inactive') }}</option>
                         </select>

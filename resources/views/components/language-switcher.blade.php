@@ -11,13 +11,13 @@
     $current = $activeLanguages->firstWhere('code', $currentLocale);
 @endphp
 
-<div class="relative group" {{ $attributes }}>
-    <button type="button" class="flex items-center gap-1.5 py-2 hover:text-[#738a6e] transition-colors cursor-pointer">
+<div class="relative group h-full flex items-center" {{ $attributes }}>
+    <button type="button" class="flex items-center gap-1.5 h-full py-0 hover:text-[#738a6e] transition-colors cursor-pointer leading-none">
         @if ($current?->flag)
-            <img src="{{ asset('images/flags/'.$current->flag.'.png') }}" alt="{{ $current->name }} flag" class="w-4 h-3 inline-block rounded-xs object-cover" />
+            <img src="{{ asset('images/flags/'.$current->flag.'.png') }}" alt="{{ $current->name }} flag" class="w-4 h-3 inline-block rounded-xs object-cover shrink-0" />
         @endif
-        <span>{{ $showName ? ($current?->native_name ?? strtoupper($currentLocale)) : strtoupper($currentLocale) }}</span>
-        <svg class="w-3 h-3 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        <span class="text-xs font-semibold leading-none">{{ $showName ? ($current?->native_name ?? strtoupper($currentLocale)) : strtoupper($currentLocale) }}</span>
+        <svg class="w-3 h-3 group-hover:rotate-180 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
     </button>
     <div class="absolute {{ $panel === 'store' ? 'left-0' : 'right-0' }} top-full pt-2 w-44 hidden group-hover:block z-[60]">
         <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2">

@@ -38,13 +38,13 @@
 
                     <div class="flex items-center justify-between py-1">
                         <label class="font-semibold text-slate-700">Enable Stripe Gateway</label>
-                        <input type="checkbox" name="enabled" value="1" {{ $gateways['stripe']['enabled'] ? 'checked' : '' }} class="h-4 w-4 text-[#344c3d] rounded-none">
+                        <input type="checkbox" name="enabled" value="1" {{ $gateways['stripe']['enabled'] ? 'checked' : '' }} class="control">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Environment Mode</label>
-                            <select name="mode" class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                            <select name="mode" data-mselect data-mselect-no-search class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                                 <option value="test" {{ $gateways['stripe']['mode'] === 'test' ? 'selected' : '' }}>Test / Sandbox</option>
                                 <option value="live" {{ $gateways['stripe']['mode'] === 'live' ? 'selected' : '' }}>Live Production</option>
                             </select>
@@ -96,12 +96,12 @@
 
                     <div class="flex items-center justify-between py-1">
                         <label class="font-semibold text-slate-700">Enable PayPal Gateway</label>
-                        <input type="checkbox" name="enabled" value="1" {{ $gateways['paypal']['enabled'] ? 'checked' : '' }} class="h-4 w-4 text-[#344c3d] rounded-none">
+                        <input type="checkbox" name="enabled" value="1" {{ $gateways['paypal']['enabled'] ? 'checked' : '' }} class="control">
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Environment Mode</label>
-                        <select name="mode" class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                        <select name="mode" data-mselect data-mselect-no-search class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                             <option value="sandbox" {{ $gateways['paypal']['mode'] === 'sandbox' ? 'selected' : '' }}>Sandbox</option>
                             <option value="live" {{ $gateways['paypal']['mode'] === 'live' ? 'selected' : '' }}>Live Production</option>
                         </select>
@@ -148,7 +148,7 @@
 
                     <div class="flex items-center justify-between py-1">
                         <label class="font-semibold text-slate-700">Enable Razorpay Gateway</label>
-                        <input type="checkbox" name="enabled" value="1" {{ $gateways['razorpay']['enabled'] ? 'checked' : '' }} class="h-4 w-4 text-[#344c3d] rounded-none">
+                        <input type="checkbox" name="enabled" value="1" {{ $gateways['razorpay']['enabled'] ? 'checked' : '' }} class="control">
                     </div>
 
                     <div>
@@ -192,7 +192,7 @@
 
                     <div class="flex items-center justify-between py-1">
                         <label class="font-semibold text-slate-700">Enable Bank Wire Option</label>
-                        <input type="checkbox" name="enabled" value="1" {{ $gateways['offline']['enabled'] ? 'checked' : '' }} class="h-4 w-4 text-[#344c3d] rounded-none">
+                        <input type="checkbox" name="enabled" value="1" {{ $gateways['offline']['enabled'] ? 'checked' : '' }} class="control">
                     </div>
 
                     <div>

@@ -52,7 +52,7 @@
                     {{ __('admin.languages.translate_all') }}
                 </button>
                 <label class="flex cursor-pointer items-center gap-2 text-xs text-neutral-700 select-none">
-                    <input type="checkbox" id="translate-overwrite" class="h-4 w-4 border-neutral-300 text-neutral-900 focus:ring-0">
+                    <input type="checkbox" id="translate-overwrite" class="control">
                     {{ __('admin.languages.overwrite') }}
                 </label>
                 <span id="translate-status" class="text-xs text-neutral-500 font-medium"></span>

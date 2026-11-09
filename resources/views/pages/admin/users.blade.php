@@ -184,7 +184,7 @@
                 <!-- Account Type Selector -->
                 <div id="user-type-container" class="space-y-1.5">
                     <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Account Type / Role *</label>
-                    <select id="user-type-select" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                    <select id="user-type-select" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                         <option value="student">Student (Learner)</option>
                         <option value="instructor">Instructor (Teaching Faculty)</option>
                         <option value="admin">Administrator (Management)</option>
@@ -233,7 +233,7 @@
                 <div id="admin-fields" class="space-y-4 hidden">
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Administrative Role</label>
-                        <select name="role_id" id="user-role-id" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                        <select name="role_id" id="user-role-id" data-mselect class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                             <option value="">— Standard Admin —</option>
                             @foreach($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -250,7 +250,7 @@
                 <!-- Status -->
                 <div class="space-y-1.5">
                     <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Account Status</label>
-                    <select name="status" id="user-status" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                    <select name="status" id="user-status" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>

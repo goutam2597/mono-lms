@@ -46,7 +46,7 @@
                             </div>
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Platform Timezone *</label>
-                                <select name="timezone" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                <select name="timezone" data-mselect class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                     @php
                                         $commonTimezones = [
                                             'UTC' => 'UTC (Coordinated Universal Time)',
@@ -201,7 +201,7 @@
                         <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="membership_enabled" value="1" @checked($settings['membership_enabled'])
-                                       class="mt-0.5 h-4 w-4 rounded-none border-neutral-300 text-neutral-900 accent-neutral-900">
+                                       class="control mt-0.5">
                                 <div>
                                     <span class="font-bold text-xs text-neutral-900 block">Membership Subscriptions</span>
                                     <span class="text-[11px] text-neutral-400">Recurring unlimited subscription access plans</span>
@@ -216,7 +216,7 @@
                         <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="blog_enabled" value="1" @checked($settings['blog_enabled'])
-                                       class="mt-0.5 h-4 w-4 rounded-none border-neutral-300 text-neutral-900 accent-neutral-900">
+                                       class="control mt-0.5">
                                 <div>
                                     <span class="font-bold text-xs text-neutral-900 block">Blog & Knowledge Base</span>
                                     <span class="text-[11px] text-neutral-400">Public articles, news updates, and tutorials</span>
@@ -231,7 +231,7 @@
                         <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="certificates_enabled" value="1" @checked($settings['certificates_enabled'])
-                                       class="mt-0.5 h-4 w-4 rounded-none border-neutral-300 text-neutral-900 accent-neutral-900">
+                                       class="control mt-0.5">
                                 <div>
                                     <span class="font-bold text-xs text-neutral-900 block">Accredited Certificates</span>
                                     <span class="text-[11px] text-neutral-400">Generate completion certificates & verification</span>
@@ -246,7 +246,7 @@
                         <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 bg-white hover:border-neutral-900 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">
                                 <input type="checkbox" name="forums_enabled" value="1" @checked($settings['forums_enabled'])
-                                       class="mt-0.5 h-4 w-4 rounded-none border-neutral-300 text-neutral-900 accent-neutral-900">
+                                       class="control mt-0.5">
                                 <div>
                                     <span class="font-bold text-xs text-neutral-900 block">Community Forums</span>
                                     <span class="text-[11px] text-neutral-400">Student & instructor Q&A discussion channels</span>
