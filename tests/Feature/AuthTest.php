@@ -66,6 +66,25 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('students', ['email' => 'new@test.dev']);
     }
 
+    public function test_instructor_can_self_register(): void
+    {
+        $this->get(route('instructor.register'))->assertOk();
+
+        $this->post(route('instructor.register.attempt'), [
+            'name' => 'Jane Instructor',
+            'email' => 'jane.instructor@test.dev',
+            'password' => 'password123',
+            'designation' => 'Lead AI Instructor',
+            'terms' => '1',
+        ])->assertRedirect(route('instructor.dashboard'));
+
+        $this->assertDatabaseHas('instructors', [
+            'email' => 'jane.instructor@test.dev',
+            'status' => 'active',
+        ]);
+        $this->assertAuthenticated('instructor');
+    }
+
     public function test_admin_can_sign_in_via_universal_login_and_see_dashboard(): void
     {
         $admin = Admin::create([

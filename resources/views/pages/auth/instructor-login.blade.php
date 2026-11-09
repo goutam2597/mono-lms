@@ -46,6 +46,21 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
         </form>
+
+        <div class="text-center text-xs text-[#5d5d5d] pt-2 space-y-1.5">
+            <p>
+                <span>New instructor? </span>
+                <a href="{{ route('instructor.register') }}" class="font-semibold text-[#738a6e] hover:underline">
+                    Create an Instructor Account
+                </a>
+            </p>
+            <p>
+                <span>Are you a student? </span>
+                <a href="{{ route('login') }}" class="text-gray-500 hover:underline">
+                    Student Sign In
+                </a>
+            </p>
+        </div>
     </div>
 
 </x-layouts.auth>

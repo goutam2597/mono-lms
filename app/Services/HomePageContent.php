@@ -122,7 +122,7 @@ class HomePageContent
                 'heading' => 'Become An Instructor',
                 'description' => 'Top instructors from around the world teach millions of students on MonoLMS.',
                 'button_text' => 'Join Our Community',
-                'button_url' => '/instructor/login',
+                'button_url' => '/instructor/register',
                 'background_image' => '',
             ],
             'partners' => [

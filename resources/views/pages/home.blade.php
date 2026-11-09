@@ -646,7 +646,7 @@
             </div>
 
             <div class="relative z-10 shrink-0">
-                <a href="{{ $home['banner_transform']['button_url'] ?? route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-medium shadow-lg transition-all">
+                <a href="{{ url($home['banner_transform']['button_url'] ?? route('courses.index')) }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-medium shadow-lg transition-all">
                     {{ $home['banner_transform']['button_text'] ?? 'View all Courses' }}
                 </a>
             </div>
@@ -1055,7 +1055,7 @@
             </div>
 
             <div class="shrink-0">
-                <a href="{{ $home['banner_instructor']['button_url'] ?? route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
+                <a href="{{ url($home['banner_instructor']['button_url'] ?? route('instructor.register')) }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
                     {{ $home['banner_instructor']['button_text'] ?? 'Join Our Community' }}
                 </a>
             </div>
@@ -1076,7 +1076,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ $home['partners']['button_url'] ?? route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
+                <a href="{{ url($home['partners']['button_url'] ?? route('courses.index')) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>{{ $home['partners']['button_text'] ?? 'View All' }}</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1169,7 +1169,7 @@
                     </p>
 
                     <div>
-                        <a href="{{ $home['testimonials']['button_url'] ?? route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
+                        <a href="{{ url($home['testimonials']['button_url'] ?? route('register')) }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
                             {{ $home['testimonials']['button_text'] ?? 'Join Our Community' }}
                         </a>
                     </div>
@@ -1242,7 +1242,7 @@
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ $home['blog']['button_url'] ?? route('blog.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
+                <a href="{{ url($home['blog']['button_url'] ?? route('blog.index')) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
                     <span>{{ $home['blog']['button_text'] ?? 'View All' }}</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

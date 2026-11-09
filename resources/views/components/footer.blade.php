@@ -11,19 +11,11 @@
                 </p>
                 <!-- App Badges -->
                 <div class="flex items-center gap-3 pt-2">
-                    <a href="#" class="flex items-center gap-2 px-3 py-1.5 bg-[#142333] border border-gray-700 hover:border-gray-500 rounded-lg text-white transition-colors">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.62-.75 1.04-1.8 1.04-2.89 0-.15-.01-.29-.04-.44-.99.04-2.19.66-2.88 1.47-.56.64-.99 1.68-.99 2.74 0 .15.02.29.04.41 1.09.08 2.21-.54 2.83-1.29z"/></svg>
-                        <div class="text-left">
-                            <div class="text-[9px] text-gray-400 uppercase leading-none">Download on</div>
-                            <div class="text-xs font-semibold leading-tight">App Store</div>
-                        </div>
+                    <a href="#" class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100" title="Download on the App Store">
+                        <img src="{{ asset('images/app-store-badge.svg') }}" alt="Download on the App Store" class="h-10 w-auto" />
                     </a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-1.5 bg-[#142333] border border-gray-700 hover:border-gray-500 rounded-lg text-white transition-colors">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.31 0 .61.1.86.29l13.5 8.5c.69.44.89 1.36.45 2.05-.12.19-.28.35-.45.45l-13.5 8.5c-.25.19-.55.29-.86.29-.83 0-1.5-.67-1.5-1.58z"/></svg>
-                        <div class="text-left">
-                            <div class="text-[9px] text-gray-400 uppercase leading-none">Get it on</div>
-                            <div class="text-xs font-semibold leading-tight">Google Play</div>
-                        </div>
+                    <a href="#" class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100" title="Get it on Google Play">
+                        <img src="{{ asset('images/google-play-badge.svg') }}" alt="Get it on Google Play" class="h-10 w-auto" />
                     </a>
                 </div>
             </div>
@@ -48,6 +40,8 @@
                     <li><a href="{{ route('screens') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.screens') }}</a></li>
                     <li><a href="{{ route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.sign_in') }}</a></li>
                     <li><a href="{{ route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
+                    <li><a href="{{ route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">Become an Instructor</a></li>
+                    <li><a href="{{ route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">Instructor Portal</a></li>
                 </ul>
             </div>
 

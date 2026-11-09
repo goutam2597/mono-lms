@@ -125,6 +125,8 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware
 Route::middleware('guest:instructor')->group(function () {
     Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])->name('instructor.login');
     Route::post('/instructor/login', [InstructorAuthController::class, 'login'])->name('instructor.login.attempt');
+    Route::get('/instructor/register', [InstructorAuthController::class, 'showRegister'])->name('instructor.register');
+    Route::post('/instructor/register', [InstructorAuthController::class, 'register'])->name('instructor.register.attempt');
 });
 Route::post('/instructor/logout', [InstructorAuthController::class, 'logout'])->middleware('auth:instructor')->name('instructor.logout');
 
