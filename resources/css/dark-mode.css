@@ -1,98 +1,145 @@
 /* ------------------------------------------------------------------
-   Mono LMS - Comprehensive Dark Mode Theme
-   Scoped under `html.dark`. Kept strictly independent per panel:
+   Mono LMS - True Black Dark Mode Theme (Zero Blue Tint)
+   Scoped strictly under `html.dark`.
+   Independent per panel:
    - Admin Panel (/admin/*)
    - Instructor Panel (/instructor/*)
    - Student Learning Portal (/student/*)
-   Note: Storefront web front is strictly light mode only.
+   Web Front (/ and public pages) is strictly light only.
 ------------------------------------------------------------------ */
 
 html.dark {
     color-scheme: dark;
 }
 
-/* Base Body and Page Background */
+/* ==================================================================
+   1. Base Surface & Page Background (Pure Neutral Black)
+   ================================================================== */
 html.dark,
 html.dark body {
-    background-color: #090d16 !important;
-    color: #e2e8f0;
+    background-color: #000000 !important;
+    color: #ededed;
 }
 
-/* Main Dashboard Wrapper & Main Area */
 html.dark .bg-\[var\(--theme-bg\,\#f4f6f9\)\] {
-    background-color: #090d16 !important;
-}
-html.dark main {
-    background-color: #090d16;
+    background-color: #000000 !important;
 }
 
-/* Header & Top Bar */
+html.dark main {
+    background-color: #000000;
+}
+
+/* ==================================================================
+   2. Header & Top Bar (Neutral Black, No Blue)
+   ================================================================== */
 html.dark header {
-    background-color: #0d1424 !important;
-    border-color: #1e293b !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    background-color: #0a0a0a !important;
+    border-color: #1f1f1f !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
 }
 
 html.dark header input {
     background-color: transparent !important;
-    color: #f1f5f9 !important;
+    color: #ffffff !important;
 }
 
 html.dark header input::placeholder {
-    color: #64748b !important;
+    color: #737373 !important;
 }
 
 html.dark header .bg-white {
-    background-color: #0d1424 !important;
-    border-color: #1e293b !important;
-    color: #cbd5e1 !important;
+    background-color: #0a0a0a !important;
+    border-color: #1f1f1f !important;
+    color: #d4d4d4 !important;
 }
 
 html.dark header button,
 html.dark header a:not([class*="bg-"]) {
-    border-color: #1e293b !important;
-    color: #94a3b8 !important;
+    border-color: #1f1f1f !important;
+    color: #a3a3a3 !important;
 }
 
 html.dark header button:hover,
 html.dark header a:not([class*="bg-"]):hover {
-    background-color: #1a2335 !important;
+    background-color: #171717 !important;
     color: #ffffff !important;
 }
 
-/* Footer */
+/* ==================================================================
+   3. Footer (Neutral Black)
+   ================================================================== */
 html.dark footer {
-    background-color: #0d1424 !important;
-    border-color: #1e293b !important;
-    color: #64748b !important;
+    background-color: #0a0a0a !important;
+    border-color: #1f1f1f !important;
+    color: #737373 !important;
 }
 
-/* Generic White Cards & Containers */
+/* ==================================================================
+   4. Cards, Containers & Panels (Neutral Surface #0d0d0d / #111111)
+   ================================================================== */
 html.dark .bg-white {
-    background-color: #111827 !important;
-    color: #e2e8f0;
+    background-color: #0d0d0d !important;
+    color: #ededed;
 }
 
-/* Generic Borders & Dividers */
+html.dark .bg-slate-50,
+html.dark .bg-gray-50,
+html.dark .bg-neutral-50,
+html.dark .bg-zinc-50 {
+    background-color: #050505 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-gray-100,
+html.dark .bg-neutral-100,
+html.dark .bg-zinc-100 {
+    background-color: #141414 !important;
+}
+
+/* ==================================================================
+   5. Borders & Dividers (Neutral Grey, No Blue)
+   ================================================================== */
 html.dark .border-slate-200,
 html.dark .border-gray-200,
 html.dark .border-slate-100,
 html.dark .border-gray-100,
 html.dark .border-neutral-200,
+html.dark .border-zinc-200,
 html.dark .border-\[\#e2e8f0\],
 html.dark .border-\[\#e5e5e5\],
-html.dark .border-\[\#d4d4d4\] {
-    border-color: #1f293d !important;
+html.dark .border-\[\#e7e7e7\],
+html.dark .border-\[\#d4d4d4\],
+html.dark .border-\[\#f0f0f0\] {
+    border-color: #1f1f1f !important;
 }
 
 html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
-html.dark .divide-\[\#e2e8f0\] > :not([hidden]) ~ :not([hidden]) {
-    border-color: #1f293d !important;
+html.dark .divide-\[\#e2e8f0\] > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-neutral-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: #1f1f1f !important;
 }
 
-/* Primary Text Colors */
+/* ==================================================================
+   6. Comprehensive Text Colors (Fixes All Dark-on-Dark Contrast)
+   ================================================================== */
+
+/* Headings & Labels */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+    color: #ffffff !important;
+}
+
+html.dark label {
+    color: #f5f5f5 !important;
+}
+
+/* Primary High-Contrast Text */
 html.dark .text-slate-900,
 html.dark .text-slate-800,
 html.dark .text-slate-700,
@@ -101,66 +148,146 @@ html.dark .text-gray-800,
 html.dark .text-gray-700,
 html.dark .text-neutral-900,
 html.dark .text-neutral-800,
+html.dark .text-neutral-700,
+html.dark .text-zinc-900,
+html.dark .text-zinc-800,
+html.dark .text-zinc-700,
 html.dark .text-black,
 html.dark .text-\[\#0a0a0a\],
-html.dark .text-\[\#191919\] {
-    color: #f1f5f9 !important;
+html.dark .text-\[\#0f172a\],
+html.dark .text-\[\#191919\],
+html.dark .text-\[\#18181b\],
+html.dark .text-\[\#262626\] {
+    color: #ffffff !important;
 }
 
-/* Muted / Secondary Text Colors */
+/* Secondary Muted Text */
 html.dark .text-slate-600,
 html.dark .text-slate-500,
 html.dark .text-gray-600,
 html.dark .text-gray-500,
 html.dark .text-neutral-600,
-html.dark .text-neutral-500 {
-    color: #94a3b8 !important;
+html.dark .text-neutral-500,
+html.dark .text-zinc-600,
+html.dark .text-zinc-500,
+html.dark .text-\[\#334155\],
+html.dark .text-\[\#475569\],
+html.dark .text-\[\#4f4f4f\],
+html.dark .text-\[\#5d5d5d\],
+html.dark .text-\[\#64748b\],
+html.dark .text-\[\#685f78\],
+html.dark .text-\[\#6d6d6d\] {
+    color: #a3a3a3 !important;
 }
 
-/* Sub-muted Text */
+/* Sub-muted & Helper Text */
 html.dark .text-slate-400,
-html.dark .text-gray-400 {
-    color: #64748b !important;
+html.dark .text-gray-400,
+html.dark .text-neutral-400,
+html.dark .text-zinc-400,
+html.dark .text-\[\#737373\],
+html.dark .text-\[\#888888\],
+html.dark .text-\[\#94a3b8\],
+html.dark .text-\[\#999999\] {
+    color: #737373 !important;
 }
 
-/* Tables */
+/* Invert dark brand accent text to vibrant, readable light variants */
+html.dark .text-\[\#344c3d\],
+html.dark .text-\[\#344C3D\] {
+    color: #86efac !important; /* Soft bright mint sage instead of dark evergreen */
+}
+
+html.dark .text-\[\#738a6e\],
+html.dark .text-\[\#738A6E\],
+html.dark .text-\[\#8EA58C\],
+html.dark .text-\[\#DCE7DA\] {
+    color: #a7f3d0 !important;
+}
+
+html.dark .text-\[\#392c7d\] {
+    color: #c4b5fd !important; /* Bright soft lilac instead of dark navy-purple */
+}
+
+html.dark .text-\[\#0d7a38\],
+html.dark .text-\[\#137547\],
+html.dark .text-\[\#09800f\] {
+    color: #4ade80 !important; /* Vibrant green instead of dark forest green */
+}
+
+html.dark .text-\[\#0891b2\],
+html.dark .text-\[\#0284c7\],
+html.dark .text-\[\#0d9488\] {
+    color: #38bdf8 !important; /* Vibrant cyan/sky */
+}
+
+html.dark .text-\[\#7c3aed\],
+html.dark .text-\[\#5625e8\],
+html.dark .text-\[\#b000ff\],
+html.dark .text-\[\#c026d3\] {
+    color: #c084fc !important; /* Vibrant violet/purple */
+}
+
+html.dark .text-\[\#d97706\],
+html.dark .text-\[\#ff5000\],
+html.dark .text-\[\#ffc107\] {
+    color: #fbbf24 !important; /* Vibrant amber/gold */
+}
+
+html.dark .text-\[\#dc2626\],
+html.dark .text-\[\#e70d0d\] {
+    color: #f87171 !important; /* Bright red */
+}
+
+/* ==================================================================
+   7. Tables (High Contrast Neutral Black)
+   ================================================================== */
 html.dark table {
-    color: #e2e8f0;
+    color: #ededed;
 }
 
 html.dark table thead,
 html.dark table thead tr,
 html.dark table thead th {
-    background-color: #0b111e !important;
-    color: #94a3b8 !important;
-    border-color: #1f293d !important;
+    background-color: #0a0a0a !important;
+    color: #a3a3a3 !important;
+    border-color: #1f1f1f !important;
 }
 
 html.dark table tbody tr {
-    border-color: #1a2335 !important;
+    border-color: #171717 !important;
     background-color: transparent;
 }
 
 html.dark table tbody tr:hover {
-    background-color: #141d2e !important;
+    background-color: #141414 !important;
 }
 
 html.dark table tbody td {
-    border-color: #1a2335 !important;
+    border-color: #171717 !important;
+    color: #ededed;
 }
 
-/* Form Controls (Inputs, Textareas, Selects) */
+html.dark table tbody td strong,
+html.dark table tbody td b,
+html.dark table tbody td a:not([class*="text-"]) {
+    color: #ffffff !important;
+}
+
+/* ==================================================================
+   8. Form Controls (Inputs, Textareas, Selects)
+   ================================================================== */
 html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
 html.dark textarea,
 html.dark select {
-    background-color: #0d131f !important;
-    border-color: #27354a !important;
-    color: #f8fafc !important;
+    background-color: #050505 !important;
+    border-color: #262626 !important;
+    color: #ffffff !important;
 }
 
 html.dark input::placeholder,
 html.dark textarea::placeholder {
-    color: #64748b !important;
+    color: #737373 !important;
 }
 
 html.dark input:focus,
@@ -168,160 +295,160 @@ html.dark textarea:focus,
 html.dark select:focus {
     border-color: var(--theme-primary, #344c3d) !important;
     outline: none !important;
-    box-shadow: 0 0 0 2px rgba(52, 76, 61, 0.35) !important;
+    box-shadow: 0 0 0 2px rgba(52, 76, 61, 0.45) !important;
 }
 
-/* Custom Dropdowns (mselect) */
+/* ==================================================================
+   9. Custom Dropdowns (.mselect)
+   ================================================================== */
 html.dark .mselect-btn {
-    background: #0d131f !important;
-    border-color: #27354a !important;
-    color: #f8fafc !important;
+    background: #050505 !important;
+    border-color: #262626 !important;
+    color: #ffffff !important;
 }
 
 html.dark .mselect-btn:hover {
-    background: #141d2e !important;
-    border-color: #3b4d66 !important;
+    background: #121212 !important;
+    border-color: #383838 !important;
 }
 
 html.dark .mselect-list {
-    background: #111827 !important;
-    border-color: #27354a !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+    background: #0d0d0d !important;
+    border-color: #262626 !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85) !important;
 }
 
 html.dark .mselect-search-wrap {
-    background: #0d131f !important;
-    border-color: #1f293d !important;
+    background: #050505 !important;
+    border-color: #1f1f1f !important;
 }
 
 html.dark .mselect-search {
     background: transparent !important;
-    color: #f8fafc !important;
+    color: #ffffff !important;
 }
 
 html.dark .mselect-opt {
-    color: #cbd5e1 !important;
+    color: #d4d4d4 !important;
 }
 
 html.dark .mselect-opt:hover,
 html.dark .mselect-opt.is-highlighted {
-    background: #1a2538 !important;
+    background: #1a1a1a !important;
     color: #ffffff !important;
 }
 
 html.dark .mselect-opt.is-selected {
-    background: rgba(52, 76, 61, 0.35) !important;
+    background: rgba(52, 76, 61, 0.45) !important;
     color: #ffffff !important;
 }
 
-/* Action Buttons (mono_market pattern) */
+/* ==================================================================
+   10. Action Buttons (mono_market pattern)
+   ================================================================== */
 html.dark .action-btn-ghost {
-    background: #111827 !important;
-    border-color: #27354a !important;
-    color: #e2e8f0 !important;
+    background: #0d0d0d !important;
+    border-color: #262626 !important;
+    color: #ededed !important;
 }
 
 html.dark .action-btn-ghost:hover {
-    background: #1e293b !important;
-    border-color: #3b4d66 !important;
+    background: #1a1a1a !important;
+    border-color: #383838 !important;
     color: #ffffff !important;
 }
 
 /* Row Action Dropdown Menu */
 html.dark .row-action-menu {
-    background: #111827 !important;
-    border-color: #27354a !important;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
+    background: #0d0d0d !important;
+    border-color: #262626 !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8) !important;
 }
 
 html.dark .row-action-menu .menu-item {
-    color: #cbd5e1 !important;
+    color: #d4d4d4 !important;
 }
 
 html.dark .row-action-menu .menu-item:hover {
-    background: #1a2538 !important;
+    background: #1a1a1a !important;
     color: #ffffff !important;
 }
 
 html.dark .row-action-menu .menu-sep {
-    background: #1f293d !important;
+    background: #1f1f1f !important;
 }
 
-/* Modals System (.modal-overlay .panel) */
+/* ==================================================================
+   11. Modals System (.modal-overlay .panel)
+   ================================================================== */
 html.dark .modal-overlay {
-    background: rgba(0, 0, 0, 0.8) !important;
+    background: rgba(0, 0, 0, 0.88) !important;
 }
 
 html.dark .modal-overlay .panel {
-    background: #111827 !important;
-    border-color: #27354a !important;
-    color: #e2e8f0 !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75) !important;
+    background: #0d0d0d !important;
+    border-color: #262626 !important;
+    color: #ededed !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95) !important;
 }
 
 html.dark .modal-overlay .panel h2,
 html.dark .modal-overlay .panel h3,
 html.dark .modal-overlay .panel h4 {
-    color: #f8fafc !important;
+    color: #ffffff !important;
 }
 
 /* Media Picker */
 html.dark .mediap-card {
-    background: #0d131f !important;
-    border-color: #1f293d !important;
+    background: #050505 !important;
+    border-color: #1f1f1f !important;
 }
 
 html.dark .mediap-card:hover {
     border-color: var(--theme-primary, #344c3d) !important;
-    background: #141d2e !important;
+    background: #121212 !important;
 }
 
-/* Subtle backgrounds / light slate surfaces */
-html.dark .bg-slate-50,
-html.dark .bg-gray-50,
-html.dark .bg-neutral-50 {
-    background-color: #0e1523 !important;
+/* ==================================================================
+   12. Badges & Status Pills
+   ================================================================== */
+html.dark .bg-emerald-50,
+html.dark .bg-\[\#eef9f1\] {
+    background-color: rgba(16, 185, 129, 0.12) !important;
+    color: #4ade80 !important;
+    border-color: rgba(16, 185, 129, 0.25) !important;
 }
 
-html.dark .bg-slate-100,
-html.dark .bg-gray-100 {
-    background-color: #141c2c !important;
-}
-
-/* Badges & Status Pills */
-html.dark .bg-emerald-50 {
-    background-color: rgba(5, 150, 105, 0.15) !important;
-    color: #6ee7b7 !important;
-    border-color: rgba(5, 150, 105, 0.3) !important;
-}
-
-html.dark .bg-red-50 {
-    background-color: rgba(220, 38, 38, 0.15) !important;
-    color: #fca5a5 !important;
-    border-color: rgba(220, 38, 38, 0.3) !important;
+html.dark .bg-red-50,
+html.dark .bg-\[\#fef2f2\] {
+    background-color: rgba(239, 68, 68, 0.12) !important;
+    color: #f87171 !important;
+    border-color: rgba(239, 68, 68, 0.25) !important;
 }
 
 html.dark .bg-amber-50,
 html.dark .bg-yellow-50 {
-    background-color: rgba(217, 119, 6, 0.15) !important;
-    color: #fcd34d !important;
-    border-color: rgba(217, 119, 6, 0.3) !important;
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    color: #fbbf24 !important;
+    border-color: rgba(245, 158, 11, 0.25) !important;
 }
 
 html.dark .bg-blue-50,
 html.dark .bg-sky-50 {
-    background-color: rgba(2, 132, 199, 0.15) !important;
-    color: #7dd3fc !important;
-    border-color: rgba(2, 132, 199, 0.3) !important;
+    background-color: rgba(59, 130, 246, 0.12) !important;
+    color: #60a5fa !important;
+    border-color: rgba(59, 130, 246, 0.25) !important;
 }
 
-/* Student Learning Portal Specific Adjustments */
+/* ==================================================================
+   13. Student Learning Portal Specific Adjustments
+   ================================================================== */
 html.dark .student-portal,
 html.dark .bg-\[\#f4f6f9\] {
-    background-color: #090d16 !important;
+    background-color: #000000 !important;
 }
 
 html.dark .student-card {
-    background-color: #111827 !important;
-    border-color: #1e293b !important;
+    background-color: #0d0d0d !important;
+    border-color: #1f1f1f !important;
 }
