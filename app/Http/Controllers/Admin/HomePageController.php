@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Services\HomePageContent;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,8 @@ class HomePageController extends Controller
 
         return view('pages.admin.homepage', [
             'sections' => $sections,
+            'featuredCourses' => Course::with('instructor')->where('is_featured', true)->latest()->get(),
+            'trendingCourses' => Course::with('instructor')->where('is_trending', true)->latest()->get(),
         ]);
     }
 

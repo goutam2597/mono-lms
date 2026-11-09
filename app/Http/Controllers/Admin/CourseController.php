@@ -21,6 +21,8 @@ class CourseController extends Controller
             ->when($request->filled('q'), fn ($q) => $q->where('title', 'like', '%'.$request->string('q').'%'))
             ->when($request->query('status') === 'published', fn ($q) => $q->where('is_published', true))
             ->when($request->query('status') === 'draft', fn ($q) => $q->where('is_published', false))
+            ->when($request->query('status') === 'featured', fn ($q) => $q->where('is_featured', true))
+            ->when($request->query('status') === 'trending', fn ($q) => $q->where('is_trending', true))
             ->latest()
             ->paginate(10);
 
@@ -104,6 +106,20 @@ class CourseController extends Controller
         return back()->with('success', __('admin.courses.unpublished'));
     }
 
+    public function toggleFeatured(Course $course): RedirectResponse
+    {
+        $course->update(['is_featured' => ! $course->is_featured]);
+
+        return back()->with('success', $course->is_featured ? 'Course marked as Featured on Homepage.' : 'Course removed from Featured.');
+    }
+
+    public function toggleTrending(Course $course): RedirectResponse
+    {
+        $course->update(['is_trending' => ! $course->is_trending]);
+
+        return back()->with('success', $course->is_trending ? 'Course marked as Most Trending on Homepage.' : 'Course removed from Trending.');
+    }
+
     public function destroy(Course $course)
     {
         $course->delete();
@@ -179,6 +195,8 @@ class CourseController extends Controller
         ]);
 
         $data['is_published'] = $request->boolean('is_published');
+        $data['is_featured'] = $request->boolean('is_featured');
+        $data['is_trending'] = $request->boolean('is_trending');
         unset($data['instructor_id']);
 
         return $data;

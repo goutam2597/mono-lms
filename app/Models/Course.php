@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'instructor_id', 'category_id', 'title', 'slug', 'subtitle', 'description',
     'image', 'price', 'old_price', 'level', 'duration_minutes',
-    'is_published', 'is_featured',
+    'is_published', 'is_featured', 'is_trending',
 ])]
 class Course extends Model
 {
@@ -23,6 +23,7 @@ class Course extends Model
             'old_price' => 'float',
             'is_published' => 'boolean',
             'is_featured' => 'boolean',
+            'is_trending' => 'boolean',
         ];
     }
 
@@ -59,6 +60,11 @@ class Course extends Model
     public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('is_featured', true);
+    }
+
+    public function scopeTrending(Builder $query): Builder
+    {
+        return $query->where('is_trending', true);
     }
 
     public function averageRating(): float

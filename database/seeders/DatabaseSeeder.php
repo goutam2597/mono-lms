@@ -222,6 +222,7 @@ class DatabaseSeeder extends Seeder
                     'duration_minutes' => $minutes,
                     'is_published' => $published,
                     'is_featured' => $featured,
+                    'is_trending' => in_array($i, [0, 1, 4, 10]),
                 ]
             );
 

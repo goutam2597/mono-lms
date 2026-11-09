@@ -107,12 +107,34 @@
                     <textarea name="description" rows="6" class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900">{{ old('description', $course->description) }}</textarea>
                 </div>
 
-                <!-- Published switch -->
-                <div class="flex flex-wrap items-center gap-6 pt-1">
-                    <label class="flex items-center gap-2.5 cursor-pointer select-none text-sm text-[#191919]">
-                        <input type="checkbox" name="is_published" value="1" @checked(old('is_published', $course->is_published)) class="control mt-0.5">
-                        <span class="text-xs uppercase tracking-wider font-semibold">{{ __('instructor.courses.fields.is_published') }} (Visible in public catalog)</span>
-                    </label>
+                <!-- Visibility & Storefront Placement Flags -->
+                <div class="p-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-700 dark:text-neutral-300">Storefront Visibility &amp; Homepage Placement</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" name="is_published" value="1" @checked(old('is_published', $course->is_published)) class="control mt-0.5">
+                            <div>
+                                <span class="text-xs font-semibold text-neutral-900 dark:text-neutral-100 block">{{ __('instructor.courses.fields.is_published') }}</span>
+                                <span class="text-[11px] text-neutral-500 dark:text-neutral-400">Visible in public catalog</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" name="is_featured" value="1" @checked(old('is_featured', $course->is_featured)) class="control mt-0.5">
+                            <div>
+                                <span class="text-xs font-semibold text-amber-700 dark:text-amber-400 block">★ Featured Course</span>
+                                <span class="text-[11px] text-neutral-500 dark:text-neutral-400">Featured Courses Grid on Homepage</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" name="is_trending" value="1" @checked(old('is_trending', $course->is_trending)) class="control mt-0.5">
+                            <div>
+                                <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 block">🔥 Most Trending Course</span>
+                                <span class="text-[11px] text-neutral-500 dark:text-neutral-400">Most Trending Section on Homepage</span>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
                 <div class="flex items-center gap-3 pt-3 border-t border-neutral-200">

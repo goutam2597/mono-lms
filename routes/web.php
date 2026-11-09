@@ -205,6 +205,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:courses.publish')->name('courses.publish');
     Route::match(['post', 'patch'], '/courses/{course}/unpublish', [AdminCourseController::class, 'unpublish'])
         ->middleware('permission:courses.publish')->name('courses.unpublish');
+    Route::match(['post', 'patch'], '/courses/{course}/toggle-featured', [AdminCourseController::class, 'toggleFeatured'])
+        ->middleware('permission:courses.manage')->name('courses.toggle-featured');
+    Route::match(['post', 'patch'], '/courses/{course}/toggle-trending', [AdminCourseController::class, 'toggleTrending'])
+        ->middleware('permission:courses.manage')->name('courses.toggle-trending');
     Route::delete('/courses/{course}', [AdminCourseController::class, 'destroy'])
         ->middleware('permission:courses.manage')->name('courses.destroy');
 

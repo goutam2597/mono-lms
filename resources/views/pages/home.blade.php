@@ -937,7 +937,7 @@
 
             <!-- Trending Course Cards (DB-driven) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($featuredCourses->skip(2)->take(4) as $course)
+                @foreach ($trendingCourses as $course)
                     <x-course-card
                         :slug="$course->slug"
                         :title="$course->title"

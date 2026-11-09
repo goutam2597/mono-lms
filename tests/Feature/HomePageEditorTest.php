@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Course;
+use App\Models\Instructor;
 use App\Models\Role;
 use App\Services\HomePageContent;
 use Database\Seeders\RolesAndPermissionsSeeder;
@@ -161,5 +164,52 @@ class HomePageEditorTest extends TestCase
         $response->assertOk();
         $response->assertSee(route('admin.homepage.index'));
         $response->assertSee('Home Page Editor');
+    }
+
+    public function test_admin_can_toggle_course_featured_and_trending(): void
+    {
+        $category = Category::create(['name' => 'Design', 'slug' => 'design']);
+        $instructor = Instructor::create([
+            'name' => 'John Instructor',
+            'email' => 'john.inst@mono-lms.test',
+            'password' => '12345678',
+            'status' => 'active',
+        ]);
+
+        $course = Course::create([
+            'title' => 'Mastering Laravel & Vue',
+            'slug' => 'mastering-laravel-vue',
+            'category_id' => $category->id,
+            'instructor_id' => $instructor->id,
+            'price' => 199.00,
+            'is_published' => true,
+            'is_featured' => false,
+            'is_trending' => false,
+        ]);
+
+        // Toggle featured
+        $this->actingAs($this->admin, 'admin')
+            ->post(route('admin.courses.toggle-featured', $course))
+            ->assertRedirect();
+
+        $this->assertTrue($course->fresh()->is_featured);
+
+        // Toggle trending
+        $this->actingAs($this->admin, 'admin')
+            ->post(route('admin.courses.toggle-trending', $course))
+            ->assertRedirect();
+
+        $this->assertTrue($course->fresh()->is_trending);
+
+        // Filter courses by featured and trending
+        $this->actingAs($this->admin, 'admin')
+            ->get(route('admin.courses.index', ['status' => 'featured']))
+            ->assertOk()
+            ->assertSee('Mastering Laravel &amp; Vue', false);
+
+        $this->actingAs($this->admin, 'admin')
+            ->get(route('admin.courses.index', ['status' => 'trending']))
+            ->assertOk()
+            ->assertSee('Mastering Laravel &amp; Vue', false);
     }
 }

@@ -306,7 +306,7 @@
                             </label>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Eyebrow</label>
                                 <input type="text" name="sections[featured_courses][eyebrow]" value="{{ $sections['featured_courses']['eyebrow'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
@@ -315,14 +315,56 @@
                                 <label class="block font-semibold text-slate-700 mb-1">Button Text</label>
                                 <input type="text" name="sections[featured_courses][button_text]" value="{{ $sections['featured_courses']['button_text'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
-                            <div class="sm:col-span-2">
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Max Items (Limit)</label>
+                                <input type="number" min="1" max="24" name="sections[featured_courses][limit]" value="{{ $sections['featured_courses']['limit'] ?? 8 }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
+                            </div>
+                            <div class="sm:col-span-3">
                                 <label class="block font-semibold text-slate-700 mb-1">Section Heading</label>
                                 <input type="text" name="sections[featured_courses][heading]" value="{{ $sections['featured_courses']['heading'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
-                            <div class="sm:col-span-2">
+                            <div class="sm:col-span-3">
                                 <label class="block font-semibold text-slate-700 mb-1">Subtitle</label>
                                 <textarea name="sections[featured_courses][subtitle]" rows="2" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">{{ $sections['featured_courses']['subtitle'] ?? '' }}</textarea>
                             </div>
+                        </div>
+
+                        <!-- Featured Courses Assignment Box -->
+                        <div class="p-4 bg-slate-50 border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between gap-3 flex-wrap">
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                                        <span class="text-amber-500">★</span>
+                                        <span>Currently Featured Courses ({{ isset($featuredCourses) ? $featuredCourses->count() : 0 }})</span>
+                                    </h4>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Courses marked as "Featured" display in this homepage grid. If none are explicitly marked, latest published courses display as fallback.</p>
+                                </div>
+                                <a href="{{ route('admin.courses.index', ['status' => 'featured']) }}" target="_blank" class="text-[11px] font-semibold text-[#344C3D] hover:underline flex items-center gap-1">
+                                    <span>Manage in Courses Manager</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                </a>
+                            </div>
+
+                            @if (isset($featuredCourses) && $featuredCourses->isNotEmpty())
+                                <div class="divide-y divide-slate-200 bg-white border border-slate-200">
+                                    @foreach ($featuredCourses as $fCourse)
+                                        <div class="px-3.5 py-2.5 flex items-center justify-between gap-3 text-xs">
+                                            <div class="min-w-0 flex-1">
+                                                <p class="font-semibold text-slate-800 truncate">{{ $fCourse->title }}</p>
+                                                <p class="text-[11px] text-slate-500 truncate">{{ $fCourse->instructor?->name ?? 'Instructor' }} · ${{ number_format($fCourse->price, 2) }}</p>
+                                            </div>
+                                            <div class="flex items-center gap-2 shrink-0">
+                                                <a href="{{ route('admin.courses.edit', $fCourse) }}" target="_blank" class="px-2 py-1 text-[11px] text-slate-600 hover:text-slate-900 border border-slate-200">Edit</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="p-3 bg-white border border-dashed border-slate-300 text-center text-[11px] text-slate-500">
+                                    No courses are specifically marked as Featured yet. The homepage will fallback to displaying latest published courses.
+                                    <a href="{{ route('admin.courses.index') }}" class="text-[#344C3D] font-semibold underline ml-1">Go to Courses to feature courses</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -578,7 +620,7 @@
                                 <input type="text" name="sections[trending_courses][eyebrow]" value="{{ $sections['trending_courses']['eyebrow'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Max Items</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Max Courses to Display (Limit)</label>
                                 <input type="number" min="1" max="12" name="sections[trending_courses][limit]" value="{{ $sections['trending_courses']['limit'] ?? 4 }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
                             <div class="sm:col-span-2">
@@ -589,6 +631,44 @@
                                 <label class="block font-semibold text-slate-700 mb-1">Subtitle</label>
                                 <textarea name="sections[trending_courses][subtitle]" rows="2" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">{{ $sections['trending_courses']['subtitle'] ?? '' }}</textarea>
                             </div>
+                        </div>
+
+                        <!-- Trending Courses Assignment Box -->
+                        <div class="p-4 bg-slate-50 border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between gap-3 flex-wrap">
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                                        <span class="text-rose-500">🔥</span>
+                                        <span>Currently Most Trending Courses ({{ isset($trendingCourses) ? $trendingCourses->count() : 0 }})</span>
+                                    </h4>
+                                    <p class="text-[11px] text-slate-500 mt-0.5">Courses marked as "Most Trending" display in this featured strip. If none are explicitly marked, highest enrolled courses display as fallback.</p>
+                                </div>
+                                <a href="{{ route('admin.courses.index', ['status' => 'trending']) }}" target="_blank" class="text-[11px] font-semibold text-[#344C3D] hover:underline flex items-center gap-1">
+                                    <span>Manage in Courses Manager</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                </a>
+                            </div>
+
+                            @if (isset($trendingCourses) && $trendingCourses->isNotEmpty())
+                                <div class="divide-y divide-slate-200 bg-white border border-slate-200">
+                                    @foreach ($trendingCourses as $tCourse)
+                                        <div class="px-3.5 py-2.5 flex items-center justify-between gap-3 text-xs">
+                                            <div class="min-w-0 flex-1">
+                                                <p class="font-semibold text-slate-800 truncate">{{ $tCourse->title }}</p>
+                                                <p class="text-[11px] text-slate-500 truncate">{{ $tCourse->instructor?->name ?? 'Instructor' }} · ${{ number_format($tCourse->price, 2) }}</p>
+                                            </div>
+                                            <div class="flex items-center gap-2 shrink-0">
+                                                <a href="{{ route('admin.courses.edit', $tCourse) }}" target="_blank" class="px-2 py-1 text-[11px] text-slate-600 hover:text-slate-900 border border-slate-200">Edit</a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="p-3 bg-white border border-dashed border-slate-300 text-center text-[11px] text-slate-500">
+                                    No courses are specifically marked as Trending yet. The homepage will fallback to displaying top enrolled courses.
+                                    <a href="{{ route('admin.courses.index') }}" class="text-[#344C3D] font-semibold underline ml-1">Go to Courses to mark trending courses</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
 

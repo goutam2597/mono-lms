@@ -17,9 +17,45 @@ class HomeController extends Controller
     {
         $home = $homePageContent->all();
 
+        $featuredLimit = (int) ($home['featured_courses']['limit'] ?? 8);
+        $trendingLimit = (int) ($home['trending_courses']['limit'] ?? 4);
+
+        $featuredCourses = Course::published()
+            ->featured()
+            ->with(['instructor', 'category'])
+            ->latest()
+            ->take($featuredLimit)
+            ->get();
+
+        if ($featuredCourses->isEmpty()) {
+            $featuredCourses = Course::published()
+                ->with(['instructor', 'category'])
+                ->latest()
+                ->take($featuredLimit)
+                ->get();
+        }
+
+        $trendingCourses = Course::published()
+            ->trending()
+            ->with(['instructor', 'category'])
+            ->latest()
+            ->take($trendingLimit)
+            ->get();
+
+        if ($trendingCourses->isEmpty()) {
+            $trendingCourses = Course::published()
+                ->with(['instructor', 'category'])
+                ->withCount('enrollments')
+                ->orderByDesc('enrollments_count')
+                ->latest()
+                ->take($trendingLimit)
+                ->get();
+        }
+
         return view('pages.home', [
             'home' => $home,
-            'featuredCourses' => Course::published()->featured()->with(['instructor', 'category'])->latest()->take((int) ($home['featured_courses']['limit'] ?? 8))->get(),
+            'featuredCourses' => $featuredCourses,
+            'trendingCourses' => $trendingCourses,
             'categories' => Category::withCount(['courses' => fn ($q) => $q->published()])->orderBy('sort_order')->orderBy('name')->take((int) ($home['categories']['limit'] ?? 8))->get(),
             'topInstructors' => Instructor::where('status', 'active')->withCount('courses')->take((int) ($home['instructors']['limit'] ?? 4))->get(),
             'posts' => Post::published()->latest('published_at')->take((int) ($home['blog']['limit'] ?? 4))->get(),

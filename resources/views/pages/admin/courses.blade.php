@@ -10,6 +10,8 @@
                 <a href="{{ route('admin.courses.index') }}" class="h-8 inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.12em] px-3.5 border transition-colors {{ !request('status') ? 'bg-[#08131e] text-white border-[#08131e]' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-900' }}">{{ __('app.common.all') }}</a>
                 <a href="{{ route('admin.courses.index', ['status' => 'published']) }}" class="h-8 inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.12em] px-3.5 border transition-colors {{ request('status') === 'published' ? 'bg-[#08131e] text-white border-[#08131e]' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-900' }}">{{ __('app.common.published') }}</a>
                 <a href="{{ route('admin.courses.index', ['status' => 'draft']) }}" class="h-8 inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.12em] px-3.5 border transition-colors {{ request('status') === 'draft' ? 'bg-[#08131e] text-white border-[#08131e]' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-900' }}">{{ __('app.common.draft') }}</a>
+                <a href="{{ route('admin.courses.index', ['status' => 'featured']) }}" class="h-8 inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.12em] px-3.5 border transition-colors {{ request('status') === 'featured' ? 'bg-[#08131e] text-white border-[#08131e]' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-900' }}">★ Featured</a>
+                <a href="{{ route('admin.courses.index', ['status' => 'trending']) }}" class="h-8 inline-flex items-center text-[10px] font-semibold uppercase tracking-[0.12em] px-3.5 border transition-colors {{ request('status') === 'trending' ? 'bg-[#08131e] text-white border-[#08131e]' : 'bg-white text-neutral-600 border-neutral-300 hover:border-neutral-900' }}">🔥 Trending</a>
                 <a href="{{ route('admin.courses.create') }}" class="action-btn action-btn-primary h-9 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">
                     + {{ __('instructor.courses.create') ?: 'Create Course' }}
                 </a>
@@ -47,9 +49,21 @@
                             <td class="px-6 py-3.5 font-semibold text-[#392c7d]">{{ __('app.common.currency') }}{{ number_format($course->price, 2) }}</td>
                             <td class="px-6 py-3.5 text-[#5d5d5d]">{{ $course->enrollments_count }}</td>
                             <td class="px-6 py-3.5">
-                                <span class="inline-flex items-center justify-center h-6 px-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] {{ $course->is_published ? 'bg-[#03c95a]/10 text-[#0d7a38] border border-[#03c95a]/20' : 'bg-gray-100 text-gray-500 border border-gray-200' }}">
-                                    {{ $course->is_published ? __('app.common.published') : __('app.common.draft') }}
-                                </span>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span class="inline-flex items-center justify-center h-6 px-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] {{ $course->is_published ? 'bg-[#03c95a]/10 text-[#0d7a38] border border-[#03c95a]/20' : 'bg-gray-100 text-gray-500 border border-gray-200' }}">
+                                        {{ $course->is_published ? __('app.common.published') : __('app.common.draft') }}
+                                    </span>
+                                    @if ($course->is_featured)
+                                        <span class="inline-flex items-center justify-center h-6 px-2 text-[10px] font-semibold uppercase tracking-[0.08em] bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/25" title="Featured Course on Homepage">
+                                            ★ Featured
+                                        </span>
+                                    @endif
+                                    @if ($course->is_trending)
+                                        <span class="inline-flex items-center justify-center h-6 px-2 text-[10px] font-semibold uppercase tracking-[0.08em] bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/25" title="Trending Course on Homepage">
+                                            🔥 Trending
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-6 py-3.5 text-right">
                                 <button type="button" class="action-btn" data-menu-toggle="course-menu-{{ $course->id }}" aria-haspopup="true">
@@ -86,6 +100,20 @@
                         <button type="submit" class="menu-item">{{ __('admin.courses.approve') }}</button>
                     </form>
                 @endif
+            @endcanany
+            @canany(['courses.manage'])
+                <form method="POST" action="{{ route('admin.courses.toggle-featured', $course) }}">
+                    @csrf
+                    <button type="submit" class="menu-item">
+                        {{ $course->is_featured ? '★ Remove from Featured' : '★ Feature on Home' }}
+                    </button>
+                </form>
+                <form method="POST" action="{{ route('admin.courses.toggle-trending', $course) }}">
+                    @csrf
+                    <button type="submit" class="menu-item">
+                        {{ $course->is_trending ? '🔥 Remove from Trending' : '🔥 Mark as Trending' }}
+                    </button>
+                </form>
             @endcanany
             <div class="menu-sep"></div>
             <form method="POST" action="{{ route('admin.courses.destroy', $course) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
