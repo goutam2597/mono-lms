@@ -351,7 +351,7 @@
                         </div>
 
                         <!-- X-Axis Date Labels (Outside and below the 200px plot area) -->
-                        <div class="flex justify-between pl-8 px-2 pt-2.5 text-[12px] text-[#64748b] font-medium select-none">
+                        <div class="flex justify-between pl-8 px-2 pt-2.5 text-[11px] sm:text-[12px] text-[#64748b] dark:text-neutral-400 font-medium select-none">
                             @foreach($days as $bar)
                                 <span class="flex-1 text-center truncate">{{ $bar['day'] }}</span>
                             @endforeach
@@ -360,23 +360,23 @@
                 </div>
 
                 <!-- Mini Metric Badges (Fills vertical void, aligns card height with left column) -->
-                <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-gray-100">
-                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] font-medium truncate">Weekly Growth</p>
-                        <p class="text-[14px] font-bold text-[#09800f] mt-0.5 flex items-center justify-center gap-1">
+                <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-gray-100 dark:border-[#1f1f1f]">
+                    <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Weekly Growth</p>
+                        <p class="text-[14px] font-bold text-[#09800f] dark:text-emerald-400 mt-0.5 flex items-center justify-center gap-1">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
                             +14.6%
                         </p>
                     </div>
-                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] font-medium truncate">Daily Active</p>
-                        <p class="text-[14px] font-bold text-[#0f172a] mt-0.5">
-                            412 <span class="text-[10px] font-normal text-[#64748b]">avg</span>
+                    <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Daily Active</p>
+                        <p class="text-[14px] font-bold text-[#0f172a] dark:text-white mt-0.5">
+                            412 <span class="text-[10px] font-normal text-[#64748b] dark:text-neutral-400">avg</span>
                         </p>
                     </div>
-                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] font-medium truncate">Completion Rate</p>
-                        <p class="text-[14px] font-bold text-[var(--theme-primary,#344c3d)] mt-0.5">
+                    <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Completion Rate</p>
+                        <p class="text-[14px] font-bold text-[var(--theme-primary,#344c3d)] dark:text-[#86efac] mt-0.5">
                             88.4%
                         </p>
                     </div>
@@ -387,67 +387,67 @@
         <!-- 3. Quick Action Hub Cards (Figma Dev Mode style + Media Library) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3.5">
             <!-- 1. All Students -->
-            <a href="{{ route('admin.students.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[var(--theme-primary,#344c3d)]/10 w-full py-3 rounded-[5px] text-[var(--theme-primary,#344c3d)] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.students.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[var(--theme-primary,#344c3d)]/10 dark:bg-[var(--theme-primary,#344c3d)]/25 w-full py-3 rounded-[5px] text-[var(--theme-primary,#344c3d)] dark:text-[#86efac] flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[var(--theme-primary,#344c3d)] mt-2.5 truncate w-full">Students</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-[#86efac] mt-2.5 truncate w-full">Students</p>
             </a>
 
             <!-- 2. Instructors -->
-            <a href="{{ route('admin.instructors.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#eef9f1] w-full py-3 rounded-[5px] text-[#137547] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.instructors.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#eef9f1] dark:bg-emerald-950/30 w-full py-3 rounded-[5px] text-[#137547] dark:text-emerald-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#137547] mt-2.5 truncate w-full">Instructors</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#137547] dark:group-hover:text-emerald-400 mt-2.5 truncate w-full">Instructors</p>
             </a>
 
             <!-- 3. All Courses -->
-            <a href="{{ route('admin.courses.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#fff8ef] w-full py-3 rounded-[5px] text-[#d97706] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.courses.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fff8ef] dark:bg-amber-950/30 w-full py-3 rounded-[5px] text-[#d97706] dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#d97706] mt-2.5 truncate w-full">Courses</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#d97706] dark:group-hover:text-amber-400 mt-2.5 truncate w-full">Courses</p>
             </a>
 
             <!-- 4. Categories -->
-            <a href="{{ route('admin.categories.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#f1ebf7] w-full py-3 rounded-[5px] text-[#7c3aed] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.categories.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#f1ebf7] dark:bg-purple-950/30 w-full py-3 rounded-[5px] text-[#7c3aed] dark:text-purple-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#7c3aed] mt-2.5 truncate w-full">Categories</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#7c3aed] dark:group-hover:text-purple-400 mt-2.5 truncate w-full">Categories</p>
             </a>
 
             <!-- 5. Media Library (User requested) -->
-            <a href="{{ route('admin.media.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#e0f2fe] w-full py-3 rounded-[5px] text-[#0284c7] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.media.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#e0f2fe] dark:bg-sky-950/30 w-full py-3 rounded-[5px] text-[#0284c7] dark:text-sky-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#0284c7] mt-2.5 truncate w-full">Media</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0284c7] dark:group-hover:text-sky-400 mt-2.5 truncate w-full">Media</p>
             </a>
 
             <!-- 6. All Orders -->
-            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#fbecea] w-full py-3 rounded-[5px] text-[#dc2626] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.orders.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fbecea] dark:bg-rose-950/30 w-full py-3 rounded-[5px] text-[#dc2626] dark:text-rose-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#dc2626] mt-2.5 truncate w-full">Orders</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#dc2626] dark:group-hover:text-rose-400 mt-2.5 truncate w-full">Orders</p>
             </a>
 
             <!-- 7. Live Events -->
-            <a href="{{ route('admin.events.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#fdf4ff] w-full py-3 rounded-[5px] text-[#c026d3] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.events.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fdf4ff] dark:bg-fuchsia-950/30 w-full py-3 rounded-[5px] text-[#c026d3] dark:text-fuchsia-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#c026d3] mt-2.5 truncate w-full">Events</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#c026d3] dark:group-hover:text-fuchsia-400 mt-2.5 truncate w-full">Events</p>
             </a>
 
             <!-- 8. Certificates -->
-            <a href="{{ route('admin.certificates.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#ebf2f1] w-full py-3 rounded-[5px] text-[#0d9488] flex items-center justify-center transition-transform group-hover:scale-105">
+            <a href="{{ route('admin.certificates.index') }}" class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#1f1f1f] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] dark:shadow-none hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#ebf2f1] dark:bg-teal-950/30 w-full py-3 rounded-[5px] text-[#0d9488] dark:text-teal-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#0d9488] mt-2.5 truncate w-full">Certificates</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0d9488] dark:group-hover:text-teal-400 mt-2.5 truncate w-full">Certificates</p>
             </a>
         </div>
 

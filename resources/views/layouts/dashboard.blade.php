@@ -2,7 +2,7 @@
 
 @if ($userType === 'admin' || $userType === 'instructor')
     <!DOCTYPE html>
-    <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[var(--theme-bg,#f4f6f9)]">
+    <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[var(--theme-bg,#f4f6f9)] dark:bg-[#000000]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
