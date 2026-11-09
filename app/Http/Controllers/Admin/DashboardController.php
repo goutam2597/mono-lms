@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Instructor;
+use App\Models\Media;
 use App\Models\Review;
 use App\Models\Student;
 use Illuminate\Contracts\View\View;
@@ -55,6 +56,8 @@ class DashboardController extends Controller
             'action_items' => $pendingCoursesCount + $pendingReviewsCount + 2,
             'reviews' => $reviewsCount,
             'categories' => Category::count(),
+            'media' => Media::count(),
+            'total_media' => Media::count(),
         ];
 
         // Format recent enrollments into Learnify-style orders

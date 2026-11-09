@@ -150,33 +150,33 @@
                 <!-- Right Toolbar Icons (Figma Dev Mode specs) -->
                 <div class="flex items-center gap-2 sm:gap-2.5">
                     <!-- Minimus / Fullscreen -->
-                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="Toggle Fullscreen" class="border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 p-2 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center">
+                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="Toggle Fullscreen" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
                     </button>
 
-                    <!-- Language Switcher Flag -->
-                    <div class="border border-[#e2e8f0] rounded-[5px] px-2 py-1 flex items-center">
-                        <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700" />
+                    <!-- Language Switcher Flag (Unified 34px height) -->
+                    <div class="h-[34px] border border-[#e2e8f0] rounded-[5px] px-2.5 flex items-center bg-white hover:bg-slate-50 transition-colors shrink-0">
+                        <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700 h-full flex items-center [&>button]:h-full [&>button]:py-0 [&>button]:gap-1.5" />
                     </div>
 
                     <!-- Notification Bell with Red Dot Indicator -->
-                    <a href="{{ route('admin.messages.index') }}" title="Notifications" class="border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 p-2 rounded-[5px] relative transition-colors flex items-center justify-center">
+                    <a href="{{ route('admin.messages.index') }}" title="Notifications" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
                         <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                     </a>
 
                     <!-- Dark/Light Mode Toggle -->
-                    <button type="button" title="Light Theme Active" class="border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 p-2 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center">
+                    <button type="button" title="Light Theme Active" class="h-[34px] w-[34px] border border-[#e2e8f0] hover:bg-slate-50 text-slate-600 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
                     </button>
 
                     <!-- User Profile Avatar (Figma rectangle with 5px radius) -->
-                    <div class="flex items-center gap-2 pl-1">
+                    <div class="flex items-center pl-1 shrink-0">
                         @php $u = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user(); @endphp
                         @if ($u?->avatar)
-                            <img src="{{ $u->avatar }}" alt="{{ $u->name }}" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-200">
+                            <img src="{{ $u->avatar }}" alt="{{ $u->name }}" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200">
                         @else
-                            <div class="w-8 h-8 rounded-[5px] bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#1f6db2]/40 shadow-xs">
+                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#1f6db2]/40 shadow-xs">
                                 {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
                             </div>
                         @endif

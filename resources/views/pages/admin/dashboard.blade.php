@@ -158,6 +158,76 @@
             </div>
         </div>
 
+        @if(($pendingCourses && $pendingCourses->isNotEmpty()) || ($pendingReviews && $pendingReviews->isNotEmpty()))
+            <!-- Action Items: Pending Approvals & Moderation Banner -->
+            <div class="bg-amber-50/70 border border-amber-200 rounded-[5px] p-4.5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-amber-200/60">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        <h2 class="text-sm font-bold text-slate-900">Action Required: Pending Approvals &amp; Moderation</h2>
+                    </div>
+                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-[4px] bg-amber-100 text-amber-800 self-start sm:self-auto">
+                        {{ ($pendingCourses ? $pendingCourses->count() : 0) + ($pendingReviews ? $pendingReviews->count() : 0) }} Items Pending
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                    @if($pendingCourses && $pendingCourses->isNotEmpty())
+                        <div class="bg-white border border-amber-200/60 rounded-[5px] p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                                    Courses Awaiting Publication
+                                </span>
+                                <a href="{{ route('admin.courses.index') }}" class="text-[#1f6db2] hover:underline">View All</a>
+                            </div>
+                            @foreach($pendingCourses->take(3) as $pCourse)
+                                <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-slate-800 truncate">{{ $pCourse->title }}</p>
+                                        <p class="text-[11px] text-slate-500 truncate">{{ $pCourse->instructor?->name ?? 'Instructor' }} &bull; {{ $pCourse->category?->name ?? 'Uncategorized' }}</p>
+                                    </div>
+                                    <form action="{{ route('admin.courses.publish', $pCourse) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
+                                            Publish
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    @if($pendingReviews && $pendingReviews->isNotEmpty())
+                        <div class="bg-white border border-amber-200/60 rounded-[5px] p-3.5 space-y-2.5">
+                            <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                                    Reviews to Moderate
+                                </span>
+                                <a href="{{ route('admin.reviews.index') }}" class="text-[#1f6db2] hover:underline">View All</a>
+                            </div>
+                            @foreach($pendingReviews->take(3) as $pRev)
+                                <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-slate-800 truncate">&ldquo;{{ Str::limit($pRev->comment, 40) }}&rdquo;</p>
+                                        <p class="text-[11px] text-slate-500 truncate">{{ $pRev->student?->name ?? 'Student' }} on {{ $pRev->course?->title ?? 'Course' }}</p>
+                                    </div>
+                                    <form action="{{ route('admin.reviews.approve', $pRev) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-[#1f6db2] hover:bg-[#18558a] text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
+                                            Approve
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
         <!-- 2. Dual Grid: Recent Requests & Student Statistics Bar Chart (Figma Dev Mode Node 10060:83458) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             <!-- Left: Recent Enrollment Requests (5 cols) -->
@@ -266,54 +336,70 @@
             </div>
         </div>
 
-        <!-- 3. Six Pastel Quick Action Hub Cards (Figma Dev Mode Node 10060:83659) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <!-- 3. Quick Action Hub Cards (Figma Dev Mode style + Media Library) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3.5">
             <!-- 1. All Students -->
-            <a href="{{ route('admin.students.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#ebf2f9] w-full py-3.5 rounded-[5px] text-[#1f6db2] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+            <a href="{{ route('admin.students.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#ebf2f9] w-full py-3 rounded-[5px] text-[#1f6db2] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#1f6db2] mt-3">All Students</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#1f6db2] mt-2.5 truncate w-full">Students</p>
             </a>
 
             <!-- 2. Instructors -->
-            <a href="{{ route('admin.instructors.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#eef9f1] w-full py-3.5 rounded-[5px] text-[#137547] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
+            <a href="{{ route('admin.instructors.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#eef9f1] w-full py-3 rounded-[5px] text-[#137547] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#137547] mt-3">Instructors</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#137547] mt-2.5 truncate w-full">Instructors</p>
             </a>
 
-            <!-- 3. Categories -->
-            <a href="{{ route('admin.categories.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#fff8ef] w-full py-3.5 rounded-[5px] text-[#d97706] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+            <!-- 3. All Courses -->
+            <a href="{{ route('admin.courses.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fff8ef] w-full py-3 rounded-[5px] text-[#d97706] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#d97706] mt-3">Categories</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#d97706] mt-2.5 truncate w-full">Courses</p>
             </a>
 
-            <!-- 4. All Orders -->
-            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#fbecea] w-full py-3.5 rounded-[5px] text-[#dc2626] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+            <!-- 4. Categories -->
+            <a href="{{ route('admin.categories.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#f1ebf7] w-full py-3 rounded-[5px] text-[#7c3aed] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#dc2626] mt-3">All Orders</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#7c3aed] mt-2.5 truncate w-full">Categories</p>
             </a>
 
-            <!-- 5. Live Events -->
-            <a href="{{ route('admin.events.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#f1ebf7] w-full py-3.5 rounded-[5px] text-[#9333ea] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/></svg>
+            <!-- 5. Media Library (User requested) -->
+            <a href="{{ route('admin.media.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#e0f2fe] w-full py-3 rounded-[5px] text-[#0284c7] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#9333ea] mt-3">Live Events</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#0284c7] mt-2.5 truncate w-full">Media</p>
             </a>
 
-            <!-- 6. Certificates -->
-            <a href="{{ route('admin.certificates.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
-                <div class="bg-[#ebf2f1] w-full py-3.5 rounded-[5px] text-[#0d9488] flex items-center justify-center transition-transform group-hover:scale-105">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            <!-- 6. All Orders -->
+            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fbecea] w-full py-3 rounded-[5px] text-[#dc2626] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
                 </div>
-                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#0d9488] mt-3">Certificates</p>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#dc2626] mt-2.5 truncate w-full">Orders</p>
+            </a>
+
+            <!-- 7. Live Events -->
+            <a href="{{ route('admin.events.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fdf4ff] w-full py-3 rounded-[5px] text-[#c026d3] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/></svg>
+                </div>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#c026d3] mt-2.5 truncate w-full">Events</p>
+            </a>
+
+            <!-- 8. Certificates -->
+            <a href="{{ route('admin.certificates.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-3.5 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#ebf2f1] w-full py-3 rounded-[5px] text-[#0d9488] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                </div>
+                <p class="font-semibold text-xs text-[#0f172a] group-hover:text-[#0d9488] mt-2.5 truncate w-full">Certificates</p>
             </a>
         </div>
 
@@ -358,38 +444,50 @@
                         <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
                     </div>
 
-                    <!-- Semi-Donut Radial Gauge (Figma Node style) -->
-                    <div class="py-5 flex flex-col items-center justify-center relative">
-                        <div class="relative w-44 h-28 flex items-center justify-center">
-                            <svg class="w-44 h-44 -rotate-90" viewBox="0 0 100 100">
-                                <circle cx="50" cy="50" r="40" stroke="#f1f5f9" stroke-width="9" fill="transparent" stroke-dasharray="125 250" stroke-linecap="round"/>
-                                <circle cx="50" cy="50" r="40" stroke="#1f6db2" stroke-width="9" fill="transparent" stroke-dasharray="100 250" stroke-linecap="round"/>
+                    <!-- Semi-Circle Arch Speedometer / Gauge (Figma Node style) -->
+                    <div class="pt-5 pb-3 flex flex-col items-center justify-center">
+                        <div class="relative w-52 h-28 flex items-end justify-center overflow-hidden">
+                            <svg class="w-52 h-28" viewBox="0 0 200 110">
+                                <!-- Background Track Arch (180deg semi-circle) -->
+                                <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="#eef2f7" stroke-width="14" stroke-linecap="round"/>
+                                <!-- Active Fill Arch (80% of semi-circle: 188.5 of 235.6) -->
+                                <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="#1f6db2" stroke-width="14" stroke-dasharray="188.5 235.6" stroke-linecap="round"/>
                             </svg>
-                            <div class="absolute bottom-2 text-center">
-                                <p class="text-[11px] text-[#64748b] font-medium">All Learners</p>
-                                <p class="text-2xl font-bold text-[#0f172a]">80%</p>
+                            <!-- Center Label Inside the Gauge -->
+                            <div class="absolute bottom-1 inset-x-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                                <span class="text-xs text-[#64748b] font-medium leading-none">All Learners</span>
+                                <span class="text-[28px] font-extrabold text-[#0f172a] tracking-tight mt-1">80%</span>
                             </div>
                         </div>
 
-                        <!-- Male / Female or Desktop / Mobile Breakdown -->
-                        <div class="grid grid-cols-2 gap-4 w-full mt-4 pt-3 border-t border-gray-100 text-xs">
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] flex items-center justify-center">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3"/></svg>
+                        <!-- Device Breakdown (Figma Dev Mode Node 10060:83868) -->
+                        <div class="space-y-3 w-full mt-5 pt-3.5 border-t border-gray-100">
+                            <!-- Desktop -->
+                            <div class="flex items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] flex items-center justify-center shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-[#0f172a] leading-tight">Desktop</p>
+                                        <p class="text-[11px] text-[#137547] font-medium">+15% <span class="text-[#64748b]">Since Last Week</span></p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="font-bold text-[#0f172a]">69%</p>
-                                    <p class="text-[10px] text-emerald-600 font-semibold">+15% Desktop</p>
-                                </div>
+                                <span class="font-bold text-sm text-[#0f172a]">69%</span>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-full bg-[#7c3aed]/10 text-[#7c3aed] flex items-center justify-center">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+
+                            <!-- Mobile -->
+                            <div class="flex items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-[#7c3aed]/10 text-[#7c3aed] flex items-center justify-center shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-[#0f172a] leading-tight">Mobile</p>
+                                        <p class="text-[11px] text-[#137547] font-medium">+11% <span class="text-[#64748b]">Since Last Week</span></p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="font-bold text-[#0f172a]">56%</p>
-                                    <p class="text-[10px] text-emerald-600 font-semibold">+11% Mobile</p>
-                                </div>
+                                <span class="font-bold text-sm text-[#0f172a]">56%</span>
                             </div>
                         </div>
                     </div>
