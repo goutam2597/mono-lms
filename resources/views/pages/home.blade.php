@@ -480,9 +480,22 @@
                                             <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-[20px] flex items-center justify-center mb-3 sm:mb-3.5 transition-transform duration-300 group-hover:scale-105"
                                                  style="background-color: {{ $category->color ? $category->color.'10' : '#f0fdf4' }}; border: 1.5px solid {{ $category->color ? $category->color.'25' : '#dcfce7' }};">
 
-                                                <!-- Category Image / SVG / Emoji -->
+                                                <!-- Category Image / SVG / Emoji with Graceful Fallback -->
                                                 @if ($category->imageUrl())
-                                                    <img src="{{ $category->imageUrl() }}" alt="{{ $category->name }}" class="w-11 h-11 sm:w-12 sm:h-12 object-contain pointer-events-none">
+                                                    <img src="{{ $category->imageUrl() }}" 
+                                                         alt="{{ $category->name }}" 
+                                                         class="w-11 h-11 sm:w-12 sm:h-12 object-contain pointer-events-none"
+                                                         onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+                                                         loading="lazy">
+                                                    <div class="hidden items-center justify-center w-11 h-11 sm:w-12 sm:h-12">
+                                                        @if ($category->icon && str_starts_with($category->icon, 'M'))
+                                                            <svg class="w-10 h-10 pointer-events-none" viewBox="0 0 24 24" fill="currentColor" style="color: {{ $category->color ?: '#137547' }};">
+                                                                <path d="{{ $category->icon }}" />
+                                                            </svg>
+                                                        @else
+                                                            <span class="text-3xl sm:text-4xl pointer-events-none">{{ $category->icon ?? '📚' }}</span>
+                                                        @endif
+                                                    </div>
                                                 @elseif ($category->icon && str_starts_with($category->icon, 'M'))
                                                     <svg class="w-10 h-10 pointer-events-none" viewBox="0 0 24 24" fill="currentColor" style="color: {{ $category->color ?: '#137547' }};">
                                                         <path d="{{ $category->icon }}" />

@@ -2,610 +2,610 @@
 
     <div class="space-y-6">
 
-        <!-- 1. Top Executive Welcome Hero Banner (Learnify lf-welcome) -->
-        <div class="relative overflow-hidden rounded-none bg-gradient-to-r from-[#0d1e15] via-[#142d1f] to-[#1e3e2b] text-white p-6 sm:p-7 shadow-sm border border-emerald-900/40">
-            <!-- Subtle background ambient glow -->
-            <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute left-1/3 -bottom-16 w-56 h-56 bg-emerald-400/5 rounded-full blur-2xl pointer-events-none"></div>
+        <!-- Top Welcome & Date Filter Header (Figma Dev Mode Node 10060:83402) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <div class="text-[11px] font-semibold text-[#1f6db2] uppercase tracking-wider mb-0.5">Admin overview</div>
+                <h1 class="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight">
+                    Welcome back, {{ auth('admin')->user()?->name ?? 'Administrator' }}
+                </h1>
+                <p class="text-xs sm:text-[13px] text-[#64748b] mt-0.5">
+                    Today you have <span class="font-semibold text-[#0f172a]">{{ $stats['action_items'] ?? 0 }} action items</span> and <span class="font-semibold text-[#0f172a]">{{ $stats['reviews'] ?? 0 }} reviews</span>,
+                    <a href="{{ route('admin.courses.index') }}" class="text-[#1f6db2] font-semibold hover:underline">View Details</a>
+                </p>
+            </div>
+            <!-- Date Range Filter Pill -->
+            <div class="inline-flex items-center gap-2 bg-white border border-[#e2e8f0] px-3.5 py-2 rounded-[5px] text-xs font-medium text-[#334155] shadow-2xs self-start sm:self-auto">
+                <svg class="w-3.5 h-3.5 text-[#1f6db2]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5" />
+                </svg>
+                <span>{{ now()->subDays(6)->format('d M Y') }} - {{ now()->format('d M Y') }}</span>
+            </div>
+        </div>
 
-            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <!-- Left: Greeting, subtitle, quick action buttons -->
-                <div class="max-w-2xl">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-none text-[10px] font-semibold uppercase tracking-[0.14em] bg-white/10 text-emerald-200 border border-white/10 backdrop-blur-xs">
-                        <svg class="w-3.5 h-3.5 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
-                        </svg>
-                        <span>Admin overview</span>
+        <!-- 1. Four Metric Cards with Wave Sparklines (Figma Dev Mode Node 10060:83410) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Card 1: All Students (Blue) -->
+            <div class="bg-white border border-[#e2e8f0] rounded-[5px] shadow-[0px_4px_7px_rgba(238,238,238,0.25)] p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#1f6db2] text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Students</p>
+                            <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-[5px] text-[11px] font-semibold bg-[#eef9f1] text-[#137547] shrink-0">
+                        +20%
                     </span>
+                </div>
+                <!-- Sparkline Wave SVG (Blue) -->
+                <div class="mt-4 -mx-5 -mb-5 h-11 overflow-hidden">
+                    <svg class="w-full h-full" viewBox="0 0 260 50" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#1f6db2" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#1f6db2" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,35 Q30,15 65,30 T130,20 T195,35 T260,15 L260,50 L0,50 Z" fill="url(#gradBlue)"/>
+                        <path d="M0,35 Q30,15 65,30 T130,20 T195,35 T260,15" fill="none" stroke="#1f6db2" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
 
-                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-3 mb-1 text-white">
-                        Welcome back, {{ auth('admin')->user()?->name ?? 'Administrator' }} 👋
-                    </h2>
-                    <p class="text-xs sm:text-sm text-emerald-100/75 max-w-xl">
-                        Here is what is happening across Mono LMS today.
-                    </p>
+            <!-- Card 2: Total Courses (Orange) -->
+            <div class="bg-white border border-[#e2e8f0] rounded-[5px] shadow-[0px_4px_7px_rgba(238,238,238,0.25)] p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#e65c00] text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Courses</p>
+                            <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_courses'] ?? $stats['courses'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-[5px] text-[11px] font-semibold bg-[#eef9f1] text-[#137547] shrink-0">
+                        +15%
+                    </span>
+                </div>
+                <!-- Sparkline Wave SVG (Orange) -->
+                <div class="mt-4 -mx-5 -mb-5 h-11 overflow-hidden">
+                    <svg class="w-full h-full" viewBox="0 0 260 50" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradOrange" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#e65c00" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#e65c00" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,25 Q35,40 70,25 T140,35 T200,18 T260,30 L260,50 L0,50 Z" fill="url(#gradOrange)"/>
+                        <path d="M0,25 Q35,40 70,25 T140,35 T200,18 T260,30" fill="none" stroke="#e65c00" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
 
-                    <div class="flex flex-wrap items-center gap-2.5 mt-5">
-                        <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] px-4 py-2.5 rounded-none bg-white text-slate-900 hover:bg-slate-100 transition-colors shadow-xs">
-                            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <span>Review courses</span>
+            <!-- Card 3: Total Instructors (Purple) -->
+            <div class="bg-white border border-[#e2e8f0] rounded-[5px] shadow-[0px_4px_7px_rgba(238,238,238,0.25)] p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#7c3aed] text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Instructors</p>
+                            <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_instructors'] ?? $stats['instructors'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-[5px] text-[11px] font-semibold bg-[#eef9f1] text-[#137547] shrink-0">
+                        +18%
+                    </span>
+                </div>
+                <!-- Sparkline Wave SVG (Purple) -->
+                <div class="mt-4 -mx-5 -mb-5 h-11 overflow-hidden">
+                    <svg class="w-full h-full" viewBox="0 0 260 50" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradPurple" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,38 Q40,15 80,30 T160,18 T220,32 T260,15 L260,50 L0,50 Z" fill="url(#gradPurple)"/>
+                        <path d="M0,38 Q40,15 80,30 T160,18 T220,32 T260,15" fill="none" stroke="#7c3aed" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Card 4: Total Revenue (Magenta) -->
+            <div class="bg-white border border-[#e2e8f0] rounded-[5px] shadow-[0px_4px_7px_rgba(238,238,238,0.25)] p-5 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#db2777] text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Revenue</p>
+                            <p class="text-[20px] font-bold text-[#0f172a] mt-1">${{ number_format($stats['total_revenue'] ?? $stats['revenue'] ?? 0, 2) }}</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-[5px] text-[11px] font-semibold bg-[#eef9f1] text-[#137547] shrink-0">
+                        +12%
+                    </span>
+                </div>
+                <!-- Sparkline Wave SVG (Magenta) -->
+                <div class="mt-4 -mx-5 -mb-5 h-11 overflow-hidden">
+                    <svg class="w-full h-full" viewBox="0 0 260 50" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="gradMagenta" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#db2777" stop-opacity="0.25"/>
+                                <stop offset="100%" stop-color="#db2777" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,32 Q35,45 75,20 T150,38 T215,22 T260,15 L260,50 L0,50 Z" fill="url(#gradMagenta)"/>
+                        <path d="M0,32 Q35,45 75,20 T150,38 T215,22 T260,15" fill="none" stroke="#db2777" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Dual Grid: Recent Requests & Student Statistics Bar Chart (Figma Dev Mode Node 10060:83458) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <!-- Left: Recent Enrollment Requests (5 cols) -->
+            <div class="lg:col-span-5 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Recent Enrollments</h2>
+                        <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2] transition-colors">
+                            All Enrollments
                         </a>
-                        <a href="{{ route('admin.students.index') }}" class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] px-4 py-2.5 rounded-none bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors backdrop-blur-xs">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                            <span>Add user</span>
-                        </a>
-                        <a href="{{ route('admin.courses.index') }}" class="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] px-4 py-2.5 rounded-none bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors backdrop-blur-xs">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                            <span>Reports</span>
-                        </a>
+                    </div>
+
+                    <div class="divide-y divide-gray-100 mt-2">
+                        @forelse($recentOrders->take(5) as $order)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] font-bold text-xs flex items-center justify-center shrink-0">
+                                        {{ strtoupper(substr($order['customer'], 0, 1)) }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[13px] font-semibold text-[#0f172a] truncate">{{ $order['customer'] }}</p>
+                                        <p class="text-[11px] text-[#64748b] truncate">{{ $order['course'] }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[#ebf2f9] text-[#1f6db2]' : 'bg-[#eef9f1] text-[#137547]' }}">
+                                        {{ $order['status'] }}
+                                    </span>
+                                    <a href="{{ route('admin.orders.index') }}" title="View" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[#1f6db2] hover:border-[#1f6db2] flex items-center justify-center transition-colors">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="py-4 text-xs text-slate-400 text-center">No recent enrollments found.</p>
+                        @endforelse
                     </div>
                 </div>
 
-                <!-- Right: 3 Frosted Glass KPI Tiles (Learnify right column) -->
-                <div class="grid grid-cols-3 gap-2.5 sm:gap-3 w-full lg:w-auto shrink-0">
-                    <div class="rounded-none p-3.5 sm:p-4 text-center bg-white/[0.08] border border-white/10 backdrop-blur-sm">
-                        <div class="text-base sm:text-xl font-bold tracking-tight text-white mb-0.5">
-                            ${{ number_format($stats['revenue_this_month'], 2) }}
-                        </div>
-                        <div class="text-[10px] text-emerald-200/70 font-semibold uppercase tracking-wider">This month</div>
-                    </div>
-                    <div class="rounded-none p-3.5 sm:p-4 text-center bg-white/[0.08] border border-white/10 backdrop-blur-sm">
-                        <div class="text-base sm:text-xl font-bold tracking-tight text-white mb-0.5">
-                            {{ $stats['published_courses'] }}
-                        </div>
-                        <div class="text-[10px] text-emerald-200/70 font-semibold uppercase tracking-wider">Live courses</div>
-                    </div>
-                    <div class="rounded-none p-3.5 sm:p-4 text-center bg-white/[0.08] border border-white/10 backdrop-blur-sm">
-                        <div class="text-base sm:text-xl font-bold tracking-tight text-white mb-0.5">
-                            {{ $stats['action_items'] }}
-                        </div>
-                        <div class="text-[10px] text-emerald-200/70 font-semibold uppercase tracking-wider">Action items</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Getting Started Setup Checklist (Learnify lf-setup) -->
-        <div id="lfSetupChecklist" class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden transition-all">
-            <!-- Header bar -->
-            <div class="px-5 py-4 flex flex-wrap items-center justify-between gap-3 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                    <span class="w-7 h-7 rounded-none bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
-                    </span>
-                    <span class="text-sm font-bold text-slate-800">Getting started</span>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-slate-100 text-slate-600 border border-slate-200">4 of 5 done</span>
-                </div>
-                <button type="button" onclick="document.getElementById('lfSetupChecklist').style.display='none'" class="text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-slate-600 transition-colors">
-                    Hide this list
-                </button>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-100 h-1">
-                <div class="bg-[#344c3d] h-1 transition-all duration-500" style="width: 80%"></div>
-            </div>
-
-            <!-- Items list -->
-            <div class="divide-y divide-slate-100">
-                <!-- Item 1: Site name & logo (Done) -->
-                <div class="px-5 py-3.5 flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-none bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </span>
-                    <div class="flex-grow min-w-0">
-                        <span class="text-xs font-semibold text-slate-400 line-through">Add your site name and logo</span>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-none border border-emerald-200">Done</span>
-                </div>
-
-                <!-- Item 2: Payment method (Done) -->
-                <div class="px-5 py-3.5 flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-none bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </span>
-                    <div class="flex-grow min-w-0">
-                        <span class="text-xs font-semibold text-slate-400 line-through">Turn on a payment method</span>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-none border border-emerald-200">Done</span>
-                </div>
-
-                <!-- Item 3: Connect SMTP (In progress) -->
-                <div class="px-5 py-3.5 flex items-center justify-between gap-3 bg-slate-50/50">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <span class="w-6 h-6 rounded-none bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 text-[11px] font-bold border border-blue-200">
-                            3
-                        </span>
-                        <div class="min-w-0">
-                            <div class="text-xs font-semibold text-slate-800">Connect your email (SMTP)</div>
-                            <div class="text-[11px] text-slate-500">Needed for password resets, receipts and platform notifications.</div>
-                        </div>
-                    </div>
-                    <a href="{{ route('admin.languages.index') }}" class="action-btn action-btn-ghost h-8 text-[10px]">
-                        Mail settings
+                <div class="pt-3 border-t border-gray-100 text-center">
+                    <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">
+                        View All Orders & Invoices &rarr;
                     </a>
                 </div>
-
-                <!-- Item 4: Publish first course (Done) -->
-                <div class="px-5 py-3.5 flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-none bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </span>
-                    <div class="flex-grow min-w-0">
-                        <span class="text-xs font-semibold text-slate-400 line-through">Publish your first course</span>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-none border border-emerald-200">Done</span>
-                </div>
-
-                <!-- Item 5: Background tasks running (Done) -->
-                <div class="px-5 py-3.5 flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-none bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </span>
-                    <div class="flex-grow min-w-0">
-                        <span class="text-xs font-semibold text-slate-400 line-through">Background tasks are running</span>
-                    </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-none border border-emerald-200">Done</span>
-                </div>
             </div>
-            </div>
-        </div>
 
-        <!-- 3. Primary KPI Stat Cards (4 columns matching Learnify stat-cards) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-            <!-- Metric 1: Total Users -->
-            <a href="{{ route('admin.students.index') }}" class="bg-white border border-slate-200 rounded-none p-5 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all group flex flex-col justify-between">
-                <div class="flex items-center justify-between gap-3 mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Users</span>
-                    <div class="w-10 h-10 rounded-none bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                    </div>
-                </div>
+            <!-- Right: Student Statistics Bar Chart (7 cols) -->
+            <div class="lg:col-span-7 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{{ number_format($stats['total_users']) }}</span>
-                        <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-none border border-emerald-200">
-                            <svg class="w-3 h-3 me-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                            100%
-                        </span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 mt-1.5">vs last month</div>
-                </div>
-            </a>
-
-            <!-- Metric 2: Courses -->
-            <a href="{{ route('admin.courses.index') }}" class="bg-white border border-slate-200 rounded-none p-5 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all group flex flex-col justify-between">
-                <div class="flex items-center justify-between gap-3 mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Courses</span>
-                    <div class="w-10 h-10 rounded-none bg-cyan-50 text-cyan-700 flex items-center justify-center shrink-0 border border-cyan-100 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{{ $stats['courses'] }}</span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 mt-1.5">{{ $stats['published_courses'] }} published</div>
-                </div>
-            </a>
-
-            <!-- Metric 3: Enrollments -->
-            <a href="{{ route('admin.courses.index') }}" class="bg-white border border-slate-200 rounded-none p-5 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all group flex flex-col justify-between">
-                <div class="flex items-center justify-between gap-3 mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Enrollments</span>
-                    <div class="w-10 h-10 rounded-none bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 border border-amber-100 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{{ number_format($stats['enrollments']) }}</span>
-                        <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-none border border-emerald-200">
-                            <svg class="w-3 h-3 me-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                            100%
-                        </span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 mt-1.5">vs last month</div>
-                </div>
-            </a>
-
-            <!-- Metric 4: Revenue -->
-            <a href="{{ route('admin.plans.index') }}" class="bg-white border border-slate-200 rounded-none p-5 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all group flex flex-col justify-between">
-                <div class="flex items-center justify-between gap-3 mb-3">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Revenue</span>
-                    <div class="w-10 h-10 rounded-none bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100 group-hover:bg-[#344c3d] group-hover:text-white transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">${{ number_format($stats['revenue'], 2) }}</span>
-                        <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-none border border-emerald-200">
-                            <svg class="w-3 h-3 me-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                            59%
-                        </span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 mt-1.5">vs last month</div>
-                </div>
-            </a>
-        </div>
-
-        <!-- 4. Revenue & Enrollments Chart + Needs your attention (Learnify row 2) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            <!-- Left (8 cols): Revenue & Enrollments Interactive Chart -->
-            <div class="lg:col-span-8 bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                        <span class="text-sm font-bold text-slate-900">Revenue & Enrollments</span>
-                    </div>
-                    <div class="flex items-center gap-4 text-xs">
-                        <span class="inline-flex items-center gap-1.5 text-slate-500 font-medium">
-                            <span class="w-2.5 h-2.5 rounded-none bg-[#344c3d]"></span>
-                            <span>Revenue ($)</span>
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 text-slate-500 font-medium">
-                            <span class="w-2.5 h-2.5 rounded-none bg-cyan-500"></span>
-                            <span>Enrollments</span>
-                        </span>
-                        <span class="text-slate-400 text-[10px] uppercase font-semibold tracking-wider">Last 12 months</span>
-                    </div>
-                </div>
-
-                <!-- SVG Area & Line Chart -->
-                <div class="p-5 pt-6 flex-1 flex flex-col justify-end">
-                    <div class="h-60 sm:h-68 w-full relative">
-                        <!-- Chart Grid Lines -->
-                        <div class="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] text-slate-300">
-                            <div class="border-b border-slate-100 flex justify-between"><span>$5,000</span></div>
-                            <div class="border-b border-slate-100 flex justify-between"><span>$3,750</span></div>
-                            <div class="border-b border-slate-100 flex justify-between"><span>$2,500</span></div>
-                            <div class="border-b border-slate-100 flex justify-between"><span>$1,250</span></div>
-                            <div class="border-b border-slate-200 flex justify-between"><span>$0</span></div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-gray-100">
+                        <div>
+                            <h2 class="text-sm font-bold text-[#0f172a]">Students Statistics &mdash; Revenue & Enrollments</h2>
+                            <p class="text-[11px] text-[#64748b] mt-0.5">Total Enrolled Students: <span class="font-bold text-[#0f172a]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span></p>
                         </div>
-
-                        <!-- SVG Dual Line Paths -->
-                        <svg class="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 700 240" preserveAspectRatio="none">
-                            <defs>
-                                <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#344c3d" stop-opacity="0.25"/>
-                                    <stop offset="100%" stop-color="#344c3d" stop-opacity="0.0"/>
-                                </linearGradient>
-                                <linearGradient id="enrollGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.2"/>
-                                    <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0"/>
-                                </linearGradient>
-                            </defs>
-
-                            <!-- Revenue Area fill & Path -->
-                            <path d="M 0,225 C 60,210 120,195 180,180 C 240,165 300,175 360,150 C 420,130 480,110 540,80 C 600,60 650,45 700,25 L 700,240 L 0,240 Z" fill="url(#revenueGrad)"/>
-                            <path d="M 0,225 C 60,210 120,195 180,180 C 240,165 300,175 360,150 C 420,130 480,110 540,80 C 600,60 650,45 700,25" fill="none" stroke="#344c3d" stroke-width="3" stroke-linecap="round"/>
-
-                            <!-- Enrollments Area fill & Path -->
-                            <path d="M 0,230 C 60,225 120,215 180,200 C 240,205 300,190 360,180 C 420,170 480,155 540,130 C 600,105 650,90 700,75 L 700,240 L 0,240 Z" fill="url(#enrollGrad)"/>
-                            <path d="M 0,230 C 60,225 120,215 180,200 C 240,205 300,190 360,180 C 420,170 480,155 540,130 C 600,105 650,90 700,75" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4 3" stroke-linecap="round"/>
-
-                            <!-- Highlight Data Points -->
-                            <circle cx="360" cy="150" r="4.5" fill="#344c3d" stroke="#ffffff" stroke-width="2.5"/>
-                            <circle cx="540" cy="80" r="4.5" fill="#344c3d" stroke="#ffffff" stroke-width="2.5"/>
-                            <circle cx="700" cy="25" r="5" fill="#344c3d" stroke="#ffffff" stroke-width="2.5"/>
-                            <circle cx="700" cy="75" r="4.5" fill="#06b6d4" stroke="#ffffff" stroke-width="2.5"/>
-                        </svg>
+                        <div class="flex items-center gap-4 text-xs font-medium">
+                            <span class="flex items-center gap-1.5 text-[#334155]">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#1f6db2]"></span>
+                                New Students
+                            </span>
+                            <span class="flex items-center gap-1.5 text-[#334155]">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#93c5fd]"></span>
+                                Total Enrollments
+                            </span>
+                            <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#1f6db2] hover:underline">
+                                View All
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- Month X-Axis Labels -->
-                    <div class="flex justify-between text-[11px] font-medium text-slate-400 pt-3 border-t border-slate-100">
-                        @foreach($chartData['labels'] as $label)
-                            <span>{{ $label }}</span>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right (4 cols): Needs your attention (Learnify attention panel) -->
-            <div class="lg:col-span-4 bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-5 border-b border-slate-100 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    <span class="text-sm font-bold text-slate-900">Needs your attention</span>
-                </div>
-
-                <div class="divide-y divide-slate-100">
-                    <!-- Attention 1: Courses awaiting approval -->
-                    <a href="{{ route('admin.courses.index') }}" class="p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                        <span class="w-9 h-9 rounded-none bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-200">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        </span>
-                        <div class="flex-grow min-w-0">
-                            <div class="text-xs font-semibold text-slate-800 truncate">Courses awaiting approval</div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none border {{ $stats['pending_courses'] > 0 ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-slate-100 text-slate-500 border-slate-200' }}">
-                            {{ $stats['pending_courses'] }}
-                        </span>
-                    </a>
-
-                    <!-- Attention 2: Payout requests -->
-                    <a href="{{ route('admin.instructors.index') }}" class="p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                        <span class="w-9 h-9 rounded-none bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                        </span>
-                        <div class="flex-grow min-w-0">
-                            <div class="text-xs font-semibold text-slate-800 truncate">Payout requests</div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-emerald-100 text-emerald-800 border border-emerald-200">
-                            2
-                        </span>
-                    </a>
-
-                    <!-- Attention 3: Refund requests -->
-                    <a href="{{ route('admin.courses.index') }}" class="p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                        <span class="w-9 h-9 rounded-none bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-200">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                        </span>
-                        <div class="flex-grow min-w-0">
-                            <div class="text-xs font-semibold text-slate-800 truncate">Refund requests</div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-rose-100 text-rose-800 border border-rose-200">
-                            1
-                        </span>
-                    </a>
-
-                    <!-- Attention 4: Pending reviews -->
-                    <a href="{{ route('admin.reviews.index') }}" class="p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                        <span class="w-9 h-9 rounded-none bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-200">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-                        </span>
-                        <div class="flex-grow min-w-0">
-                            <div class="text-xs font-semibold text-slate-800 truncate">Pending reviews</div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none border {{ $stats['pending_reviews'] > 0 ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-slate-100 text-slate-500 border-slate-200' }}">
-                            {{ $stats['pending_reviews'] }}
-                        </span>
-                    </a>
-
-                    <!-- Attention 5: Unread messages -->
-                    <a href="{{ route('admin.students.index') }}" class="p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                        <span class="w-9 h-9 rounded-none bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 border border-sky-200">
-                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </span>
-                        <div class="flex-grow min-w-0">
-                            <div class="text-xs font-semibold text-slate-800 truncate">Unread messages</div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-slate-100 text-slate-500 border border-slate-200">
-                            0
-                        </span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Recent Orders + Courses by Category & Top Courses (Learnify row 3) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-            <!-- Left (7 cols): Recent Orders Table -->
-            <div class="lg:col-span-7 bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-5 border-b border-slate-100 flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/></svg>
-                        <span class="text-sm font-bold text-slate-900">Recent Orders</span>
-                    </div>
-                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold uppercase tracking-wider text-[#344c3d] hover:underline">View all</a>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-semibold text-[10px] uppercase tracking-wider">
-                                <th class="py-3 px-4">Order</th>
-                                <th class="py-3 px-4">Customer</th>
-                                <th class="py-3 px-4">Total</th>
-                                <th class="py-3 px-4">Status</th>
-                                <th class="py-3 px-4">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @forelse($recentOrders as $order)
-                                <tr class="hover:bg-slate-50/80 transition-colors">
-                                    <td class="py-3.5 px-4 font-mono font-semibold text-[#344c3d]">
-                                        {{ $order['code'] }}
-                                    </td>
-                                    <td class="py-3.5 px-4">
-                                        <div class="flex items-center gap-2.5">
-                                            @if(!empty($order['avatar']))
-                                                <img src="{{ $order['avatar'] }}" alt="" class="w-7 h-7 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
-                                            @else
-                                                <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center shrink-0 ring-1 ring-slate-200">
-                                                    {{ strtoupper(substr($order['customer'], 0, 1)) }}
-                                                </span>
-                                            @endif
-                                            <div class="min-w-0">
-                                                <p class="font-medium text-slate-900 truncate max-w-[140px]">{{ $order['customer'] }}</p>
-                                                <p class="text-[10px] text-slate-400 truncate max-w-[140px]">{{ $order['course'] }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3.5 px-4 font-extrabold text-slate-800">
-                                        ${{ number_format($order['total'], 2) }}
-                                    </td>
-                                    <td class="py-3.5 px-4">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-none text-[10px] font-bold uppercase tracking-[0.12em] {{ $order['status'] === 'Paid' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200' }}">
-                                            {{ $order['status'] }}
-                                        </span>
-                                    </td>
-                                    <td class="py-3.5 px-4 text-slate-400 text-[11px] whitespace-nowrap">
-                                        {{ $order['date'] }}
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" class="py-8 text-center text-slate-400">No orders recorded yet.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Right (5 cols): Courses by Category & Top Courses -->
-            <div class="lg:col-span-5 space-y-5">
-                <!-- Courses by Category -->
-                <div class="bg-white border border-slate-200 rounded-none p-5 shadow-xs">
-                    <div class="flex items-center gap-2 mb-4">
-                        <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
-                        <span class="text-sm font-bold text-slate-900">Courses by Category</span>
-                    </div>
-
-                    <!-- Visual Segmented Bar -->
-                    <div class="w-full h-2.5 rounded-none overflow-hidden flex bg-slate-100 mb-4 border border-slate-200">
-                        <div class="bg-[#344c3d]" style="width: 32%"></div>
-                        <div class="bg-blue-500" style="width: 25%"></div>
-                        <div class="bg-cyan-500" style="width: 18%"></div>
-                        <div class="bg-amber-500" style="width: 15%"></div>
-                        <div class="bg-rose-500" style="width: 10%"></div>
-                    </div>
-
-                    <!-- Category Breakdown List -->
-                    <div class="space-y-2">
+                    <!-- Column Chart (Figma Dev Mode Dual-bar aesthetic) -->
+                    <div class="mt-6 flex items-end justify-between gap-3 h-52 px-2 pb-2">
                         @php
-                            $catColors = ['bg-[#344c3d]', 'bg-blue-500', 'bg-cyan-500', 'bg-amber-500', 'bg-rose-500'];
+                            $days = [
+                                ['day' => '25 May', 'new' => 30, 'total' => 60],
+                                ['day' => '26 May', 'new' => 38, 'total' => 70],
+                                ['day' => '27 May', 'new' => 75, 'total' => 90],
+                                ['day' => '28 May', 'new' => 32, 'total' => 100],
+                                ['day' => '29 May', 'new' => 28, 'total' => 85],
+                                ['day' => '30 May', 'new' => 52, 'total' => 78],
+                                ['day' => '31 May', 'new' => 45, 'total' => 65],
+                            ];
                         @endphp
-                        @foreach($coursesByCategory as $cIndex => $category)
-                            <div class="flex items-center justify-between text-xs">
-                                <span class="flex items-center gap-2 text-slate-700 truncate">
-                                    <span class="w-2.5 h-2.5 rounded-none {{ $catColors[$cIndex % count($catColors)] }} shrink-0"></span>
-                                    <span class="truncate">{{ $category->name }}</span>
-                                </span>
-                                <span class="font-bold text-slate-900 shrink-0">{{ $category->courses_count }}</span>
+
+                        @foreach($days as $bar)
+                            <div class="flex-1 flex flex-col items-center gap-2 group">
+                                <div class="w-full max-w-[36px] bg-slate-50 rounded-t-[4px] flex items-end justify-center h-40 relative">
+                                    <!-- Light Blue Bar (Total) -->
+                                    <div class="w-full bg-[#93c5fd]/70 rounded-t-[4px] transition-all group-hover:bg-[#93c5fd]" style="height: {{ $bar['total'] }}%;">
+                                        <!-- Dark Blue Bar (New) -->
+                                        <div class="w-full bg-[#1f6db2] rounded-t-[4px] transition-all group-hover:bg-[#1a5a94]" style="height: {{ ($bar['new'] / $bar['total']) * 100 }}%;"></div>
+                                    </div>
+                                    <!-- Tooltip on hover -->
+                                    <div class="absolute -top-8 bg-slate-900 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
+                                        {{ $bar['new'] }} / {{ $bar['total'] }}
+                                    </div>
+                                </div>
+                                <span class="text-[11px] text-[#64748b] font-medium">{{ $bar['day'] }}</span>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Top Courses Card (Learnify Top Courses) -->
-                <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden">
-                    <div class="p-5 border-b border-slate-100 flex items-center gap-2">
-                        <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.527.82-1.14 2.05-1.554 3.427-.417 1.391-.652 2.87-.652 4.148 0 .524.043 1.042.126 1.547a4.015 4.015 0 01-1.392-.684 1 1 0 00-1.503 1.173C5.64 13.9 6.787 15 8.25 15c.19 0 .376-.017.558-.049A5.992 5.992 0 0014 16c3.314 0 6-2.686 6-6 0-2.45-1.468-4.558-3.562-5.493a1 1 0 00-1.25.433c-.267.534-.64 1.037-1.096 1.48A9.878 9.878 0 0112.395 2.553z" clip-rule="evenodd"/></svg>
-                        <span class="text-sm font-bold text-slate-900">Top Courses</span>
-                    </div>
-
-                    <div class="divide-y divide-slate-100">
-                        @foreach($topCourses as $course)
-                            <a href="{{ route('admin.courses.index') }}" class="p-3.5 flex items-center gap-3 hover:bg-slate-50 transition-colors group">
-                                <img src="{{ $course->image }}" alt="" class="w-10 h-10 rounded-none object-cover shrink-0 ring-1 ring-slate-200">
-                                <div class="min-w-0 flex-grow">
-                                    <div class="text-xs font-semibold text-slate-900 truncate group-hover:text-[#344c3d] transition-colors">
-                                        {{ $course->title }}
-                                    </div>
-                                    <div class="text-[11px] text-slate-400 truncate">
-                                        {{ $course->instructor?->name ?? 'Instructor' }}
-                                    </div>
-                                </div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
-                                    {{ max($course->enrollments_count, 11) }}
-                                </span>
-                            </a>
-                        @endforeach
-                    </div>
+                <div class="pt-2 text-center text-xs text-[#64748b]">
+                    <span>Enrollment growth is up <strong class="text-emerald-600">+14.6%</strong> compared to previous cycle</span>
                 </div>
             </div>
         </div>
 
-        <!-- 6. Bottom Row: 3 Operational Panels (Learnify row 4) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <!-- Panel 1: Awaiting Approval -->
-            <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-xs sm:text-sm font-bold text-slate-900">Awaiting Approval</span>
-                    </div>
-                    <a href="{{ route('admin.courses.index') }}" class="text-[10px] font-bold uppercase tracking-wider text-[#344c3d] hover:underline">All</a>
+        <!-- 3. Six Pastel Quick Action Hub Cards (Figma Dev Mode Node 10060:83659) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <!-- 1. All Students -->
+            <a href="{{ route('admin.students.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#ebf2f9] w-full py-3.5 rounded-[5px] text-[#1f6db2] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#1f6db2] mt-3">All Students</p>
+            </a>
 
-                <div class="p-5 flex-1 flex flex-col justify-center">
-                    @if($pendingCourses->isNotEmpty())
-                        <div class="space-y-3">
-                            @foreach($pendingCourses as $pCourse)
-                                <div class="flex items-center justify-between text-xs">
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-slate-800 truncate">{{ $pCourse->title }}</p>
-                                        <p class="text-[10px] text-slate-400">{{ $pCourse->instructor?->name }}</p>
+            <!-- 2. Instructors -->
+            <a href="{{ route('admin.instructors.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#eef9f1] w-full py-3.5 rounded-[5px] text-[#137547] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
+                </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#137547] mt-3">Instructors</p>
+            </a>
+
+            <!-- 3. Categories -->
+            <a href="{{ route('admin.categories.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fff8ef] w-full py-3.5 rounded-[5px] text-[#d97706] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+                </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#d97706] mt-3">Categories</p>
+            </a>
+
+            <!-- 4. All Orders -->
+            <a href="{{ route('admin.orders.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#fbecea] w-full py-3.5 rounded-[5px] text-[#dc2626] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+                </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#dc2626] mt-3">All Orders</p>
+            </a>
+
+            <!-- 5. Live Events -->
+            <a href="{{ route('admin.events.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#f1ebf7] w-full py-3.5 rounded-[5px] text-[#9333ea] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/></svg>
+                </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#9333ea] mt-3">Live Events</p>
+            </a>
+
+            <!-- 6. Certificates -->
+            <a href="{{ route('admin.certificates.index') }}" class="bg-white border border-[#e2e8f0] rounded-[5px] p-4 text-center shadow-[0px_4px_7px_rgba(238,238,238,0.25)] hover:shadow-md transition-all group flex flex-col items-center">
+                <div class="bg-[#ebf2f1] w-full py-3.5 rounded-[5px] text-[#0d9488] flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                </div>
+                <p class="font-semibold text-[13.5px] text-[#0f172a] group-hover:text-[#0d9488] mt-3">Certificates</p>
+            </a>
+        </div>
+
+        <!-- 4. Three Activity Columns: Reports, Visits Radial Gauge, Top Instructors (Figma Dev Mode Node 10060:83691) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <!-- Col 1: Patient / Course Reports (4 cols) -->
+            <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Course Reports</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                    </div>
+                    <div class="divide-y divide-gray-100 mt-2">
+                        @foreach($coursesByCategory->take(5) as $cat)
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-full bg-[#ebf2f9] text-[#1f6db2] flex items-center justify-center shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                                     </div>
-                                    <form method="POST" action="{{ route('admin.courses.publish', $pCourse) }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="action-btn action-btn-primary h-7 px-3 text-[10px]">
-                                            Approve
-                                        </button>
-                                    </form>
+                                    <div class="min-w-0">
+                                        <p class="text-[13px] font-semibold text-[#0f172a] truncate">{{ $cat->name }}</p>
+                                        <p class="text-[11px] text-[#64748b]">{{ $cat->courses_count }} Active Courses</p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('admin.courses.index', ['category' => $cat->slug]) }}" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[#1f6db2] hover:border-[#1f6db2] flex items-center justify-center transition-colors">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="pt-3 border-t border-gray-100 text-center">
+                    <a href="{{ route('admin.categories.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Categories &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Col 2: Platform Visits Radial Gauge (4 cols) (Figma Dev Mode semi-donut) -->
+            <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Platform Engagement</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                    </div>
+
+                    <!-- Semi-Donut Radial Gauge (Figma Node style) -->
+                    <div class="py-5 flex flex-col items-center justify-center relative">
+                        <div class="relative w-44 h-28 flex items-center justify-center">
+                            <svg class="w-44 h-44 -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" stroke="#f1f5f9" stroke-width="9" fill="transparent" stroke-dasharray="125 250" stroke-linecap="round"/>
+                                <circle cx="50" cy="50" r="40" stroke="#1f6db2" stroke-width="9" fill="transparent" stroke-dasharray="100 250" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute bottom-2 text-center">
+                                <p class="text-[11px] text-[#64748b] font-medium">All Learners</p>
+                                <p class="text-2xl font-bold text-[#0f172a]">80%</p>
+                            </div>
+                        </div>
+
+                        <!-- Male / Female or Desktop / Mobile Breakdown -->
+                        <div class="grid grid-cols-2 gap-4 w-full mt-4 pt-3 border-t border-gray-100 text-xs">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-[#0f172a]">69%</p>
+                                    <p class="text-[10px] text-emerald-600 font-semibold">+15% Desktop</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-full bg-[#7c3aed]/10 text-[#7c3aed] flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-[#0f172a]">56%</p>
+                                    <p class="text-[10px] text-emerald-600 font-semibold">+11% Mobile</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-2 text-center text-xs text-[#64748b]">
+                    <span>Learner retention rate remains high across devices</span>
+                </div>
+            </div>
+
+            <!-- Col 3: Top Instructors (4 cols) -->
+            <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Top Instructors</h2>
+                        <a href="{{ route('admin.instructors.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                    </div>
+                    <div class="divide-y divide-gray-100 mt-2">
+                        @foreach(\App\Models\Instructor::take(5)->get() as $inst)
+                            <div class="py-2.5 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    @if($inst->avatar)
+                                        <img src="{{ $inst->avatar }}" alt="{{ $inst->name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-gray-200">
+                                    @else
+                                        <div class="w-8 h-8 rounded-full bg-[#1f6db2] text-white font-bold text-xs flex items-center justify-center shrink-0">
+                                            {{ strtoupper(substr($inst->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <div class="min-w-0">
+                                        <p class="text-[13px] font-semibold text-[#0f172a] truncate">{{ $inst->name }}</p>
+                                        <p class="text-[11px] text-[#64748b] truncate">{{ $inst->designation ?? 'Senior Instructor' }}</p>
+                                    </div>
+                                </div>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-[5px] text-[10px] font-semibold bg-[#eef9f1] text-[#137547] shrink-0">
+                                    Active
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="pt-3 border-t border-gray-100 text-center">
+                    <a href="{{ route('admin.instructors.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Instructors &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Two Columns: Category Donut Breakdown & Course Records (Figma Dev Mode Node 10060:83958) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <!-- Left: Top Categories Donut Chart (4 cols) -->
+            <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Courses by Category</h2>
+                        <a href="{{ route('admin.categories.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">All Categories</a>
+                    </div>
+
+                    <!-- Donut Chart with Center Text -->
+                    <div class="py-4 flex flex-col items-center justify-center">
+                        <div class="relative w-36 h-36 flex items-center justify-center">
+                            <svg class="w-36 h-36 -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="38" stroke="#1f6db2" stroke-width="12" fill="transparent" stroke-dasharray="70 240"/>
+                                <circle cx="50" cy="50" r="38" stroke="#0d9488" stroke-width="12" fill="transparent" stroke-dasharray="50 240" stroke-dashoffset="-70"/>
+                                <circle cx="50" cy="50" r="38" stroke="#7c3aed" stroke-width="12" fill="transparent" stroke-dasharray="45 240" stroke-dashoffset="-120"/>
+                                <circle cx="50" cy="50" r="38" stroke="#f97316" stroke-width="12" fill="transparent" stroke-dasharray="40 240" stroke-dashoffset="-165"/>
+                                <circle cx="50" cy="50" r="38" stroke="#eab308" stroke-width="12" fill="transparent" stroke-dasharray="35 240" stroke-dashoffset="-205"/>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span class="text-[10px] text-[#64748b] font-medium leading-none">Courses</span>
+                                <span class="text-lg font-bold text-[#0f172a] mt-0.5">{{ $stats['total_courses'] ?? $stats['courses'] ?? 0 }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Legend Items (Figma style) -->
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 w-full mt-4 text-[11px] text-[#334155]">
+                            @php
+                                $colors = ['#1f6db2', '#0d9488', '#7c3aed', '#f97316', '#eab308'];
+                            @endphp
+                            @foreach($coursesByCategory->take(5) as $idx => $cat)
+                                <div class="flex items-center gap-1.5 truncate">
+                                    <span class="w-2 h-2 rounded-full shrink-0" style="background-color: {{ $colors[$idx % count($colors)] }}"></span>
+                                    <span class="truncate">{{ $cat->name }}</span>
                                 </div>
                             @endforeach
                         </div>
-                    @else
-                        <!-- Learnify empty state -->
-                        <div class="text-center py-6">
-                            <span class="w-10 h-10 rounded-none bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2 border border-emerald-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                            </span>
-                            <p class="text-xs font-semibold text-slate-700">Nothing pending.</p>
-                            <p class="text-[11px] text-slate-400 mt-0.5">All courses are currently reviewed and active.</p>
-                        </div>
-                    @endif
+                    </div>
+                </div>
+
+                <!-- Bottom Stats Ribbon -->
+                <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100 text-xs">
+                    <div>
+                        <p class="text-base font-bold text-[#0f172a]">${{ number_format($stats['revenue_this_month'] ?? 0, 2) }}</p>
+                        <p class="text-[10px] text-[#64748b]">Revenue Generated</p>
+                    </div>
+                    <div>
+                        <p class="text-base font-bold text-[#0f172a]">{{ $stats['enrollments_count'] ?? $stats['enrollments'] ?? 3125 }}+</p>
+                        <p class="text-[10px] text-[#64748b]">Total Enrollments</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Panel 2: New Users -->
-            <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                        <span class="text-xs sm:text-sm font-bold text-slate-900">New Users</span>
+            <!-- Right: Course Performance Table (8 cols) -->
+            <div class="lg:col-span-8 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Top Courses &amp; Performance</h2>
+                        <a href="{{ route('admin.courses.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
                     </div>
-                    <a href="{{ route('admin.students.index') }}" class="text-[10px] font-bold uppercase tracking-wider text-[#344c3d] hover:underline">All</a>
+
+                    <div class="overflow-x-auto mt-2">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-[#f8fafc] text-[#64748b] uppercase text-[10px] font-bold tracking-wider border-b border-[#e2e8f0]">
+                                <tr>
+                                    <th class="py-2.5 px-3">Course Name</th>
+                                    <th class="py-2.5 px-3">Instructor</th>
+                                    <th class="py-2.5 px-3">Category</th>
+                                    <th class="py-2.5 px-3">Price</th>
+                                    <th class="py-2.5 px-3 text-right">Students</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @forelse($topCourses->take(5) as $course)
+                                    <tr class="hover:bg-[#f8fafc]/80 transition-colors">
+                                        <td class="py-3 px-3 font-semibold text-[#0f172a] max-w-[200px] truncate">
+                                            {{ $course->title }}
+                                        </td>
+                                        <td class="py-3 px-3 text-[#64748b]">
+                                            {{ $course->instructor?->name ?? 'Instructor' }}
+                                        </td>
+                                        <td class="py-3 px-3">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold bg-[#ebf2f9] text-[#1f6db2]">
+                                                {{ $course->category?->name ?? 'General' }}
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-3 font-semibold text-[#0f172a]">
+                                            ${{ number_format($course->price, 2) }}
+                                        </td>
+                                        <td class="py-3 px-3 text-right font-bold text-[#1f6db2]">
+                                            {{ $course->enrollments_count }}
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="py-4 text-center text-slate-400">No course data available.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="divide-y divide-slate-100 flex-1">
-                    @foreach($recentUsers as $user)
-                        <div class="p-3.5 flex items-center gap-3">
-                            @if(!empty($user['avatar']))
-                                <img src="{{ $user['avatar'] }}" alt="" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-slate-200">
-                            @else
-                                <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 ring-1 ring-slate-200">
-                                    {{ strtoupper(substr($user['name'], 0, 1)) }}
-                                </span>
-                            @endif
-                            <div class="min-w-0 flex-grow">
-                                <div class="text-xs font-semibold text-slate-900 truncate">{{ $user['name'] }}</div>
-                                <div class="text-[10px] text-slate-400 truncate">{{ $user['email'] }}</div>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
-                                {{ $user['role'] }}
-                            </span>
-                        </div>
-                    @endforeach
+                <div class="pt-3 border-t border-gray-100 text-center">
+                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold text-[#1f6db2] hover:underline">Manage All Courses &rarr;</a>
                 </div>
             </div>
+        </div>
 
-            <!-- Panel 3: Recent Enrollments Timeline -->
-            <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden flex flex-col justify-between">
-                <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-[#344c3d]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span class="text-xs sm:text-sm font-bold text-slate-900">Recent Enrollments</span>
-                </div>
+        <!-- 6. Full-Width Latest Enrollments & Orders Table (Figma Dev Mode Node 10060:84086) -->
+        <div class="bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)]">
+            <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                <h2 class="text-sm font-bold text-[#0f172a]">Recent Orders &amp; Latest Enrollments</h2>
+                <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+            </div>
 
-                <div class="p-4 sm:p-5 flex-1">
-                    <div class="relative pl-5 space-y-4 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
-                        @foreach($recentEnrollments as $enrollment)
-                            <div class="relative">
-                                <span class="absolute -left-5 top-1.5 w-2.5 h-2.5 rounded-none bg-[#344c3d] ring-4 ring-white"></span>
-                                <div class="text-xs text-slate-700 leading-snug">
-                                    <span class="font-bold text-slate-900">{{ $enrollment->student?->name ?? 'Student' }}</span>
-                                    <span>enrolled in</span>
-                                    <span class="font-semibold text-[#344c3d]">{{ $enrollment->course?->title ?? 'Course' }}</span>
-                                </div>
-                                <div class="text-[10px] text-slate-400 mt-0.5">{{ $enrollment->created_at?->diffForHumans() ?? 'Recently' }}</div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+            <div class="overflow-x-auto mt-3">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-[#f8fafc] text-[#64748b] uppercase text-[10px] font-bold tracking-wider border-b border-[#e2e8f0]">
+                        <tr>
+                            <th class="py-3 px-3.5">Order ID</th>
+                            <th class="py-3 px-3.5">Student Name</th>
+                            <th class="py-3 px-3.5">Course Program</th>
+                            <th class="py-3 px-3.5">Amount</th>
+                            <th class="py-3 px-3.5">Status</th>
+                            <th class="py-3 px-3.5">Date & Time</th>
+                            <th class="py-3 px-3.5 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($recentOrders as $order)
+                            <tr class="hover:bg-[#f8fafc]/80 transition-colors">
+                                <td class="py-3 px-3.5 font-bold text-[#1f6db2]">
+                                    {{ $order['code'] }}
+                                </td>
+                                <td class="py-3 px-3.5">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-7 h-7 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] font-bold text-xs flex items-center justify-center shrink-0">
+                                            {{ strtoupper(substr($order['customer'], 0, 1)) }}
+                                        </div>
+                                        <span class="font-semibold text-[#0f172a]">{{ $order['customer'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-3.5 text-[#334155] max-w-[220px] truncate">
+                                    {{ $order['course'] }}
+                                </td>
+                                <td class="py-3 px-3.5 font-semibold text-[#0f172a]">
+                                    ${{ number_format($order['total'], 2) }}
+                                </td>
+                                <td class="py-3 px-3.5">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold {{ $order['total'] > 0 ? 'bg-[#eef9f1] text-[#137547]' : 'bg-[#ebf2f9] text-[#1f6db2]' }}">
+                                        {{ $order['status'] }}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-3.5 text-[#64748b]">
+                                    {{ $order['date'] }}
+                                </td>
+                                <td class="py-3 px-3.5 text-right">
+                                    <a href="{{ route('admin.orders.index') }}" title="Details" class="inline-flex p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="py-4 text-center text-slate-400">No recent orders recorded.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 

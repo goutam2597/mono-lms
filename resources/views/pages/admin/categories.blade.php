@@ -44,7 +44,18 @@
                             </td>
                             <td class="px-6 py-3.5">
                                 @if ($category->imageUrl())
-                                    <img src="{{ $category->imageUrl() }}" alt="{{ $category->name }}" class="w-8 h-8 object-contain rounded-md bg-white border border-gray-200 p-0.5">
+                                    <img src="{{ $category->imageUrl() }}" 
+                                         alt="{{ $category->name }}" 
+                                         class="w-8 h-8 object-contain rounded-md bg-white border border-gray-200 p-0.5"
+                                         onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+                                         loading="lazy">
+                                    <div class="hidden w-8 h-8 rounded-md items-center justify-center" style="background: {{ $category->color }}15; color: {{ $category->color }};">
+                                        @if ($category->icon && str_starts_with($category->icon, 'M'))
+                                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="{{ $category->icon }}" /></svg>
+                                        @else
+                                            <span class="text-xl">{{ $category->icon ?? '—' }}</span>
+                                        @endif
+                                    </div>
                                 @elseif ($category->icon && str_starts_with($category->icon, 'M'))
                                     <div class="w-8 h-8 rounded-md flex items-center justify-center" style="background: {{ $category->color }}15; color: {{ $category->color }};">
                                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="{{ $category->icon }}" /></svg>
