@@ -60,6 +60,40 @@
             .action-btn-success:hover { color: #fff; background: #047857; border-color: #047857; }
             .action-btn.sm, .action-btn.h-7 { height: 28px; padding: 0 10px; font-size: 9px; }
 
+            /* ---------------- Standard Modal System (mono_market pattern) ---------------- */
+            .modal-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 120;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                background: rgba(10, 10, 10, 0.65);
+                backdrop-filter: blur(4px);
+                padding: 24px;
+                box-sizing: border-box;
+            }
+            .modal-overlay.open {
+                display: flex !important;
+            }
+            .modal-overlay .panel {
+                background: #ffffff;
+                width: 520px;
+                max-width: 100%;
+                max-height: calc(100vh - 48px);
+                overflow-y: auto;
+                padding: 24px;
+                border-radius: 0 !important;
+                border: 1px solid #e5e5e5;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+                position: relative;
+                box-sizing: border-box;
+            }
+            .modal-overlay .panel-sm, .modal-overlay .panel.panel-sm { width: 440px; }
+            .modal-overlay .panel-md, .modal-overlay .panel.panel-md { width: 520px; }
+            .modal-overlay .panel-lg, .modal-overlay .panel.panel-lg { width: 640px; }
+            .modal-overlay .panel-xl, .modal-overlay .panel.panel-xl { width: 920px; }
+
             /* ---------------- Row actions dropdown (mono_market pattern) ---------------- */
             .row-action-menu { position: fixed; z-index: 130; display: none; padding: 4px; background: #fff; border: 1px solid #e5e5e5; box-shadow: 0 12px 32px rgba(10,10,10,.14); min-width: 130px; }
             .row-action-menu.open { display: block; }
@@ -311,6 +345,32 @@
                 window.addEventListener('resize', closeMenu);
             })();
         </script>
+
+        <!-- Global modal overlay backdrop click & Escape key support -->
+        <script>
+            (function () {
+                document.addEventListener('click', function (e) {
+                    if (e.target && e.target.classList && e.target.classList.contains('modal-overlay')) {
+                        e.target.classList.remove('open');
+                    }
+                    var closeBtn = e.target.closest('[data-modal-close]');
+                    if (closeBtn) {
+                        var m = closeBtn.closest('.modal-overlay');
+                        if (m) m.classList.remove('open');
+                    }
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        var openModal = document.querySelector('.modal-overlay.open');
+                        if (openModal) openModal.classList.remove('open');
+                    }
+                });
+            })();
+        </script>
+
+        @if ($userType === 'admin')
+            <x-media-picker />
+        @endif
     </body>
     </html>
 @else

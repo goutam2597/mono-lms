@@ -197,10 +197,10 @@
         var wrap = document.createElement('div');
         wrap.className = 'mselect';
 
-        var isFullWidth = sel.classList.contains('w-full');
-        if (isFullWidth) {
+        var hasExplicitWidth = /(?:^|\s)w-/.test(sel.className || '');
+        if (sel.classList.contains('w-full')) {
             wrap.classList.add('w-full');
-        } else {
+        } else if (!hasExplicitWidth) {
             wrap.classList.add('w-auto', 'flex-none');
         }
 

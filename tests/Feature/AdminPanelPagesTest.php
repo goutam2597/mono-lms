@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\Setting;
+use App\Models\SupportTicket;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -181,5 +182,51 @@ class AdminPanelPagesTest extends TestCase
         $this->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('--theme-primary: #065f46', false);
+    }
+
+    public function test_media_picker_and_modals_rendered_on_admin_pages(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // Settings page has Choose from Media button and global media picker modal
+        $this->get(route('admin.settings.index'))
+            ->assertOk()
+            ->assertSee('mediap-modal', false)
+            ->assertSee('window.mediaPicker', false)
+            ->assertSee('modal-overlay', false);
+
+        // Certificate templates renders createCertModal modal overlay
+        $this->get(route('admin.certificates.index'))
+            ->assertOk()
+            ->assertSee('id="createCertModal"', false)
+            ->assertSee('modal-overlay', false);
+
+        // Coupons renders createCouponModal modal overlay
+        $this->get(route('admin.coupons.index'))
+            ->assertOk()
+            ->assertSee('id="createCouponModal"', false)
+            ->assertSee('modal-overlay', false);
+
+        // Users page renders user-modal modal overlay
+        $this->get(route('admin.users.index'))
+            ->assertOk()
+            ->assertSee('id="user-modal"', false)
+            ->assertSee('modal-overlay', false);
+
+        // Support tickets renders reply form with properly structured inputs
+        SupportTicket::create([
+            'ticket_number' => 'TCK-9999',
+            'user_name' => 'Eugene Test',
+            'user_email' => 'eugene@test.com',
+            'subject' => 'Test buffer issue',
+            'priority' => 'high',
+            'status' => 'open',
+            'message' => 'Video buffers',
+        ]);
+
+        $this->get(route('admin.tickets.index'))
+            ->assertOk()
+            ->assertSee('Type staff response...', false)
+            ->assertSee('data-mselect', false);
     }
 }
