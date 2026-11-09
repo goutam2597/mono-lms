@@ -700,6 +700,10 @@
                                 <input type="text" name="sections[instructors][button_text]" value="{{ $sections['instructors']['button_text'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>
                             <div class="sm:col-span-2">
+                                <label class="block font-semibold text-slate-700 mb-1">Max Instructors to Display</label>
+                                <input type="number" min="4" max="16" name="sections[instructors][limit]" value="{{ $sections['instructors']['limit'] ?? 8 }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
+                            </div>
+                            <div class="sm:col-span-2">
                                 <label class="block font-semibold text-slate-700 mb-1">Heading</label>
                                 <input type="text" name="sections[instructors][heading]" value="{{ $sections['instructors']['heading'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
                             </div>

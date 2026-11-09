@@ -115,7 +115,7 @@ class HomePageContent
                 'heading' => 'Courses Taught by Real Instructors',
                 'subtitle' => 'Learn from leading practitioners, founders, and subject-matter experts worldwide.',
                 'button_text' => 'Meet All Instructors',
-                'limit' => 4,
+                'limit' => 8,
             ],
             'banner_instructor' => [
                 'enabled' => true,

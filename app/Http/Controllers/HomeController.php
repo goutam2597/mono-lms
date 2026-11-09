@@ -60,7 +60,7 @@ class HomeController extends Controller
             'featuredCourses' => $featuredCourses,
             'trendingCourses' => $trendingCourses,
             'categories' => Category::withCount(['courses' => fn ($q) => $q->published()])->orderBy('sort_order')->orderBy('name')->take((int) ($home['categories']['limit'] ?? 8))->get(),
-            'topInstructors' => Instructor::where('status', 'active')->withCount('courses')->take((int) ($home['instructors']['limit'] ?? 4))->get(),
+            'topInstructors' => Instructor::where('status', 'active')->withCount('courses')->orderByDesc('courses_count')->take(max(8, (int) ($home['instructors']['limit'] ?? 8)))->get(),
             'posts' => Post::published()->latest('published_at')->take((int) ($home['blog']['limit'] ?? 4))->get(),
             'stats' => [
                 'enrollments' => Enrollment::count(),

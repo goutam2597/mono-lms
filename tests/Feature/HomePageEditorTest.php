@@ -249,4 +249,25 @@ class HomePageEditorTest extends TestCase
         $response->assertSee('data-trending-slider', false);
         $response->assertSee('data-slider-track', false);
     }
+
+    public function test_instructors_section_renders_both_left_and_right_columns(): void
+    {
+        for ($i = 1; $i <= 8; $i++) {
+            Instructor::create([
+                'name' => 'Instructor '.$i,
+                'email' => 'instructor'.$i.'@mono-lms.test',
+                'password' => '12345678',
+                'status' => 'active',
+                'avatar' => 'https://example.com/avatar'.$i.'.jpg',
+            ]);
+        }
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk();
+        $response->assertSee('Courses Taught by Real Instructor');
+        $response->assertSee('Instructor 1');
+        $response->assertSee('Instructor 5');
+        $response->assertSee('Instructor 8');
+    }
 }

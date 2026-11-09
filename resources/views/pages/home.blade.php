@@ -1078,18 +1078,36 @@
                 </a>
             </div>
 
+            @php
+                $instCount = $topInstructors->count();
+                if ($instCount >= 8) {
+                    $leftInstructors = $topInstructors->slice(0, 4);
+                    $rightInstructors = $topInstructors->slice(4, 4);
+                } elseif ($instCount >= 4) {
+                    $half = (int) ceil($instCount / 2);
+                    $leftInstructors = $topInstructors->slice(0, $half);
+                    $rightInstructors = $topInstructors->slice($half);
+                } else {
+                    $leftInstructors = $topInstructors;
+                    $rightInstructors = collect();
+                }
+            @endphp
+
             <!-- Masonry Grid with Tall Center Card -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
 
                 <!-- Left 4 Instructor Photos (md:col-span-4) -->
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
-                    @foreach ($topInstructors->take(4) as $instructor)
-                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#392c7d]/10 flex items-center justify-center">
+                    @foreach ($leftInstructors as $instructor)
+                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#392c7d]/10 flex items-center justify-center relative">
                             @if($instructor->avatar)
                                 <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             @else
                                 <span class="text-4xl font-bold text-[#392c7d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @endif
+                            <div class="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/70 to-transparent text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="font-semibold truncate">{{ $instructor->name }}</p>
+                            </div>
                         </a>
                     @endforeach
                 </div>
@@ -1115,15 +1133,18 @@
                     </div>
                 </div>
 
-                <!-- Right 3-4 Instructor Photos (md:col-span-4) -->
+                <!-- Right 4 Instructor Photos (md:col-span-4) -->
                 <div class="md:col-span-4 grid grid-cols-2 gap-4">
-                    @foreach ($topInstructors->skip(4) as $instructor)
-                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#738a6e]/15 flex items-center justify-center">
+                    @foreach ($rightInstructors as $instructor)
+                        <a href="{{ route('instructors.show', \Illuminate\Support\Str::slug($instructor->name)) }}" class="h-56 rounded-[10px] overflow-hidden shadow-sm group bg-[#738a6e]/15 flex items-center justify-center relative">
                             @if($instructor->avatar)
                                 <img src="{{ $instructor->avatar }}" alt="{{ $instructor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             @else
                                 <span class="text-4xl font-bold text-[#344c3d]">{{ strtoupper(substr($instructor->name, 0, 1)) }}</span>
                             @endif
+                            <div class="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/70 to-transparent text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="font-semibold truncate">{{ $instructor->name }}</p>
+                            </div>
                         </a>
                     @endforeach
                 </div>
