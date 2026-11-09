@@ -27,8 +27,11 @@ final class PublicMedia
 
             if ($position !== false) {
                 $candidate = self::normalizePath(substr($path, $position + strlen($marker)));
-                if ($candidate !== '' && Storage::disk('public')->exists($candidate)) {
-                    return Storage::disk('public')->url($candidate);
+                if ($candidate !== '' && (file_exists(public_path('storage/'.$candidate)) || Storage::disk('public')->exists($candidate))) {
+                    return asset('storage/'.$candidate);
+                }
+                if ($candidate !== '' && file_exists(public_path('images/'.$candidate))) {
+                    return asset('images/'.$candidate);
                 }
             }
 
@@ -46,16 +49,26 @@ final class PublicMedia
             return asset($path);
         }
 
+        // Check if file exists in public/images/ directly
+        if (file_exists(public_path('images/'.$path))) {
+            return asset('images/'.$path);
+        }
+
+        // Check public/storage/ directory
+        if (file_exists(public_path('storage/'.$path))) {
+            return asset('storage/'.$path);
+        }
+
         if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->url($path);
+            return asset('storage/'.$path);
         }
 
         if (file_exists(public_path($path))) {
             return asset($path);
         }
 
-        // Default to public storage URL for relative paths
-        return Storage::disk('public')->url($path);
+        // Default to request-aware asset storage URL for relative paths
+        return asset('storage/'.$path);
     }
 
     public static function fallback(string $name): string
