@@ -48,7 +48,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex items-center shrink-0">
-            <img src="{{ asset('images/logo.png') }}" alt="Mono LMS" width="150" height="40" fetchpriority="high" decoding="sync" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
+            <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="150" height="40" fetchpriority="high" decoding="sync" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
         </a>
 
         <!-- Desktop Navigation -->

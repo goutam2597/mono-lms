@@ -6,12 +6,12 @@
     <title>Lock Screen – Mono LMS</title>
 
     <!-- Favicon & Touch Icons -->
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+    <link rel="shortcut icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::faviconUrl() }}">
 
     <!-- Preload Logo for instant render on refresh -->
-    <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ \App\Models\Setting::logoUrl() }}" fetchpriority="high">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -22,7 +22,7 @@
         
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex items-center shrink-0">
-            <img src="{{ asset('images/logo.png') }}" alt="Mono LMS" width="150" height="40" fetchpriority="high" decoding="sync" class="h-10 w-[150px] aspect-[938/250] object-contain shrink-0" />
+            <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="150" height="40" fetchpriority="high" decoding="sync" class="h-10 w-[150px] aspect-[938/250] object-contain shrink-0" />
         </a>
 
         <!-- Welcome Back Header -->

@@ -4,7 +4,7 @@
             <!-- Brand Column -->
             <div class="lg:col-span-4 space-y-4">
                 <a href="{{ route('home') }}" class="flex items-center shrink-0">
-                    <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" width="150" height="40" decoding="async" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
+                    <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="150" height="40" decoding="async" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
                     {{ __('app.footer.about') }}

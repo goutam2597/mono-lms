@@ -10,12 +10,12 @@
     <title>{{ $title }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+    <link rel="shortcut icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+    <link rel="apple-touch-icon" href="{{ \App\Models\Setting::faviconUrl() }}">
 
     <!-- Preload Logo for instant render on refresh -->
-    <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ \App\Models\Setting::logoUrl() }}" fetchpriority="high">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -30,7 +30,7 @@
 
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center z-10 shrink-0">
-                    <img src="{{ asset('images/logo.png') }}" alt="Mono LMS" width="150" height="40" fetchpriority="high" decoding="sync" class="h-10 w-[150px] aspect-[938/250] object-contain shrink-0" />
+                    <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="150" height="40" fetchpriority="high" decoding="sync" class="h-10 w-[150px] aspect-[938/250] object-contain shrink-0" />
                 </a>
 
                 <!-- Centered Vector Illustration Graphic -->
@@ -74,7 +74,7 @@
                 <!-- Top Navigation back -->
                 <div class="flex items-center justify-between mb-8">
                     <a href="{{ route('home') }}" class="lg:hidden flex items-center shrink-0">
-                        <img src="{{ asset('images/logo.png') }}" alt="Mono LMS" width="120" height="32" fetchpriority="high" decoding="sync" class="h-8 w-[120px] aspect-[938/250] object-contain shrink-0" />
+                        <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="120" height="32" fetchpriority="high" decoding="sync" class="h-8 w-[120px] aspect-[938/250] object-contain shrink-0" />
                     </a>
                     @php
                         $localePanel = request()->is('admin*') ? 'admin' : (request()->is('instructor*') ? 'instructor' : 'student');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -31,5 +32,34 @@ class Setting extends Model
     public static function enabled(string $key): bool
     {
         return self::get($key) === '1';
+    }
+
+    public static function faviconUrl(): string
+    {
+        $custom = self::get('site_favicon');
+
+        if (! empty($custom)) {
+            $url = PublicMedia::url($custom);
+            if (! empty($url)) {
+                return $url.'?v='.substr(md5($custom), 0, 8);
+            }
+        }
+
+        return asset('images/favicon.png');
+    }
+
+    public static function logoUrl(?string $fallback = null): string
+    {
+        $custom = self::get('site_logo');
+        $fallback ??= asset('images/logo.png');
+
+        if (! empty($custom)) {
+            $url = PublicMedia::url($custom);
+            if (! empty($url)) {
+                return $url;
+            }
+        }
+
+        return $fallback;
     }
 }

@@ -10,9 +10,9 @@
 
         <title>{{ $title }}</title>
 
-        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+        <link rel="icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+        <link rel="shortcut icon" href="{{ \App\Models\Setting::faviconUrl() }}">
+        <link rel="apple-touch-icon" href="{{ \App\Models\Setting::faviconUrl() }}">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -117,7 +117,7 @@
                 <!-- Top Brand Header -->
                 <div class="h-[60px] px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#07090a] shrink-0">
                     <a href="{{ $userType === 'admin' ? route('admin.dashboard') : route('instructor.dashboard') }}" class="flex items-center gap-2.5 group">
-                        <img src="{{ asset('images/logo-white.png') }}" alt="Mono LMS" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                        <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
                         <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[var(--theme-primary,#344c3d)]/20 text-[var(--theme-accent,#738a6e)] border border-[var(--theme-primary,#344c3d)]/40' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
                             {{ $userType === 'admin' ? 'ADMIN' : 'INSTRUCTOR' }}
                         </span>

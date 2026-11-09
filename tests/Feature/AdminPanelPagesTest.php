@@ -229,4 +229,31 @@ class AdminPanelPagesTest extends TestCase
             ->assertSee('Type staff response...', false)
             ->assertSee('data-mselect', false);
     }
+
+    public function test_custom_favicon_and_logo_rendered_in_head_and_navigation(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // Set custom favicon and logo
+        Setting::set('site_favicon', 'media/2026/11/custom-favicon.png');
+        Setting::set('site_logo', 'media/2026/11/custom-logo.png');
+
+        $faviconUrl = Setting::faviconUrl();
+        $this->assertStringContainsString('custom-favicon.png', $faviconUrl);
+
+        $logoUrl = Setting::logoUrl();
+        $this->assertStringContainsString('custom-logo.png', $logoUrl);
+
+        // Dashboard renders the custom favicon link in <head>
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('<link rel="icon" href="'.$faviconUrl.'">', false)
+            ->assertSee('<link rel="shortcut icon" href="'.$faviconUrl.'">', false);
+
+        // Storefront home renders the custom favicon and logo
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('<link rel="icon" href="'.$faviconUrl.'">', false)
+            ->assertSee($logoUrl, false);
+    }
 }
