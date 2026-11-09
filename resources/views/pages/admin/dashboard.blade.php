@@ -436,64 +436,65 @@
                 </div>
             </div>
 
-            <!-- Col 2: Platform Visits Radial Gauge (4 cols) (Figma Dev Mode semi-donut) -->
+            <!-- Col 2: Student Visits Radial Gauge (4 cols) (Figma Dev Mode Node 10060:83759) -->
             <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Platform Engagement</h2>
-                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2]">View All</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">Student Visits</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">View All</a>
                     </div>
 
-                    <!-- Semi-Circle Arch Speedometer / Gauge (Figma Node style) -->
-                    <div class="pt-5 pb-3 flex flex-col items-center justify-center">
-                        <div class="relative w-52 h-28 flex items-end justify-center overflow-hidden">
-                            <svg class="w-52 h-28" viewBox="0 0 200 110">
-                                <!-- Background Track Arch (180deg semi-circle) -->
-                                <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="#eef2f7" stroke-width="14" stroke-linecap="round"/>
-                                <!-- Active Fill Arch (80% of semi-circle: 188.5 of 235.6) -->
-                                <path d="M 25 100 A 75 75 0 0 1 175 100" fill="none" stroke="#1f6db2" stroke-width="14" stroke-dasharray="188.5 235.6" stroke-linecap="round"/>
-                            </svg>
-                            <!-- Center Label Inside the Gauge -->
-                            <div class="absolute bottom-1 inset-x-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                                <span class="text-xs text-[#64748b] font-medium leading-none">All Learners</span>
-                                <span class="text-[28px] font-extrabold text-[#0f172a] tracking-tight mt-1">80%</span>
+                    <!-- Dual-Track Segmented Radial Gauge Chart (Figma Dev Mode Node 10060:83765) -->
+                    <div class="pt-4 pb-1 flex flex-col items-center justify-center">
+                        <div class="relative w-[220px] h-[175px] mx-auto flex items-center justify-center shrink-0">
+                            <img src="{{ asset('images/chart-patient-visits.svg') }}" alt="Student Visits Radial Gauge" class="w-full h-full object-contain pointer-events-none select-none">
+                            <!-- Center Label Inside the Dual-Track Arch (Figma Node 10060:83894) -->
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none pt-1">
+                                <span class="text-[13px] text-[#334155] font-normal leading-tight">All Students</span>
+                                <span class="text-[25px] font-bold text-[#0f172a] leading-none mt-1">80%</span>
                             </div>
                         </div>
 
-                        <!-- Device Breakdown (Figma Dev Mode Node 10060:83868) -->
-                        <div class="space-y-3 w-full mt-5 pt-3.5 border-t border-gray-100">
-                            <!-- Desktop -->
-                            <div class="flex items-center justify-between gap-3 text-xs">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-full bg-[#1f6db2]/10 text-[#1f6db2] flex items-center justify-center shrink-0">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3"/></svg>
+                        <!-- Demographic Breakdown (Figma Dev Mode Node 10060:83868) -->
+                        <div class="flex flex-col gap-3.5 w-full mt-4 pt-3.5 border-t border-gray-100">
+                            <!-- Male (Blue Outer Track: 69%) -->
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#1f6db2] flex items-center justify-center p-2 text-white shrink-0 shadow-xs">
+                                        <img src="{{ asset('images/icon-male.svg') }}" alt="Male" class="w-4 h-4 pointer-events-none">
                                     </div>
-                                    <div>
-                                        <p class="font-semibold text-[#0f172a] leading-tight">Desktop</p>
-                                        <p class="text-[11px] text-[#137547] font-medium">+15% <span class="text-[#64748b]">Since Last Week</span></p>
+                                    <div class="min-w-0">
+                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">Male</p>
+                                        <p class="text-[12px] leading-tight mt-0.5">
+                                            <span class="text-[#09800f] font-semibold">-15%</span>
+                                            <span class="text-[#334155]">Since Last Week</span>
+                                        </p>
                                     </div>
                                 </div>
-                                <span class="font-bold text-sm text-[#0f172a]">69%</span>
+                                <span class="font-bold text-[16px] text-[#0f172a] shrink-0">69%</span>
                             </div>
 
-                            <!-- Mobile -->
-                            <div class="flex items-center justify-between gap-3 text-xs">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-full bg-[#7c3aed]/10 text-[#7c3aed] flex items-center justify-center shrink-0">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                            <!-- Female (Purple Inner Track: 56%) -->
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#6a1b9a] flex items-center justify-center p-2 text-white shrink-0 shadow-xs">
+                                        <img src="{{ asset('images/icon-female.svg') }}" alt="Female" class="w-4 h-4 pointer-events-none">
                                     </div>
-                                    <div>
-                                        <p class="font-semibold text-[#0f172a] leading-tight">Mobile</p>
-                                        <p class="text-[11px] text-[#137547] font-medium">+11% <span class="text-[#64748b]">Since Last Week</span></p>
+                                    <div class="min-w-0">
+                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">Female</p>
+                                        <p class="text-[12px] leading-tight mt-0.5">
+                                            <span class="text-[#09800f] font-semibold">-15%</span>
+                                            <span class="text-[#334155]">Since Last Week</span>
+                                        </p>
                                     </div>
                                 </div>
-                                <span class="font-bold text-sm text-[#0f172a]">56%</span>
+                                <span class="font-bold text-[16px] text-[#0f172a] shrink-0">56%</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pt-2 text-center text-xs text-[#64748b]">
-                    <span>Learner retention rate remains high across devices</span>
+                <div class="pt-3 text-center text-xs text-[#64748b]">
+                    <span>Learner retention rate remains high across demographics</span>
                 </div>
             </div>
 
