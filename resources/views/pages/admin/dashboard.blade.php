@@ -235,7 +235,7 @@
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
                         <h2 class="text-sm font-bold text-[#0f172a]">Recent Enrollments</h2>
-                        <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[#1f6db2] transition-colors">
+                        <a href="{{ route('admin.orders.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">
                             All Enrollments
                         </a>
                     </div>
@@ -274,31 +274,47 @@
                 </div>
             </div>
 
-            <!-- Right: Student Statistics Bar Chart (7 cols) -->
+            <!-- Right: Student Statistics Bar Chart (7 cols) (Figma Dev Mode Node 10060:83576) -->
             <div class="lg:col-span-7 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3.5 border-b border-gray-100">
-                        <div>
-                            <h2 class="text-sm font-bold text-[#0f172a]">Students Statistics &mdash; Revenue & Enrollments</h2>
-                            <p class="text-[11px] text-[#64748b] mt-0.5">Total Enrolled Students: <span class="font-bold text-[#0f172a]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span></p>
-                        </div>
+                    <!-- Header with Title and View All Button -->
+                    <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
+                        <h2 class="text-sm font-bold text-[#0f172a]">Students Statistics &mdash; Revenue & Enrollments</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">
+                            View All
+                        </a>
+                    </div>
+
+                    <!-- Subheader: Total Count & Color Legends (Figma Node 10060:83581) -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 pb-2 text-xs">
+                        <p class="font-semibold text-sm text-[#0f172a]">
+                            Total No of Students: <span class="font-bold text-[#1f6db2]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span>
+                        </p>
                         <div class="flex items-center gap-4 text-xs font-medium">
                             <span class="flex items-center gap-1.5 text-[#334155]">
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#1f6db2]"></span>
                                 New Students
                             </span>
                             <span class="flex items-center gap-1.5 text-[#334155]">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#93c5fd]"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#bcd3e8]"></span>
                                 Total Enrollments
                             </span>
-                            <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#1f6db2] hover:underline">
-                                View All
-                            </a>
                         </div>
                     </div>
 
-                    <!-- Column Chart (Figma Dev Mode Dual-bar aesthetic) -->
-                    <div class="mt-6 flex items-end justify-between gap-3 h-52 px-2 pb-2">
+                    <!-- Column Chart Canvas with Y-Axis & Gridlines (Figma Dev Mode Node 10060:83589) -->
+                    <div class="relative mt-2">
+                        <!-- Y-Axis Labels & Horizontal Dashed Gridlines (100, 80, 60, 40, 20, 0) -->
+                        <div class="h-[200px] flex flex-col justify-between select-none">
+                            @foreach(['100', '80', '60', '40', '20', '0'] as $yVal)
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-6 text-[11px] font-medium text-[#64748b] text-right shrink-0">{{ $yVal }}</span>
+                                    <div class="flex-1 border-b {{ $yVal === '0' ? 'border-[#cbd5e1]' : 'border-dashed border-gray-200' }}"></div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Bar Columns Layer (Overlay aligned above baseline) -->
                         @php
                             $days = [
                                 ['day' => '25 May', 'new' => 30, 'total' => 60],
@@ -311,27 +327,56 @@
                             ];
                         @endphp
 
-                        @foreach($days as $bar)
-                            <div class="flex-1 flex flex-col items-center gap-2 group">
-                                <div class="w-full max-w-[36px] bg-slate-50 rounded-t-[4px] flex items-end justify-center h-40 relative">
-                                    <!-- Light Blue Bar (Total) -->
-                                    <div class="w-full bg-[#93c5fd]/70 rounded-t-[4px] transition-all group-hover:bg-[#93c5fd]" style="height: {{ $bar['total'] }}%;">
-                                        <!-- Dark Blue Bar (New) -->
-                                        <div class="w-full bg-[#1f6db2] rounded-t-[4px] transition-all group-hover:bg-[#1a5a94]" style="height: {{ ($bar['new'] / $bar['total']) * 100 }}%;"></div>
+                        <div class="absolute inset-0 left-8 flex items-end justify-between gap-2 px-2 pb-[1px]">
+                            @foreach($days as $bar)
+                                <div class="flex-1 flex flex-col items-center h-[200px] justify-end group cursor-pointer relative">
+                                    <!-- Bar Graphic -->
+                                    <div class="w-full max-w-[28px] sm:max-w-[34px] h-full flex items-end justify-center relative">
+                                        <!-- Light Blue Pastel Background Bar (Total) -->
+                                        <div class="w-full bg-[#bcd3e8] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#a6c5df] relative flex items-end justify-center" style="height: {{ $bar['total'] }}%;">
+                                            <!-- Vibrant Dark Blue Foreground Bar (New) -->
+                                            <div class="w-full bg-[#1f6db2] rounded-t-[5px] transition-all duration-300 group-hover:bg-[#18558a]" style="height: {{ min(100, round(($bar['new'] / $bar['total']) * 100)) }}%;"></div>
+                                        </div>
                                     </div>
-                                    <!-- Tooltip on hover -->
-                                    <div class="absolute -top-8 bg-slate-900 text-white text-[10px] font-semibold px-1.5 py-0.5 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-                                        {{ $bar['new'] }} / {{ $bar['total'] }}
+
+                                    <!-- Interactive Tooltip -->
+                                    <div class="absolute -top-7 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
+                                        New: {{ $bar['new'] }} | Total: {{ $bar['total'] }}
                                     </div>
                                 </div>
-                                <span class="text-[11px] text-[#64748b] font-medium">{{ $bar['day'] }}</span>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
+
+                        <!-- X-Axis Date Labels -->
+                        <div class="flex justify-between pl-8 px-2 pt-2 text-[12px] text-[#64748b] font-medium select-none">
+                            @foreach($days as $bar)
+                                <span class="flex-1 text-center truncate">{{ $bar['day'] }}</span>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
-                <div class="pt-2 text-center text-xs text-[#64748b]">
-                    <span>Enrollment growth is up <strong class="text-emerald-600">+14.6%</strong> compared to previous cycle</span>
+                <!-- Mini Metric Badges (Fills vertical void, aligns card height with left column) -->
+                <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-gray-100">
+                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] font-medium truncate">Weekly Growth</p>
+                        <p class="text-[14px] font-bold text-[#09800f] mt-0.5 flex items-center justify-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                            +14.6%
+                        </p>
+                    </div>
+                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] font-medium truncate">Daily Active</p>
+                        <p class="text-[14px] font-bold text-[#0f172a] mt-0.5">
+                            412 <span class="text-[10px] font-normal text-[#64748b]">avg</span>
+                        </p>
+                    </div>
+                    <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-[5px] p-2.5 text-center">
+                        <p class="text-[11px] text-[#64748b] font-medium truncate">Completion Rate</p>
+                        <p class="text-[14px] font-bold text-[#1f6db2] mt-0.5">
+                            88.4%
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
