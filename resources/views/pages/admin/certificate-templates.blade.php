@@ -105,7 +105,7 @@
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Layout Style *</label>
-                    <select name="template_type" data-mselect data-mselect-no-search class="w-full px-3 py-2.5 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                    <select name="template_type" data-mselect data-mselect-no-search class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                         <option value="classic">Classic Academic</option>
                         <option value="modern">Modern Minimalist</option>
                         <option value="elegant">Elegant Executive</option>
@@ -115,11 +115,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signer Name *</label>
-                        <input type="text" name="signer_name" required value="Dr. Alexander Wright" class="w-full px-3 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="signer_name" required value="Dr. Alexander Wright" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signature Title *</label>
-                        <input type="text" name="signature_title" required value="Academic Director" class="w-full px-3 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="signature_title" required value="Academic Director" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 

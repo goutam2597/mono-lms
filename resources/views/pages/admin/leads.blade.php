@@ -78,7 +78,7 @@
                                     <form method="POST" action="{{ route('admin.leads.update', $lead) }}">
                                         @csrf
                                         @method('PATCH')
-                                        <select name="status" onchange="this.form.submit()" data-mselect data-mselect-no-search class="text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-2.5 py-1 bg-white cursor-pointer hover:border-slate-300">
+                                        <select name="status" onchange="this.form.submit()" data-mselect data-mselect-no-search class="h-7 w-auto flex-none text-[10px] font-bold uppercase tracking-wider border border-slate-200 rounded-none px-2.5 bg-white cursor-pointer hover:border-slate-300">
                                             <option value="new" {{ $lead->status === 'new' ? 'selected' : '' }}>New</option>
                                             <option value="contacted" {{ $lead->status === 'contacted' ? 'selected' : '' }}>Contacted</option>
                                             <option value="interested" {{ $lead->status === 'interested' ? 'selected' : '' }}>Interested</option>

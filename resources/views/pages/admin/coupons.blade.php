@@ -150,14 +150,14 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Discount Type *</label>
-                        <select name="discount_type" data-mselect data-mselect-no-search class="w-full px-3 py-2.5 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                        <select name="discount_type" data-mselect data-mselect-no-search class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                             <option value="percent">Percentage (%)</option>
                             <option value="fixed">Fixed Dollar ($)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Discount Value *</label>
-                        <input type="number" step="0.01" name="discount_value" required placeholder="e.g. 25" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="number" step="0.01" name="discount_value" required placeholder="e.g. 25" class="h-10 w-full px-3.5 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 

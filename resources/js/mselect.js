@@ -52,6 +52,9 @@
         var listH = Math.min(list.offsetHeight || 0, cap);
         var minW = parseInt(openList.sel.getAttribute('data-mselect-min-width'), 10) || 0;
         var width = Math.max(r.width, minW);
+        if (!openList.sel.classList.contains('w-full') && width < 130) {
+            width = Math.max(width, 130);
+        }
         var below = window.innerHeight - r.bottom;
 
         if (below < listH + 8 && r.top > listH + 8) {
@@ -193,20 +196,28 @@
 
         var wrap = document.createElement('div');
         wrap.className = 'mselect';
+
+        var isFullWidth = sel.classList.contains('w-full');
+        if (isFullWidth) {
+            wrap.classList.add('w-full');
+        } else {
+            wrap.classList.add('w-auto', 'flex-none');
+        }
+
+        // Transfer layout and sizing classes from select to the wrapper
+        // e.g. w-*, max-w-*, min-w-*, flex-*, shrink-*, grow-*, h-*, self-*
+        (sel.className || '').split(/\s+/).forEach(function (cls) {
+            if (/^(w-|max-w-|min-w-|flex-|shrink-|grow-|h-|self-)/.test(cls)) {
+                wrap.classList.add(cls);
+            }
+        });
+
         sel.parentNode.insertBefore(wrap, sel);
         wrap.appendChild(sel);
 
-        try {
-            var hostStyle = window.getComputedStyle(wrap.parentNode);
-            if ((hostStyle.display === 'flex' || hostStyle.display === 'inline-flex') && hostStyle.flexDirection === 'row') {
-                wrap.style.minWidth = 'fit-content';
-                wrap.style.maxWidth = '100%';
-            }
-        } catch (fitErr) {}
-
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'mselect-btn' + (sel.className ? ' ' + sel.className : '');
+        btn.className = 'mselect-btn ' + (sel.className ? sel.className : '');
         btn.setAttribute('aria-haspopup', 'listbox');
         btn.setAttribute('aria-expanded', 'false');
 

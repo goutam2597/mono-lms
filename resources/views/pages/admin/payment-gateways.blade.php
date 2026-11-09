@@ -44,25 +44,25 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Environment Mode</label>
-                            <select name="mode" data-mselect data-mselect-no-search class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                            <select name="mode" data-mselect data-mselect-no-search class="h-9 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                                 <option value="test" {{ $gateways['stripe']['mode'] === 'test' ? 'selected' : '' }}>Test / Sandbox</option>
                                 <option value="live" {{ $gateways['stripe']['mode'] === 'live' ? 'selected' : '' }}>Live Production</option>
                             </select>
                         </div>
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Publishable Key</label>
-                            <input type="text" name="key" value="{{ $gateways['stripe']['key'] }}" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                            <input type="text" name="key" value="{{ $gateways['stripe']['key'] }}" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                         </div>
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Secret Key</label>
-                        <input type="password" name="secret" value="{{ $gateways['stripe']['secret'] }}" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="password" name="secret" value="{{ $gateways['stripe']['secret'] }}" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Webhook Signing Secret</label>
-                        <input type="text" name="webhook" value="{{ $gateways['stripe']['webhook'] }}" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="webhook" value="{{ $gateways['stripe']['webhook'] }}" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div class="pt-2">
@@ -101,7 +101,7 @@
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Environment Mode</label>
-                        <select name="mode" data-mselect data-mselect-no-search class="w-full px-3 py-2 border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                        <select name="mode" data-mselect data-mselect-no-search class="h-9 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
                             <option value="sandbox" {{ $gateways['paypal']['mode'] === 'sandbox' ? 'selected' : '' }}>Sandbox</option>
                             <option value="live" {{ $gateways['paypal']['mode'] === 'live' ? 'selected' : '' }}>Live Production</option>
                         </select>
@@ -109,12 +109,12 @@
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Client ID</label>
-                        <input type="text" name="client_id" value="{{ $gateways['paypal']['client_id'] }}" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="client_id" value="{{ $gateways['paypal']['client_id'] }}" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Client Secret</label>
-                        <input type="password" name="secret" value="{{ $gateways['paypal']['secret'] }}" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="password" name="secret" value="{{ $gateways['paypal']['secret'] }}" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div class="pt-2">
@@ -153,12 +153,12 @@
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Key ID</label>
-                        <input type="text" name="key_id" value="{{ $gateways['razorpay']['key_id'] }}" placeholder="rzp_test_..." class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="key_id" value="{{ $gateways['razorpay']['key_id'] }}" placeholder="rzp_test_..." class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Key Secret</label>
-                        <input type="password" name="key_secret" value="{{ $gateways['razorpay']['key_secret'] }}" placeholder="••••••••" class="w-full font-mono text-[11px] px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="password" name="key_secret" value="{{ $gateways['razorpay']['key_secret'] }}" placeholder="••••••••" class="h-9 w-full font-mono text-[11px] px-3 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                     </div>
 
                     <div class="pt-2">

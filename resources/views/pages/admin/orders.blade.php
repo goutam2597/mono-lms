@@ -42,18 +42,18 @@
         <form method="GET" action="{{ route('admin.orders.index') }}" class="bg-white border border-slate-200 rounded-none p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
             <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[260px]">
                 <div class="relative flex-1 max-w-sm">
-                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by order #, student or course..." class="w-full pl-9 pr-3.5 py-2 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by order #, student or course..." class="h-9 w-full pl-9 pr-3.5 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
                 </div>
 
-                <select name="status" onchange="this.form.submit()" data-mselect data-mselect-no-search class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
+                <select name="status" onchange="this.form.submit()" data-mselect data-mselect-no-search class="h-9 w-auto flex-none text-xs border border-slate-200 rounded-none px-3 bg-white focus:outline-none focus:border-slate-900">
                     <option value="">All Statuses</option>
                     <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
                     <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="refunded" {{ request('status') === 'refunded' ? 'selected' : '' }}>Refunded</option>
                 </select>
 
-                <select name="method" onchange="this.form.submit()" data-mselect data-mselect-no-search class="text-xs border border-slate-200 rounded-none px-3 py-2 bg-white focus:outline-none focus:border-slate-900">
+                <select name="method" onchange="this.form.submit()" data-mselect data-mselect-no-search class="h-9 w-auto flex-none text-xs border border-slate-200 rounded-none px-3 bg-white focus:outline-none focus:border-slate-900">
                     <option value="">All Methods</option>
                     <option value="stripe" {{ request('method') === 'stripe' ? 'selected' : '' }}>Stripe</option>
                     <option value="paypal" {{ request('method') === 'paypal' ? 'selected' : '' }}>PayPal</option>
