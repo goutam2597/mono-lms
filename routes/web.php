@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PaymentGatewayController as AdminPaymentGatewayCo
 use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\RoleController;
@@ -148,6 +149,11 @@ Route::get('/lock-screen', fn () => view('pages.auth.lock-screen'))->name('lock-
 // -------------------------------------------------------------- Admin panel
 Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Admin profile & password edit (accessible by any authenticated admin)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::middleware('permission:admins.manage')->group(function () {
         Route::resource('admins', AdminUserController::class)->except('show');

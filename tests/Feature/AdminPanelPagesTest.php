@@ -276,4 +276,55 @@ class AdminPanelPagesTest extends TestCase
         $response = $this->get(route('admin.dashboard'))->assertOk();
         $response->assertSee($avatarUrl, false);
     }
+
+    public function test_header_profile_dropdown_and_edit_profile_page_are_accessible(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('header-user-menu-btn', false)
+            ->assertSee('header-user-menu-dropdown', false)
+            ->assertSee(route('admin.profile'), false);
+
+        $this->get(route('admin.profile'))
+            ->assertOk()
+            ->assertSee('Account Settings')
+            ->assertSee('Personal Information')
+            ->assertSee('Security')
+            ->assertSee($this->admin->email);
+    }
+
+    public function test_admin_can_update_profile_information(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->put(route('admin.profile.update'), [
+            'name' => 'Updated Admin Name',
+            'email' => 'updatedadmin@learnify.test',
+            'phone' => '+1 234 567 8901',
+            'locale' => 'en',
+        ])->assertSessionHas('success');
+
+        $this->admin->refresh();
+        $this->assertSame('Updated Admin Name', $this->admin->name);
+        $this->assertSame('updatedadmin@learnify.test', $this->admin->email);
+        $this->assertSame('+1 234 567 8901', $this->admin->phone);
+    }
+
+    public function test_admin_can_update_password(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->put(route('admin.profile.password'), [
+            'current_password' => '12345678',
+            'password' => 'newsecretpassword123',
+            'password_confirmation' => 'newsecretpassword123',
+        ])->assertSessionHas('success');
+
+        $this->assertTrue(auth('admin')->attempt([
+            'email' => $this->admin->email,
+            'password' => 'newsecretpassword123',
+        ]));
+    }
 }

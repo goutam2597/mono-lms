@@ -161,10 +161,10 @@
                         $adminAvatar = $admin?->avatarUrl();
                     @endphp
                     <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2.5 min-w-0">
+                        <a href="{{ route('admin.profile') }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
                             <div class="relative shrink-0">
                                 @if ($adminAvatar)
-                                    <img src="{{ $adminAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
+                                    <img src="{{ $adminAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
                                     <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
                                         {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
                                     </div>
@@ -176,11 +176,14 @@
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white truncate leading-tight">{{ $admin->name ?? 'Administrator' }}</p>
+                                <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $admin->name ?? 'Administrator' }}</p>
                                 <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $admin->isSuperAdmin() ? 'Super Admin' : ($admin->role?->name ?? 'Administrator') }}</p>
                             </div>
-                        </div>
+                        </a>
                         <div class="flex items-center gap-0.5 shrink-0">
+                            <a href="{{ route('admin.profile') }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                            </a>
                             <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                             </a>
@@ -198,10 +201,10 @@
                         $instructorAvatar = $instructor?->avatarUrl();
                     @endphp
                     <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2.5 min-w-0">
+                        <a href="{{ route('instructor.profile') }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
                             <div class="relative shrink-0">
                                 @if ($instructorAvatar)
-                                    <img src="{{ $instructorAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
+                                    <img src="{{ $instructorAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
                                     <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs hidden">
                                         {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
                                     </div>
@@ -213,11 +216,14 @@
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white truncate leading-tight">{{ $instructor->name ?? 'Instructor' }}</p>
+                                <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $instructor->name ?? 'Instructor' }}</p>
                                 <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $instructor->designation ?? __('app.common.instructor') }}</p>
                             </div>
-                        </div>
+                        </a>
                         <div class="flex items-center gap-0.5 shrink-0">
+                            <a href="{{ route('instructor.profile') }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                            </a>
                             <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                             </a>
@@ -272,22 +278,102 @@
                         <svg id="theme-icon-moon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
                     </button>
 
-                    <!-- User Profile Avatar (Figma rectangle with 5px radius) -->
-                    <div class="flex items-center pl-1 shrink-0">
+                    <!-- User Profile Dropdown Menu -->
+                    <div class="relative shrink-0" id="header-user-menu-container">
                         @php
                             $u = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user();
                             $navAvatar = $u?->avatarUrl();
+                            $profileRoute = ($userType === 'admin') ? route('admin.profile') : route('instructor.profile');
+                            $roleLabel = ($userType === 'admin')
+                                ? ($u?->isSuperAdmin() ? 'Super Admin' : ($u?->role?->name ?? 'Administrator'))
+                                : ($u?->designation ?? __('app.common.instructor'));
                         @endphp
-                        @if ($navAvatar)
-                            <img src="{{ $navAvatar }}" alt="" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200" onerror="this.classList.add('hidden'); if(this.nextElementSibling) { this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('flex'); }">
-                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
-                                {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
+                        <button type="button"
+                                id="header-user-menu-btn"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                title="{{ $u?->name ?? 'Account' }}"
+                                class="flex items-center p-0.5 rounded-[6px] hover:bg-slate-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer group focus:outline-none">
+                            <div class="relative shrink-0">
+                                @if ($navAvatar)
+                                    <img src="{{ $navAvatar }}" alt="" class="w-[34px] h-[34px] rounded-[5px] object-cover ring-1 ring-slate-200 dark:ring-neutral-800" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                                    <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
+                                        {{ strtoupper(substr($u?->name ?? 'U', 0, 1)) }}
+                                    </div>
+                                @else
+                                    <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
+                                        {{ strtoupper(substr($u?->name ?? 'U', 0, 1)) }}
+                                    </div>
+                                @endif
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0d0d0d]"></span>
                             </div>
-                        @else
-                            <div class="w-[34px] h-[34px] rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
-                                {{ strtoupper(substr($u->name ?? 'A', 0, 1)) }}
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="header-user-menu-dropdown"
+                             class="hidden absolute right-0 top-full mt-2 w-64 bg-white dark:bg-[#0d0d0d] border border-slate-200 dark:border-[#222222] rounded-[8px] shadow-2xl py-1 z-50 text-xs text-slate-700 dark:text-neutral-300 transform origin-top-right transition-all">
+                            <!-- User Identity Header -->
+                            <div class="px-4 py-3 border-b border-slate-100 dark:border-[#1f1f1f]">
+                                <div class="flex items-center gap-3">
+                                    <div class="relative shrink-0">
+                                        @if ($navAvatar)
+                                            <img src="{{ $navAvatar }}" alt="" class="w-10 h-10 rounded-[6px] object-cover ring-1 ring-slate-200 dark:ring-neutral-800" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                                            <div class="w-10 h-10 rounded-[6px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
+                                                {{ strtoupper(substr($u?->name ?? 'U', 0, 1)) }}
+                                            </div>
+                                        @else
+                                            <div class="w-10 h-10 rounded-[6px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-sm flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
+                                                {{ strtoupper(substr($u?->name ?? 'U', 0, 1)) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="font-semibold text-slate-900 dark:text-white truncate text-[13px] leading-tight">{{ $u?->name }}</p>
+                                        <p class="text-slate-500 dark:text-neutral-400 truncate text-[11px] mt-0.5">{{ $u?->email }}</p>
+                                        <span class="inline-flex items-center mt-1 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] dark:text-[#86efac]">
+                                            {{ $roleLabel }}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        @endif
+
+                            <!-- Actions List -->
+                            <div class="py-1">
+                                <a href="{{ $profileRoute }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                    <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                                    <span class="font-medium">Edit Profile</span>
+                                </a>
+
+                                @if ($userType === 'admin')
+                                    <a href="{{ route('admin.settings.index') }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                        <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        <span class="font-medium">General Settings</span>
+                                    </a>
+                                    @if (Route::has('admin.staff.index'))
+                                        <a href="{{ route('admin.staff.index') }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                            <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+                                            <span class="font-medium">Admins & Staff</span>
+                                        </a>
+                                    @endif
+                                @endif
+
+                                <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                    <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                                    <span class="font-medium">View Website</span>
+                                </a>
+                            </div>
+
+                            <!-- Logout -->
+                            <div class="border-t border-slate-100 dark:border-[#1f1f1f] pt-1">
+                                <form method="POST" action="{{ ($userType === 'admin') ? route('admin.logout') : route('instructor.logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors text-left cursor-pointer font-medium">
+                                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+                                        <span>Sign Out</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -451,6 +537,47 @@
                         }).catch(function () {});
                     });
                 }
+            })();
+
+            // Header User Profile Dropdown Toggle
+            (function () {
+                var btn = document.getElementById('header-user-menu-btn');
+                var dropdown = document.getElementById('header-user-menu-dropdown');
+                var container = document.getElementById('header-user-menu-container');
+
+                if (!btn || !dropdown || !container) return;
+
+                function closeDropdown() {
+                    dropdown.classList.add('hidden');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+
+                function openDropdown() {
+                    dropdown.classList.remove('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var isHidden = dropdown.classList.contains('hidden');
+                    if (isHidden) {
+                        openDropdown();
+                    } else {
+                        closeDropdown();
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!container.contains(e.target)) {
+                        closeDropdown();
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        closeDropdown();
+                    }
+                });
             })();
         </script>
 
