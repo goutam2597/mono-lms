@@ -87,6 +87,7 @@ class AdminPanelPagesTest extends TestCase
 
         // 8. Settings, Services, System
         $this->get(route('admin.settings.index'))->assertOk()->assertSee('Platform Settings');
+        $this->get(route('admin.homepage.index'))->assertOk()->assertSee('Home Page Editor');
         $this->get(route('admin.services.index'))->assertOk()->assertSee('Outgoing Mail (SMTP)');
         $this->get(route('admin.languages.index'))->assertOk();
         $this->get(route('admin.system.index'))->assertOk()->assertSee('Environment Diagnostics');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\PanelResetPassword;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,6 +33,11 @@ class Admin extends Authenticatable
     public function isSuperAdmin(): bool
     {
         return (bool) $this->is_super_admin;
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? PublicMedia::url($this->avatar) : null;
     }
 
     public function sendPasswordResetNotification($token): void

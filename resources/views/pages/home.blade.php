@@ -1,5 +1,9 @@
 <x-layouts.app title="Mono LMS – Home" active="home">
+@php
+    $home ??= app(\App\Services\HomePageContent::class)->all();
+@endphp
 
+    @if ($home['hero']['enabled'] ?? true)
     <!-- 1. HERO SECTION -->
     <section class="bg-gradient-to-b from-[#f8fafb] via-[#fbfcfe] to-white pt-8 pb-16 lg:pt-12 lg:pb-24 relative">
         <!-- Ambient decorative shapes (clipped in their own layer so the
@@ -17,18 +21,18 @@
                     <!-- Top Pill Tagline -->
                     <div class="inline-block anim-fade-up">
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-sm font-medium bg-[#344C3D] text-[#DCE7DA] shadow-sm">
-                            {{ __('home.hero.badge') }}
+                            {{ $home['hero']['badge'] ?? __('home.hero.badge') }}
                         </span>
                     </div>
 
                     <!-- Main Display Heading -->
                     <h1 class="text-4xl sm:text-5xl lg:text-[52px] font-bold text-[#191919] leading-[1.18] tracking-tight anim-fade-up anim-d1">
-                        {{ __('home.hero.title_line1') }} <span class="text-[#738A6E]">&amp;</span> {{ __('home.hero.title_highlight') }} {{ __('home.hero.title_line2') }}
+                        {{ $home['hero']['title_line1'] ?? __('home.hero.title_line1') }} <span class="text-[#738A6E]">&amp;</span> {{ $home['hero']['title_highlight'] ?? __('home.hero.title_highlight') }} {{ $home['hero']['title_line2'] ?? __('home.hero.title_line2') }}
                     </h1>
 
                     <!-- Subtitle Description -->
                     <p class="text-[#6d6d6d] text-base sm:text-lg leading-relaxed max-w-xl anim-fade-up anim-d2">
-                        {{ __('home.hero.subtitle') }}
+                        {{ $home['hero']['subtitle'] ?? __('home.hero.subtitle') }}
                     </p>
 
                     <!-- Rounded Search Bar -->
@@ -81,8 +85,8 @@
                             <span class="w-9 h-9 rounded-full bg-[#344C3D] text-[#DCE7DA] text-[10px] font-bold flex items-center justify-center border-2 border-white shadow-sm">+{{ $stats['instructors'] }}</span>
                         </div>
                         <div class="text-xs text-[#6d6d6d] leading-snug">
-                            <span class="text-[#738A6E]">★★★★★</span> <strong class="text-[#191919]">{{ __('home.hero.rating_label') }}</strong><br>
-                            Trusted by <strong class="text-[#191919]">{{ $stats['students'] }}+ {{ __('home.hero.students_word') }}</strong>
+                            <span class="text-[#738A6E]">★★★★★</span> <strong class="text-[#191919]">{{ $home['hero']['rating_label'] ?? __('home.hero.rating_label') }}</strong><br>
+                            Trusted by <strong class="text-[#191919]">{{ $home['hero']['students_count_text'] ?? ($stats['students'].'+ '.__('home.hero.students_word')) }}</strong>
                         </div>
                     </div>
                 </div>
@@ -140,16 +144,25 @@
 
                             <!-- White Spacer Ring -->
                             <div class="relative w-full h-full rounded-full p-2 bg-white/90 backdrop-blur-md shadow-2xl ring-1 ring-black/5">
-                                <!-- Photo Slides (crossfade) -->
+                                <!-- Photo Slides (crossfade or custom media) -->
                                 <div class="relative w-full h-full rounded-full overflow-hidden shadow-inner bg-slate-900">
-                                    @foreach ([
-                                        ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
-                                        ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
-                                        ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
-                                        ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
-                                    ] as $slide)
-                                        <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 transition-opacity duration-700 ease-in-out" />
-                                    @endforeach
+                                    @php
+                                        $customHeroAvatar = !empty($home['hero']['avatar_image'])
+                                            ? \App\Support\PublicMedia::url($home['hero']['avatar_image'])
+                                            : null;
+                                    @endphp
+                                    @if ($customHeroAvatar)
+                                        <img src="{{ $customHeroAvatar }}" alt="Hero centerpiece" class="absolute inset-0 w-full h-full object-cover object-top opacity-100" />
+                                    @else
+                                        @foreach ([
+                                            ['src' => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.student')],
+                                            ['src' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.courses')],
+                                            ['src' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.teachers')],
+                                            ['src' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop&q=85', 'alt' => __('home.hero.slides.graduation')],
+                                        ] as $slide)
+                                            <img data-hero-slide src="{{ $slide['src'] }}" alt="{{ $slide['alt'] }}" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 transition-opacity duration-700 ease-in-out" />
+                                        @endforeach
+                                    @endif
 
                                     <!-- Bottom Sage Luminous Arc Rim inside Photo -->
                                     <div class="absolute inset-0 rounded-full pointer-events-none ring-[3px] ring-inset ring-[#8EA58C]/70 shadow-[inset_0_-22px_32px_rgba(52,76,61,0.50)]"></div>
@@ -245,12 +258,17 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['stats']['enabled'] ?? true)
     <!-- 2. FOUR QUICK STATISTICS RIBBON -->
     <section class="max-w-7xl mx-auto px-4 sm:px-8 -mt-6 lg:-mt-10 relative z-20">
+        @php
+            $useDynamicStats = $home['stats']['use_dynamic_counts'] ?? true;
+        @endphp
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <!-- Stat 1: 10K Online Courses -->
+            <!-- Stat 1: Online Courses -->
             <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#5625e8]/10 flex items-center justify-center text-[#5625e8] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,12 +276,16 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
+                    @if ($useDynamicStats)
+                        <h3 class="text-2xl font-bold text-[#5625e8] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
+                    @else
+                        <h3 class="text-2xl font-bold text-[#5625e8] leading-tight">{{ $home['stats']['stat1_value'] ?? '25K+' }}</h3>
+                    @endif
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ $home['stats']['stat1_label'] ?? __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 2: 200+ Expert Tutors -->
+            <!-- Stat 2: Expert Tutors -->
             <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#ffc107]/15 flex items-center justify-center text-[#ffc107] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -271,12 +293,16 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-countup="{{ $stats['instructors'] }}" data-suffix="+">0+</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.instructors') }}</p>
+                    @if ($useDynamicStats)
+                        <h3 class="text-2xl font-bold text-[#ffc107] leading-tight" data-countup="{{ $stats['instructors'] }}" data-suffix="+">0+</h3>
+                    @else
+                        <h3 class="text-2xl font-bold text-[#ffc107] leading-tight">{{ $home['stats']['stat2_value'] ?? '1,200+' }}</h3>
+                    @endif
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ $home['stats']['stat2_label'] ?? __('home.hero.stats.instructors') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 3: 6K+ Certified Courses -->
+            <!-- Stat 3: Active Courses / Certified Courses -->
             <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#0dcaf0]/15 flex items-center justify-center text-[#0dcaf0] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,12 +311,16 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.courses') }}</p>
+                    @if ($useDynamicStats)
+                        <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight" data-countup="{{ $stats['courses'] }}">0</h3>
+                    @else
+                        <h3 class="text-2xl font-bold text-[#0dcaf0] leading-tight">{{ $home['stats']['stat3_value'] ?? '480+' }}</h3>
+                    @endif
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ $home['stats']['stat3_label'] ?? __('home.hero.stats.courses') }}</p>
                 </div>
             </div>
 
-            <!-- Stat 4: 60K+ Online Students -->
+            <!-- Stat 4: Online Students -->
             <div class="bg-white border border-[#e9ecef] rounded-[10px] p-6 shadow-[0px_4px_14px_rgba(231,231,231,0.35)] flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 rounded-xl bg-[#03c95a]/15 flex items-center justify-center text-[#03c95a] shrink-0">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -298,14 +328,20 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-countup="{{ $stats['students'] }}" data-suffix="+">0+</h3>
-                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ __('home.hero.stats.students') }}</p>
+                    @if ($useDynamicStats)
+                        <h3 class="text-2xl font-bold text-[#03c95a] leading-tight" data-countup="{{ $stats['students'] }}" data-suffix="+">0+</h3>
+                    @else
+                        <h3 class="text-2xl font-bold text-[#03c95a] leading-tight">{{ $home['stats']['stat4_value'] ?? '98.5%' }}</h3>
+                    @endif
+                    <p class="text-sm font-medium text-[#6d6d6d] mt-1">{{ $home['stats']['stat4_label'] ?? __('home.hero.stats.students') }}</p>
                 </div>
             </div>
 
         </div>
     </section>
+    @endif
 
+    @if ($home['categories']['enabled'] ?? true)
     <!-- 3. MASTER THE SKILLS TO DRIVE YOUR CAREER -->
     <section class="py-20 lg:py-28 overflow-hidden bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
@@ -334,12 +370,12 @@
                 <div class="lg:col-span-7 space-y-8">
                     <div>
                         <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] tracking-tight leading-tight">
-                            Master the skills to drive your career
+                            {{ $home['categories']['heading'] ?? 'Master the skills to drive your career' }}
                         </h2>
                         <!-- Sage Green Gradient Bar -->
                         <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-4 mb-5"></div>
                         <p class="text-[#6d6d6d] text-base leading-relaxed">
-                            Get certified, master modern tech skills, and level up your career whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.
+                            {{ $home['categories']['subtitle'] ?? 'Get certified, master modern tech skills, and level up your career whether you’re starting out or a seasoned pro. 95% of eLearning learners report our hands-on content directly helped their careers.' }}
                         </p>
                     </div>
 
@@ -510,7 +546,9 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['featured_courses']['enabled'] ?? true)
     <!-- 4. FEATURED COURSES 8-GRID -->
     <section class="py-20 bg-[#f8fafb]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
@@ -520,7 +558,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
-                            Featured Courses
+                            {{ $home['featured_courses']['heading'] ?? 'Featured Courses' }}
                         </h2>
                         <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                     </div>
@@ -546,7 +584,7 @@
 
             <!-- Featured Course Cards (DB-driven) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ($featuredCourses->take(8) as $course)
+                @foreach ($featuredCourses as $course)
                     <x-course-card
                         :slug="$course->slug"
                         :title="$course->title"
@@ -568,14 +606,16 @@
             <!-- View All Courses Button -->
             <div class="flex justify-center mt-12">
                 <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-semibold shadow-md transition-all">
-                    {{ __('app.common.view_all') }}
+                    {{ $home['featured_courses']['button_text'] ?? __('app.common.view_all') }}
                     <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
             </div>
 
         </div>
     </section>
+    @endif
 
+    @if ($home['banner_transform']['enabled'] ?? true)
     <!-- 5. TRANSFORM ACCESS TO EDUCATION BANNER -->
     <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
         <div class="bg-[#192A20] rounded-[20px] p-8 sm:p-12 lg:p-16 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
@@ -585,21 +625,23 @@
 
             <div class="space-y-3 max-w-2xl relative z-10 text-center lg:text-left">
                 <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
-                    Transform Access To Education
+                    {{ $home['banner_transform']['heading'] ?? 'Transform Access To Education' }}
                 </h3>
                 <p class="text-white/80 text-sm sm:text-base leading-relaxed">
-                    Create an account to receive our newsletter, course recommendations and promotions.
+                    {{ $home['banner_transform']['description'] ?? 'Create an account to receive our newsletter, course recommendations and promotions.' }}
                 </p>
             </div>
 
             <div class="relative z-10 shrink-0">
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-medium shadow-lg transition-all">
-                    View all Courses
+                <a href="{{ $home['banner_transform']['button_url'] ?? route('courses.index') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-base font-medium shadow-lg transition-all">
+                    {{ $home['banner_transform']['button_text'] ?? 'View all Courses' }}
                 </a>
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['goals']['enabled'] ?? true)
     <!-- 6. ACHIEVE YOUR GOALS WITH DREAMSLMS -->
     <section class="py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
@@ -608,7 +650,7 @@
                 <!-- Left Title -->
                 <div class="max-w-md">
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919] leading-tight">
-                        Acheive you Goals with MonoLMS
+                        {{ $home['goals']['heading'] ?? 'Achieve Your Goals with MonoLMS' }}
                     </h2>
                 </div>
 
@@ -618,33 +660,33 @@
                     <!-- Stat 1 -->
                     <div class="relative pl-4 border-l-2 border-[#5625e8]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">253,085</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">{{ $home['goals']['stat1_value'] ?? '253,085' }}</span>
                             <span class="w-5 h-5 rounded-full bg-[#5625e8] shrink-0 inline-block"></span>
                         </div>
                         <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
-                            Students Enrolled all over World
+                            {{ $home['goals']['stat1_label'] ?? 'Students Enrolled all over World' }}
                         </p>
                     </div>
 
                     <!-- Stat 2 -->
                     <div class="relative pl-4 border-l-2 border-[#0dcaf0]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">1,205</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">{{ $home['goals']['stat2_value'] ?? '1,205' }}</span>
                             <span class="w-5 h-5 rounded-full bg-[#0dcaf0] shrink-0 inline-block"></span>
                         </div>
                         <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
-                            Total Courses on our Platform
+                            {{ $home['goals']['stat2_label'] ?? 'Total Courses on our Platform' }}
                         </p>
                     </div>
 
                     <!-- Stat 3 -->
                     <div class="relative pl-4 border-l-2 border-[#03c95a]/20">
                         <div class="flex items-center gap-2">
-                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">56</span>
+                            <span class="text-3xl sm:text-4xl font-bold text-[#191919]">{{ $home['goals']['stat3_value'] ?? '56' }}</span>
                             <span class="w-5 h-5 rounded-full bg-[#03c95a] shrink-0 inline-block"></span>
                         </div>
                         <p class="text-sm text-[#6d6d6d] font-normal mt-2 leading-relaxed">
-                            Various Countries of Students
+                            {{ $home['goals']['stat3_label'] ?? 'Various Countries of Students' }}
                         </p>
                     </div>
 
@@ -653,7 +695,9 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['accelerate']['enabled'] ?? true)
     <!-- 7. ACCELERATE CLOUD SUCCESS (3 ALTERNATING SHOWCASES) -->
     <section class="py-24 bg-[#071136] text-white relative overflow-hidden">
         <!-- Ambient background glows -->
@@ -666,12 +710,12 @@
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/10">
                 <div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                        Accelerate Cloud Success
+                        {{ $home['accelerate']['heading'] ?? 'Accelerate Cloud Success' }}
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
                 <p class="text-white/80 text-sm sm:text-base max-w-xl leading-relaxed">
-                    96% of eLearning for Business customers see improved results within six months. Whether you’re a team of 10 or 10,000, faster cloud fluency starts here.
+                    {{ $home['accelerate']['description'] ?? '96% of eLearning for Business customers see improved results within six months. Whether you’re a team of 10 or 10,000, faster cloud fluency starts here.' }}
                 </p>
             </div>
 
@@ -682,10 +726,10 @@
                     <div class="relative w-full max-w-[460px] mx-auto aspect-[4/4.5]">
                         <div class="absolute -top-4 -left-4 w-32 h-32 rounded-full border-4 border-[#0dcaf0]/30 border-dashed pointer-events-none"></div>
                         <div class="absolute top-0 left-0 w-[78%] h-[82%] rounded-[30px] overflow-hidden shadow-2xl border-2 border-white/10">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80" alt="Students with notebooks" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase1_image1'] ?? '', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80') }}" alt="Showcase 1 primary" class="w-full h-full object-cover" />
                         </div>
                         <div class="absolute bottom-0 right-0 w-[65%] h-[68%] rounded-[30px] overflow-hidden shadow-2xl border-4 border-[#071136]">
-                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=700&auto=format&fit=crop&q=80" alt="Student smiling" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase1_image2'] ?? '', 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=700&auto=format&fit=crop&q=80') }}" alt="Showcase 1 secondary" class="w-full h-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -699,11 +743,11 @@
                     </div>
 
                     <h3 class="text-2xl sm:text-3xl font-bold text-[#ffc107]">
-                        Award Winning Course Management
+                        {{ $home['accelerate']['showcase1_title'] ?? 'Award Winning Course Management' }}
                     </h3>
 
                     <p class="text-white/80 text-base leading-relaxed">
-                        An award-winning course management system (CMS) or program is typically recognized for its exceptional quality, innovation, and effectiveness in helping both instructors and students succeed.
+                        {{ $home['accelerate']['showcase1_desc'] ?? 'An award-winning course management system (CMS) or program is typically recognized for its exceptional quality, innovation, and effectiveness in helping both instructors and students succeed.' }}
                     </p>
 
                     <!-- 5 Checkpoints -->
@@ -746,11 +790,11 @@
                     </div>
 
                     <h3 class="text-2xl sm:text-3xl font-bold text-[#0dcaf0]">
-                        Learn anything from anywhere anytime
+                        {{ $home['accelerate']['showcase2_title'] ?? 'Learn anything from anywhere anytime' }}
                     </h3>
 
                     <p class="text-white/80 text-base leading-relaxed">
-                        In today’s fast-paced, digital world, the ability to learn anything, from anywhere, and at any time is more accessible than ever. Whether you are looking to expand your knowledge, gain new skills.
+                        {{ $home['accelerate']['showcase2_desc'] ?? 'In today’s fast-paced, digital world, the ability to learn anything, from anywhere, and at any time is more accessible than ever. Whether you are looking to expand your knowledge, gain new skills.' }}
                     </p>
 
                     <!-- 5 Checkpoints -->
@@ -783,10 +827,10 @@
                     <div class="relative w-full max-w-[460px] mx-auto aspect-[4/4.5]">
                         <div class="absolute -top-4 -right-4 w-32 h-32 rounded-full border-4 border-[#738a6e]/40 border-dashed pointer-events-none"></div>
                         <div class="absolute top-0 right-0 w-[78%] h-[82%] rounded-[30px] overflow-hidden shadow-2xl border-2 border-white/10">
-                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80" alt="Student with laptop outdoors" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase2_image1'] ?? '', 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80') }}" alt="Showcase 2 primary" class="w-full h-full object-cover" />
                         </div>
                         <div class="absolute bottom-0 left-0 w-[65%] h-[68%] rounded-[30px] overflow-hidden shadow-2xl border-4 border-[#071136]">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=80" alt="Professional in blue suit" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase2_image2'] ?? '', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=80') }}" alt="Showcase 2 secondary" class="w-full h-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -802,10 +846,10 @@
                     <div class="relative w-full max-w-[460px] mx-auto aspect-[4/4.5]">
                         <div class="absolute -bottom-4 -left-4 w-32 h-32 rounded-full border-4 border-[#03c95a]/30 border-dashed pointer-events-none"></div>
                         <div class="absolute top-0 left-0 w-[78%] h-[82%] rounded-[30px] overflow-hidden shadow-2xl border-2 border-white/10">
-                            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=80" alt="Student cheerful" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase3_image1'] ?? '', 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=80') }}" alt="Showcase 3 primary" class="w-full h-full object-cover" />
                         </div>
                         <div class="absolute bottom-0 right-0 w-[65%] h-[68%] rounded-[30px] overflow-hidden shadow-2xl border-4 border-[#071136]">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=700&auto=format&fit=crop&q=80" alt="Student with books" class="w-full h-full object-cover" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['accelerate']['showcase3_image2'] ?? '', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=700&auto=format&fit=crop&q=80') }}" alt="Showcase 3 secondary" class="w-full h-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -820,11 +864,11 @@
                     </div>
 
                     <h3 class="text-2xl sm:text-3xl font-bold text-[#03c95a]">
-                        Certification for solid development of your Career
+                        {{ $home['accelerate']['showcase3_title'] ?? 'Certification for solid development of your Career' }}
                     </h3>
 
                     <p class="text-white/80 text-base leading-relaxed">
-                        Certifications are a powerful way to enhance your skills, build credibility, and boost your career growth. In today’s competitive job market, a professional certification gives you an edge.
+                        {{ $home['accelerate']['showcase3_desc'] ?? 'Certifications are a powerful way to enhance your skills, build credibility, and boost your career growth. In today’s competitive job market, a professional certification gives you an edge.' }}
                     </p>
 
                     <!-- 5 Checkpoints -->
@@ -855,7 +899,9 @@
 
         </div>
     </section>
+    @endif
 
+    @if ($home['trending_courses']['enabled'] ?? true)
     <!-- 8. MOST TRENDING COURSES -->
     <section class="py-20 bg-[#f8fafb]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
@@ -864,7 +910,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
-                        Most Trending Courses
+                        {{ $home['trending_courses']['heading'] ?? 'Most Trending Courses' }}
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
@@ -904,7 +950,9 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['instructors']['enabled'] ?? true)
     <!-- 9. COURSES TAUGHT BY REAL INSTRUCTOR -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
@@ -913,12 +961,12 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
-                        Courses Taught by Real Instructor
+                        {{ $home['instructors']['heading'] ?? 'Courses Taught by Real Instructor' }}
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
                 <a href="{{ route('instructors.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
-                    <span>View All</span>
+                    <span>{{ $home['instructors']['button_text'] ?? 'View All' }}</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -978,27 +1026,31 @@
 
         </div>
     </section>
+    @endif
 
+    @if ($home['banner_instructor']['enabled'] ?? true)
     <!-- 10. BECOME AN INSTRUCTOR BANNER -->
     <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
         <div class="bg-gradient-to-r from-[#344c3d] via-[#2d4235] to-[#738a6e] rounded-[20px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <div class="space-y-3 max-w-2xl text-center lg:text-left">
                 <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">
-                    Become An Instructor
+                    {{ $home['banner_instructor']['heading'] ?? 'Become An Instructor' }}
                 </h3>
                 <p class="text-white/90 text-sm sm:text-base leading-relaxed">
-                    Top instructors from around the world teach millions of students on MonoLMS.
+                    {{ $home['banner_instructor']['description'] ?? 'Top instructors from around the world teach millions of students on MonoLMS.' }}
                 </p>
             </div>
 
             <div class="shrink-0">
-                <a href="{{ route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
-                    Join Our Community
+                <a href="{{ $home['banner_instructor']['button_url'] ?? route('instructor.dashboard') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
+                    {{ $home['banner_instructor']['button_text'] ?? 'Join Our Community' }}
                 </a>
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['partners']['enabled'] ?? true)
     <!-- 11. 500+ LEADING UNIVERSITIES AND COMPANIES -->
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
@@ -1007,12 +1059,12 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-bold text-[#191919]">
-                        500+ Leading Universities And Companies
+                        {{ $home['partners']['heading'] ?? '500+ Leading Universities And Companies' }}
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
-                    <span>View All</span>
+                <a href="{{ $home['partners']['button_url'] ?? route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
+                    <span>{{ $home['partners']['button_text'] ?? 'View All' }}</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -1021,56 +1073,70 @@
 
             <!-- Brand Logos Row -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-85 hover:opacity-100 transition-opacity">
-                <!-- Jira Software -->
-                <div class="flex items-center gap-2 font-bold text-lg text-[#0052cc] hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M11.53 2c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V2h-11.22zm-4.75 4.77c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V6.77H6.78zM2 11.53c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V11.53H2z"/>
-                    </svg>
-                    <span>Jira Software</span>
-                </div>
+                @php
+                    $customPartners = array_filter($home['partners']['partners_list'] ?? [], fn($p) => !empty($p['name']));
+                @endphp
+                @if(!empty($customPartners))
+                    @foreach($customPartners as $partner)
+                        <div class="flex items-center gap-2 font-bold text-base sm:text-lg text-[#344C3D] hover:scale-105 transition-transform">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#738A6E] inline-block"></span>
+                            <span>{{ $partner['name'] }}</span>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Jira Software -->
+                    <div class="flex items-center gap-2 font-bold text-lg text-[#0052cc] hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.53 2c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V2h-11.22zm-4.75 4.77c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V6.77H6.78zM2 11.53c0 2.4 1.97 4.35 4.39 4.35h2.44v2.41c0 2.42 1.97 4.37 4.39 4.37V11.53H2z"/>
+                        </svg>
+                        <span>Jira Software</span>
+                    </div>
 
-                <!-- Calendly -->
-                <div class="flex items-center gap-1.5 font-bold text-lg text-[#006bff] hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                    </svg>
-                    <span>Calendly</span>
-                </div>
+                    <!-- Calendly -->
+                    <div class="flex items-center gap-1.5 font-bold text-lg text-[#006bff] hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span>Calendly</span>
+                    </div>
 
-                <!-- LiveChat -->
-                <div class="flex items-center gap-1.5 font-bold text-lg text-[#ff5000] hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                    </svg>
-                    <span>LiveChat</span>
-                </div>
+                    <!-- LiveChat -->
+                    <div class="flex items-center gap-1.5 font-bold text-lg text-[#ff5000] hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                        <span>LiveChat</span>
+                    </div>
 
-                <!-- Dropbox -->
-                <div class="flex items-center gap-1.5 font-bold text-lg text-[#0061ff] hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6.02 2L0 6.13l5.98 4.79L12 6.88 6.02 2zM17.98 2L12 6.88l6.02 4.04L24 6.13 17.98 2zM0 15.71l6.02 4.13L12 14.96l-6.02-4.04L0 15.71zm24 0l-6.02-4.79L12 14.96l5.98 4.88L24 15.71zM12 16.17l-5.98 4.79L12 24l5.98-3.04-5.98-4.79z"/>
-                    </svg>
-                    <span>Dropbox</span>
-                </div>
+                    <!-- Dropbox -->
+                    <div class="flex items-center gap-1.5 font-bold text-lg text-[#0061ff] hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6.02 2L0 6.13l5.98 4.79L12 6.88 6.02 2zM17.98 2L12 6.88l6.02 4.04L24 6.13 17.98 2zM0 15.71l6.02 4.13L12 14.96l-6.02-4.04L0 15.71zm24 0l-6.02-4.79L12 14.96l5.98 4.88L24 15.71zM12 16.17l-5.98 4.79L12 24l5.98-3.04-5.98-4.79z"/>
+                        </svg>
+                        <span>Dropbox</span>
+                    </div>
 
-                <!-- mixpanel -->
-                <div class="flex items-center gap-1.5 font-bold text-lg text-[#191919] hover:scale-105 transition-transform">
-                    <span class="w-3 h-3 rounded-full bg-[#7856ff] inline-block"></span>
-                    <span>mixpanel</span>
-                </div>
+                    <!-- mixpanel -->
+                    <div class="flex items-center gap-1.5 font-bold text-lg text-[#191919] hover:scale-105 transition-transform">
+                        <span class="w-3 h-3 rounded-full bg-[#7856ff] inline-block"></span>
+                        <span>mixpanel</span>
+                    </div>
 
-                <!-- make -->
-                <div class="flex items-center gap-1.5 font-bold text-lg text-[#b000ff] hover:scale-105 transition-transform">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                    <span>make</span>
-                </div>
+                    <!-- make -->
+                    <div class="flex items-center gap-1.5 font-bold text-lg text-[#b000ff] hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <span>make</span>
+                    </div>
+                @endif
             </div>
 
         </div>
     </section>
+    @endif
 
+    @if ($home['testimonials']['enabled'] ?? true)
     <!-- 12. TRUSTED BY MANY TESTIMONIALS -->
     <section class="py-24 bg-[#071136] text-white relative overflow-hidden">
         <!-- Dotted world map background overlay -->
@@ -1082,16 +1148,16 @@
                 <!-- Left Content -->
                 <div class="lg:col-span-5 space-y-6 text-center lg:text-left">
                     <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
-                        Trusted By Many
+                        {{ $home['testimonials']['heading'] ?? 'Trusted By Many' }}
                     </h2>
 
                     <p class="text-white/80 text-lg leading-relaxed max-w-md">
-                        We are a very happy because we have a happy Learners
+                        {{ $home['testimonials']['subtitle'] ?? 'We are a very happy because we have a happy Learners' }}
                     </p>
 
                     <div>
-                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
-                            Join Our Community
+                        <a href="{{ $home['testimonials']['button_url'] ?? route('register') }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-gray-100 text-base font-semibold shadow-lg transition-all">
+                            {{ $home['testimonials']['button_text'] ?? 'Join Our Community' }}
                         </a>
                     </div>
                 </div>
@@ -1109,7 +1175,7 @@
 
                         <!-- Quote Text -->
                         <p class="text-[#4f4f4f] text-base sm:text-lg leading-relaxed font-normal">
-                            “I often felt like the mentor’s answers were too detailed, which made it hard for me to keep up. Sometimes, a simpler explanation would have helped me understand things faster. But overall, I’ve become more organized, confident, and focused thanks to my life coach.”
+                            {{ $home['testimonials']['quote'] ?? '“I often felt like the mentor’s answers were too detailed, which made it hard for me to keep up. Sometimes, a simpler explanation would have helped me understand things faster. But overall, I’ve become more organized, confident, and focused thanks to my life coach.”' }}
                         </p>
 
                         <!-- Rating Stars -->
@@ -1121,15 +1187,15 @@
                                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                                 <svg class="w-5 h-5 fill-current opacity-50" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                             </div>
-                            <span class="text-sm font-semibold text-[#685f78]">4.5 ratings</span>
+                            <span class="text-sm font-semibold text-[#685f78]">{{ $home['testimonials']['author_rating'] ?? '4.5' }} ratings</span>
                         </div>
 
                         <!-- Reviewer Info -->
                         <div class="pt-4 border-t border-gray-100 flex items-center gap-4">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Martin Harn" class="w-12 h-12 rounded-full object-cover shadow-sm" />
+                            <img src="{{ \App\Support\PublicMedia::url($home['testimonials']['author_image'] ?? '', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop') }}" alt="{{ $home['testimonials']['author_name'] ?? 'Reviewer' }}" class="w-12 h-12 rounded-full object-cover shadow-sm" />
                             <div>
-                                <h4 class="text-base font-bold text-[#002058]">Martin Harn</h4>
-                                <p class="text-sm text-[#685f78]">Docker Development</p>
+                                <h4 class="text-base font-bold text-[#002058]">{{ $home['testimonials']['author_name'] ?? 'Martin Harn' }}</h4>
+                                <p class="text-sm text-[#685f78]">{{ $home['testimonials']['author_role'] ?? 'Docker Development' }}</p>
                             </div>
                         </div>
                     </div>
@@ -1148,7 +1214,9 @@
             </div>
         </div>
     </section>
+    @endif
 
+    @if ($home['blog']['enabled'] ?? true)
     <!-- 13. LATEST NEWS & EVENTS -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10">
@@ -1157,12 +1225,12 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-[#191919]">
-                        Latest news &amp; Events
+                        {{ $home['blog']['heading'] ?? 'Latest news & Events' }}
                     </h2>
                     <div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-[#344c3d] via-[#738a6e] to-[#bfcfbb] mt-3"></div>
                 </div>
-                <a href="{{ route('courses.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
-                    <span>View All</span>
+                <a href="{{ $home['blog']['button_url'] ?? route('blog.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#738a6e] hover:text-[#344c3d] transition-colors">
+                    <span>{{ $home['blog']['button_text'] ?? 'View All' }}</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -1173,7 +1241,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         @forelse ($posts as $post)
                             <a href="{{ route('blog.show', $post->slug) }}" class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-end p-5">
-                                <img src="{{ $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src="{{ $post->imageUrl() ?? $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                                 <div class="relative z-10 space-y-2">
                                     <div class="flex items-center gap-2 text-[11px] text-white">
@@ -1191,5 +1259,6 @@
                     </div>
         </div>
     </section>
+    @endif
 
 </x-layouts.app>

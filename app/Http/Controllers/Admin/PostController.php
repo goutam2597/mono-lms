@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -57,6 +58,18 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('admin.blog.index')->with('success', __('admin.blog.deleted'));
+    }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:posts,id'],
+        ]);
+
+        $count = Post::whereIn('id', $data['ids'])->delete();
+
+        return redirect()->route('admin.blog.index')->with('success', "Deleted {$count} blog posts successfully.");
     }
 
     private function validated(Request $request, ?Post $post = null): array

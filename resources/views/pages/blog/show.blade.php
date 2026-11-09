@@ -12,8 +12,8 @@
     </div>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-8 py-12">
-        @if ($post->image)
-            <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-80 object-cover rounded-2xl shadow-md mb-10">
+        @if ($post->imageUrl() ?? $post->image)
+            <img src="{{ $post->imageUrl() ?? $post->image }}" alt="{{ $post->title }}" class="w-full h-80 object-cover rounded-2xl shadow-md mb-10">
         @endif
 
         <article class="prose-blog space-y-5 text-[#5d5d5d] leading-relaxed">

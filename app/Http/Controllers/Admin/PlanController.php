@@ -74,6 +74,35 @@ class PlanController extends Controller
         return redirect()->route('admin.plans.index')->with('success', __('admin.plans.deleted'));
     }
 
+    public function bulkDestroy(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:plans,id'],
+        ]);
+
+        $plans = Plan::whereIn('id', $data['ids'])->withCount(['subscriptions' => fn ($q) => $q->where('status', 'active')])->get();
+        $deleted = 0;
+        $skipped = 0;
+
+        foreach ($plans as $plan) {
+            if ($plan->subscriptions_count > 0) {
+                $skipped++;
+
+                continue;
+            }
+            $plan->delete();
+            $deleted++;
+        }
+
+        $msg = "Deleted {$deleted} plans successfully.";
+        if ($skipped > 0) {
+            $msg .= " ({$skipped} plans skipped because they have active subscribers)";
+        }
+
+        return redirect()->route('admin.plans.index')->with('success', $msg);
+    }
+
     private function validated(Request $request): array
     {
         $features = array_values(array_filter(array_map('trim', explode("\n", (string) $request->input('features')))));

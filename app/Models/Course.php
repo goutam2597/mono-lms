@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -73,5 +74,12 @@ class Course extends Model
     public function enrolledCount(): int
     {
         return (int) $this->enrollments()->whereIn('status', ['active', 'completed'])->count();
+    }
+
+    public function imageUrl(?string $fallback = null): string
+    {
+        $fallback ??= 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80';
+
+        return PublicMedia::url($this->image, $fallback);
     }
 }

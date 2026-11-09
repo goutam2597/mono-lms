@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,5 +30,10 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
+    }
+
+    public function imageUrl(): ?string
+    {
+        return $this->image ? PublicMedia::url($this->image) : null;
     }
 }

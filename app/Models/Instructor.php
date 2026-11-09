@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\PanelResetPassword;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,5 +47,10 @@ class Instructor extends Authenticatable
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? PublicMedia::url($this->avatar) : null;
     }
 }

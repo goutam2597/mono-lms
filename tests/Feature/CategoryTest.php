@@ -114,4 +114,35 @@ class CategoryTest extends TestCase
         // Must NOT render public storefront header/text
         $response->assertDontSee('The Leader in Online Learning');
     }
+
+    public function test_admin_can_bulk_delete_categories(): void
+    {
+        $admin = $this->superAdmin();
+        $this->actingAs($admin, 'admin');
+
+        $c1 = Category::create(['name' => 'Cat 1', 'slug' => 'cat-1']);
+        $c2 = Category::create(['name' => 'Cat 2', 'slug' => 'cat-2']);
+        $c3 = Category::create(['name' => 'Cat 3', 'slug' => 'cat-3']);
+
+        $response = $this->post(route('admin.categories.bulk-destroy'), [
+            'ids' => [$c1->id, $c2->id],
+        ]);
+
+        $response->assertRedirect(route('admin.categories.index'));
+        $this->assertDatabaseMissing('categories', ['id' => $c1->id]);
+        $this->assertDatabaseMissing('categories', ['id' => $c2->id]);
+        $this->assertDatabaseHas('categories', ['id' => $c3->id]);
+    }
+
+    public function test_admin_categories_index_has_modal_and_bulk_toolbar(): void
+    {
+        $admin = $this->superAdmin();
+        $this->actingAs($admin, 'admin');
+
+        $response = $this->get(route('admin.categories.index'));
+        $response->assertOk();
+        $response->assertSee('id="cat-modal"', false);
+        $response->assertSee('data-bulk-toolbar', false);
+        $response->assertSee('id="check-all"', false);
+    }
 }

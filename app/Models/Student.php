@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\PanelResetPassword;
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,5 +43,10 @@ class Student extends Authenticatable
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? PublicMedia::url($this->avatar) : null;
     }
 }

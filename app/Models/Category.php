@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,14 +17,6 @@ class Category extends Model
 
     public function imageUrl(): ?string
     {
-        if (! $this->image) {
-            return null;
-        }
-
-        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
-            return $this->image;
-        }
-
-        return asset('storage/'.$this->image);
+        return $this->image ? PublicMedia::url($this->image) : null;
     }
 }

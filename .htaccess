@@ -1,0 +1,12 @@
+# Laragon: serve the Laravel app from public/ while the vhost points at the project root
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect direct requests for /public/... to the clean URL
+    RewriteCond %{THE_REQUEST} \s/public/([^\s?]*) [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Internally map every request into public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

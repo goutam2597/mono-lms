@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Review;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -37,5 +38,17 @@ class ReviewController extends Controller
         $review->delete();
 
         return back()->with('success', __('admin.reviews.deleted'));
+    }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:reviews,id'],
+        ]);
+
+        $count = Review::whereIn('id', $data['ids'])->delete();
+
+        return back()->with('success', "Deleted {$count} reviews successfully.");
     }
 }

@@ -15,6 +15,8 @@ class SettingController extends Controller
         $settings = [
             'site_name' => Setting::get('site_name', 'Mono LMS'),
             'site_description' => Setting::get('site_description', 'Modern, accessible Learning Management System'),
+            'site_logo' => Setting::get('site_logo', ''),
+            'site_favicon' => Setting::get('site_favicon', ''),
             'contact_email' => Setting::get('contact_email', 'support@mono-lms.test'),
             'contact_phone' => Setting::get('contact_phone', '+1 (555) 234-5678'),
             'currency_code' => Setting::get('currency_code', 'USD'),
@@ -39,6 +41,8 @@ class SettingController extends Controller
         $fields = [
             'site_name',
             'site_description',
+            'site_logo',
+            'site_favicon',
             'contact_email',
             'contact_phone',
             'currency_code',

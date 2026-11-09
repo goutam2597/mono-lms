@@ -26,6 +26,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'courses.publish' => ['Publish / unpublish courses', 'Courses'],
             'reviews.moderate' => ['Moderate reviews', 'Courses'],
             'blog.manage' => ['Manage blog posts', 'Content'],
+            'homepage.manage' => ['Manage homepage editor & content', 'Content'],
+            'media.manage' => ['Manage media library', 'Content'],
             'plans.manage' => ['Manage membership plans', 'Membership'],
             'languages.manage' => ['Manage languages', 'Settings'],
         ];
@@ -40,7 +42,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $roles = [
             'Super Admin' => array_keys($permissions),
-            'Manager' => ['instructors.manage', 'students.manage', 'categories.manage', 'courses.manage', 'courses.publish', 'reviews.moderate', 'blog.manage', 'plans.manage'],
+            'Manager' => ['instructors.manage', 'students.manage', 'categories.manage', 'courses.manage', 'courses.publish', 'reviews.moderate', 'blog.manage', 'homepage.manage', 'media.manage', 'plans.manage'],
             'Support' => ['students.manage', 'reviews.moderate'],
         ];
 

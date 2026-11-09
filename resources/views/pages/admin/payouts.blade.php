@@ -2,11 +2,11 @@
 
     <div class="space-y-6">
         <!-- Top Title Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 rounded-none p-6 shadow-xs">
             <div>
                 <div class="flex items-center gap-2.5">
                     <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">Instructor Payouts</h1>
-                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-none bg-amber-50 text-amber-700 border border-amber-200">
                         {{ $stats['pending_count'] }} Pending Requests
                     </span>
                 </div>
@@ -16,44 +16,44 @@
 
         <!-- 2 Summary KPI Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div class="bg-white border border-slate-200 rounded-none p-5 shadow-xs flex items-center justify-between">
                 <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Payouts Queue</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Payouts Queue</span>
                     <p class="text-2xl font-extrabold text-amber-600 mt-1">${{ number_format($stats['pending_amount'], 2) }}</p>
                     <span class="text-[11px] text-slate-400">{{ $stats['pending_count'] }} instructors waiting for disbursement</span>
                 </div>
-                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                <div class="w-12 h-12 rounded-none bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </div>
 
-            <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div class="bg-white border border-slate-200 rounded-none p-5 shadow-xs flex items-center justify-between">
                 <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Processed & Disbursed</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Processed & Disbursed</span>
                     <p class="text-2xl font-extrabold text-emerald-600 mt-1">${{ number_format($stats['processed_amount'], 2) }}</p>
                     <span class="text-[11px] text-slate-400">{{ $stats['processed_count'] }} completed transfers</span>
                 </div>
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+                <div class="w-12 h-12 rounded-none bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
             </div>
         </div>
 
         <!-- Payout Requests Table -->
-        <div class="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+        <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden">
             <div class="p-4 border-b border-slate-100 flex items-center justify-between gap-3">
-                <span class="text-xs font-bold text-slate-800">Withdrawal Requests</span>
-                <div class="flex items-center gap-2">
-                    <a href="{{ route('admin.payouts.index') }}" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg {{ !request('status') ? 'bg-[#344c3d] text-white' : 'text-slate-600 hover:bg-slate-100' }}">All</a>
-                    <a href="{{ route('admin.payouts.index', ['status' => 'pending']) }}" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg {{ request('status') === 'pending' ? 'bg-[#344c3d] text-white' : 'text-slate-600 hover:bg-slate-100' }}">Pending</a>
-                    <a href="{{ route('admin.payouts.index', ['status' => 'processed']) }}" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg {{ request('status') === 'processed' ? 'bg-[#344c3d] text-white' : 'text-slate-600 hover:bg-slate-100' }}">Processed</a>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-800">Withdrawal Requests</span>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <a href="{{ route('admin.payouts.index') }}" class="text-[10px] uppercase tracking-[0.12em] font-semibold px-3 py-1.5 rounded-none border transition-colors {{ !request('status') ? 'bg-[#08131e] border-[#08131e] text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400' }}">All</a>
+                    <a href="{{ route('admin.payouts.index', ['status' => 'pending']) }}" class="text-[10px] uppercase tracking-[0.12em] font-semibold px-3 py-1.5 rounded-none border transition-colors {{ request('status') === 'pending' ? 'bg-[#08131e] border-[#08131e] text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400' }}">Pending</a>
+                    <a href="{{ route('admin.payouts.index', ['status' => 'processed']) }}" class="text-[10px] uppercase tracking-[0.12em] font-semibold px-3 py-1.5 rounded-none border transition-colors {{ request('status') === 'processed' ? 'bg-[#08131e] border-[#08131e] text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400' }}">Processed</a>
                 </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-semibold text-[11px] uppercase tracking-wider">
+                        <tr class="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-semibold text-[10px] uppercase tracking-wider">
                             <th class="py-3.5 px-4">Recipient</th>
                             <th class="py-3.5 px-4">Method</th>
                             <th class="py-3.5 px-4">Account / IBAN</th>
@@ -91,7 +91,7 @@
                                     ${{ number_format($payout->amount, 2) }}
                                 </td>
                                 <td class="py-3.5 px-4">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border {{ $payout->status === 'processed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : ($payout->status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-rose-50 text-rose-700 border-rose-200') }}">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-none text-[10px] font-bold uppercase tracking-[0.12em] border {{ $payout->status === 'processed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : ($payout->status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-rose-50 text-rose-700 border-rose-200') }}">
                                         {{ ucfirst($payout->status) }}
                                     </span>
                                 </td>
@@ -106,7 +106,7 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status" value="processed">
-                                                <button type="submit" class="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[#344c3d] text-white hover:bg-[#283a2f] shadow-xs transition-colors">
+                                                <button type="submit" class="action-btn action-btn-primary h-7 px-3 text-[10px]">
                                                     Mark Paid
                                                 </button>
                                             </form>
@@ -116,12 +116,12 @@
                                                 @csrf
                                                 @method('PATCH')
                                                 <input type="hidden" name="status" value="rejected">
-                                                <button type="submit" class="text-[11px] font-semibold px-2 py-1 rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors">
+                                                <button type="submit" class="action-btn action-btn-ghost h-7 px-3 text-[10px]">
                                                     Reject
                                                 </button>
                                             </form>
                                         @else
-                                            <span class="text-slate-400 text-[11px]">Completed</span>
+                                            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Completed</span>
                                         @endif
                                     </div>
                                 </td>

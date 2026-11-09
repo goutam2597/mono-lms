@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Role;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -33,7 +34,9 @@ class AdminUserController extends Controller
 
         Admin::create($data + ['is_super_admin' => $request->boolean('is_super_admin')]);
 
-        return redirect()->route('admin.admins.index')->with('success', __('admin.admins.created'));
+        $redirect = $request->input('redirect_to') ?: route('admin.admins.index');
+
+        return redirect($redirect)->with('success', __('admin.admins.created'));
     }
 
     public function edit(Admin $admin)
@@ -54,7 +57,9 @@ class AdminUserController extends Controller
 
         $admin->update($data + ['is_super_admin' => $request->boolean('is_super_admin')]);
 
-        return redirect()->route('admin.admins.index')->with('success', __('admin.admins.updated'));
+        $redirect = $request->input('redirect_to') ?: route('admin.admins.index');
+
+        return redirect($redirect)->with('success', __('admin.admins.updated'));
     }
 
     public function destroy(Request $request, Admin $admin)
@@ -65,7 +70,29 @@ class AdminUserController extends Controller
 
         $admin->delete();
 
-        return redirect()->route('admin.admins.index')->with('success', __('admin.admins.deleted'));
+        $redirect = $request->input('redirect_to') ?: route('admin.admins.index');
+
+        return redirect($redirect)->with('success', __('admin.admins.deleted'));
+    }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:admins,id'],
+        ]);
+
+        $currentId = $request->user('admin')->id;
+        $ids = array_values(array_diff($data['ids'], [$currentId]));
+
+        $count = Admin::whereIn('id', $ids)->delete();
+
+        $skippedSelf = in_array($currentId, $data['ids']);
+        if ($skippedSelf) {
+            return redirect()->route('admin.admins.index')->with('success', "Deleted {$count} administrators (your own account was skipped).");
+        }
+
+        return redirect()->route('admin.admins.index')->with('success', "Deleted {$count} administrators successfully.");
     }
 
     private function validated(Request $request, ?Admin $admin = null): array
@@ -75,6 +102,7 @@ class AdminUserController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('admins', 'email')->ignore($admin?->id)],
             'password' => [$admin ? 'nullable' : 'required', 'string', Password::min(8)],
             'phone' => ['nullable', 'string', 'max:30'],
+            'avatar' => ['nullable', 'string', 'max:500'],
             'role_id' => ['nullable', 'exists:roles,id'],
             'status' => ['required', 'in:active,inactive'],
         ]);

@@ -45,7 +45,8 @@
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 .control:hover { border-color: #191919; }
-.control:checked {
+.control:checked,
+.control:indeterminate {
     background: #344c3d;
     border-color: #344c3d;
     box-shadow: inset 0 0 0 3px #ffffff;

@@ -50,4 +50,16 @@ class LeadController extends Controller
 
         return back()->with('success', 'Lead record removed.');
     }
+
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:leads,id'],
+        ]);
+
+        $count = Lead::whereIn('id', $data['ids'])->delete();
+
+        return back()->with('success', "Deleted {$count} leads successfully.");
+    }
 }

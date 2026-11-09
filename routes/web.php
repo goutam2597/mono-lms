@@ -7,9 +7,11 @@ use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\HomePageController as AdminHomePageController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentGatewayController as AdminPaymentGatewayController;
 use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
@@ -140,6 +142,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 
     Route::middleware('permission:admins.manage')->group(function () {
         Route::resource('admins', AdminUserController::class)->except('show');
+        Route::post('/admins/bulk-destroy', [AdminUserController::class, 'bulkDestroy'])->name('admins.bulk-destroy');
     });
 
     Route::middleware('permission:roles.manage')->group(function () {
@@ -148,21 +151,39 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 
     Route::middleware('permission:instructors.manage')->group(function () {
         Route::resource('instructors', AdminInstructorController::class)->except('show');
+        Route::post('/instructors/bulk-destroy', [AdminInstructorController::class, 'bulkDestroy'])->name('instructors.bulk-destroy');
     });
 
     Route::middleware('permission:students.manage')->group(function () {
         Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
+        Route::post('/students', [AdminStudentController::class, 'store'])->name('students.store');
         Route::get('/students/{student}/edit', [AdminStudentController::class, 'edit'])->name('students.edit');
         Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('students.update');
         Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('students.destroy');
+        Route::post('/students/bulk-destroy', [AdminStudentController::class, 'bulkDestroy'])->name('students.bulk-destroy');
     });
 
     Route::middleware('permission:categories.manage')->group(function () {
         Route::resource('categories', AdminCategoryController::class)->except('show');
+        Route::post('/categories/bulk-destroy', [AdminCategoryController::class, 'bulkDestroy'])->name('categories.bulk-destroy');
     });
 
     Route::get('/courses', [AdminCourseController::class, 'index'])
         ->middleware('permission:courses.manage')->name('courses.index');
+    Route::get('/courses/create', [AdminCourseController::class, 'create'])
+        ->middleware('permission:courses.manage')->name('courses.create');
+    Route::post('/courses', [AdminCourseController::class, 'store'])
+        ->middleware('permission:courses.manage')->name('courses.store');
+    Route::get('/courses/{course}/edit', [AdminCourseController::class, 'edit'])
+        ->middleware('permission:courses.manage')->name('courses.edit');
+    Route::put('/courses/{course}', [AdminCourseController::class, 'update'])
+        ->middleware('permission:courses.manage')->name('courses.update');
+    Route::post('/courses/{course}/lessons', [AdminCourseController::class, 'storeLesson'])
+        ->middleware('permission:courses.manage')->name('courses.lessons.store');
+    Route::delete('/lessons/{lesson}', [AdminCourseController::class, 'destroyLesson'])
+        ->middleware('permission:courses.manage')->name('courses.lessons.destroy');
+    Route::post('/courses/bulk-destroy', [AdminCourseController::class, 'bulkDestroy'])
+        ->middleware('permission:courses.manage')->name('courses.bulk-destroy');
     Route::patch('/courses/{course}/publish', [AdminCourseController::class, 'publish'])
         ->middleware('permission:courses.publish')->name('courses.publish');
     Route::patch('/courses/{course}/unpublish', [AdminCourseController::class, 'unpublish'])
@@ -178,6 +199,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:reviews.moderate')->name('reviews.reject');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])
         ->middleware('permission:reviews.moderate')->name('reviews.destroy');
+    Route::post('/reviews/bulk-destroy', [AdminReviewController::class, 'bulkDestroy'])
+        ->middleware('permission:reviews.moderate')->name('reviews.bulk-destroy');
 
     Route::get('/languages', [LanguageController::class, 'index'])
         ->middleware('permission:languages.manage')->name('languages.index');
@@ -194,6 +217,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         Route::get('/blog/{post}/edit', [AdminPostController::class, 'edit'])->name('blog.edit');
         Route::put('/blog/{post}', [AdminPostController::class, 'update'])->name('blog.update');
         Route::delete('/blog/{post}', [AdminPostController::class, 'destroy'])->name('blog.destroy');
+        Route::post('/blog/bulk-destroy', [AdminPostController::class, 'bulkDestroy'])->name('blog.bulk-destroy');
+    });
+
+    // Media Library
+    Route::middleware('permission:media.manage')->group(function () {
+        Route::get('/media', [AdminMediaController::class, 'index'])->name('media.index');
+        Route::get('/media.json', [AdminMediaController::class, 'json'])->name('media.json');
+        Route::post('/media/upload', [AdminMediaController::class, 'quickUpload'])->name('media.upload');
+        Route::post('/media', [AdminMediaController::class, 'store'])->name('media.store');
+        Route::delete('/media/{media}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
+        Route::post('/media/bulk-destroy', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulk-destroy');
     });
 
     // Membership plans + the master enable/disable switch
@@ -205,10 +239,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         Route::get('/plans/{plan}/edit', [AdminPlanController::class, 'edit'])->name('plans.edit');
         Route::put('/plans/{plan}', [AdminPlanController::class, 'update'])->name('plans.update');
         Route::delete('/plans/{plan}', [AdminPlanController::class, 'destroy'])->name('plans.destroy');
+        Route::post('/plans/bulk-destroy', [AdminPlanController::class, 'bulkDestroy'])->name('plans.bulk-destroy');
     });
 
     // Unified All Users Directory
     Route::get('/users', [AdminUserDirectoryController::class, 'index'])->name('users.index');
+    Route::post('/users/bulk-destroy', [AdminUserDirectoryController::class, 'bulkDestroy'])->name('users.bulk-destroy');
+    Route::delete('/users/{type}/{id}', [AdminUserDirectoryController::class, 'destroy'])->name('users.destroy');
 
     // Orders & Sales Management
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
@@ -220,6 +257,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/coupons', [AdminCouponController::class, 'store'])->name('coupons.store');
     Route::patch('/coupons/{coupon}/toggle', [AdminCouponController::class, 'toggle'])->name('coupons.toggle');
     Route::delete('/coupons/{coupon}', [AdminCouponController::class, 'destroy'])->name('coupons.destroy');
+    Route::post('/coupons/bulk-destroy', [AdminCouponController::class, 'bulkDestroy'])->name('coupons.bulk-destroy');
 
     // Payouts
     Route::get('/payouts', [AdminPayoutController::class, 'index'])->name('payouts.index');
@@ -236,6 +274,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/messages', [AdminSupportController::class, 'messages'])->name('messages.index');
     Route::patch('/messages/{message}/toggle', [AdminSupportController::class, 'toggleMessageRead'])->name('messages.toggle');
     Route::delete('/messages/{message}', [AdminSupportController::class, 'destroyMessage'])->name('messages.destroy');
+    Route::post('/messages/bulk-destroy', [AdminSupportController::class, 'bulkDestroyMessages'])->name('messages.bulk-destroy');
 
     // Payment Gateways
     Route::get('/payment-gateways', [AdminPaymentGatewayController::class, 'index'])->name('payment-gateways.index');
@@ -248,6 +287,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
 
+    // Home Page Editor
+    Route::get('/homepage', [AdminHomePageController::class, 'edit'])->name('homepage.index');
+    Route::put('/homepage', [AdminHomePageController::class, 'update'])->name('homepage.update');
+    Route::post('/homepage', [AdminHomePageController::class, 'update']);
+
     // Mail (SMTP) & Storage Services
     Route::get('/services', [AdminServicesController::class, 'index'])->name('services.index');
     Route::post('/services/mail', [AdminServicesController::class, 'updateMail'])->name('services.mail');
@@ -258,11 +302,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/leads', [AdminLeadController::class, 'index'])->name('leads.index');
     Route::patch('/leads/{lead}', [AdminLeadController::class, 'update'])->name('leads.update');
     Route::delete('/leads/{lead}', [AdminLeadController::class, 'destroy'])->name('leads.destroy');
+    Route::post('/leads/bulk-destroy', [AdminLeadController::class, 'bulkDestroy'])->name('leads.bulk-destroy');
 
     // Events / Webinars
     Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
     Route::post('/events', [AdminEventController::class, 'store'])->name('events.store');
+    Route::put('/events/{event}', [AdminEventController::class, 'update'])->name('events.update');
     Route::delete('/events/{event}', [AdminEventController::class, 'destroy'])->name('events.destroy');
+    Route::post('/events/bulk-destroy', [AdminEventController::class, 'bulkDestroy'])->name('events.bulk-destroy');
 
     // System Status & Updates
     Route::get('/system', [AdminSystemController::class, 'index'])->name('system.index');

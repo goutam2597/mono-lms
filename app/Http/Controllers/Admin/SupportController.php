@@ -70,4 +70,16 @@ class SupportController extends Controller
 
         return back()->with('success', 'Message deleted.');
     }
+
+    public function bulkDestroyMessages(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:contact_messages,id'],
+        ]);
+
+        $count = ContactMessage::whereIn('id', $data['ids'])->delete();
+
+        return back()->with('success', "Deleted {$count} messages successfully.");
+    }
 }

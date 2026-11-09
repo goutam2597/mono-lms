@@ -1,81 +1,89 @@
 <x-layouts.dashboard :title="__('admin.reviews.title').' - Mono LMS'" active="reviews" userType="admin">
 
-    <div class="bg-white border border-[#e7e7e7] rounded-2xl shadow-xs overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="bg-white border border-slate-200 rounded-none shadow-xs overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h3 class="font-bold text-[#191919]">{{ __('admin.reviews.title') }}</h3>
-                <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.reviews.subtitle') }}</p>
+                <p class="text-xs text-slate-400 mt-0.5">{{ __('admin.reviews.subtitle') }}</p>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 flex-wrap">
                 @foreach (['' => __('app.common.all'), 'pending' => __('app.common.pending'), 'approved' => __('app.common.approved'), 'rejected' => __('app.common.rejected')] as $key => $label)
-                    <a href="{{ route('admin.reviews.index', array_filter(['status' => $key])) }}" class="text-xs font-semibold px-4 py-2 rounded-xl transition-colors {{ request('status') == $key ? 'bg-[#08131e] text-white' : 'bg-[#f4f6f9] text-[#5d5d5d] hover:bg-gray-200' }}">{{ $label }}</a>
+                    <a href="{{ route('admin.reviews.index', array_filter(['status' => $key])) }}" class="text-[10px] uppercase tracking-[0.12em] font-semibold px-3 py-1.5 rounded-none border transition-colors {{ request('status') == $key ? 'bg-[#08131e] border-[#08131e] text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400' }}">{{ $label }}</a>
                 @endforeach
             </div>
         </div>
 
+        <x-bulk-toolbar action="{{ route('admin.reviews.bulk-destroy') }}" />
+
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-xs">
                 <thead>
-                    <tr class="text-left text-[11px] uppercase tracking-wider text-gray-400 bg-[#f8fafb]">
-                        <th class="px-6 py-3 font-semibold">{{ __('admin.reviews.student') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('admin.reviews.course') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('app.common.rating') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('admin.reviews.comment') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('app.common.status') }}</th>
-                        <th class="px-6 py-3 font-semibold">{{ __('app.common.actions') }}</th>
+                    <tr class="text-left text-[10px] uppercase tracking-wider text-slate-500 bg-slate-50 border-b border-slate-100">
+                        <th class="w-10 px-6 py-3.5">
+                            <input type="checkbox" id="check-all" class="control" aria-label="{{ __('admin.common.select_all') ?? 'Select All' }}">
+                        </th>
+                        <th class="px-6 py-3.5 font-semibold">{{ __('admin.reviews.student') }}</th>
+                        <th class="px-6 py-3.5 font-semibold">{{ __('admin.reviews.course') }}</th>
+                        <th class="px-6 py-3.5 font-semibold">{{ __('app.common.rating') }}</th>
+                        <th class="px-6 py-3.5 font-semibold">{{ __('admin.reviews.comment') }}</th>
+                        <th class="px-6 py-3.5 font-semibold">{{ __('app.common.status') }}</th>
+                        <th class="px-6 py-3.5 text-right font-semibold">{{ __('app.common.actions') }}</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-slate-100">
                     @php
                         $statusClasses = [
-                            'approved' => 'bg-[#03c95a]/10 text-[#0d7a38]',
-                            'pending' => 'bg-[#ffc107]/10 text-[#a07800]',
-                            'rejected' => 'bg-red-100 text-red-500',
+                            'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                            'pending' => 'bg-amber-50 text-amber-700 border-amber-200',
+                            'rejected' => 'bg-rose-50 text-rose-700 border-rose-200',
                         ];
                     @endphp
                     @forelse ($reviews as $review)
-                        <tr class="hover:bg-[#f8fafb] transition-colors">
-                            <td class="px-6 py-3.5 font-semibold text-[#191919]">{{ $review->student?->name ?? '—' }}</td>
-                            <td class="px-6 py-3.5 text-[#5d5d5d]">{{ \Illuminate\Support\Str::limit($review->course?->title, 30) }}</td>
-                            <td class="px-6 py-3.5">
-                                <span class="text-[#ffc107] font-semibold">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                        <tr class="hover:bg-slate-50/70 transition-colors">
+                            <td class="w-10 px-6 py-3.5">
+                                <input type="checkbox" class="control row-check" name="ids[]" value="{{ $review->id }}" form="bulk-form" aria-label="Review {{ $review->id }}">
                             </td>
-                            <td class="px-6 py-3.5 text-[#5d5d5d] max-w-xs">{{ \Illuminate\Support\Str::limit($review->comment, 80) }}</td>
+                            <td class="px-6 py-3.5 font-semibold text-[#191919]">{{ $review->student?->name ?? '—' }}</td>
+                            <td class="px-6 py-3.5 text-slate-600">{{ \Illuminate\Support\Str::limit($review->course?->title, 30) }}</td>
                             <td class="px-6 py-3.5">
-                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full {{ $statusClasses[$review->status] ?? 'bg-gray-100 text-gray-500' }}">
+                                <span class="text-amber-500 font-bold tracking-widest">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                            </td>
+                            <td class="px-6 py-3.5 text-slate-600 max-w-xs">{{ \Illuminate\Support\Str::limit($review->comment, 80) }}</td>
+                            <td class="px-6 py-3.5">
+                                <span class="text-[10px] font-bold uppercase tracking-[0.12em] px-2 py-0.5 rounded-none border {{ $statusClasses[$review->status] ?? 'bg-slate-100 text-slate-500 border-slate-200' }}">
                                     {{ __('app.common.'.$review->status) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-3.5">
-                                <div class="flex items-center gap-2">
+                            <td class="px-6 py-3.5 text-right">
+                                <div class="flex items-center justify-end gap-1.5">
                                     @if ($review->status !== 'approved')
                                         <form method="POST" action="{{ route('admin.reviews.approve', $review) }}">
                                             @csrf
-                                            <button type="submit" class="text-xs font-semibold text-[#03c95a] hover:underline">{{ __('admin.reviews.approve') }}</button>
+                                            <button type="submit" class="action-btn action-btn-primary h-7 px-2.5 text-[10px]">{{ __('admin.reviews.approve') }}</button>
                                         </form>
                                     @endif
                                     @if ($review->status !== 'rejected')
                                         <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
                                             @csrf
-                                            <button type="submit" class="text-xs font-semibold text-[#738a6e] hover:underline">{{ __('admin.reviews.reject') }}</button>
+                                            <button type="submit" class="action-btn action-btn-ghost h-7 px-2.5 text-[10px]">{{ __('admin.reviews.reject') }}</button>
                                         </form>
                                     @endif
                                     <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('{{ __('app.common.confirm_delete') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-xs font-semibold text-red-500 hover:underline">{{ __('app.common.delete') }}</button>
+                                        <button type="submit" class="action-btn action-btn-danger h-7 px-2.5 text-[10px]">{{ __('app.common.delete') }}</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="px-6 py-10 text-center text-gray-400">{{ __('admin.dashboard.no_data') }}</td></tr>
+                        <tr><td colspan="7" class="px-6 py-10 text-center text-slate-400">{{ __('admin.dashboard.no_data') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="px-6 py-4 border-t border-gray-100">{{ $reviews->appends(request()->query())->links() }}</div>
+        <div class="px-6 py-4 border-t border-slate-100">{{ $reviews->appends(request()->query())->links() }}</div>
     </div>
 
 </x-layouts.dashboard>

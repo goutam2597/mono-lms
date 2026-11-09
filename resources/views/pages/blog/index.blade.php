@@ -13,7 +13,7 @@
             @forelse ($posts as $post)
                 <a href="{{ route('blog.show', $post->slug) }}" class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-48 overflow-hidden bg-gray-100">
-                        <img src="{{ $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $post->imageUrl() ?? $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
                     <div class="p-6 space-y-3 flex-1 flex flex-col">
                         <span class="text-xs text-gray-400">{{ $post->published_at?->format('d M Y') }}</span>
