@@ -53,6 +53,13 @@ class PagesSystemTest extends TestCase
         $response->assertSee('Terms & Conditions');
     }
 
+    public function test_public_instructors_page_renders_successfully(): void
+    {
+        $response = $this->get('/instructors');
+        $response->assertOk();
+        $response->assertSee('Teach with Us');
+    }
+
     public function test_public_contact_form_submission_creates_record(): void
     {
         $response = $this->post(route('contact.submit'), [
