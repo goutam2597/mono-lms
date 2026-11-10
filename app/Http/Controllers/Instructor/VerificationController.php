@@ -26,25 +26,30 @@ class VerificationController extends Controller
      */
     public function submit(Request $request): RedirectResponse
     {
+        $instructor = auth('instructor')->user();
+
         $request->validate([
-            'certification_file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
-            'national_id_file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
+            'certification_file' => [$instructor->certification_file ? 'nullable' : 'required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
+            'national_id_file' => [$instructor->national_id_file ? 'nullable' : 'required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
         ], [
             'certification_file.required' => 'Please upload your instructor certification or diploma.',
             'national_id_file.required' => 'Please upload your government-issued national ID or passport.',
         ]);
 
-        $instructor = auth('instructor')->user();
-
-        $certPath = $request->file('certification_file')->store('verifications/certificates', 'public');
-        $idPath = $request->file('national_id_file')->store('verifications/national_ids', 'public');
-
-        $instructor->update([
-            'certification_file' => $certPath,
-            'national_id_file' => $idPath,
+        $updates = [
             'verification_status' => 'pending',
             'rejection_reason' => null,
-        ]);
+        ];
+
+        if ($request->hasFile('certification_file')) {
+            $updates['certification_file'] = $request->file('certification_file')->store('verifications/certificates', 'public');
+        }
+
+        if ($request->hasFile('national_id_file')) {
+            $updates['national_id_file'] = $request->file('national_id_file')->store('verifications/national_ids', 'public');
+        }
+
+        $instructor->update($updates);
 
         return redirect()->route('instructor.verification.show')->with('status', 'Verification documents submitted successfully! Our administrative team will review your application shortly.');
     }

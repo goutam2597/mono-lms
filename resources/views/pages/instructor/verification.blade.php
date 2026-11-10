@@ -110,40 +110,102 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Instructor Certification File -->
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-[#191919] uppercase tracking-wider">
-                                Instructor Certification / Degree <span class="text-red-500">*</span>
-                            </label>
+                            <div class="flex items-center justify-between">
+                                <label class="block text-xs font-bold text-[#191919] uppercase tracking-wider">
+                                    Instructor Certification / Degree <span class="text-red-500">*</span>
+                                </label>
+                                @if ($instructor->certification_file)
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                        <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                        Attached
+                                    </span>
+                                @endif
+                            </div>
                             <p class="text-[11px] text-gray-400">Instructor certificate, university degree, diploma, or professional accreditation.</p>
 
-                            <div class="border-2 border-dashed {{ $errors->has('certification_file') ? 'border-red-400' : 'border-slate-200' }} rounded-xl p-5 text-center bg-slate-50 hover:bg-slate-100/60 transition-colors">
-                                <svg class="w-8 h-8 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                <input type="file" name="certification_file" id="certification_file" required accept=".pdf,.jpg,.jpeg,.png,.webp" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#344c3d] file:text-white hover:file:bg-[#25372c] cursor-pointer">
+                            <div id="cert-dropzone" class="relative border-2 border-dashed {{ $errors->has('certification_file') ? 'border-red-400 bg-red-50/20' : 'border-slate-300 hover:border-[#344c3d] bg-slate-50/50 hover:bg-slate-50' }} rounded-2xl p-6 sm:p-8 min-h-[190px] flex flex-col items-center justify-center text-center transition-all cursor-pointer group">
+                                <input type="file" name="certification_file" id="certification_file" {{ $instructor->certification_file ? '' : 'required' }} accept=".pdf,.jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+
+                                <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center text-[#344c3d] group-hover:scale-110 group-hover:bg-[#344c3d] group-hover:text-white transition-all mb-3 pointer-events-none">
+                                    <svg class="w-6 h-6 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+
+                                <div class="space-y-1 pointer-events-none" id="cert-prompt">
+                                    <p class="text-xs font-semibold text-slate-800">
+                                        <span class="text-[#344c3d] underline underline-offset-2">Choose file</span>
+                                        <span class="text-slate-500 font-normal"> or drag &amp; drop here</span>
+                                    </p>
+                                    <p class="text-[11px] text-slate-400">PDF, JPG, PNG or WebP (max 10MB)</p>
+                                </div>
+
+                                <div id="cert-selected" class="hidden mt-1 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 max-w-full pointer-events-none shadow-2xs">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    <span id="cert-name" class="font-semibold truncate max-w-[180px] sm:max-w-[220px]">file.pdf</span>
+                                    <span id="cert-size" class="text-[10px] text-emerald-700 ml-auto shrink-0 font-medium"></span>
+                                </div>
+
+                                @if ($instructor->certification_file)
+                                    <div class="mt-3 pointer-events-auto">
+                                        <a href="{{ $instructor->certificationUrl() }}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#344c3d] hover:text-[#25372c] underline">
+                                            <span>View Current Certificate</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                             @error('certification_file')
                                 <p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>
                             @enderror
-                            @if ($instructor->certification_file)
-                                <p class="text-[11px] text-emerald-600 font-medium">Currently attached: <a href="{{ $instructor->certificationUrl() }}" target="_blank" class="underline">View Certificate</a></p>
-                            @endif
                         </div>
 
                         <!-- National ID / Passport File -->
                         <div class="space-y-2">
-                            <label class="block text-xs font-bold text-[#191919] uppercase tracking-wider">
-                                National ID / Passport <span class="text-red-500">*</span>
-                            </label>
+                            <div class="flex items-center justify-between">
+                                <label class="block text-xs font-bold text-[#191919] uppercase tracking-wider">
+                                    National ID / Passport <span class="text-red-500">*</span>
+                                </label>
+                                @if ($instructor->national_id_file)
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                        <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                        Attached
+                                    </span>
+                                @endif
+                            </div>
                             <p class="text-[11px] text-gray-400">Government-issued ID card, passport, or driver's license showing your identity clearly.</p>
 
-                            <div class="border-2 border-dashed {{ $errors->has('national_id_file') ? 'border-red-400' : 'border-slate-200' }} rounded-xl p-5 text-center bg-slate-50 hover:bg-slate-100/60 transition-colors">
-                                <svg class="w-8 h-8 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
-                                <input type="file" name="national_id_file" id="national_id_file" required accept=".pdf,.jpg,.jpeg,.png,.webp" class="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#344c3d] file:text-white hover:file:bg-[#25372c] cursor-pointer">
+                            <div id="id-dropzone" class="relative border-2 border-dashed {{ $errors->has('national_id_file') ? 'border-red-400 bg-red-50/20' : 'border-slate-300 hover:border-[#344c3d] bg-slate-50/50 hover:bg-slate-50' }} rounded-2xl p-6 sm:p-8 min-h-[190px] flex flex-col items-center justify-center text-center transition-all cursor-pointer group">
+                                <input type="file" name="national_id_file" id="national_id_file" {{ $instructor->national_id_file ? '' : 'required' }} accept=".pdf,.jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+
+                                <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-center text-[#344c3d] group-hover:scale-110 group-hover:bg-[#344c3d] group-hover:text-white transition-all mb-3 pointer-events-none">
+                                    <svg class="w-6 h-6 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+                                </div>
+
+                                <div class="space-y-1 pointer-events-none" id="id-prompt">
+                                    <p class="text-xs font-semibold text-slate-800">
+                                        <span class="text-[#344c3d] underline underline-offset-2">Choose file</span>
+                                        <span class="text-slate-500 font-normal"> or drag &amp; drop here</span>
+                                    </p>
+                                    <p class="text-[11px] text-slate-400">PDF, JPG, PNG or WebP (max 10MB)</p>
+                                </div>
+
+                                <div id="id-selected" class="hidden mt-1 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-center gap-2 max-w-full pointer-events-none shadow-2xs">
+                                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                    <span id="id-name" class="font-semibold truncate max-w-[180px] sm:max-w-[220px]">file.pdf</span>
+                                    <span id="id-size" class="text-[10px] text-emerald-700 ml-auto shrink-0 font-medium"></span>
+                                </div>
+
+                                @if ($instructor->national_id_file)
+                                    <div class="mt-3 pointer-events-auto">
+                                        <a href="{{ $instructor->nationalIdUrl() }}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#344c3d] hover:text-[#25372c] underline">
+                                            <span>View Current National ID</span>
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                             @error('national_id_file')
                                 <p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>
                             @enderror
-                            @if ($instructor->national_id_file)
-                                <p class="text-[11px] text-emerald-600 font-medium">Currently attached: <a href="{{ $instructor->nationalIdUrl() }}" target="_blank" class="underline">View National ID</a></p>
-                            @endif
                         </div>
                     </div>
 
@@ -165,4 +227,58 @@
         @endif
     </div>
 
+    <!-- Live File Dropzone Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function setupDropzone(inputId, dropzoneId, promptId, selectedId, nameId, sizeId) {
+                var input = document.getElementById(inputId);
+                var dropzone = document.getElementById(dropzoneId);
+                var prompt = document.getElementById(promptId);
+                var selected = document.getElementById(selectedId);
+                var nameEl = document.getElementById(nameId);
+                var sizeEl = document.getElementById(sizeId);
+
+                if (!input || !dropzone) return;
+
+                function formatBytes(bytes) {
+                    if (!bytes) return '0 B';
+                    var k = 1024;
+                    var sizes = ['B', 'KB', 'MB', 'GB'];
+                    var i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+                }
+
+                input.addEventListener('change', function () {
+                    var file = this.files && this.files[0];
+                    if (file) {
+                        nameEl.textContent = file.name;
+                        sizeEl.textContent = '(' + formatBytes(file.size) + ')';
+                        selected.classList.remove('hidden');
+                        prompt.classList.add('opacity-40');
+                        dropzone.classList.remove('border-slate-300');
+                        dropzone.classList.add('border-emerald-500', 'bg-emerald-50/20');
+                    }
+                });
+
+                ['dragenter', 'dragover'].forEach(function (eventName) {
+                    dropzone.addEventListener(eventName, function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.add('border-[#344c3d]', 'bg-slate-100');
+                    });
+                });
+
+                ['dragleave', 'drop'].forEach(function (eventName) {
+                    dropzone.addEventListener(eventName, function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropzone.classList.remove('border-[#344c3d]', 'bg-slate-100');
+                    });
+                });
+            }
+
+            setupDropzone('certification_file', 'cert-dropzone', 'cert-prompt', 'cert-selected', 'cert-name', 'cert-size');
+            setupDropzone('national_id_file', 'id-dropzone', 'id-prompt', 'id-selected', 'id-name', 'id-size');
+        });
+    </script>
 </x-layouts.dashboard>

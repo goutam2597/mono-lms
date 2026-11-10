@@ -555,7 +555,7 @@
 
             <!-- Full-width Main Page Content -->
             <main class="flex-1 p-5 sm:p-6 lg:p-7 min-w-0">
-                @if ($userType === 'instructor' && auth('instructor')->check() && ! auth('instructor')->user()->isVerified())
+                @if ($userType === 'instructor' && auth('instructor')->check() && ! auth('instructor')->user()->isVerified() && ! request()->routeIs('instructor.verification.*'))
                     <div class="mb-5 p-4 rounded-xl border text-xs sm:text-sm font-medium flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs {{ auth('instructor')->user()->isVerificationRejected() ? 'bg-red-50 border-red-200 text-red-800' : (auth('instructor')->user()->isPendingVerification() ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-amber-50 border-amber-300 text-amber-900') }}">
                         <div class="flex items-center gap-2.5">
                             @if (auth('instructor')->user()->isVerificationRejected())
