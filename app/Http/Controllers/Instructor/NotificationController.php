@@ -3,49 +3,82 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Enrollment;
-use App\Models\Review;
-use Illuminate\Support\Facades\DB;
+use App\Services\NotificationService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class NotificationController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
         $instructor = auth('instructor')->user();
-        $courseIds = $instructor->courses()->pluck('id');
 
-        // Verification status
-        $verification = [
-            'status' => $instructor->verification_status ?? 'unverified',
-            'rejection_reason' => $instructor->rejection_reason,
-        ];
+        // Ensure user has initial notifications populated from platform records if empty
+        NotificationService::syncInitialNotifications($instructor, 'instructor');
 
-        // Recent enrollments
-        $recentEnrollments = Enrollment::with(['student', 'course'])
-            ->whereIn('course_id', $courseIds)
-            ->latest()
-            ->take(10)
-            ->get();
+        $filter = $request->query('filter', 'all');
+        $query = $instructor->notifications();
 
-        // Recent reviews
-        $recentReviews = Review::with(['student', 'course'])
-            ->whereIn('course_id', $courseIds)
-            ->latest()
-            ->take(10)
-            ->get();
+        if ($filter === 'unread') {
+            $query->whereNull('read_at');
+        } elseif (in_array($filter, ['verification', 'support', 'smtp', 'enrollment', 'review'])) {
+            $query->where('data->category', $filter);
+        }
 
-        // Stats
-        $stats = [
-            'total_students' => Enrollment::whereIn('course_id', $courseIds)->count(),
-            'total_reviews' => Review::whereIn('course_id', $courseIds)->count(),
-            'avg_rating' => round((float) DB::table('reviews')->whereIn('course_id', $courseIds)->where('status', 'approved')->avg('rating'), 1),
+        if ($search = $request->query('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('data->title', 'like', "%{$search}%")
+                    ->orWhere('data->message', 'like', "%{$search}%");
+            });
+        }
+
+        $notifications = $query->latest()->paginate(15)->withQueryString();
+
+        $counts = [
+            'all' => $instructor->notifications()->count(),
+            'unread' => $instructor->unreadNotifications()->count(),
+            'verification' => $instructor->notifications()->where('data->category', 'verification')->count(),
+            'support' => $instructor->notifications()->where('data->category', 'support')->count(),
+            'smtp' => $instructor->notifications()->where('data->category', 'smtp')->count(),
+            'enrollment' => $instructor->notifications()->where('data->category', 'enrollment')->count(),
+            'review' => $instructor->notifications()->where('data->category', 'review')->count(),
         ];
 
         return view('pages.instructor.notifications', [
-            'verification' => $verification,
-            'recentEnrollments' => $recentEnrollments,
-            'recentReviews' => $recentReviews,
-            'stats' => $stats,
+            'notifications' => $notifications,
+            'counts' => $counts,
+            'currentFilter' => $filter,
         ]);
+    }
+
+    public function markAsRead(Request $request, string $id): RedirectResponse
+    {
+        $instructor = auth('instructor')->user();
+        $notification = $instructor->notifications()->findOrFail($id);
+        $notification->markAsRead();
+
+        if ($request->query('redirect') && ! empty($notification->data['action_url'])) {
+            return redirect($notification->data['action_url']);
+        }
+
+        return back()->with('success', 'Notification marked as read.');
+    }
+
+    public function markAllAsRead(): RedirectResponse
+    {
+        $instructor = auth('instructor')->user();
+        $instructor->unreadNotifications->markAsRead();
+
+        return back()->with('success', 'All notifications marked as read.');
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $instructor = auth('instructor')->user();
+        $notification = $instructor->notifications()->findOrFail($id);
+        $notification->delete();
+
+        return back()->with('success', 'Notification deleted.');
     }
 }

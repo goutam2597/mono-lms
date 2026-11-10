@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\NotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -51,12 +52,38 @@ class ServicesController extends Controller
             Setting::set('otp_signup_enabled', $request->has('otp_signup_enabled') ? '1' : '0');
         }
 
+        if ($admin = auth('admin')->user()) {
+            NotificationService::send(
+                notifiable: $admin,
+                title: 'SMTP Mail Configuration Updated',
+                message: 'Outbound SMTP mail server settings were saved and applied.',
+                category: 'smtp',
+                actionUrl: route('admin.services.index'),
+                actionLabel: 'View Services',
+                icon: 'mail',
+                sendMail: false,
+            );
+        }
+
         return back()->with('success', 'SMTP mail settings saved successfully.');
     }
 
     public function testMail(Request $request): RedirectResponse
     {
         $email = $request->input('test_email', 'admin@learnify.test');
+
+        if ($admin = auth('admin')->user()) {
+            NotificationService::send(
+                notifiable: $admin,
+                title: 'SMTP Test Email Dispatched',
+                message: "Test outbound email simulated and dispatched via SMTP to {$email}.",
+                category: 'smtp',
+                actionUrl: route('admin.services.index'),
+                actionLabel: 'View Services',
+                icon: 'mail',
+                sendMail: true,
+            );
+        }
 
         return back()->with('success', "Test email simulated and dispatched successfully to {$email}.");
     }

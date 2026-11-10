@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Instructor;
+use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -141,6 +142,17 @@ class InstructorController extends Controller
             'rejection_reason' => null,
         ]);
 
+        NotificationService::send(
+            notifiable: $instructor,
+            title: 'Instructor Verification Approved!',
+            message: 'Congratulations! Your instructor credentials have been approved. You can now create and publish courses.',
+            category: 'verification',
+            actionUrl: route('instructor.courses.index'),
+            actionLabel: 'Create Course',
+            icon: 'shield',
+            sendMail: true,
+        );
+
         return back()->with('success', "Instructor \"{$instructor->name}\" has been verified and activated.");
     }
 
@@ -155,6 +167,17 @@ class InstructorController extends Controller
             'verification_status' => 'rejected',
             'rejection_reason' => $request->input('rejection_reason'),
         ]);
+
+        NotificationService::send(
+            notifiable: $instructor,
+            title: 'Instructor Verification Needs Attention',
+            message: 'Your verification submission was reviewed and rejected: '.$request->input('rejection_reason'),
+            category: 'verification',
+            actionUrl: route('instructor.verification.show'),
+            actionLabel: 'Resubmit Documents',
+            icon: 'shield',
+            sendMail: true,
+        );
 
         return back()->with('success', "Instructor \"{$instructor->name}\" verification was rejected.");
     }

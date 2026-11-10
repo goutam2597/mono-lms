@@ -268,6 +268,16 @@
 
                     <!-- Notification Bell with Dropdown -->
                     <div class="relative shrink-0" id="header-notifications-container">
+                        @php
+                            $notifUser = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user();
+                            if ($notifUser) {
+                                \App\Services\NotificationService::syncInitialNotifications($notifUser, $userType);
+                            }
+                            $unreadNotificationsCount = $notifUser?->unreadNotifications()->count() ?? 0;
+                            $recentNotifications = $notifUser?->notifications()->latest()->take(5)->get() ?? collect();
+                            $readAllRoute = ($userType === 'admin') ? route('admin.notifications.read-all') : route('instructor.notifications.read-all');
+                            $allNotificationsRoute = ($userType === 'admin') ? route('admin.notifications.index') : route('instructor.notifications.index');
+                        @endphp
                         <button type="button"
                                 id="header-notifications-btn"
                                 aria-expanded="false"
@@ -275,7 +285,11 @@
                                 title="Notifications"
                                 class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0 cursor-pointer focus:outline-none">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
-                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0d0d0d]"></span>
+                            @if ($unreadNotificationsCount > 0)
+                                <span class="absolute -top-1 -right-1 px-1 min-w-[17px] h-[17px] rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-[#0d0d0d]">
+                                    {{ $unreadNotificationsCount > 9 ? '9+' : $unreadNotificationsCount }}
+                                </span>
+                            @endif
                         </button>
 
                         <!-- Notification Dropdown Menu -->
@@ -284,128 +298,99 @@
                              class="hidden absolute right-0 top-full mt-2 bg-white dark:bg-[#111111] border border-slate-200 dark:border-neutral-800 rounded-xl shadow-xl z-[70] text-slate-700 dark:text-neutral-200 transform origin-top-right transition-all overflow-visible">
                             <!-- Header -->
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-neutral-800 flex items-center justify-between">
-                                <span class="font-semibold text-slate-900 dark:text-white text-[13px]">Notifications</span>
-                                <span class="text-[11px] text-slate-500 dark:text-neutral-400 font-medium">
-                                    {{ $userType === 'admin' ? 'Admin Panel' : 'Instructor Panel' }}
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-semibold text-slate-900 dark:text-white text-[13px]">Notifications</span>
+                                    @if ($unreadNotificationsCount > 0)
+                                        <span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                                            {{ $unreadNotificationsCount }} new
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2.5">
+                                    @if ($unreadNotificationsCount > 0)
+                                        <form method="POST" action="{{ $readAllRoute }}">
+                                            @csrf
+                                            <button type="submit" class="text-[11px] font-medium text-slate-500 hover:text-slate-800 dark:text-neutral-400 dark:hover:text-white cursor-pointer hover:underline">
+                                                Mark all read
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <span class="text-[11px] text-slate-400 dark:text-neutral-500 font-medium">
+                                        {{ $userType === 'admin' ? 'Admin' : 'Instructor' }}
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="divide-y divide-slate-100 dark:divide-neutral-800/80">
-                                @if ($userType === 'instructor')
-                                    @php $curInstructor = auth('instructor')->user(); @endphp
-                                    <!-- Verification Status Item -->
-                                    <a href="{{ route('instructor.verification.show') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
-                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 {{ $curInstructor?->isVerified() ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400' : ($curInstructor?->isPendingVerification() ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400' : ($curInstructor?->isVerificationRejected() ? 'bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400' : 'bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400')) }}">
-                                            @if ($curInstructor?->isVerified())
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                            @elseif ($curInstructor?->isPendingVerification())
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                            @elseif ($curInstructor?->isVerificationRejected())
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
-                                            @else
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-                                            @endif
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
-                                                {{ $curInstructor?->isVerified() ? 'Instructor Verification Approved' : ($curInstructor?->isPendingVerification() ? 'Verification Under Review' : ($curInstructor?->isVerificationRejected() ? 'Verification Rejected' : 'Action Required: Verify Account')) }}
-                                            </p>
-                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
-                                                {{ $curInstructor?->isVerified() ? 'Your identity and credentials are approved. Course creation and directory listing are active.' : ($curInstructor?->isPendingVerification() ? 'Your documents have been submitted and are queued for administrator review.' : ($curInstructor?->isVerificationRejected() ? ($curInstructor->rejection_reason ?: 'Your credentials could not be verified. Tap to review feedback and resubmit.') : 'Submit your instructor certificate and national ID to unlock course creation.')) }}
-                                            </p>
-                                        </div>
-                                    </a>
-
-                                    <!-- Reviews Item -->
-                                    <a href="{{ route('instructor.reviews') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
-                                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-300 flex items-center justify-center shrink-0 mt-0.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
-                                                Student Feedback &amp; Reviews
-                                            </p>
-                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
-                                                View ratings, student feedback, and course inquiries.
-                                            </p>
-                                        </div>
-                                    </a>
-
-                                    <!-- Students Activity Item -->
-                                    <a href="{{ route('instructor.students') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
-                                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-300 flex items-center justify-center shrink-0 mt-0.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
-                                                Enrolled Students
-                                            </p>
-                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
-                                                Track newly enrolled learners and student progress across courses.
-                                            </p>
-                                        </div>
-                                    </a>
-                                @else
-                                    <!-- Admin Notifications -->
+                                @forelse ($recentNotifications as $notif)
                                     @php
-                                        $unreadMessagesCount = \App\Models\ContactMessage::where('is_read', false)->count();
-                                        $pendingVerificationsCount = \App\Models\Instructor::where('verification_status', 'pending')->count();
+                                        $data = $notif->data;
+                                        $isUnread = is_null($notif->read_at);
+                                        $cat = $data['category'] ?? 'system';
+                                        $markReadUrl = ($userType === 'admin') ? route('admin.notifications.read', ['id' => $notif->id, 'redirect' => 1]) : route('instructor.notifications.read', ['id' => $notif->id, 'redirect' => 1]);
                                     @endphp
-                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
-                                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
-                                                    Instructor Verifications Queue
-                                                </p>
-                                                @if ($pendingVerificationsCount > 0)
-                                                    <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-                                                        {{ $pendingVerificationsCount }} pending
-                                                    </span>
+                                    <form method="POST" action="{{ $markReadUrl }}" class="block">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer group">
+                                            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5
+                                                {{ $cat === 'verification' ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400' :
+                                                   ($cat === 'support' ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400' :
+                                                   ($cat === 'smtp' ? 'bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400' :
+                                                   ($cat === 'enrollment' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400' :
+                                                   ($cat === 'review' ? 'bg-amber-50 text-amber-500 dark:bg-amber-950/40 dark:text-amber-400' :
+                                                   'bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-300')))) }}">
+                                                @if ($cat === 'verification')
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                @elseif ($cat === 'support')
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg>
+                                                @elseif ($cat === 'smtp')
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                                @elseif ($cat === 'enrollment')
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                                                @elseif ($cat === 'review')
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
+                                                @else
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
                                                 @endif
                                             </div>
-                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
-                                                Review instructor identity documents and certificates awaiting approval.
-                                            </p>
-                                        </div>
-                                    </a>
-
-                                    <a href="{{ route('admin.messages.index') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
-                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
-                                                    Contact Inquiries
+                                            <div class="min-w-0 flex-1">
+                                                <div class="flex items-center justify-between gap-2">
+                                                    <p class="font-medium text-[13px] leading-snug {{ $isUnread ? 'text-slate-900 dark:text-white font-semibold' : 'text-slate-700 dark:text-neutral-300' }}">
+                                                        {{ $data['title'] ?? 'Notification' }}
+                                                    </p>
+                                                    @if ($isUnread)
+                                                        <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                                    @endif
+                                                </div>
+                                                <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal line-clamp-2">
+                                                    {{ $data['message'] ?? '' }}
                                                 </p>
-                                                @if ($unreadMessagesCount > 0)
-                                                    <span class="text-[11px] font-semibold text-blue-600 dark:text-blue-400">
-                                                        {{ $unreadMessagesCount }} unread
+                                                <div class="flex items-center gap-2 mt-1">
+                                                    <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 dark:text-neutral-500">
+                                                        {{ ucfirst($cat) }}
                                                     </span>
-                                                @endif
+                                                    <span class="text-[10px] text-slate-400 dark:text-neutral-500">·</span>
+                                                    <span class="text-[10px] text-slate-400 dark:text-neutral-500">
+                                                        {{ $notif->created_at->diffForHumans() }}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
-                                                {{ $unreadMessagesCount > 0 ? "You have {$unreadMessagesCount} unread contact inquiry messages." : 'All storefront user contact messages have been read.' }}
-                                            </p>
-                                        </div>
-                                    </a>
-                                @endif
+                                        </button>
+                                    </form>
+                                @empty
+                                    <div class="py-8 px-4 text-center">
+                                        <svg class="w-8 h-8 mx-auto text-slate-300 dark:text-neutral-600 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+                                        <p class="text-[13px] font-medium text-slate-700 dark:text-neutral-300">All caught up!</p>
+                                        <p class="text-[11px] text-slate-400 dark:text-neutral-500 mt-0.5">No notifications right now.</p>
+                                    </div>
+                                @endforelse
                             </div>
 
                             <!-- Footer -->
                             <div class="px-4 py-2.5 bg-slate-50 dark:bg-neutral-900/60 border-t border-slate-100 dark:border-neutral-800 text-center">
-                                @if ($userType === 'instructor')
-                                    <a href="{{ route('instructor.notifications.index') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
-                                        View all notifications &rarr;
-                                    </a>
-                                @else
-                                    <a href="{{ route('admin.notifications.index') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
-                                        View all notifications &rarr;
-                                    </a>
-                                @endif
+                                <a href="{{ $allNotificationsRoute }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
+                                    View all notifications &rarr;
+                                </a>
                             </div>
                         </div>
                     </div>

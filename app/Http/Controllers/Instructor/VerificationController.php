@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -50,6 +51,27 @@ class VerificationController extends Controller
         }
 
         $instructor->update($updates);
+
+        NotificationService::notifyAdmins(
+            title: 'New Instructor Verification: '.$instructor->name,
+            message: $instructor->name.' ('.$instructor->email.') submitted certificate and identity documents for review.',
+            category: 'verification',
+            actionUrl: route('admin.instructors.index', ['verification' => 'pending']),
+            actionLabel: 'Review Documents',
+            icon: 'shield',
+            sendMail: true,
+        );
+
+        NotificationService::send(
+            notifiable: $instructor,
+            title: 'Verification Documents Received',
+            message: 'Your instructor certification and national ID documents have been received and queued for admin review.',
+            category: 'verification',
+            actionUrl: route('instructor.verification.show'),
+            actionLabel: 'View Status',
+            icon: 'shield',
+            sendMail: true,
+        );
 
         return redirect()->route('instructor.verification.show')->with('status', 'Verification documents submitted successfully! Our administrative team will review your application shortly.');
     }

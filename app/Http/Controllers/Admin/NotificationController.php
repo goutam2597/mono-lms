@@ -3,48 +3,81 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactMessage;
-use App\Models\Enrollment;
-use App\Models\Instructor;
-use App\Models\Review;
+use App\Services\NotificationService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class NotificationController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
-        $pendingVerifications = Instructor::where('verification_status', 'pending')
-            ->latest()
-            ->take(10)
-            ->get();
+        $admin = auth('admin')->user();
 
-        $unreadMessages = ContactMessage::where('is_read', false)
-            ->latest()
-            ->take(10)
-            ->get();
+        // Ensure admin has initial notifications populated from platform records if empty
+        NotificationService::syncInitialNotifications($admin, 'admin');
 
-        $recentEnrollments = Enrollment::with(['student', 'course'])
-            ->latest()
-            ->take(10)
-            ->get();
+        $filter = $request->query('filter', 'all');
+        $query = $admin->notifications();
 
-        $recentReviews = Review::with(['student', 'course'])
-            ->latest()
-            ->take(10)
-            ->get();
+        if ($filter === 'unread') {
+            $query->whereNull('read_at');
+        } elseif (in_array($filter, ['verification', 'support', 'smtp', 'enrollment', 'review'])) {
+            $query->where('data->category', $filter);
+        }
 
-        $stats = [
-            'pending_verifications' => Instructor::where('verification_status', 'pending')->count(),
-            'unread_messages' => ContactMessage::where('is_read', false)->count(),
-            'today_enrollments' => Enrollment::whereDate('created_at', today())->count(),
-            'pending_reviews' => Review::where('status', 'pending')->count(),
+        if ($search = $request->query('q')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('data->title', 'like', "%{$search}%")
+                    ->orWhere('data->message', 'like', "%{$search}%");
+            });
+        }
+
+        $notifications = $query->latest()->paginate(15)->withQueryString();
+
+        $counts = [
+            'all' => $admin->notifications()->count(),
+            'unread' => $admin->unreadNotifications()->count(),
+            'verification' => $admin->notifications()->where('data->category', 'verification')->count(),
+            'support' => $admin->notifications()->where('data->category', 'support')->count(),
+            'smtp' => $admin->notifications()->where('data->category', 'smtp')->count(),
+            'enrollment' => $admin->notifications()->where('data->category', 'enrollment')->count(),
         ];
 
         return view('pages.admin.notifications', [
-            'pendingVerifications' => $pendingVerifications,
-            'unreadMessages' => $unreadMessages,
-            'recentEnrollments' => $recentEnrollments,
-            'recentReviews' => $recentReviews,
-            'stats' => $stats,
+            'notifications' => $notifications,
+            'counts' => $counts,
+            'currentFilter' => $filter,
         ]);
+    }
+
+    public function markAsRead(Request $request, string $id): RedirectResponse
+    {
+        $admin = auth('admin')->user();
+        $notification = $admin->notifications()->findOrFail($id);
+        $notification->markAsRead();
+
+        if ($request->query('redirect') && ! empty($notification->data['action_url'])) {
+            return redirect($notification->data['action_url']);
+        }
+
+        return back()->with('success', 'Notification marked as read.');
+    }
+
+    public function markAllAsRead(): RedirectResponse
+    {
+        $admin = auth('admin')->user();
+        $admin->unreadNotifications->markAsRead();
+
+        return back()->with('success', 'All notifications marked as read.');
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        $admin = auth('admin')->user();
+        $notification = $admin->notifications()->findOrFail($id);
+        $notification->delete();
+
+        return back()->with('success', 'Notification deleted.');
     }
 }

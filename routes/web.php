@@ -189,6 +189,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 
     // Notifications
     Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [AdminNotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [AdminNotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{id}', [AdminNotificationController::class, 'destroy'])->name('notifications.destroy');
 
     Route::middleware('permission:admins.manage')->group(function () {
         Route::resource('admins', AdminUserController::class)->except('show');
@@ -401,6 +404,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')->group(function () {
     Route::get('/', [InstructorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/notifications', [InstructorNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [InstructorNotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [InstructorNotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{id}', [InstructorNotificationController::class, 'destroy'])->name('notifications.destroy');
     Route::get('/verify', [InstructorVerificationController::class, 'show'])->name('verification.show');
     Route::post('/verify', [InstructorVerificationController::class, 'submit'])->name('verification.submit');
 
