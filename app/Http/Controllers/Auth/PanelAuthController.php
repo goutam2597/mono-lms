@@ -47,7 +47,11 @@ abstract class PanelAuthController extends Controller
 
         $user = Auth::guard($this->guard())->user();
 
-        if ($user->status !== 'active') {
+        $isInactive = $this->guard() === 'instructor'
+            ? ($user->status === 'inactive')
+            : ($user->status !== 'active');
+
+        if ($isInactive) {
             Auth::guard($this->guard())->logout();
 
             throw ValidationException::withMessages([

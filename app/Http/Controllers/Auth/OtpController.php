@@ -79,14 +79,15 @@ class OtpController extends Controller
                 'email' => $pending['email'],
                 'password' => $pending['password'],
                 'designation' => $pending['designation'] ?? 'Instructor',
-                'status' => 'active',
+                'status' => 'pending_verification',
+                'verification_status' => 'unverified',
             ]);
 
             $request->session()->forget('pending_otp_registration');
             Auth::guard('instructor')->login($instructor);
             $request->session()->regenerate();
 
-            return redirect()->route('instructor.dashboard')->with('success', 'Email verified successfully! Welcome to the Instructor Portal.');
+            return redirect()->route('instructor.dashboard')->with('status', 'Email verified successfully! Please submit your Teaching Certificate and National ID to complete instructor verification.');
         }
 
         // Student

@@ -11,6 +11,7 @@ class InstructorDirectoryController extends Controller
     public function grid(Request $request)
     {
         $instructors = Instructor::where('status', 'active')
+            ->where('verification_status', 'approved')
             ->withCount(['courses', 'enrollments', 'reviews'])
             ->withAvg('reviews', 'rating')
             ->when($request->filled('q'), fn ($q) => $q->where(fn ($w) => $w
@@ -32,6 +33,7 @@ class InstructorDirectoryController extends Controller
     {
         // Instructor "slug" is the URL-encoded name in this directory.
         $instructor = Instructor::where('status', 'active')
+            ->where('verification_status', 'approved')
             ->get()
             ->first(fn ($i) => Str::slug($i->name) === $name);
 

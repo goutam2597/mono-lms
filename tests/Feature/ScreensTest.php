@@ -39,6 +39,7 @@ class ScreensTest extends TestCase
             '/admin/login',
             '/instructor/login',
             '/otp',
+            '/forgot-password/otp',
             '/lock-screen',
         ];
 

@@ -25,7 +25,14 @@ class InstructorController extends Controller
 
     public function store(Request $request)
     {
-        Instructor::create($this->validated($request));
+        $data = $this->validated($request);
+
+        if (($data['status'] ?? 'active') === 'active') {
+            $data['verification_status'] = 'approved';
+            $data['verified_at'] = now();
+        }
+
+        Instructor::create($data);
 
         $redirect = $request->input('redirect_to') ?: route('admin.instructors.index');
 
@@ -43,6 +50,12 @@ class InstructorController extends Controller
 
         if (! $request->filled('password')) {
             unset($data['password']);
+        }
+
+        if (($data['status'] ?? '') === 'active' && $instructor->verification_status !== 'approved') {
+            $data['verification_status'] = 'approved';
+            $data['verified_at'] = now();
+            $data['rejection_reason'] = null;
         }
 
         $instructor->update($data);
@@ -96,6 +109,33 @@ class InstructorController extends Controller
         return redirect()->route('admin.instructors.index')->with('success', "Deleted {$deleted} instructors successfully.");
     }
 
+    public function approveVerification(Instructor $instructor): RedirectResponse
+    {
+        $instructor->update([
+            'status' => 'active',
+            'verification_status' => 'approved',
+            'verified_at' => now(),
+            'rejection_reason' => null,
+        ]);
+
+        return back()->with('success', "Instructor \"{$instructor->name}\" has been verified and activated.");
+    }
+
+    public function rejectVerification(Request $request, Instructor $instructor): RedirectResponse
+    {
+        $request->validate([
+            'rejection_reason' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $instructor->update([
+            'status' => 'inactive',
+            'verification_status' => 'rejected',
+            'rejection_reason' => $request->input('rejection_reason'),
+        ]);
+
+        return back()->with('success', "Instructor \"{$instructor->name}\" verification was rejected.");
+    }
+
     private function validated(Request $request, ?Instructor $instructor = null): array
     {
         return $request->validate([
@@ -106,7 +146,8 @@ class InstructorController extends Controller
             'avatar' => ['nullable', 'string', 'max:500'],
             'designation' => ['nullable', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:5000'],
-            'status' => ['required', 'in:active,inactive'],
+            'status' => ['required', 'in:active,inactive,pending_verification'],
+            'verification_status' => ['nullable', 'in:unverified,pending,approved,rejected'],
         ]);
     }
 }

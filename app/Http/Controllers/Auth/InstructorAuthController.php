@@ -47,6 +47,8 @@ class InstructorAuthController extends PanelAuthController
             'password' => ['required', 'string', Password::min(8)],
             'designation' => ['nullable', 'string', 'max:150'],
             'terms' => ['accepted'],
+            'certification_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
+            'national_id_file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         if (Setting::isOtpSignupEnabled()) {
@@ -59,17 +61,28 @@ class InstructorAuthController extends PanelAuthController
             ]);
         }
 
+        $certPath = $request->hasFile('certification_file')
+            ? $request->file('certification_file')->store('verifications/certificates', 'public')
+            : null;
+        $idPath = $request->hasFile('national_id_file')
+            ? $request->file('national_id_file')->store('verifications/national_ids', 'public')
+            : null;
+        $hasDocs = ($certPath !== null || $idPath !== null);
+
         $instructor = Instructor::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
             'designation' => $data['designation'] ?? 'Instructor',
-            'status' => 'active',
+            'status' => 'pending_verification',
+            'verification_status' => $hasDocs ? 'pending' : 'unverified',
+            'certification_file' => $certPath,
+            'national_id_file' => $idPath,
         ]);
 
         Auth::guard($this->guard())->login($instructor);
         $request->session()->regenerate();
 
-        return redirect()->route($this->panelHome())->with('status', 'Welcome to Mono LMS! Your instructor account is ready.');
+        return redirect()->route($this->panelHome())->with('status', 'Welcome to Mono LMS! Please submit your Teaching Certificate and National ID for verification.');
     }
 }

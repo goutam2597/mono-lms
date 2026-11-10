@@ -44,6 +44,7 @@ use App\Http\Controllers\Instructor\LessonController;
 use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
 use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
 use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
+use App\Http\Controllers\Instructor\VerificationController as InstructorVerificationController;
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MembershipController;
@@ -127,13 +128,13 @@ Route::post('/theme/{panel}', [ThemeController::class, 'toggle'])
 // ----------------------------------------------------------------- Panel auth
 Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-    Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.attempt');
+    Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:login')->name('admin.login.attempt');
 });
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:admin')->name('admin.logout');
 
 Route::middleware('guest:instructor')->group(function () {
     Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])->name('instructor.login');
-    Route::post('/instructor/login', [InstructorAuthController::class, 'login'])->name('instructor.login.attempt');
+    Route::post('/instructor/login', [InstructorAuthController::class, 'login'])->middleware('throttle:login')->name('instructor.login.attempt');
     Route::get('/instructor/register', [InstructorAuthController::class, 'showRegister'])->name('instructor.register');
     Route::post('/instructor/register', [InstructorAuthController::class, 'register'])->name('instructor.register.attempt');
 });
@@ -141,7 +142,7 @@ Route::post('/instructor/logout', [InstructorAuthController::class, 'logout'])->
 
 Route::middleware('guest:student')->group(function () {
     Route::get('/login', [StudentAuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [StudentAuthController::class, 'login'])->name('login.attempt');
+    Route::post('/login', [StudentAuthController::class, 'login'])->middleware('throttle:login')->name('login.attempt');
     Route::get('/register', [StudentAuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [StudentAuthController::class, 'register'])->name('register.attempt');
 });
@@ -159,16 +160,20 @@ Route::get('/instructor/auth/google/redirect', fn () => redirect()->route('login
 Route::get('/instructor/auth/google/callback', fn () => redirect()->route('login.google.callback', ['panel' => 'instructor']))
     ->name('instructor.login.google.callback');
 
-// Shared password reset (?panel=student|instructor|admin)
+// Shared password reset (?panel=student|instructor|admin) with OTP verification
 Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->middleware('throttle:otp-send')->name('password.email');
+Route::get('/forgot-password/otp', [PasswordResetController::class, 'showOtp'])->name('password.otp.show');
+Route::post('/forgot-password/otp/verify', [PasswordResetController::class, 'verifyOtp'])->middleware('throttle:otp-verify')->name('password.otp.verify');
+Route::post('/forgot-password/otp/resend', [PasswordResetController::class, 'resendOtp'])->middleware('throttle:otp-send')->name('password.otp.resend');
+Route::get('/set-password', [PasswordResetController::class, 'showReset'])->name('password.set.show');
 Route::get('/set-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
 Route::post('/set-password', [PasswordResetController::class, 'reset'])->name('password.update');
 
 // OTP sign-up verification
 Route::get('/otp', [OtpController::class, 'show'])->name('otp');
-Route::post('/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
-Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
+Route::post('/otp/verify', [OtpController::class, 'verify'])->middleware('throttle:otp-verify')->name('otp.verify');
+Route::post('/otp/resend', [OtpController::class, 'resend'])->middleware('throttle:otp-send')->name('otp.resend');
 Route::get('/lock-screen', fn () => view('pages.auth.lock-screen'))->name('lock-screen');
 
 // -------------------------------------------------------------- Admin panel
@@ -192,6 +197,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::middleware('permission:instructors.manage')->group(function () {
         Route::resource('instructors', AdminInstructorController::class)->except('show');
         Route::post('/instructors/bulk-destroy', [AdminInstructorController::class, 'bulkDestroy'])->name('instructors.bulk-destroy');
+        Route::post('/instructors/{instructor}/approve-verification', [AdminInstructorController::class, 'approveVerification'])->name('instructors.approve-verification');
+        Route::post('/instructors/{instructor}/reject-verification', [AdminInstructorController::class, 'rejectVerification'])->name('instructors.reject-verification');
     });
 
     Route::middleware('permission:students.manage')->group(function () {
@@ -388,6 +395,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 // ---------------------------------------------------------- Instructor panel
 Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')->group(function () {
     Route::get('/', [InstructorDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/verify', [InstructorVerificationController::class, 'show'])->name('verification.show');
+    Route::post('/verify', [InstructorVerificationController::class, 'submit'])->name('verification.submit');
 
     Route::get('/courses', [InstructorCourseController::class, 'index'])->name('courses.index');
     Route::get('/courses/create', [InstructorCourseController::class, 'create'])->name('courses.create');

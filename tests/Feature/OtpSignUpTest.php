@@ -77,7 +77,11 @@ class OtpSignUpTest extends TestCase
         ]);
 
         $instResp->assertRedirect(route('instructor.dashboard'));
-        $this->assertDatabaseHas('instructors', ['email' => 'bob@instructor.test']);
+        $this->assertDatabaseHas('instructors', [
+            'email' => 'bob@instructor.test',
+            'status' => 'pending_verification',
+            'verification_status' => 'unverified',
+        ]);
         $this->assertAuthenticatedAs(Instructor::where('email', 'bob@instructor.test')->first(), 'instructor');
     }
 
@@ -161,7 +165,12 @@ class OtpSignUpTest extends TestCase
         // Verify with new OTP
         $okResp = $this->post(route('otp.verify'), ['otp' => $newPending['otp']]);
         $okResp->assertRedirect(route('instructor.dashboard'));
-        $this->assertDatabaseHas('instructors', ['email' => 'donna@instructor.test', 'designation' => 'AI Scientist']);
+        $this->assertDatabaseHas('instructors', [
+            'email' => 'donna@instructor.test',
+            'designation' => 'AI Scientist',
+            'status' => 'pending_verification',
+            'verification_status' => 'unverified',
+        ]);
         $this->assertAuthenticatedAs(Instructor::where('email', 'donna@instructor.test')->first(), 'instructor');
     }
 }

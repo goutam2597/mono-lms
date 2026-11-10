@@ -80,7 +80,7 @@ class AuthTest extends TestCase
 
         $this->assertDatabaseHas('instructors', [
             'email' => 'jane.instructor@test.dev',
-            'status' => 'active',
+            'status' => 'pending_verification',
         ]);
         $this->assertAuthenticated('instructor');
     }

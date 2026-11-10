@@ -19,6 +19,11 @@ class CourseController extends Controller
 
     public function create()
     {
+        $instructor = auth('instructor')->user();
+        if (! $instructor || ! $instructor->canAddCourses()) {
+            return redirect()->route('instructor.verification.show')->with('error', 'Teacher verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
+        }
+
         return view('pages.instructor.courses-form', [
             'course' => new Course,
             'categories' => Category::orderBy('name')->get(),
@@ -27,6 +32,11 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        $instructor = auth('instructor')->user();
+        if (! $instructor || ! $instructor->canAddCourses()) {
+            return redirect()->route('instructor.verification.show')->with('error', 'Teacher verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
+        }
+
         $data = $this->validated($request);
         $data['slug'] = $this->uniqueSlug($data['title']);
 

@@ -13,6 +13,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 #[Fillable([
     'name', 'email', 'password', 'phone', 'bio', 'avatar',
     'designation', 'locale', 'status',
+    'certification_file', 'national_id_file', 'verification_status',
+    'verified_at', 'rejection_reason',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class Instructor extends Authenticatable
@@ -21,7 +23,18 @@ class Instructor extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'verified_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Instructor $instructor) {
+            if ($instructor->status === 'active' && empty($instructor->verification_status)) {
+                $instructor->verification_status = 'approved';
+                $instructor->verified_at = now();
+            }
+        });
     }
 
     public function courses(): HasMany
@@ -47,6 +60,44 @@ class Instructor extends Authenticatable
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->verification_status === 'approved' && $this->status === 'active';
+    }
+
+    public function isPendingVerification(): bool
+    {
+        return $this->verification_status === 'pending';
+    }
+
+    public function isVerificationRejected(): bool
+    {
+        return $this->verification_status === 'rejected';
+    }
+
+    public function canAddCourses(): bool
+    {
+        return $this->isVerified();
+    }
+
+    public function certificationUrl(): ?string
+    {
+        if ($this->certification_file && trim((string) $this->certification_file) !== '') {
+            return PublicMedia::url($this->certification_file);
+        }
+
+        return null;
+    }
+
+    public function nationalIdUrl(): ?string
+    {
+        if ($this->national_id_file && trim((string) $this->national_id_file) !== '') {
+            return PublicMedia::url($this->national_id_file);
+        }
+
+        return null;
     }
 
     public function avatarUrl(?string $fallback = null): ?string

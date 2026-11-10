@@ -34,7 +34,7 @@ class CourseController extends Controller
         return view('pages.admin.courses-form', [
             'course' => new Course,
             'categories' => Category::orderBy('name')->get(),
-            'instructors' => Instructor::where('status', 'active')->orderBy('name')->get(),
+            'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),
         ]);
     }
@@ -55,7 +55,7 @@ class CourseController extends Controller
         return view('pages.admin.courses-form', [
             'course' => $course->load('lessons'),
             'categories' => Category::orderBy('name')->get(),
-            'instructors' => Instructor::where('status', 'active')->orderBy('name')->get(),
+            'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),
         ]);
     }

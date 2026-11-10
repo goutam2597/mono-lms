@@ -176,6 +176,8 @@ class DatabaseSeeder extends Seeder
                     'bio' => $bio,
                     'avatar' => 'https://images.unsplash.com/'.$photo.'?w=600&auto=format&fit=crop&q=80',
                     'status' => 'active',
+                    'verification_status' => 'approved',
+                    'verified_at' => now(),
                 ]
             );
         }

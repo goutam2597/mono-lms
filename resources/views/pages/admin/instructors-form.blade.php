@@ -43,7 +43,7 @@
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.status') }}</label>
                     <x-select name="status"
-                        :options="['active' => __('app.common.active'), 'inactive' => __('app.common.inactive')]"
+                        :options="['active' => __('app.common.active'), 'inactive' => __('app.common.inactive'), 'pending_verification' => 'Pending Verification']"
                         :selected="old('status', $instructor->status ?? 'active')"
                         :searchable="false" />
                 </div>

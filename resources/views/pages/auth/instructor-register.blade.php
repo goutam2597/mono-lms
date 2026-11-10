@@ -7,7 +7,7 @@
             <p class="text-xs text-[#6d6d6d] mt-1.5">Join top instructors sharing knowledge, creating courses, and earning on Mono LMS.</p>
         </div>
 
-        <form action="{{ route('instructor.register.attempt') }}" method="POST" class="space-y-4">
+        <form action="{{ route('instructor.register.attempt') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
 
             <div class="space-y-1.5">
@@ -43,6 +43,14 @@
                 </label>
                 <input id="password" name="password" type="password" required placeholder="•••••••• (min 8 characters)" class="w-full bg-white border {{ $errors->has('password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('password')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2 text-xs">
+                <p class="font-bold text-[#191919] flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    <span>Teacher Verification Notice</span>
+                </p>
+                <p class="text-slate-600 text-[11px] leading-relaxed">After registration, you will need to submit your teaching certification and national ID for admin verification. Once verified, your profile will be listed publicly and you can begin creating courses.</p>
             </div>
 
             <div class="space-y-1.5">

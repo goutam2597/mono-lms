@@ -75,6 +75,7 @@ class SearchSuggestionController extends Controller
 
         // 3. Instructors matching name or designation
         $instructors = Instructor::where('status', 'active')
+            ->where('verification_status', 'approved')
             ->where(function ($query) use ($q) {
                 $query->where('name', 'like', "%{$q}%")
                     ->orWhere('designation', 'like', "%{$q}%");
