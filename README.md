@@ -5,7 +5,7 @@
 [![Laravel 13](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![PHPUnit Tests](https://img.shields.io/badge/Tests-Passed-success?style=for-the-badge&logo=githubactions&logoColor=white)](#tests)
 
 ---
@@ -31,34 +31,40 @@ All screens are designed in a structured design process and mapped to structured
 
 ---
 
-## 🧭 Complete Screens & Route Directory
+## 🧭 Screens & Route Directory
 
-All 22 screens can be browsed and accessed from the interactive **Screens Showcase Hub** at [`/screens`](http://localhost/lms/public/screens):
+Every screen can also be browsed from the interactive **Screens Showcase Hub** at [`/screens`](http://127.0.0.1:8000/screens):
 
-| Category | Screen Name | Route | Node ID |
-| :--- | :--- | :--- | :--- |
-| **Home** | Home *(Main and Only Home)* | `/` | `2355:29907` |
-| **Hub** | Screens Showcase Hub | `/screens` | `1:4659` |
-| **Courses** | Course Grid | `/courses/grid` | `200:18274` |
-| | Course List | `/courses/list` | `200:19012` |
-| | Course Details | `/courses/detail` | `200:19760` |
-| **Instructors** | Instructor Grid | `/instructors/grid` | `235:21516` |
-| | Instructor List | `/instructors/list` | `235:21980` |
-| | Instructor Profile | `/instructors/detail` | `235:22430` |
-| **Student Portal** | Student Dashboard | `/student/dashboard` | `235:23080` |
-| | Student Profile | `/student/profile` | `235:23450` |
-| | Enrolled Courses | `/student/enrolled-courses`| `235:23890` |
-| | Certificates | `/student/certificates` | `235:24210` |
-| | Quiz Attempts | `/student/quiz-attempts` | `235:24550` |
-| **Instructor Portal**| Instructor Dashboard | `/instructor/dashboard` | `375:48500` |
-| | Manage Courses | `/instructor/courses` | `375:48920` |
-| | Student Reviews | `/instructor/reviews` | `375:49310` |
-| **Authentication** | Sign In | `/login` | `375:49416` |
-| | Register | `/register` | `375:49512` |
-| | Forgot Password | `/forgot-password` | `375:49601` |
-| | Enter OTP | `/otp` | `375:49627` |
-| | Set New Password | `/set-password` | `375:50135` |
-| | Lock Screen | `/lock-screen` | `375:50392` |
+| Category | Screen | Route |
+| :--- | :--- | :--- |
+| **Storefront** | Home *(single home)* | `/` |
+| | Courses Catalog + Course Details | `/courses`, `/courses/{slug}` |
+| | Instructors Directory + Profile | `/instructors`, `/instructors/{name}` |
+| | Blog | `/blog` |
+| | Membership Plans *(admin-gated)* | `/membership` |
+| | Certificate Verification | `/certificates/verify` |
+| | Screens Showcase Hub | `/screens` |
+| **Student Portal** | Dashboard | `/student` |
+| | Enrolled Courses | `/student/enrolled-courses` |
+| | Saved Courses (Wishlist) | `/student/saved-courses` |
+| | My Certificates | `/student/certificates` |
+| | Quiz Attempts | `/student/quiz-attempts` |
+| | Notifications | `/student/notifications` |
+| | Support Tickets | `/student/tickets` |
+| | Profile | `/student/profile` |
+| **Instructor Portal** | Dashboard | `/instructor` |
+| | My Courses | `/instructor/courses` |
+| | Students | `/instructor/students` |
+| | Reviews | `/instructor/reviews` |
+| | Verification | `/instructor/verify` |
+| | Notifications | `/instructor/notifications` |
+| | Support Tickets | `/instructor/tickets` |
+| | Profile | `/instructor/profile` |
+| **Authentication** | Sign In / Register | `/login`, `/register` |
+| | Forgot Password (OTP) | `/forgot-password`, `/forgot-password/otp` |
+| | OTP Verification / Set New Password | `/otp`, `/set-password` |
+| | Lock Screen | `/lock-screen` |
+| **Admin Panel** | Full admin suite (RBAC-gated): dashboard, courses, instructors, students, orders & coupons, reviews, blog & plans, certificate templates, notifications, tickets, pages, media, reports, settings, roles | `/admin` |
 
 ---
 
@@ -98,9 +104,9 @@ Students can also self-register at `/register`. Instructor accounts are created 
 ## 🚀 Quick Start Guide
 
 ### Prerequisites
-- PHP 8.4 or higher with `pdo_sqlite` and `sqlite3` extensions enabled
-- Composer
-- Node.js & npm (optional, as pre-compiled build assets are included)
+- PHP 8.3+ with the `pdo_mysql` extension
+- Composer & a MySQL server
+- Node.js & npm (optional — production build assets are committed in `public/build/`)
 
 ### 1. Clone the Repository
 ```bash
@@ -120,11 +126,13 @@ php artisan key:generate
 ```
 
 ### 4. Database Setup
-The SQLite database `database/database.sqlite` is already tracked and migrated with required session and cache tables.
-If needed, you can run:
+The app runs on **MySQL** — create a database named `mono_lms` (utf8mb4). `.env.example` already ships matching MySQL defaults (`DB_CONNECTION=mysql`, `DB_DATABASE=mono_lms`), so adjust credentials if needed, then run:
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
+This migrates the schema and seeds the demo content (categories, instructors, courses, plans, certificate templates – including the seeded panel logins below).
+
+> `database/database.sqlite` is tracked only for the automated test suite — the application itself uses MySQL.
 
 ### 5. Build Assets (Optional)
 Production assets are already included in `public/build/`. To start Vite in dev mode:
@@ -142,14 +150,14 @@ php artisan serve
 ```
 Visit: [http://127.0.0.1:8000](http://127.0.0.1:8000) or browse all screens at [http://127.0.0.1:8000/screens](http://127.0.0.1:8000/screens).
 
-Or if using **Laragon / Apache**:
-Visit: `http://localhost/lms/public` or `http://localhost/lms/public/screens`.
+Or if using **Laragon / Apache** with a vhost:
+Visit: `http://mono-lms.test` (screens hub at `http://mono-lms.test/screens`).
 
 ---
 
 ## 🧪 Testing
 
-Run the feature test suite covering all 22 screens:
+Run the feature test suite (uses an in-memory SQLite database):
 ```bash
 php artisan test --compact
 ```
