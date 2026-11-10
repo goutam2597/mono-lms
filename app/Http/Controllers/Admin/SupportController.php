@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Models\Instructor;
 use App\Models\SupportTicket;
 use App\Services\NotificationService;
 use Illuminate\Contracts\View\View;
@@ -136,13 +137,17 @@ class SupportController extends Controller
         // Attempt user in-app notification if they match a student/instructor
         $matchedUser = $ticket->findUser();
         if ($matchedUser) {
+            $actionUrl = ($matchedUser instanceof Instructor)
+                ? route('instructor.tickets.index', ['search' => $ticket->ticket_number])
+                : route('student.tickets.index', ['search' => $ticket->ticket_number]);
+
             NotificationService::send(
                 notifiable: $matchedUser,
                 title: "Staff response on ticket #{$ticket->ticket_number}",
                 message: Str::limit($data['reply'], 160),
                 category: 'support',
-                actionUrl: null,
-                actionLabel: null,
+                actionUrl: $actionUrl,
+                actionLabel: 'View Ticket Response',
                 icon: 'support',
                 sendMail: $request->boolean('send_email', true),
             );

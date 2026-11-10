@@ -46,6 +46,7 @@ use App\Http\Controllers\Instructor\NotificationController as InstructorNotifica
 use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
 use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
 use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
+use App\Http\Controllers\Instructor\TicketController as InstructorTicketController;
 use App\Http\Controllers\Instructor\VerificationController as InstructorVerificationController;
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
@@ -54,6 +55,7 @@ use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\Student\TicketController as StudentTicketController;
 use App\Http\Controllers\Student\WishlistController;
 use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
@@ -436,6 +438,12 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
     Route::get('/profile', [InstructorProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [InstructorProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [InstructorProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Support Tickets
+    Route::get('/tickets', [InstructorTicketController::class, 'index'])->name('tickets.index');
+    Route::post('/tickets', [InstructorTicketController::class, 'store'])->name('tickets.store');
+    Route::post('/tickets/{ticket}/reply', [InstructorTicketController::class, 'reply'])->name('tickets.reply');
+    Route::patch('/tickets/{ticket}/close', [InstructorTicketController::class, 'close'])->name('tickets.close');
 });
 
 // ------------------------------------------------------------ Student panel
@@ -448,6 +456,12 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Support Tickets
+    Route::get('/tickets', [StudentTicketController::class, 'index'])->name('tickets.index');
+    Route::post('/tickets', [StudentTicketController::class, 'store'])->name('tickets.store');
+    Route::post('/tickets/{ticket}/reply', [StudentTicketController::class, 'reply'])->name('tickets.reply');
+    Route::patch('/tickets/{ticket}/close', [StudentTicketController::class, 'close'])->name('tickets.close');
 
     // Static UI-kit placeholders (no quiz/certificate engine yet)
     Route::get('/certificates', fn () => view('pages.student.certificates'))->name('certificates');

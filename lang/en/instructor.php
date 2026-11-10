@@ -10,6 +10,7 @@ return [
         'students' => 'Students',
         'reviews' => 'Reviews',
         'profile' => 'My Profile',
+        'tickets' => 'Help & Support',
         'settings' => 'Settings',
         'logout' => 'Logout',
     ],
