@@ -132,8 +132,8 @@
                             <!-- Strip Width Control -->
                             <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-semibold text-neutral-700 mb-1">Strip Display Width Preset</label>
-                                    <select id="footer_payment_methods_width_preset" onchange="if(this.value){ document.getElementById('footer_payment_methods_width_input').value = this.value; }" class="control w-full text-xs">
+                                    <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Strip Display Width Preset</label>
+                                    <select id="footer_payment_methods_width_preset" onchange="if(this.value){ document.getElementById('footer_payment_methods_width_input').value = this.value; }" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                         <option value="180px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '180px')>Compact (180px)</option>
                                         <option value="260px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '260px')>Medium (260px)</option>
                                         <option value="340px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '340px')>Standard (340px) &mdash; Default</option>
@@ -145,8 +145,8 @@
                                     <p class="text-[10px] text-neutral-400 mt-1">Select a preset to automatically populate the width.</p>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold text-neutral-700 mb-1">Strip Width Value</label>
-                                    <input type="text" id="footer_payment_methods_width_input" name="footer_payment_methods_width" value="{{ $settings['footer_payment_methods_width'] ?? '340px' }}" placeholder="340px" class="control w-full text-xs font-mono">
+                                    <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Strip Width Value</label>
+                                    <input type="text" id="footer_payment_methods_width_input" name="footer_payment_methods_width" value="{{ $settings['footer_payment_methods_width'] ?? '340px' }}" placeholder="340px" class="h-10 w-full border border-neutral-300 px-3.5 text-xs font-mono text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                     <p class="text-[10px] text-neutral-400 mt-1">Accepts px (e.g. 340px), %, rem, or auto.</p>
                                 </div>
                             </div>
