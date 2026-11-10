@@ -133,9 +133,6 @@
                 <div class="h-[60px] px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#07090a] shrink-0">
                     <a href="{{ $userType === 'admin' ? route('admin.dashboard') : ($userType === 'instructor' ? route('instructor.dashboard') : route('student.dashboard')) }}" class="flex items-center gap-2.5 group">
                         <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
-                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[var(--theme-primary,#344c3d)]/20 text-[var(--theme-accent,#738a6e)] border border-[var(--theme-primary,#344c3d)]/40' : ($userType === 'instructor' ? 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' : 'bg-blue-950 text-blue-200 border border-blue-700/40') }}">
-                            {{ strtoupper($userType) }}
-                        </span>
                     </a>
                     <button type="button" id="sidebar-close" class="lg:hidden p-1.5 rounded-[5px] text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors" aria-label="Close sidebar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

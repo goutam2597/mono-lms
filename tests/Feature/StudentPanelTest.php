@@ -29,9 +29,9 @@ class StudentPanelTest extends TestCase
         $response = $this->actingAs($this->student, 'student')->get(route('student.dashboard'));
 
         $response->assertOk();
-        // Standalone dark sidebar & badge
+        // Standalone dark sidebar & brand logo (panel badge intentionally removed)
         $response->assertSee('id="dashboard-sidebar"', false);
-        $response->assertSee('STUDENT');
+        $response->assertSee('Mono LMS');
         // Topbar header and notification button
         $response->assertSee('id="header-notifications-btn"', false);
         $response->assertSee('id="header-user-menu-btn"', false);
