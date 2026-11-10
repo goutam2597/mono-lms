@@ -394,12 +394,9 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 4. Seed Certificate Templates (Figma Design Pack Templates 3, 7, 8, 9)
+        // 4. Seed Certificate Template (Ornamental Gold & Laurel Seal Achievement Certificate)
         $certTemplates = [
-            ['Heritage Grand Achievement', 'template_3', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#1a1815', '#835a2a', true],
-            ['Contemporary Prestige Award', 'template_7', 'Manager, CTO', 'Dr. Julian Vance', '#ffffff', '#1a1815', '#835a2a', false],
-            ['Executive Diagonal Monogram', 'template_8', 'Academic Dean', 'Sarah Jenkins, Ph.D.', '#ffffff', '#1a1815', '#e5cfb7', false],
-            ['Royal Minimalist Distinction', 'template_9', 'Lead Faculty Senate', 'Rolands Granger', '#ffffff', '#1a1815', '#4d493f', false],
+            ['Certificate of Achievement', 'template_3', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#1a1815', '#835a2a', true],
         ];
         foreach ($certTemplates as [$ctTitle, $ctType, $ctSig, $ctName, $ctBg, $ctBorder, $ctAccent, $ctDef]) {
             CertificateTemplate::updateOrCreate(

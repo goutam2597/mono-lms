@@ -78,14 +78,17 @@ class CertificateSystemTest extends TestCase
     {
         $admin = Admin::first();
         $first = CertificateTemplate::first();
-        $second = CertificateTemplate::skip(1)->first();
+        $second = CertificateTemplate::skip(1)->first() ?? CertificateTemplate::create([
+            'title' => 'Secondary Certificate Template',
+            'template_type' => 'template_3',
+            'signer_name' => 'Prof. Test',
+            'is_default' => false,
+        ]);
 
-        if ($second) {
-            $response = $this->actingAs($admin, 'admin')->patch(route('admin.certificates.default', $second));
-            $response->assertSessionHas('success');
-            $this->assertTrue($second->fresh()->is_default);
-            $this->assertFalse($first->fresh()->is_default);
-        }
+        $response = $this->actingAs($admin, 'admin')->patch(route('admin.certificates.default', $second));
+        $response->assertSessionHas('success');
+        $this->assertTrue($second->fresh()->is_default);
+        $this->assertFalse($first->fresh()->is_default);
     }
 
     public function test_student_certificates_page_auto_issues_for_completed_course(): void

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full w-full">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ $certificate->certificate_number }} - Certificate of Achievement</title>
   <link rel="icon" href="{{ \App\Models\Setting::faviconUrl() }}">
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <!-- Google Fonts matching the exact typography of the reference design -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,19 +34,35 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
       font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      @if (request('embed'))
+        background: transparent;
+        overflow: hidden;
+      @else
+        background-color: #262523;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      @endif
     }
 
     /* Scaling container so the exact 1120x792 certificate fits any screen seamlessly */
     .viewport-wrapper {
       width: 100%;
-      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
+      @if (request('embed'))
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+      @else
+        padding: 24px 16px 80px 16px;
+        overflow: hidden;
+      @endif
     }
 
     .certificate-scaler {
@@ -56,7 +71,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
-    /* Fixed-proportion canvas matching the exact aspect ratio of the reference image (1.414 : 1) */
+    /* Fixed-proportion canvas matching the exact aspect ratio of the reference design (1.414 : 1) */
     .certificate-canvas {
       position: relative;
       width: 1120px;
@@ -94,7 +109,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 78px 110px 64px 110px;
+      padding: 72px 100px 58px 100px;
       text-align: center;
     }
 
@@ -116,7 +131,7 @@
       align-items: center;
       justify-content: center;
       gap: 24px;
-      margin-top: 22px;
+      margin-top: 18px;
       width: 100%;
     }
 
@@ -137,7 +152,7 @@
       align-items: center;
       justify-content: center;
       gap: 17px;
-      margin-top: 18px;
+      margin-top: 14px;
       color: #c29d6f;
     }
 
@@ -149,25 +164,28 @@
       letter-spacing: 0.145em;
       color: var(--muted-grey);
       text-transform: uppercase;
-      margin-top: 40px;
+      margin-top: 24px;
+      margin-bottom: 0;
     }
 
     /* Recipient Name in Engraved/Inline Calligraphic Script */
     .recipient-name-wrap {
       position: relative;
-      margin-top: 18px;
+      margin-top: 12px;
       margin-bottom: 2px;
       display: inline-block;
+      max-width: 820px;
     }
 
     .recipient-name {
       font-family: 'Alex Brush', 'Great Vibes', cursive;
       font-weight: 400;
-      font-size: 114px;
-      line-height: 0.92;
+      font-size: 76px;
+      line-height: 1;
       color: var(--gold-dark);
       letter-spacing: 0.01em;
       padding: 0 18px;
+      white-space: nowrap;
       text-shadow:
         -1px 0px 0px var(--bg-cream),
         -2.2px 0.6px 0px rgba(125, 87, 41, 0.72);
@@ -184,11 +202,12 @@
     .cert-body {
       font-family: 'Inter', sans-serif;
       font-weight: 400;
-      font-size: 15.8px;
-      line-height: 1.72;
+      font-size: 15.2px;
+      line-height: 1.65;
       color: var(--body-grey);
-      max-width: 580px;
-      margin-top: 28px;
+      max-width: 660px;
+      margin-top: 16px;
+      margin-bottom: 0;
       letter-spacing: 0.005em;
     }
 
@@ -205,7 +224,7 @@
       grid-template-columns: 1fr 220px 1fr;
       align-items: center;
       padding: 0 42px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .footer-side {
@@ -219,7 +238,7 @@
       width: 184px;
       height: 2px;
       background: radial-gradient(ellipse at center, #b89160 0%, #cfb089 55%, rgba(207, 176, 137, 0) 100%);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .date-text {
@@ -228,7 +247,7 @@
       font-size: 18.5px;
       color: #55514d;
       letter-spacing: 0.01em;
-      min-height: 34px;
+      min-height: 30px;
       display: flex;
       align-items: center;
     }
@@ -236,106 +255,108 @@
     .signature-text {
       font-family: 'Sacramento', cursive;
       font-weight: 400;
-      font-size: 40px;
-      line-height: 0.85;
+      font-size: 34px;
+      line-height: 1;
       color: #4a4642;
       transform: rotate(-3deg);
-      min-height: 34px;
+      min-height: 30px;
       display: flex;
       align-items: center;
       letter-spacing: 0.01em;
+      white-space: nowrap;
     }
 
     .seal-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: translateY(6px);
+      transform: translateY(4px);
+    }
+
+    /* Floating control bar styles */
+    .floating-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(23, 23, 23, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e5e5e5;
+      font-size: 12px;
+    }
+
+    .floating-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: #262626;
+      color: #e5e5e5;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .floating-btn:hover {
+      background: #333333;
+    }
+
+    .floating-btn-primary {
+      background: #d97706;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+    }
+
+    .floating-btn-primary:hover {
+      background: #b45309;
+    }
+
+    .divider-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #525252;
     }
 
     /* Print rules for clean full-page PDF / paper output */
     @media print {
       @page {
-        size: A4 landscape;
+        size: landscape;
         margin: 0;
       }
       body {
         background: #fdfcfa !important;
-        overflow: visible !important;
       }
       .no-print {
         display: none !important;
       }
       .viewport-wrapper {
         padding: 0 !important;
-        display: block !important;
-        overflow: visible !important;
       }
       .certificate-scaler {
         transform: none !important;
         box-shadow: none !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        margin: 0 !important;
-      }
-      .certificate-canvas {
-        width: 100vw !important;
-        height: 100vh !important;
-        max-width: 100vw !important;
-        max-height: 100vh !important;
-        page-break-inside: avoid;
       }
     }
   </style>
 </head>
-<body class="@if (request('embed')) bg-[#fdfcfa] @else bg-[#262523] @endif w-full h-full flex flex-col antialiased">
-
-  @if (! request('embed'))
-    <!-- Top Action Toolbar (Hidden when printing or in modal embed) -->
-    <header class="no-print shrink-0 w-full z-30 bg-neutral-900/95 backdrop-blur-md border-b border-neutral-800 px-4 py-2.5 shadow-xl text-white">
-      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <a href="{{ route('student.certificates') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-semibold transition-colors border border-neutral-700">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            <span>Back to My Certificates</span>
-          </a>
-          <div class="hidden sm:block">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-bold text-white font-mono">{{ $certificate->certificate_number }}</span>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                Official Credential
-              </span>
-            </div>
-            <p class="text-[10px] text-neutral-400">Awarded to {{ $certificate->student_name }} on {{ $certificate->issue_date->format('F d, Y') }}</p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button type="button"
-                  onclick="copyVerificationLink('{{ $certificate->verificationUrl() }}')"
-                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-semibold transition-colors border border-neutral-700 cursor-pointer">
-            <svg class="w-3.5 h-3.5 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            <span id="copy-btn-text">Share Link</span>
-          </button>
-
-          <a href="{{ $certificate->verificationUrl() }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-semibold transition-colors border border-neutral-700">
-            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Verify Registry</span>
-          </a>
-
-          <button type="button"
-                  onclick="window.print()"
-                  class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-transform hover:scale-105 cursor-pointer">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            <span>Print / Save PDF</span>
-          </button>
-        </div>
-      </div>
-    </header>
-  @endif
+<body>
 
   <!-- Main Responsive Viewport -->
-  <main class="viewport-wrapper flex-1">
+  <div class="viewport-wrapper">
     <div id="scaler" class="certificate-scaler">
       <div class="certificate-canvas" id="certificate">
 
@@ -502,7 +523,6 @@
             <div class="footer-side">
               <div class="tapered-line"></div>
               <div class="date-text">{{ $certificate->issue_date->format('d M Y') }}</div>
-              <div class="font-mono text-[9px] text-[#87817a] mt-0.5 tracking-wider">{{ $certificate->certificate_number }}</div>
             </div>
 
             <!-- Center: Best Award Laurel Wreath Emblem -->
@@ -542,23 +562,51 @@
             <div class="footer-side">
               <div class="tapered-line"></div>
               <div class="signature-text">{{ $certificate->instructor_name ?: ($template->signer_name ?? 'Dr. Alexander Wright') }}</div>
-              <div class="font-sans text-[10px] uppercase tracking-wider text-[#87817a] font-medium mt-0.5">{{ $template->signature_title ?? 'Program Director' }}</div>
             </div>
           </div>
 
         </div>
 
-        <!-- Optional Cryptographic QR Verification Badge -->
+        <!-- Optional Subtle Verification Stamp in Bottom Corner -->
         @if ($template->show_qr_code ?? true)
-          <div class="absolute bottom-5 right-6 z-10 opacity-70 hover:opacity-100 transition-opacity flex items-center gap-1.5 bg-white/80 backdrop-blur-xs p-1 rounded border border-[#e5ddd0]">
-            <img src="{{ $certificate->qrCodeUrl() }}" class="w-8 h-8 object-contain" alt="QR">
-            <span class="text-[7px] font-mono text-slate-500 uppercase leading-none">VERIFIED<br>REGISTRY</span>
+          <div class="no-print" style="position: absolute; bottom: 22px; right: 28px; z-index: 10; display: flex; align-items: center; gap: 6px; background: rgba(253, 252, 250, 0.95); padding: 3px 6px; border: 1px solid #e5ddd0; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+            <img src="{{ $certificate->qrCodeUrl() }}" style="width: 26px; height: 26px; object-fit: contain; display: block;" alt="QR">
+            <span style="font-family: monospace; font-size: 7px; color: #87817a; text-transform: uppercase; line-height: 1.1; letter-spacing: 0.05em;">VERIFIED<br>REGISTRY</span>
           </div>
         @endif
 
       </div>
     </div>
-  </main>
+  </div>
+
+  @if (! request('embed'))
+    <!-- Minimal Floating Action Control Bar (Hidden when printing) -->
+    <div class="no-print floating-bar">
+      <a href="{{ route('student.certificates') }}" class="floating-btn">
+        <svg width="14" height="14" style="width:14px;height:14px;display:inline-block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        <span>Back to My Certificates</span>
+      </a>
+
+      <span class="divider-dot"></span>
+
+      <button type="button" onclick="copyVerificationLink('{{ route('certificates.verify.show', $certificate->certificate_number) }}')" class="floating-btn">
+        <svg width="14" height="14" style="width:14px;height:14px;display:inline-block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        <span id="copy-btn-text">Share Link</span>
+      </button>
+
+      <a href="{{ route('certificates.verify.show', $certificate->certificate_number) }}" target="_blank" class="floating-btn" style="color: #34d399;">
+        <svg width="14" height="14" style="width:14px;height:14px;display:inline-block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Verify Registry</span>
+      </a>
+
+      <button type="button" id="printBtn" onclick="window.print()" class="floating-btn floating-btn-primary">
+        <svg width="15" height="15" style="width:15px;height:15px;display:inline-block;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0h12v4H6v-4z" />
+        </svg>
+        <span>Print / Save PDF</span>
+      </button>
+    </div>
+  @endif
 
   <script>
     /**
@@ -631,7 +679,7 @@
       const isEmbed = {{ request('embed') ? 'true' : 'false' }};
 
       if (isEmbed) {
-        // Modal embed mode: iframe matches aspect-[1.414/1]
+        // Modal embed mode: iframe matches aspect 1120/792
         const availWidth = window.innerWidth;
         const availHeight = window.innerHeight;
         if (availWidth <= 0 || availHeight <= 0) return;
@@ -647,13 +695,10 @@
         scaler.style.boxShadow = 'none';
       } else {
         // Standalone tab view
-        const header = document.querySelector('header.no-print');
-        const headerH = header ? header.offsetHeight : 0;
-        const pad = window.innerWidth < 640 ? 12 : 24;
-        const availWidth = Math.max(window.innerWidth - pad, 280);
-        const availHeight = Math.max(window.innerHeight - headerH - pad, 200);
+        const availWidth = window.innerWidth - 32;
+        const availHeight = window.innerHeight - 100;
 
-        const scale = Math.min(availWidth / certWidth, availHeight / certHeight);
+        const scale = Math.min(1, availWidth / certWidth, availHeight / certHeight);
         scaler.style.transformOrigin = 'center center';
         scaler.style.transform = `scale(${scale})`;
         scaler.style.position = 'relative';
@@ -661,6 +706,11 @@
         scaler.style.left = 'auto';
         scaler.style.width = `${certWidth}px`;
         scaler.style.height = `${certHeight}px`;
+
+        const wrapper = scaler.parentElement;
+        if (wrapper) {
+          wrapper.style.height = `${Math.ceil(certHeight * scale + 60)}px`;
+        }
       }
     }
 

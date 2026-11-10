@@ -305,13 +305,7 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select name="template_type" id="create_template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3">Figma 3: Heritage Grand Achievement (Guilloché & Gold Ribbon Seal)</option>
-                        <option value="template_7">Figma 7: Contemporary Prestige Award (Wave Header & Watermark)</option>
-                        <option value="template_8">Figma 8: Executive Diagonal Monogram (Right Rosette Column & Starburst)</option>
-                        <option value="template_9">Figma 9: Royal Minimalist Distinction (Lattice Column & Brand Crest)</option>
-                        <option value="classic">Legacy Classic Academic</option>
-                        <option value="modern">Legacy Modern Minimalist</option>
-                        <option value="elegant">Legacy Elegant Executive</option>
+                        <option value="template_3" selected>Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
                     </select>
                 </div>
 
@@ -384,13 +378,7 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select id="edit_template_type" name="template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3">Figma 3: Heritage Grand Achievement (Guilloché & Gold Ribbon Seal)</option>
-                        <option value="template_7">Figma 7: Contemporary Prestige Award (Wave Header & Watermark)</option>
-                        <option value="template_8">Figma 8: Executive Diagonal Monogram (Right Rosette Column & Starburst)</option>
-                        <option value="template_9">Figma 9: Royal Minimalist Distinction (Lattice Column & Brand Crest)</option>
-                        <option value="classic">Legacy Classic Academic</option>
-                        <option value="modern">Legacy Modern Minimalist</option>
-                        <option value="elegant">Legacy Elegant Executive</option>
+                        <option value="template_3" selected>Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
                     </select>
                 </div>
 
@@ -442,26 +430,21 @@
     </div>
 
     <!-- Live Preview Modal -->
-    <div id="previewCertModal" class="modal-overlay" role="dialog" aria-modal="true" onclick="if(event.target===this)closePreviewModal()">
-        <div class="panel max-w-5xl w-[94vw] flex flex-col p-0! overflow-hidden rounded-lg border border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a1a] shadow-2xl my-auto">
-            <div class="flex items-center justify-between px-5 py-3 border-b border-slate-100 dark:border-neutral-800 bg-white dark:bg-[#1a1a1a] shrink-0">
-                <h3 class="text-sm font-bold text-slate-900 dark:text-white" id="preview-modal-title">Certificate Preview</h3>
-
-                <div class="flex items-center gap-2">
-                    <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3 text-xs font-semibold inline-flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        <span>Full A4 Tab</span>
-                    </a>
-                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-2.5 text-slate-500 hover:text-slate-800 dark:text-neutral-400 dark:hover:text-white text-base leading-none cursor-pointer">
-                        &times;
-                    </button>
-                </div>
+    <div id="previewCertModal" class="modal-overlay !p-2 sm:!p-6" role="dialog" aria-modal="true" onclick="if(event.target===this)closePreviewModal()">
+        <div style="width: min(94vw, 1120px); height: min(calc(94vw / 1.4141), calc(100vh - 60px)); aspect-ratio: 1.4141 / 1; position: relative; margin: auto; background: #fdfcfa; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
+            <!-- Floating controls top-right -->
+            <div class="absolute top-3 right-3 z-30 flex items-center gap-2">
+                <a id="preview-fullscreen-link" href="#" target="_blank" class="px-3 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-900 text-neutral-100 text-xs font-semibold backdrop-blur-md shadow inline-flex items-center gap-1.5 transition">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    <span>Full A4 Tab</span>
+                </a>
+                <button type="button" onclick="closePreviewModal()" class="w-8 h-8 rounded-full bg-neutral-900/85 hover:bg-neutral-900 text-white text-base font-bold backdrop-blur-md shadow flex items-center justify-center cursor-pointer transition">
+                    &times;
+                </button>
             </div>
 
-            <!-- Modal body exactly matches the landscape A4 certificate ratio (1.414 : 1) -->
-            <div class="w-full aspect-[1.414/1] bg-white dark:bg-[#111111] overflow-hidden relative">
-                <iframe id="preview-live-iframe" src="" class="absolute inset-0 w-full h-full border-0 block bg-transparent" onload="try{this.contentWindow.fitCertificate()}catch(e){}"></iframe>
-            </div>
+            <!-- Iframe displaying full certificate -->
+            <iframe id="preview-live-iframe" src="" class="w-full h-full border-0 block" style="width: 100%; height: 100%; border: none; display: block;" onload="try{if(this.contentWindow.fitCertificateToScreen)this.contentWindow.fitCertificateToScreen()}catch(e){}"></iframe>
         </div>
     </div>
 
@@ -497,8 +480,6 @@
         }
 
         function openPreviewModal(template) {
-            const title = template.title || 'Certificate Preview';
-            document.getElementById('preview-modal-title').textContent = title;
             const url = baseAdminCertUrl + '/' + template.id + '/preview';
             document.getElementById('preview-fullscreen-link').href = url;
             const iframe = document.getElementById('preview-live-iframe');
@@ -507,11 +488,12 @@
             const modal = document.getElementById('previewCertModal');
             modal.classList.remove('hidden');
             modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
 
             setTimeout(function() {
                 try {
-                    if (iframe.contentWindow && iframe.contentWindow.fitCertificate) {
-                        iframe.contentWindow.fitCertificate();
+                    if (iframe.contentWindow && iframe.contentWindow.fitCertificateToScreen) {
+                        iframe.contentWindow.fitCertificateToScreen();
                     }
                 } catch(e) {}
             }, 100);
@@ -521,6 +503,7 @@
             const modal = document.getElementById('previewCertModal');
             modal.classList.remove('open');
             modal.classList.add('hidden');
+            document.body.style.overflow = '';
             document.getElementById('preview-live-iframe').src = '';
         }
     </script>

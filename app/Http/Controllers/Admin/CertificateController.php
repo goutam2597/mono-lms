@@ -101,7 +101,7 @@ class CertificateController extends Controller
             'certificate_number' => 'CERT-DEMO-'.strtoupper(bin2hex(random_bytes(3))),
             'student_name' => 'Alexandre Montgomery',
             'course_title' => 'Executive Full-Stack Engineering & System Architecture',
-            'instructor_name' => 'Dr. Julian Vance, Lead Faculty',
+            'instructor_name' => $template->signer_name ?: 'Dr. Alexander Wright',
             'issue_date' => now(),
             'grade' => 'Highest Academic Distinction (98.5%)',
             'score' => 98.5,
