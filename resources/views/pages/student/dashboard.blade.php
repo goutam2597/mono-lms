@@ -1,6 +1,20 @@
 <x-layouts.dashboard :title="__('student.dashboard.title').' - Mono LMS'" active="dashboard" userType="student">
 
     <div class="space-y-6">
+        <!-- Top Welcome Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Welcome back, {{ auth('student')->user()?->name ?? 'Student' }}! 👋</h1>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-neutral-400 mt-1">Here is a summary of your learning progress and curriculum updates.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('courses.index') }}" class="action-btn action-btn-primary text-xs flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <span>Browse Courses</span>
+                </a>
+            </div>
+        </div>
+
         <!-- 4 Key Stat Cards (Boxy Mono-Market Style) -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             <!-- Enrolled -->

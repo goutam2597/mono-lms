@@ -54,6 +54,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Student\NotificationController as StudentNotificationController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
 use App\Http\Controllers\Student\TicketController as StudentTicketController;
 use App\Http\Controllers\Student\WishlistController;
@@ -462,6 +463,12 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::post('/tickets', [StudentTicketController::class, 'store'])->name('tickets.store');
     Route::post('/tickets/{ticket}/reply', [StudentTicketController::class, 'reply'])->name('tickets.reply');
     Route::patch('/tickets/{ticket}/close', [StudentTicketController::class, 'close'])->name('tickets.close');
+
+    // Notifications
+    Route::get('/notifications', [StudentNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/read-all', [StudentNotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::post('/notifications/{id}/read', [StudentNotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{id}', [StudentNotificationController::class, 'destroy'])->name('notifications.destroy');
 
     // Static UI-kit placeholders (no quiz/certificate engine yet)
     Route::get('/certificates', fn () => view('pages.student.certificates'))->name('certificates');

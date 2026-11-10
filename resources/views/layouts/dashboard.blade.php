@@ -1,8 +1,7 @@
 @props(['title' => 'Dashboard - Mono LMS', 'active' => 'dashboard', 'userType' => 'student'])
 
-@if ($userType === 'admin' || $userType === 'instructor')
-    <!DOCTYPE html>
-    <html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[var(--theme-bg,#f4f6f9)] dark:bg-[#000000]">
+<!DOCTYPE html>
+<html lang="{{ $currentLocale ?? str_replace('_', '-', app()->getLocale()) }}" dir="{{ $currentDirection ?? 'ltr' }}" class="h-full bg-[var(--theme-bg,#f4f6f9)] dark:bg-[#000000]">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -132,10 +131,10 @@
             <div class="flex-1 flex flex-col min-h-0">
                 <!-- Top Brand Header -->
                 <div class="h-[60px] px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#07090a] shrink-0">
-                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : route('instructor.dashboard') }}" class="flex items-center gap-2.5 group">
+                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : ($userType === 'instructor' ? route('instructor.dashboard') : route('student.dashboard')) }}" class="flex items-center gap-2.5 group">
                         <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
-                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[var(--theme-primary,#344c3d)]/20 text-[var(--theme-accent,#738a6e)] border border-[var(--theme-primary,#344c3d)]/40' : 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' }}">
-                            {{ $userType === 'admin' ? 'ADMIN' : 'INSTRUCTOR' }}
+                        <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-[4px] {{ $userType === 'admin' ? 'bg-[var(--theme-primary,#344c3d)]/20 text-[var(--theme-accent,#738a6e)] border border-[var(--theme-primary,#344c3d)]/40' : ($userType === 'instructor' ? 'bg-emerald-950 text-emerald-200 border border-emerald-700/40' : 'bg-blue-950 text-blue-200 border border-blue-700/40') }}">
+                            {{ strtoupper($userType) }}
                         </span>
                     </a>
                     <button type="button" id="sidebar-close" class="lg:hidden p-1.5 rounded-[5px] text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors" aria-label="Close sidebar">
@@ -147,95 +146,78 @@
                 <div class="flex-1 p-3.5 overflow-y-auto custom-sidebar-scroll">
                     @if ($userType === 'admin')
                         <x-admin-sidebar :active="$active" />
-                    @else
+                    @elseif ($userType === 'instructor')
                         <x-instructor-sidebar :active="$active" />
+                    @else
+                        <x-student-sidebar :active="$active" />
                     @endif
                 </div>
             </div>
 
             <!-- Sidebar Bottom: User Profile Card -->
             <div class="p-3 border-t border-white/[0.07] bg-[#07090a] shrink-0">
-                @if ($userType === 'admin')
-                    @php
-                        $admin = auth('admin')->user();
-                        $adminAvatar = $admin?->avatarUrl();
-                    @endphp
-                    <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
-                        <a href="{{ route('admin.profile') }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
-                            <div class="relative shrink-0">
-                                @if ($adminAvatar)
-                                    <img src="{{ $adminAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
-                                    <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
-                                        {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
-                                    </div>
-                                @else
-                                    <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
-                                        {{ strtoupper(substr($admin->name ?? 'A', 0, 1)) }}
-                                    </div>
-                                @endif
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $admin->name ?? 'Administrator' }}</p>
-                                <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $admin->isSuperAdmin() ? 'Super Admin' : ($admin->role?->name ?? 'Administrator') }}</p>
-                            </div>
-                        </a>
-                        <div class="flex items-center gap-0.5 shrink-0">
-                            <a href="{{ route('admin.profile') }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-                            </a>
-                            <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
-                            </a>
-                            <form method="POST" action="{{ route('admin.logout') }}" class="inline">
-                                @csrf
-                                <button type="submit" title="{{ __('app.nav.sign_out') }}" class="p-1 rounded-[4px] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
-                                </button>
-                            </form>
+                @php
+                    $sidebarUser = match($userType) {
+                        'admin' => auth('admin')->user(),
+                        'instructor' => auth('instructor')->user(),
+                        'student' => auth('student')->user(),
+                        default => null,
+                    };
+                    $sidebarAvatar = $sidebarUser?->avatarUrl();
+                    $sidebarProfileRoute = match($userType) {
+                        'admin' => route('admin.profile'),
+                        'instructor' => route('instructor.profile'),
+                        'student' => route('student.profile'),
+                        default => route('home'),
+                    };
+                    $sidebarLogoutRoute = match($userType) {
+                        'admin' => route('admin.logout'),
+                        'instructor' => route('instructor.logout'),
+                        'student' => route('logout'),
+                        default => route('logout'),
+                    };
+                    $sidebarSubtitle = match($userType) {
+                        'admin' => $sidebarUser?->isSuperAdmin() ? 'Super Admin' : ($sidebarUser?->role?->name ?? 'Administrator'),
+                        'instructor' => $sidebarUser?->designation ?? __('app.common.instructor'),
+                        'student' => __('app.common.student') ?? 'Student',
+                        default => 'User',
+                    };
+                @endphp
+                <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
+                    <a href="{{ $sidebarProfileRoute }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
+                        <div class="relative shrink-0">
+                            @if ($sidebarAvatar)
+                                <img src="{{ $sidebarAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
+                                <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs hidden">
+                                    {{ strtoupper(substr($sidebarUser->name ?? 'U', 0, 1)) }}
+                                </div>
+                            @else
+                                <div class="w-8 h-8 rounded-[5px] bg-[var(--theme-primary,#344c3d)] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[var(--theme-primary,#344c3d)]/40 shadow-xs">
+                                    {{ strtoupper(substr($sidebarUser->name ?? 'U', 0, 1)) }}
+                                </div>
+                            @endif
+                            <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
                         </div>
-                    </div>
-                @else
-                    @php
-                        $instructor = auth('instructor')->user();
-                        $instructorAvatar = $instructor?->avatarUrl();
-                    @endphp
-                    <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
-                        <a href="{{ route('instructor.profile') }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
-                            <div class="relative shrink-0">
-                                @if ($instructorAvatar)
-                                    <img src="{{ $instructorAvatar }}" alt="" class="w-8 h-8 rounded-[5px] object-cover ring-1 ring-slate-700" onerror="this.style.display='none'; if(this.nextElementSibling) { this.nextElementSibling.style.display='flex'; }">
-                                    <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs hidden">
-                                        {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
-                                    </div>
-                                @else
-                                    <div class="w-8 h-8 rounded-[5px] bg-[#344c3d] text-white font-bold text-xs flex items-center justify-center ring-1 ring-[#344c3d]/40 shadow-xs">
-                                        {{ strtoupper(substr($instructor->name ?? 'I', 0, 1)) }}
-                                    </div>
-                                @endif
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $instructor->name ?? 'Instructor' }}</p>
-                                <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $instructor->designation ?? __('app.common.instructor') }}</p>
-                            </div>
-                        </a>
-                        <div class="flex items-center gap-0.5 shrink-0">
-                            <a href="{{ route('instructor.profile') }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-                            </a>
-                            <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
-                            </a>
-                            <form method="POST" action="{{ route('instructor.logout') }}" class="inline">
-                                @csrf
-                                <button type="submit" title="{{ __('instructor.nav.logout') }}" class="p-1 rounded-[4px] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
-                                </button>
-                            </form>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $sidebarUser->name ?? 'User' }}</p>
+                            <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $sidebarSubtitle }}</p>
                         </div>
+                    </a>
+                    <div class="flex items-center gap-0.5 shrink-0">
+                        <a href="{{ $sidebarProfileRoute }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                        </a>
+                        <a href="{{ route('home') }}" target="_blank" title="View Website" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                        </a>
+                        <form method="POST" action="{{ $sidebarLogoutRoute }}" class="inline">
+                            @csrf
+                            <button type="submit" title="{{ __('app.nav.sign_out') }}" class="p-1 rounded-[4px] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+                            </button>
+                        </form>
                     </div>
-                @endif
+                </div>
             </div>
         </aside>
 
@@ -269,14 +251,29 @@
                     <!-- Notification Bell with Dropdown -->
                     <div class="relative shrink-0" id="header-notifications-container">
                         @php
-                            $notifUser = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user();
+                            $notifUser = match($userType) {
+                                'admin' => auth('admin')->user(),
+                                'instructor' => auth('instructor')->user(),
+                                'student' => auth('student')->user(),
+                                default => null,
+                            };
                             if ($notifUser) {
                                 \App\Services\NotificationService::syncInitialNotifications($notifUser, $userType);
                             }
                             $unreadNotificationsCount = $notifUser?->unreadNotifications()->count() ?? 0;
                             $recentNotifications = $notifUser?->notifications()->latest()->take(5)->get() ?? collect();
-                            $readAllRoute = ($userType === 'admin') ? route('admin.notifications.read-all') : route('instructor.notifications.read-all');
-                            $allNotificationsRoute = ($userType === 'admin') ? route('admin.notifications.index') : route('instructor.notifications.index');
+                            $readAllRoute = match($userType) {
+                                'admin' => route('admin.notifications.read-all'),
+                                'instructor' => route('instructor.notifications.read-all'),
+                                'student' => route('student.notifications.read-all'),
+                                default => '#',
+                            };
+                            $allNotificationsRoute = match($userType) {
+                                'admin' => route('admin.notifications.index'),
+                                'instructor' => route('instructor.notifications.index'),
+                                'student' => route('student.notifications.index'),
+                                default => '#',
+                            };
                         @endphp
                         <button type="button"
                                 id="header-notifications-btn"
@@ -316,7 +313,7 @@
                                         </form>
                                     @endif
                                     <span class="text-[11px] text-slate-400 dark:text-neutral-500 font-medium">
-                                        {{ $userType === 'admin' ? 'Admin' : 'Instructor' }}
+                                        {{ ucfirst($userType) }}
                                     </span>
                                 </div>
                             </div>
@@ -327,7 +324,12 @@
                                         $data = $notif->data;
                                         $isUnread = is_null($notif->read_at);
                                         $cat = $data['category'] ?? 'system';
-                                        $markReadUrl = ($userType === 'admin') ? route('admin.notifications.read', ['id' => $notif->id, 'redirect' => 1]) : route('instructor.notifications.read', ['id' => $notif->id, 'redirect' => 1]);
+                                        $markReadUrl = match($userType) {
+                                            'admin' => route('admin.notifications.read', ['id' => $notif->id, 'redirect' => 1]),
+                                            'instructor' => route('instructor.notifications.read', ['id' => $notif->id, 'redirect' => 1]),
+                                            'student' => route('student.notifications.read', ['id' => $notif->id, 'redirect' => 1]),
+                                            default => '#',
+                                        };
                                     @endphp
                                     <form method="POST" action="{{ $markReadUrl }}" class="block">
                                         @csrf
@@ -404,12 +406,31 @@
                     <!-- User Profile Dropdown Menu -->
                     <div class="relative shrink-0" id="header-user-menu-container">
                         @php
-                            $u = ($userType === 'admin') ? auth('admin')->user() : auth('instructor')->user();
+                            $u = match($userType) {
+                                'admin' => auth('admin')->user(),
+                                'instructor' => auth('instructor')->user(),
+                                'student' => auth('student')->user(),
+                                default => null,
+                            };
                             $navAvatar = $u?->avatarUrl();
-                            $profileRoute = ($userType === 'admin') ? route('admin.profile') : route('instructor.profile');
-                            $roleLabel = ($userType === 'admin')
-                                ? ($u?->isSuperAdmin() ? 'Super Admin' : ($u?->role?->name ?? 'Administrator'))
-                                : ($u?->designation ?? __('app.common.instructor'));
+                            $profileRoute = match($userType) {
+                                'admin' => route('admin.profile'),
+                                'instructor' => route('instructor.profile'),
+                                'student' => route('student.profile'),
+                                default => route('home'),
+                            };
+                            $roleLabel = match($userType) {
+                                'admin' => ($u?->isSuperAdmin() ? 'Super Admin' : ($u?->role?->name ?? 'Administrator')),
+                                'instructor' => ($u?->designation ?? __('app.common.instructor')),
+                                'student' => __('app.common.student') ?? 'Student',
+                                default => 'User',
+                            };
+                            $topbarLogoutRoute = match($userType) {
+                                'admin' => route('admin.logout'),
+                                'instructor' => route('instructor.logout'),
+                                'student' => route('logout'),
+                                default => route('logout'),
+                            };
                         @endphp
                         <button type="button"
                                 id="header-user-menu-btn"
@@ -478,6 +499,19 @@
                                             <span class="font-medium">Admins & Staff</span>
                                         </a>
                                     @endif
+                                @elseif ($userType === 'student')
+                                    <a href="{{ route('student.enrolled-courses') }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                        <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                                        <span class="font-medium">Enrolled Courses</span>
+                                    </a>
+                                    <a href="{{ route('student.wishlist') }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                        <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                                        <span class="font-medium">Saved Courses</span>
+                                    </a>
+                                    <a href="{{ route('student.tickets.index') }}" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
+                                        <svg class="w-4 h-4 text-slate-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+                                        <span class="font-medium">Help & Support</span>
+                                    </a>
                                 @endif
 
                                 <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2.5 px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
@@ -488,7 +522,7 @@
 
                             <!-- Logout -->
                             <div class="border-t border-slate-100 dark:border-[#1f1f1f] pt-1">
-                                <form method="POST" action="{{ ($userType === 'admin') ? route('admin.logout') : route('instructor.logout') }}">
+                                <form method="POST" action="{{ $topbarLogoutRoute }}">
                                     @csrf
                                     <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors text-left cursor-pointer font-medium">
                                         <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
@@ -776,41 +810,4 @@
             <x-media-picker />
         @endif
     </body>
-    </html>
-@else
-    <!-- Student Learning Portal (keeps customer storefront nav & student profile view) -->
-    <x-layouts.app :title="$title" active="student">
-        <div class="bg-[#f4f6f9] py-8 min-h-[calc(100vh-200px)]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-8">
-                @php $student = auth('student')->user(); @endphp
-                <x-student-header-banner
-                    :student="$student"
-                    :name="$student?->name ?? 'Student'"
-                    :avatar="$student?->avatarUrl()"
-                    :enrolled="str_pad((string) ($student?->enrollments()->count() ?? 0), 2, '0', STR_PAD_LEFT)"
-                    :completed="str_pad((string) ($student?->enrollments()->where('status', 'completed')->count() ?? 0), 2, '0', STR_PAD_LEFT)"
-                />
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-3">
-                        <x-student-sidebar :active="$active" />
-                    </div>
-                    <div class="lg:col-span-9">
-                        @if (session('success'))
-                            <div class="mb-6 bg-[#03c95a]/10 border border-[#03c95a]/30 text-[#0d7a38] px-4 py-3 rounded-xl text-sm font-medium">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
-                        {{ $slot }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </x-layouts.app>
-@endif
+</html>

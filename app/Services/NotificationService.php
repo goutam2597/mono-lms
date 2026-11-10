@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use App\Models\Instructor;
 use App\Models\Review;
 use App\Models\Setting;
+use App\Models\Student;
 use App\Models\SupportTicket;
 use App\Notifications\AppNotification;
 use Illuminate\Support\Facades\Log;
@@ -125,7 +126,63 @@ class NotificationService
             self::syncInstructorNotifications($user);
         } elseif ($role === 'admin') {
             self::syncAdminNotifications($user);
+        } elseif ($role === 'student') {
+            self::syncStudentNotifications($user);
         }
+    }
+
+    protected static function syncStudentNotifications(Student $student): void
+    {
+        // 1. Welcome learning notification
+        self::send(
+            $student,
+            'Welcome to Mono LMS Learning Portal',
+            'Explore courses, track ongoing lessons, complete quizzes, and earn certified credentials.',
+            'system',
+            route('courses.index'),
+            'Browse Courses',
+            'academic',
+            false
+        );
+
+        // 2. Active enrollments notification if any
+        $enrollment = $student->enrollments()->with('course')->latest()->first();
+        if ($enrollment && $enrollment->course) {
+            self::send(
+                $student,
+                'Course In Progress: '.$enrollment->course->title,
+                'Resume where you left off. Current lesson progress is '.($enrollment->progress ?? 0).'%.',
+                'enrollment',
+                route('student.enrolled-courses'),
+                'Resume Learning',
+                'book',
+                false
+            );
+        }
+
+        // 3. Support & Tickets notification
+        self::send(
+            $student,
+            'Student Helpdesk & Support Available',
+            'Have a question or need assistance with your coursework? Our support team is here to help.',
+            'support',
+            route('student.tickets.index'),
+            'Support Tickets',
+            'support',
+            false
+        );
+
+        // 4. SMTP / System notification
+        self::send(
+            $student,
+            'Email Notifications Operational',
+            'Your account is connected to email notifications. You will receive updates about course enrollments and ticket responses.',
+            'smtp',
+            route('student.profile'),
+            'Account Profile',
+            'mail',
+            false
+        );
     }
 
     protected static function syncInstructorNotifications(Instructor $instructor): void
