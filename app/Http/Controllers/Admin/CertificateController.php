@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
 use App\Models\CertificateTemplate;
+use App\Models\Student;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -97,9 +98,12 @@ class CertificateController extends Controller
      */
     public function preview(CertificateTemplate $template): View
     {
+        $student = Student::whereNotNull('avatar')->first() ?? Student::first();
+
         $dummy = new Certificate([
             'certificate_number' => 'CERT-DEMO-'.strtoupper(bin2hex(random_bytes(3))),
-            'student_name' => 'Alexandre Montgomery',
+            'student_id' => $student?->id,
+            'student_name' => $student?->name ?: 'Alexandre Montgomery',
             'course_title' => 'Executive Full-Stack Engineering & System Architecture',
             'instructor_name' => $template->signer_name ?: 'Dr. Alexander Wright',
             'issue_date' => now(),
@@ -108,6 +112,9 @@ class CertificateController extends Controller
         ]);
         $dummy->id = 0;
         $dummy->setRelation('template', $template);
+        if ($student) {
+            $dummy->setRelation('student', $student);
+        }
 
         return view('pages.student.certificate-print', [
             'certificate' => $dummy,

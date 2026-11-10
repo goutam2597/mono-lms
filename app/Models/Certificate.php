@@ -62,6 +62,15 @@ class Certificate extends Model
         return "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={$target}&bgcolor=ffffff&color=08131e&qzone=1";
     }
 
+    public function studentAvatarUrl(): string
+    {
+        if ($this->student) {
+            return $this->student->avatarOrDefault();
+        }
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->student_name ?: 'Student').'&background=1e1c1a&color=efe6dc&size=400&bold=true';
+    }
+
     public static function generateCode(): string
     {
         do {

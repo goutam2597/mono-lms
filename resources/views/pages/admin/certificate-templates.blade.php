@@ -86,41 +86,99 @@
                     <!-- Certificate Miniature Graphical Canvas -->
                     <div class="p-4 sm:p-5 bg-slate-100/70 border-b border-slate-200 flex items-center justify-center">
 
-                        <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-center select-none group-hover:shadow-lg transition-shadow bg-[#fdfcfa] border border-[#e5ddd0]">
-                            <!-- Ornamental gold corners/borders -->
-                            <div class="absolute inset-1.5 border border-[#b68d59] pointer-events-none"></div>
-                            <div class="relative z-10 pt-0.5">
-                                <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
-                                <div class="flex items-center justify-center gap-1 mt-0.5">
-                                    <span class="w-3 h-px bg-[#c29d6f]"></span>
-                                    <span class="font-baskerville text-[6px] text-[#383634] uppercase font-semibold">OF ACHIEVEMENT</span>
-                                    <span class="w-3 h-px bg-[#c29d6f]"></span>
+                        @if($style === 'template_7')
+                            <!-- Template 7 Miniature Thumbnail: Top Gold Wave, Student Avatar Pop-out & Rosette Badge -->
+                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-left select-none group-hover:shadow-lg transition-shadow bg-white border border-[#e6e3dd]">
+                                <!-- Inset dashed border -->
+                                <div class="absolute inset-1.5 border border-dashed border-[#e6e3dd] pointer-events-none"></div>
+
+                                <!-- Top Wave Ribbon Graphic (miniaturized SVG) -->
+                                <div class="absolute top-0 right-0 w-36 h-12 pointer-events-none overflow-hidden">
+                                    <svg viewBox="0 0 400 120" class="w-full h-full" preserveAspectRatio="none">
+                                        <path d="M 0,0 C 140,55 260,35 400,0 L 400,120 L 220,120 C 160,80 80,40 0,0 Z" fill="url(#miniWaveGold-{{ $template->id }})" opacity="0.9" />
+                                        <defs>
+                                            <linearGradient id="miniWaveGold-{{ $template->id }}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#b8862d" />
+                                                <stop offset="50%" stop-color="#ffd57a" />
+                                                <stop offset="100%" stop-color="#9a6c1e" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
                                 </div>
-                                <div class="flex items-center justify-center gap-1 mt-0.5 text-[#c29d6f] text-[5px]">
-                                    <span>★</span><span>★</span><span>★</span><span>★</span>
+
+                                <!-- Pop-out Avatar Circle with Rosette Badge -->
+                                <div class="absolute right-4 top-7 w-12 h-12 rounded-full bg-[#efe6dc] border-2 border-white shadow-md flex items-center justify-center overflow-visible z-10">
+                                    <div class="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-slate-200">
+                                        <img src="{{ \App\Models\Student::whereNotNull('avatar')->first()?->avatarOrDefault() ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' }}" class="w-full h-full object-cover" alt="Student">
+                                    </div>
+                                    <!-- Scalloped Rosette Badge Overlay -->
+                                    <div class="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-[#d49c3d] text-white flex flex-col items-center justify-center shadow-xs text-[4px] font-bold border border-amber-200">
+                                        <span>★</span>
+                                    </div>
+                                </div>
+
+                                <!-- Left Heading & Info -->
+                                <div class="relative z-10 pt-0.5 pr-14">
+                                    <span class="font-baskerville text-[6px] text-[#4a4744] uppercase font-semibold block leading-tight">CERTIFICATE OF</span>
+                                    <h4 class="font-baskerville text-[10.5px] font-bold text-slate-900 uppercase leading-none mt-0.5">ACHIEVEMENT</h4>
+                                    <span class="font-['Inter'] text-[4.5px] uppercase tracking-wider text-[#9b9690] font-medium block mt-2">THIS IS PROUDLY PRESENTED TO</span>
+                                    <h5 class="font-signature text-[16px] text-[#7c5121] leading-none mt-0.5">Alexandre Montgomery</h5>
+                                    <div class="w-24 h-px bg-[#ebe8e2] mt-0.5"></div>
+                                    <p class="text-[5px] text-[#6e6a65] line-clamp-1 max-w-[130px] mt-0.5">Executive Full-Stack Engineering & System Architecture</p>
+                                </div>
+
+                                <!-- Bottom Row: Signer & QR -->
+                                <div class="relative z-10 pt-1 border-t border-[#f0ede6] flex items-end justify-between text-[6px]">
+                                    <div>
+                                        <span class="font-signature text-[10px] text-[#222] block leading-none select-none">{{ $template->signer_name }}</span>
+                                        <span class="text-[4.5px] text-[#888] uppercase block mt-0.5">{{ $template->signature_title }}</span>
+                                    </div>
+                                    <div class="text-right flex items-center gap-1">
+                                        <span class="text-[4.5px] text-[#999] uppercase leading-tight">PRESENTED ON<br>10 NOV 2026</span>
+                                        <div class="w-3.5 h-3.5 bg-slate-900 rounded-[1px] p-[1px] flex items-center justify-center">
+                                            <span class="text-[3px] text-white font-mono">QR</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="relative z-10 my-auto py-1">
-                                <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-[#87817a] font-medium block">THIS IS PROUDLY PRESENTED TO</span>
-                                <h5 class="font-signature text-[20px] text-[#7d5729] leading-none">Alexandre Montgomery</h5>
-                                <div class="w-28 h-px bg-[#c5a278] mx-auto mt-0.5"></div>
-                                <p class="text-[5.5px] text-[#6b6763] line-clamp-1 max-w-[200px] mx-auto mt-0.5">Full-Stack Engineering & System Architecture</p>
+                        @else
+                            <!-- Template 3: Heritage Grand Achievement Thumbnail -->
+                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-center select-none group-hover:shadow-lg transition-shadow bg-[#fdfcfa] border border-[#e5ddd0]">
+                                <!-- Ornamental gold corners/borders -->
+                                <div class="absolute inset-1.5 border border-[#b68d59] pointer-events-none"></div>
+                                <div class="relative z-10 pt-0.5">
+                                    <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
+                                    <div class="flex items-center justify-center gap-1 mt-0.5">
+                                        <span class="w-3 h-px bg-[#c29d6f]"></span>
+                                        <span class="font-baskerville text-[6px] text-[#383634] uppercase font-semibold">OF ACHIEVEMENT</span>
+                                        <span class="w-3 h-px bg-[#c29d6f]"></span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-1 mt-0.5 text-[#c29d6f] text-[5px]">
+                                        <span>★</span><span>★</span><span>★</span><span>★</span>
+                                    </div>
+                                </div>
+                                <div class="relative z-10 my-auto py-1">
+                                    <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-[#87817a] font-medium block">THIS IS PROUDLY PRESENTED TO</span>
+                                    <h5 class="font-signature text-[20px] text-[#7d5729] leading-none">Alexandre Montgomery</h5>
+                                    <div class="w-28 h-px bg-[#c5a278] mx-auto mt-0.5"></div>
+                                    <p class="text-[5.5px] text-[#6b6763] line-clamp-1 max-w-[200px] mx-auto mt-0.5">Executive Full-Stack Engineering & System Architecture</p>
+                                </div>
+                                <div class="relative z-10 pt-1 border-t border-[#e5ddd0] flex items-end justify-between text-[7px]">
+                                    <div class="text-left w-14">
+                                        <div class="w-8 h-px bg-[#b89160] mb-0.5"></div>
+                                        <span class="text-[#55514d] text-[6px] block">10 Oct 2024</span>
+                                    </div>
+                                    <div class="flex flex-col items-center -mb-1">
+                                        <span class="text-[6px] font-serif font-bold text-[#b68d59] leading-tight">★ BEST ★</span>
+                                        <span class="text-[5px] font-serif text-[#b68d59] leading-none">AWARD</span>
+                                    </div>
+                                    <div class="text-right w-14">
+                                        <div class="w-8 h-px bg-[#b89160] mb-0.5 ml-auto"></div>
+                                        <span class="font-signature text-xs text-[#4a4642] block select-none leading-none truncate">{{ $template->signer_name }}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="relative z-10 pt-1 border-t border-[#e5ddd0] flex items-end justify-between text-[7px]">
-                                <div class="text-left w-14">
-                                    <div class="w-8 h-px bg-[#b89160] mb-0.5"></div>
-                                    <span class="text-[#55514d] text-[6px] block">10 Oct 2024</span>
-                                </div>
-                                <div class="flex flex-col items-center -mb-1">
-                                    <span class="text-[6px] font-serif font-bold text-[#b68d59] leading-tight">★ BEST ★</span>
-                                    <span class="text-[5px] font-serif text-[#b68d59] leading-none">AWARD</span>
-                                </div>
-                                <div class="text-right w-14">
-                                    <div class="w-8 h-px bg-[#b89160] mb-0.5 ml-auto"></div>
-                                    <span class="font-signature text-xs text-[#4a4642] block select-none leading-none truncate">{{ $template->signer_name }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        @endif
 
                     </div>
 
@@ -305,7 +363,8 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select name="template_type" id="create_template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3" selected>Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
+                        <option value="template_3" selected>Template 3: Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
+                        <option value="template_7">Template 7: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
                     </select>
                 </div>
 
@@ -378,7 +437,8 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select id="edit_template_type" name="template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3" selected>Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
+                        <option value="template_3" selected>Template 3: Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
+                        <option value="template_7">Template 7: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
                     </select>
                 </div>
 
@@ -431,7 +491,7 @@
 
     <!-- Live Preview Modal -->
     <div id="previewCertModal" class="modal-overlay !p-2 sm:!p-6" role="dialog" aria-modal="true" onclick="if(event.target===this)closePreviewModal()">
-        <div style="width: min(94vw, 1120px); height: min(calc(94vw / 1.4141), calc(100vh - 60px)); aspect-ratio: 1.4141 / 1; position: relative; margin: auto; background: #fdfcfa; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
+        <div id="previewModalBox" style="width: min(94vw, 1120px); height: min(calc(94vw / 1.4141), calc(100vh - 60px)); aspect-ratio: 1.4141 / 1; position: relative; margin: auto; background: #ffffff; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;">
             <!-- Floating controls top-right -->
             <div class="absolute top-3 right-3 z-30 flex items-center gap-2">
                 <a id="preview-fullscreen-link" href="#" target="_blank" class="px-3 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-900 text-neutral-100 text-xs font-semibold backdrop-blur-md shadow inline-flex items-center gap-1.5 transition">
@@ -480,6 +540,19 @@
         }
 
         function openPreviewModal(template) {
+            const isT7 = template.template_type === 'template_7';
+            const baseW = isT7 ? 1060 : 1120;
+            const baseH = isT7 ? 750 : 792;
+            const ratio = baseW / baseH;
+
+            const modalBox = document.getElementById('previewModalBox');
+            if (modalBox) {
+                modalBox.style.aspectRatio = ratio.toString();
+                modalBox.style.width = `min(94vw, ${baseW}px)`;
+                modalBox.style.height = `min(calc(94vw / ${ratio}), calc(100vh - 60px))`;
+                modalBox.style.backgroundColor = isT7 ? '#ffffff' : '#fdfcfa';
+            }
+
             const url = baseAdminCertUrl + '/' + template.id + '/preview';
             document.getElementById('preview-fullscreen-link').href = url;
             const iframe = document.getElementById('preview-live-iframe');
@@ -490,13 +563,16 @@
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
 
-            setTimeout(function() {
+            const triggerFit = function() {
                 try {
                     if (iframe.contentWindow && iframe.contentWindow.fitCertificateToScreen) {
                         iframe.contentWindow.fitCertificateToScreen();
                     }
                 } catch(e) {}
-            }, 100);
+            };
+            setTimeout(triggerFit, 50);
+            setTimeout(triggerFit, 200);
+            setTimeout(triggerFit, 500);
         }
 
         function closePreviewModal() {
