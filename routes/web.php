@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\InstructorController as AdminInstructorController
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentGatewayController as AdminPaymentGatewayController;
 use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
 use App\Http\Controllers\Instructor\LessonController;
+use App\Http\Controllers\Instructor\NotificationController as InstructorNotificationController;
 use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
 use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
 use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
@@ -184,6 +186,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Notifications
+    Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
 
     Route::middleware('permission:admins.manage')->group(function () {
         Route::resource('admins', AdminUserController::class)->except('show');
@@ -395,6 +400,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 // ---------------------------------------------------------- Instructor panel
 Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')->group(function () {
     Route::get('/', [InstructorDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/notifications', [InstructorNotificationController::class, 'index'])->name('notifications.index');
     Route::get('/verify', [InstructorVerificationController::class, 'show'])->name('verification.show');
     Route::post('/verify', [InstructorVerificationController::class, 'submit'])->name('verification.submit');
 

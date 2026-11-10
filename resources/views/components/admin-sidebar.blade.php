@@ -237,7 +237,9 @@
                                 <div class="border-l border-white/[0.08] pl-3 space-y-0.5 my-0.5">
                                     @foreach($item['children'] as $child)
                                         @php
-                                            $isChildActive = ($active === $child['id']) || ($child['id'] === 'instructor_verifications' && request('verification') === 'pending') || ($child['id'] === 'instructors' && $active === 'instructors' && !request('verification'));
+                                            $isChildActive = ($child['id'] === 'instructor_verifications' && request('verification') === 'pending')
+                                                || ($child['id'] === 'instructors' && $active === 'instructors' && request('verification') !== 'pending')
+                                                || ($child['id'] !== 'instructors' && $child['id'] !== 'instructor_verifications' && $active === $child['id']);
                                         @endphp
                                         <a href="{{ route($child['route'], $child['params'] ?? []) }}"
                                            class="group/item flex items-center justify-between px-2.5 py-1.5 rounded-[5px] text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[var(--theme-primary,#344c3d)] text-white font-semibold shadow-xs' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]' }}">

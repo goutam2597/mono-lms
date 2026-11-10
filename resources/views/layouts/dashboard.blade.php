@@ -398,12 +398,12 @@
                             <!-- Footer -->
                             <div class="px-4 py-2.5 bg-slate-50 dark:bg-neutral-900/60 border-t border-slate-100 dark:border-neutral-800 text-center">
                                 @if ($userType === 'instructor')
-                                    <a href="{{ route('instructor.verification.show') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
-                                        View verification status &rarr;
+                                    <a href="{{ route('instructor.notifications.index') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
+                                        View all notifications &rarr;
                                     </a>
                                 @else
-                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
-                                        Open verification queue &rarr;
+                                    <a href="{{ route('admin.notifications.index') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
+                                        View all notifications &rarr;
                                     </a>
                                 @endif
                             </div>
