@@ -280,100 +280,67 @@
 
                         <!-- Notification Dropdown Menu -->
                         <div id="header-notifications-dropdown"
-                             class="hidden absolute right-0 top-full mt-2.5 w-[calc(100vw-2rem)] sm:w-[410px] bg-white dark:bg-[#0f1115] border border-slate-200/90 dark:border-[#262930] rounded-2xl shadow-2xl z-[70] text-xs text-slate-700 dark:text-neutral-200 transform origin-top-right transition-all overflow-hidden ring-1 ring-black/5 dark:ring-white/10">
+                             class="hidden absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-[440px] bg-white dark:bg-[#111111] border border-slate-200 dark:border-neutral-800 rounded-xl shadow-xl z-[70] text-slate-700 dark:text-neutral-200 transform origin-top-right transition-all overflow-hidden">
                             <!-- Header -->
-                            <div class="px-5 py-3.5 border-b border-slate-100 dark:border-[#1e2229] flex items-center justify-between bg-slate-50/60 dark:bg-[#14171d]/80">
-                                <div class="flex items-center gap-2.5">
-                                    <span class="font-bold text-slate-900 dark:text-white text-[13px] tracking-tight">Notifications</span>
-                                    @if ($userType === 'instructor')
-                                        @if (! auth('instructor')->user()?->isVerified())
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25">
-                                                Action Required
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
-                                                Account Active
-                                            </span>
-                                        @endif
-                                    @else
-                                        @php
-                                            $adminUnread = \App\Models\ContactMessage::where('is_read', false)->count() + \App\Models\Instructor::where('verification_status', 'pending')->count();
-                                        @endphp
-                                        @if ($adminUnread > 0)
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25">
-                                                {{ $adminUnread }} New
-                                            </span>
-                                        @endif
-                                    @endif
-                                </div>
-                                <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-slate-100 dark:bg-white/[0.08] text-slate-600 dark:text-neutral-300">
-                                    {{ $userType === 'admin' ? 'Admin Alerts' : 'Instructor Updates' }}
+                            <div class="px-4 py-3 border-b border-slate-100 dark:border-neutral-800 flex items-center justify-between">
+                                <span class="font-semibold text-slate-900 dark:text-white text-[13px]">Notifications</span>
+                                <span class="text-[11px] text-slate-500 dark:text-neutral-400 font-medium">
+                                    {{ $userType === 'admin' ? 'Admin Panel' : 'Instructor Panel' }}
                                 </span>
                             </div>
 
-                            <div class="divide-y divide-slate-100 dark:divide-[#1e2229] max-h-80 overflow-y-auto">
+                            <div class="divide-y divide-slate-100 dark:divide-neutral-800/80">
                                 @if ($userType === 'instructor')
                                     @php $curInstructor = auth('instructor')->user(); @endphp
                                     <!-- Verification Status Item -->
-                                    <a href="{{ route('instructor.verification.show') }}" class="p-4 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-colors block group">
-                                        <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border {{ $curInstructor?->isVerified() ? 'bg-emerald-50 text-emerald-600 border-emerald-200/70 dark:bg-emerald-950/40 dark:border-emerald-800/40' : ($curInstructor?->isPendingVerification() ? 'bg-amber-50 text-amber-600 border-amber-200/70 dark:bg-amber-950/40 dark:border-amber-800/40' : ($curInstructor?->isVerificationRejected() ? 'bg-red-50 text-red-600 border-red-200/70 dark:bg-red-950/40 dark:border-red-800/40' : 'bg-amber-50 text-amber-600 border-amber-200/70 dark:bg-amber-950/40 dark:border-amber-800/40')) }}">
+                                    <a href="{{ route('instructor.verification.show') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 {{ $curInstructor?->isVerified() ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400' : ($curInstructor?->isPendingVerification() ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400' : ($curInstructor?->isVerificationRejected() ? 'bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400' : 'bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400')) }}">
                                             @if ($curInstructor?->isVerified())
-                                                <svg class="w-4.5 h-4.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                             @elseif ($curInstructor?->isPendingVerification())
-                                                <svg class="w-4.5 h-4.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                             @elseif ($curInstructor?->isVerificationRejected())
-                                                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
                                             @else
-                                                <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
                                             @endif
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <p class="font-bold text-slate-900 dark:text-white text-[12.5px] leading-tight group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-emerald-400 transition-colors">
-                                                    {{ $curInstructor?->isVerified() ? 'Instructor Verification Approved' : ($curInstructor?->isPendingVerification() ? 'Verification Under Admin Review' : ($curInstructor?->isVerificationRejected() ? 'Verification Rejected' : 'Action Required: Verify Account')) }}
-                                                </p>
-                                                <span class="shrink-0 px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider {{ $curInstructor?->isVerified() ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300' : ($curInstructor?->isPendingVerification() ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300' : ($curInstructor?->isVerificationRejected() ? 'bg-red-100 text-red-800 dark:bg-red-950/60 dark:text-red-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300')) }}">
-                                                    {{ $curInstructor?->isVerified() ? 'Approved' : ($curInstructor?->isPendingVerification() ? 'In Review' : ($curInstructor?->isVerificationRejected() ? 'Attention' : 'Required')) }}
-                                                </span>
-                                            </div>
-                                            <p class="text-[11.5px] text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                                                {{ $curInstructor?->isVerified() ? 'Your identity & credentials are confirmed. Course creation and directory listing are active.' : ($curInstructor?->isPendingVerification() ? 'Your certificate and national ID have been submitted and queued for administrator review.' : ($curInstructor?->isVerificationRejected() ? ($curInstructor->rejection_reason ?: 'Your credentials could not be verified. Tap here to inspect details and resubmit.') : 'Submit your instructor certificate and national ID to unlock course creation.')) }}
+                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
+                                                {{ $curInstructor?->isVerified() ? 'Instructor Verification Approved' : ($curInstructor?->isPendingVerification() ? 'Verification Under Review' : ($curInstructor?->isVerificationRejected() ? 'Verification Rejected' : 'Action Required: Verify Account')) }}
+                                            </p>
+                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
+                                                {{ $curInstructor?->isVerified() ? 'Your identity and credentials are approved. Course creation and directory listing are active.' : ($curInstructor?->isPendingVerification() ? 'Your documents have been submitted and are queued for administrator review.' : ($curInstructor?->isVerificationRejected() ? ($curInstructor->rejection_reason ?: 'Your credentials could not be verified. Tap to review feedback and resubmit.') : 'Submit your instructor certificate and national ID to unlock course creation.')) }}
                                             </p>
                                         </div>
                                     </a>
 
                                     <!-- Reviews Item -->
-                                    <a href="{{ route('instructor.reviews') }}" class="p-4 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-colors block group">
-                                        <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 flex items-center justify-center shrink-0">
-                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
+                                    <a href="{{ route('instructor.reviews') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-300 flex items-center justify-center shrink-0 mt-0.5">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <p class="font-bold text-slate-900 dark:text-white text-[12.5px] leading-tight group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-emerald-400 transition-colors">
-                                                    Student Feedback &amp; Reviews
-                                                </p>
-                                                <span class="text-[10px] text-slate-400 font-medium">Ratings</span>
-                                            </div>
-                                            <p class="text-[11.5px] text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                                                Check ratings, feedback, and student queries across all published courses.
+                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
+                                                Student Feedback &amp; Reviews
+                                            </p>
+                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
+                                                View ratings, student feedback, and course inquiries.
                                             </p>
                                         </div>
                                     </a>
 
                                     <!-- Students Activity Item -->
-                                    <a href="{{ route('instructor.students') }}" class="p-4 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-colors block group">
-                                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                                    <a href="{{ route('instructor.students') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-300 flex items-center justify-center shrink-0 mt-0.5">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <div class="flex items-center justify-between gap-2">
-                                                <p class="font-bold text-slate-900 dark:text-white text-[12.5px] leading-tight group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-emerald-400 transition-colors">
-                                                    Enrolled Students &amp; Activity
-                                                </p>
-                                                <span class="text-[10px] text-slate-400 font-medium">Progress</span>
-                                            </div>
-                                            <p class="text-[11.5px] text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                                                Track newly enrolled learners, curriculum progress, and student retention.
+                                            <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
+                                                Enrolled Students
+                                            </p>
+                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
+                                                Track newly enrolled learners and student progress across courses.
                                             </p>
                                         </div>
                                     </a>
@@ -383,44 +350,44 @@
                                         $unreadMessagesCount = \App\Models\ContactMessage::where('is_read', false)->count();
                                         $pendingVerificationsCount = \App\Models\Instructor::where('verification_status', 'pending')->count();
                                     @endphp
-                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="p-4 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-colors block group">
-                                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
-                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/40 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
                                         </div>
                                         <div class="min-w-0 flex-1">
                                             <div class="flex items-center justify-between gap-2">
-                                                <p class="font-bold text-slate-900 dark:text-white text-[12.5px] leading-tight group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-emerald-400 transition-colors">
+                                                <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
                                                     Instructor Verifications Queue
                                                 </p>
                                                 @if ($pendingVerificationsCount > 0)
-                                                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-                                                        {{ $pendingVerificationsCount }} Pending
+                                                    <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                                                        {{ $pendingVerificationsCount }} pending
                                                     </span>
                                                 @endif
                                             </div>
-                                            <p class="text-[11.5px] text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                                                Review instructor credentials, degree certificates, and national IDs awaiting review.
+                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
+                                                Review instructor identity documents and certificates awaiting approval.
                                             </p>
                                         </div>
                                     </a>
 
-                                    <a href="{{ route('admin.messages.index') }}" class="p-4 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-colors block group">
-                                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0">
-                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                    <a href="{{ route('admin.messages.index') }}" class="px-4 py-3 flex items-start gap-3.5 hover:bg-slate-50 dark:hover:bg-neutral-800/50 transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                         </div>
                                         <div class="min-w-0 flex-1">
                                             <div class="flex items-center justify-between gap-2">
-                                                <p class="font-bold text-slate-900 dark:text-white text-[12.5px] leading-tight group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-emerald-400 transition-colors">
-                                                    Customer Contact Inquiries
+                                                <p class="font-medium text-slate-900 dark:text-white text-[13px] leading-snug">
+                                                    Contact Inquiries
                                                 </p>
                                                 @if ($unreadMessagesCount > 0)
-                                                    <span class="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300">
-                                                        {{ $unreadMessagesCount }} Unread
+                                                    <span class="text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+                                                        {{ $unreadMessagesCount }} unread
                                                     </span>
                                                 @endif
                                             </div>
-                                            <p class="text-[11.5px] text-slate-500 dark:text-neutral-400 mt-1 leading-relaxed">
-                                                {{ $unreadMessagesCount > 0 ? "You have {$unreadMessagesCount} unread contact inquiry messages from users." : 'All storefront user contact messages have been read.' }}
+                                            <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal">
+                                                {{ $unreadMessagesCount > 0 ? "You have {$unreadMessagesCount} unread contact inquiry messages." : 'All storefront user contact messages have been read.' }}
                                             </p>
                                         </div>
                                     </a>
@@ -428,19 +395,14 @@
                             </div>
 
                             <!-- Footer -->
-                            <div class="px-5 py-3 bg-slate-50/70 dark:bg-[#14171d]/90 border-t border-slate-100 dark:border-[#1e2229] flex items-center justify-between">
+                            <div class="px-4 py-2.5 bg-slate-50 dark:bg-neutral-900/60 border-t border-slate-100 dark:border-neutral-800 text-center">
                                 @if ($userType === 'instructor')
-                                    <span class="text-[11px] text-slate-400 dark:text-neutral-500">Account status &amp; security</span>
-                                    <a href="{{ route('instructor.verification.show') }}" class="text-[11.5px] font-bold text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline flex items-center gap-1">
-                                        <span>Open Verification</span>
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                    <a href="{{ route('instructor.verification.show') }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
+                                        View verification status &rarr;
                                     </a>
                                 @else
-                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="text-[11.5px] font-semibold text-amber-600 dark:text-amber-400 hover:underline">
-                                        Verification Queue &rarr;
-                                    </a>
-                                    <a href="{{ route('admin.messages.index') }}" class="text-[11.5px] font-bold text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
-                                        View Messages &rarr;
+                                    <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="text-[12px] font-medium text-[var(--theme-primary,#344c3d)] dark:text-emerald-400 hover:underline">
+                                        Open verification queue &rarr;
                                     </a>
                                 @endif
                             </div>
