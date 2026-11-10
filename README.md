@@ -17,13 +17,13 @@ All screens are designed in a structured design process and mapped to structured
 ### 1. Home (`/`)
 ![Home](demos/home.png)
 
-### 2. Course Grid (`/courses/grid`)
+### 2. Courses Catalog (`/courses`)
 ![Course Grid](demos/course_grid.png)
 
-### 3. Student Dashboard (`/student/dashboard`)
+### 3. Student Dashboard (`/student`)
 ![Student Dashboard](demos/student_dashboard.png)
 
-### 4. Instructor Dashboard (`/instructor/dashboard`)
+### 4. Instructor Dashboard (`/instructor`)
 ![Instructor Dashboard](demos/instructor_dashboard.png)
 
 ### 5. Authentication Screen (`/login`)
