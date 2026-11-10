@@ -28,7 +28,7 @@ class CertificateController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'template_type' => ['required', 'string', 'in:classic,modern,elegant'],
+            'template_type' => ['required', 'string', 'in:template_3,template_7,template_8,template_9,classic,modern,elegant'],
             'signature_title' => ['required', 'string', 'max:100'],
             'signer_name' => ['required', 'string', 'max:100'],
             'bg_color' => ['required', 'string', 'max:20'],
@@ -50,7 +50,7 @@ class CertificateController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'template_type' => ['required', 'string', 'in:classic,modern,elegant'],
+            'template_type' => ['required', 'string', 'in:template_3,template_7,template_8,template_9,classic,modern,elegant'],
             'signature_title' => ['required', 'string', 'max:100'],
             'signer_name' => ['required', 'string', 'max:100'],
             'bg_color' => ['required', 'string', 'max:20'],

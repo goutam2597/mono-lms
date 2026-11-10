@@ -3,18 +3,18 @@
     <!-- Google Fonts for Prestigious Diploma & Certificate Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Island+Moments&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&family=Great+Vibes&display=swap" rel="stylesheet">
 
     <style>
+        .font-baskerville { font-family: 'Libre Baskerville', Georgia, serif; }
+        .font-island { font-family: 'Island Moments', cursive; }
+        .font-noto { font-family: 'Noto Serif', Georgia, serif; }
+        .font-barlow { font-family: 'Barlow', sans-serif; }
         .font-cinzel { font-family: 'Cinzel', Georgia, serif; }
         .font-playfair { font-family: 'Playfair Display', Georgia, serif; }
-        .font-cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
         .font-modern { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-signature { font-family: 'Alex Brush', cursive; }
         .font-signature-alt { font-family: 'Great Vibes', cursive; }
-        .gold-foil-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #fef3c7 35%, #b48608 70%, #fef08a 100%);
-        }
     </style>
 
     @php
@@ -73,10 +73,7 @@
             @forelse($certificates as $cert)
                 @php
                     $template = $cert->template ?? \App\Models\CertificateTemplate::getDefault();
-                    $style = $template?->template_type ?? 'classic';
-                    $primaryColor = $template?->border_color ?: '#344c3d';
-                    $accentColor = $template?->accent_color ?: '#738a6e';
-                    $bgColor = $template?->bg_color ?: ($style === 'modern' ? '#ffffff' : '#fdfbf7');
+                    $style = $template?->template_type ?? 'template_3';
                 @endphp
                 <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between group">
                     <div>
@@ -86,107 +83,119 @@
                            class="block relative aspect-[16/11] rounded-[6px] overflow-hidden mb-4 shadow-sm hover:shadow-md transition-transform group-hover:scale-[1.01]"
                            title="Click to view full certificate">
 
-                            @if ($style === 'modern')
-                                <!-- MODERN MINIATURE -->
-                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-left select-none border border-slate-200"
-                                     style="background-color: {{ $bgColor }};">
-                                    <div class="absolute top-0 left-0 right-0 h-1.5" style="background: linear-gradient(90deg, {{ $primaryColor }} 0%, {{ $accentColor }} 70%, #d4af37 100%);"></div>
-                                    <div class="absolute top-1.5 left-0 bottom-0 w-1.5" style="background: {{ $primaryColor }};"></div>
-                                    <span class="absolute top-2 right-2.5 font-mono text-[8px] text-slate-300 select-none">+</span>
-                                    <span class="absolute bottom-2 right-2.5 font-mono text-[8px] text-slate-300 select-none">+</span>
-
-                                    <div class="pl-2 pt-1">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="w-1.5 h-1.5 rounded-full" style="background: {{ $primaryColor }};"></span>
-                                            <span class="font-mono text-[7px] font-bold uppercase tracking-widest text-slate-400">MONO LMS // REGISTRY</span>
-                                        </div>
-                                        <h4 class="font-modern text-[10px] font-black uppercase text-slate-900 mt-1 line-clamp-1">{{ $cert->course_title }}</h4>
+                            @if ($style === 'template_7' || $style === 'modern')
+                                <!-- FIGMA TEMPLATE 7 MINIATURE -->
+                                <div class="w-full h-full p-3 flex flex-col justify-between text-left select-none border border-slate-200 bg-white">
+                                    <div class="absolute inset-1.5 border border-dashed border-slate-200 pointer-events-none"></div>
+                                    <div class="absolute top-0 right-0 w-[55%] pointer-events-none opacity-90">
+                                        <img src="{{ asset('images/certificates/template-7/top-accent.svg') }}" class="w-full h-auto" alt="">
                                     </div>
-
-                                    <div class="pl-2 my-auto py-1">
-                                        <span class="font-mono text-[7px] text-slate-400 uppercase font-semibold">Awarded To</span>
-                                        <h5 class="font-modern text-[12px] font-extrabold tracking-tight" style="color: {{ $primaryColor }};">{{ $cert->student_name }}</h5>
-                                        <p class="text-[7px] text-slate-500 font-modern line-clamp-1 mt-0.5">{{ $cert->grade ?: 'Passed with Academic Distinction' }}</p>
+                                    <div class="relative z-10 pt-0.5">
+                                        <span class="font-baskerville text-[7px] text-[#5a5549] uppercase block leading-tight">CERTIFICATE of</span>
+                                        <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">ACHIEVEMENT</h4>
                                     </div>
+                                    <div class="relative z-10 my-auto py-1">
+                                        <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 font-semibold block">Presented to</span>
+                                        <h5 class="font-island text-[18px] text-[#835a2a] leading-none">{{ $cert->student_name }}</h5>
+                                        <img src="{{ asset('images/certificates/template-7/name-underline.svg') }}" class="w-24 h-auto mt-0.5" alt="">
+                                    </div>
+                                    <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <img src="{{ asset('images/certificates/template-7/badge-seal.svg') }}" class="w-10 h-10 object-contain drop-shadow" alt="">
+                                    </div>
+                                    <div class="relative z-10 pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
+                                        <span class="font-mono text-[7px] text-slate-600 font-bold">{{ $cert->certificate_number }}</span>
+                                        <span class="font-mono text-[7px] text-emerald-700 font-bold">VERIFIED ✓</span>
+                                    </div>
+                                </div>
 
-                                    <div class="pl-2 pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
+                            @elseif ($style === 'template_8' || $style === 'elegant')
+                                <!-- FIGMA TEMPLATE 8 MINIATURE -->
+                                <div class="w-full h-full rounded-none shadow-md overflow-hidden flex text-left select-none border border-slate-200 bg-white">
+                                    <div class="w-[72%] p-3 flex flex-col justify-between">
                                         <div>
-                                            <span class="font-mono font-bold text-slate-800 block text-[8px] truncate max-w-[100px]">{{ $cert->certificate_number }}</span>
-                                            <span class="font-mono text-slate-400 text-[6px]">{{ $cert->issue_date->format('M d, Y') }}</span>
+                                            <span class="font-baskerville text-[7px] text-[#5a5549] uppercase block leading-tight">CERTIFICATE of</span>
+                                            <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">ACHIEVEMENT</h4>
                                         </div>
-                                        <div class="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[7px] font-bold text-slate-700 flex items-center gap-1">
-                                            <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
-                                            <span>VERIFIED</span>
+                                        <div class="my-auto py-1">
+                                            <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 block font-semibold">Presented to</span>
+                                            <h5 class="font-island text-[18px] text-[#835a2a] leading-none">{{ $cert->student_name }}</h5>
+                                            <img src="{{ asset('images/certificates/template-8/name-underline.svg') }}" class="w-24 h-auto mt-0.5" alt="">
+                                        </div>
+                                        <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
+                                            <span class="font-mono text-[7px] text-slate-600 font-bold">{{ $cert->certificate_number }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-[28%] bg-slate-50 border-l border-[#e5cfb7] relative overflow-hidden">
+                                        <div class="absolute inset-0 opacity-70 -rotate-45 scale-125">
+                                            <img src="{{ asset('images/certificates/template-8/pattern-1.svg') }}" class="w-full h-auto" alt="">
+                                        </div>
+                                        <div class="absolute -left-4 top-1/2 -translate-y-1/2 z-10">
+                                            <img src="{{ asset('images/certificates/template-8/badge-seal.svg') }}" class="w-8 h-8 object-contain drop-shadow" alt="">
                                         </div>
                                     </div>
                                 </div>
 
-                            @elseif ($style === 'elegant')
-                                <!-- ELEGANT ROYAL MINIATURE -->
-                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-center select-none border-[5px] border-[#08131e]"
-                                     style="background-color: {{ $bgColor }};">
-                                    <div class="absolute inset-1 border pointer-events-none" style="border-color: #d4af37; opacity: 0.85;"></div>
-                                    <svg class="absolute top-1 left-1 w-4 h-4 text-[#d4af37]" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
-                                    <svg class="absolute top-1 right-1 w-4 h-4 text-[#d4af37] transform rotate-90" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
-                                    <svg class="absolute bottom-1 left-1 w-4 h-4 text-[#d4af37] transform -rotate-90" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
-                                    <svg class="absolute bottom-1 right-1 w-4 h-4 text-[#d4af37] transform rotate-180" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
-
-                                    <div class="relative z-10 pt-0.5">
-                                        <span class="font-cinzel text-[7px] font-bold uppercase tracking-[0.25em] text-[#854d0e] block">ROYAL FACULTY SENATE</span>
-                                        <h4 class="font-cinzel text-[9px] font-black uppercase text-slate-900 mt-0.5 line-clamp-1">{{ $cert->course_title }}</h4>
-                                    </div>
-
-                                    <div class="relative z-10 my-auto py-1">
-                                        <span class="font-cormorant italic text-[7px] text-slate-500 block">Conferred With Distinction Upon</span>
-                                        <p class="font-playfair text-[11px] font-black text-[#08131e] border-b border-[#d4af37] inline-block px-2 pb-0.5 mt-0.5">{{ $cert->student_name }}</p>
-                                    </div>
-
-                                    <div class="relative z-10 pt-1 border-t border-slate-200/90 flex items-end justify-between text-[7px]">
-                                        <div class="text-left w-16">
-                                            <span class="font-mono text-[7px] font-bold text-slate-800 block truncate">{{ $cert->certificate_number }}</span>
-                                            <span class="text-slate-400 text-[6px] block">{{ $cert->issue_date->format('M Y') }}</span>
+                            @elseif ($style === 'template_9')
+                                <!-- FIGMA TEMPLATE 9 MINIATURE -->
+                                <div class="w-full h-full rounded-none shadow-md overflow-hidden flex text-left select-none border border-slate-200 bg-[#fdfbf7]">
+                                    <div class="w-[74%] p-3 flex flex-col justify-between">
+                                        <div>
+                                            <span class="font-baskerville text-[7px] text-[#4d493f] uppercase block leading-tight">Certificate of</span>
+                                            <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">Achievement</h4>
                                         </div>
-                                        <div class="relative -mb-1 w-6 h-6 rounded-full gold-foil-gradient border border-amber-600 shadow-sm flex items-center justify-center text-amber-950 font-bold text-[8px] shrink-0">
-                                            ★
+                                        <div class="my-auto py-1">
+                                            <span class="font-noto text-[6px] text-slate-500 block">Presented to</span>
+                                            <h5 class="font-island text-[18px] text-[#835a2a] leading-none">{{ $cert->student_name }}</h5>
+                                            <img src="{{ asset('images/certificates/template-9/line.svg') }}" class="w-24 h-auto mt-0.5" alt="">
                                         </div>
-                                        <div class="text-right w-16">
-                                            <span class="font-mono text-[7px] font-bold text-amber-900 block">EXCELLENCE</span>
-                                            <span class="text-slate-400 text-[6px] block">ACCREDITED</span>
+                                        <div class="pt-1 border-t border-slate-200 flex items-center justify-between text-[7px]">
+                                            <span class="font-mono text-[7px] text-slate-700 font-bold">{{ $cert->certificate_number }}</span>
+                                            <span class="font-mono text-[6px] text-emerald-700 font-bold">VERIFIED</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-[26%] bg-[#faf7f2] relative overflow-hidden border-l border-[#e5cfb7]">
+                                        <div class="absolute inset-0 opacity-80 rotate-12 scale-150">
+                                            <img src="{{ asset('images/certificates/template-9/pattern.svg') }}" class="w-full h-full object-cover" alt="">
+                                        </div>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <img src="{{ asset('images/certificates/template-9/seal-circle.svg') }}" class="w-7 h-7 object-contain drop-shadow" alt="">
                                         </div>
                                     </div>
                                 </div>
 
                             @else
-                                <!-- CLASSIC ACADEMIC MINIATURE -->
-                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-center select-none"
-                                     style="background-color: {{ $bgColor }}; border: 4px double {{ $primaryColor }};">
-                                    <div class="absolute inset-1 border border-slate-300/70 pointer-events-none"></div>
-                                    <svg class="absolute top-1 left-1 w-5 h-5 pointer-events-none" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
-                                    <svg class="absolute top-1 right-1 w-5 h-5 pointer-events-none transform rotate-90" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
-                                    <svg class="absolute bottom-1 left-1 w-5 h-5 pointer-events-none transform -rotate-90" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
-                                    <svg class="absolute bottom-1 right-1 w-5 h-5 pointer-events-none transform rotate-180" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
-
+                                <!-- FIGMA TEMPLATE 3 (DEFAULT) MINIATURE -->
+                                <div class="w-full h-full p-3 flex flex-col justify-between text-center select-none bg-white relative">
+                                    <img src="{{ asset('images/certificates/template-3/bg-pattern.svg') }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80" alt="">
+                                    <div class="absolute inset-1.5 pointer-events-none">
+                                        <img src="{{ asset('images/certificates/template-3/border-decor.svg') }}" class="w-full h-full object-fill" alt="">
+                                    </div>
                                     <div class="relative z-10 pt-0.5">
-                                        <span class="font-cinzel text-[7px] font-bold uppercase tracking-[0.2em] text-slate-500 block leading-tight">MONO LMS SENATE</span>
-                                        <h4 class="font-cinzel text-[9px] font-black uppercase text-slate-900 mt-0.5 line-clamp-1" style="color: {{ $primaryColor }};">{{ $cert->course_title }}</h4>
+                                        <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
+                                        <div class="flex items-center justify-center gap-1 mt-0.5">
+                                            <img src="{{ asset('images/certificates/template-3/flourish-left.svg') }}" class="h-1.5 w-auto" alt="">
+                                            <span class="font-baskerville text-[6px] text-[#33312a] uppercase">OF ACHIEVEMENT</span>
+                                            <img src="{{ asset('images/certificates/template-3/flourish-right.svg') }}" class="h-1.5 w-auto" alt="">
+                                        </div>
                                     </div>
-
                                     <div class="relative z-10 my-auto py-1">
-                                        <span class="font-playfair italic text-[7px] text-slate-400 block">Proudly Awarded to</span>
-                                        <p class="font-playfair text-[11px] font-extrabold text-slate-900 border-b border-amber-600/40 inline-block px-2 pb-0.5 mt-0.5">{{ $cert->student_name }}</p>
+                                        <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 font-semibold block">Presented to</span>
+                                        <h5 class="font-island text-[20px] text-[#835a2a] leading-none">{{ $cert->student_name }}</h5>
+                                        <div class="flex items-center justify-center w-28 mx-auto -mt-0.5">
+                                            <img src="{{ asset('images/certificates/template-3/underline-left.svg') }}" class="h-1.5 w-auto" alt="">
+                                            <div class="flex-1 h-px bg-[#835a2a]"></div>
+                                            <img src="{{ asset('images/certificates/template-3/underline-right.svg') }}" class="h-1.5 w-auto" alt="">
+                                        </div>
                                     </div>
-
                                     <div class="relative z-10 pt-1 border-t border-slate-200/80 flex items-end justify-between text-[7px]">
-                                        <div class="text-left w-16">
-                                            <span class="font-mono text-[7px] font-bold text-slate-800 block truncate">{{ $cert->certificate_number }}</span>
-                                            <span class="text-slate-400 text-[6px] block">{{ $cert->issue_date->format('M Y') }}</span>
+                                        <div class="text-left w-14">
+                                            <span class="font-mono text-[7px] text-slate-600 block">{{ $cert->issue_date->format('M Y') }}</span>
                                         </div>
-                                        <div class="relative -mb-1 w-6 h-6 rounded-full gold-foil-gradient border-2 border-amber-600 shadow-sm flex items-center justify-center text-amber-950 font-bold text-[8px] shrink-0">
-                                            ★
+                                        <div class="relative -mb-1">
+                                            <img src="{{ asset('images/certificates/template-3/badge.svg') }}" class="w-7 h-7 object-contain drop-shadow" alt="Seal">
                                         </div>
-                                        <div class="text-right w-16">
-                                            <span class="font-mono text-[7px] font-bold text-slate-700 block">ACCREDITED</span>
-                                            <span class="text-slate-400 text-[6px] block">VERIFIED</span>
+                                        <div class="text-right w-14">
+                                            <span class="font-mono text-[7px] font-bold text-emerald-700 block">VERIFIED ✓</span>
                                         </div>
                                     </div>
                                 </div>

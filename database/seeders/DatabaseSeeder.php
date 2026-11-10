@@ -394,13 +394,14 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 4. Seed Certificate Templates
+        // 4. Seed Certificate Templates (Figma Design Pack Templates 3, 7, 8, 9)
         $certTemplates = [
-            ['Accredited Professional Diploma', 'classic', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#344c3d', true],
-            ['Executive Modern Completion Award', 'modern', 'Dean of Academic Affairs', 'Sarah Jenkins, Ph.D.', '#f8fafc', '#0284c7', false],
-            ['Full-Stack Engineering Masterclass', 'elegant', 'Lead System Architect', 'Rolands Granger', '#ffffff', '#dd0031', false],
+            ['Heritage Grand Achievement', 'template_3', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#1a1815', '#835a2a', true],
+            ['Contemporary Prestige Award', 'template_7', 'Manager, CTO', 'Dr. Julian Vance', '#ffffff', '#1a1815', '#835a2a', false],
+            ['Executive Diagonal Monogram', 'template_8', 'Academic Dean', 'Sarah Jenkins, Ph.D.', '#ffffff', '#1a1815', '#e5cfb7', false],
+            ['Royal Minimalist Distinction', 'template_9', 'Lead Faculty Senate', 'Rolands Granger', '#ffffff', '#1a1815', '#4d493f', false],
         ];
-        foreach ($certTemplates as [$ctTitle, $ctType, $ctSig, $ctName, $ctBg, $ctBorder, $ctDef]) {
+        foreach ($certTemplates as [$ctTitle, $ctType, $ctSig, $ctName, $ctBg, $ctBorder, $ctAccent, $ctDef]) {
             CertificateTemplate::updateOrCreate(
                 ['title' => $ctTitle],
                 [
@@ -409,6 +410,7 @@ class DatabaseSeeder extends Seeder
                     'signer_name' => $ctName,
                     'bg_color' => $ctBg,
                     'border_color' => $ctBorder,
+                    'accent_color' => $ctAccent,
                     'is_default' => $ctDef,
                 ]
             );

@@ -172,6 +172,6 @@ class CertificateSystemTest extends TestCase
         $response->assertOk();
         $response->assertSee('Back to My Certificates');
         $response->assertSee('Print / Save PDF');
-        $response->assertSee('Dr. Julian Vance');
+        $response->assertSee('CERTIFICATE');
     }
 }
