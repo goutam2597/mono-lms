@@ -532,18 +532,32 @@
     </div>
 
     <!-- Live Preview Modal -->
-    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-2 sm:p-5 overflow-hidden" onclick="if(event.target===this)closePreviewModal()">
-        <div class="bg-slate-900 max-w-6xl w-full border border-slate-700 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col h-[92vh] rounded-xl">
-            <div class="px-5 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/95 shrink-0 text-white">
+    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-hidden" onclick="if(event.target===this)closePreviewModal()">
+        <div class="bg-slate-900 w-[96vw] max-w-7xl border border-slate-700 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col h-[94vh] rounded-2xl">
+            <div class="px-5 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-900/95 shrink-0 text-white">
                 <div class="flex items-center gap-3">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     <h3 class="font-bold text-white text-sm" id="preview-modal-title">Live Certificate Preview</h3>
+                    <span class="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-slate-800 text-slate-300 border border-slate-700">Full Visual Mode</span>
                 </div>
 
-                <div class="flex items-center gap-2.5">
+                <div class="flex items-center gap-2">
+                    <!-- Zoom & Fit Controls -->
+                    <div class="inline-flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 mr-1">
+                        <button type="button" onclick="zoomPreview(-0.1)" title="Zoom Out" class="px-2.5 py-1 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
+                            &minus;
+                        </button>
+                        <button type="button" onclick="zoomPreview(0)" title="Reset to Fit View" class="px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
+                            Fit
+                        </button>
+                        <button type="button" onclick="zoomPreview(0.1)" title="Zoom In" class="px-2.5 py-1 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
+                            +
+                        </button>
+                    </div>
+
                     <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3.5 text-xs font-semibold">
                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                        <span>Open Full A4 Tab</span>
+                        <span>Full A4 Tab</span>
                     </a>
                     <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-400 hover:text-white cursor-pointer">
                         Close &times;
@@ -551,7 +565,7 @@
                 </div>
             </div>
 
-            <div class="flex-1 w-full bg-slate-950 overflow-hidden flex items-center justify-center p-2 sm:p-3">
+            <div class="flex-1 w-full bg-slate-950 overflow-hidden flex items-center justify-center p-2 sm:p-4">
                 <iframe id="preview-live-iframe" src="" class="w-full h-full border-0 bg-transparent block" onload="try{this.contentWindow.fitCertificate()}catch(e){}"></iframe>
             </div>
         </div>
@@ -593,9 +607,35 @@
             document.getElementById('preview-modal-title').textContent = 'Live Preview: ' + title;
             const url = baseAdminCertUrl + '/' + template.id + '/preview';
             document.getElementById('preview-fullscreen-link').href = url;
-            document.getElementById('preview-live-iframe').src = url + '?embed=1';
+            const iframe = document.getElementById('preview-live-iframe');
+            iframe.src = url + '?embed=1';
 
             document.getElementById('previewCertModal').classList.remove('hidden');
+
+            setTimeout(function() {
+                try {
+                    if (iframe.contentWindow && iframe.contentWindow.fitCertificate) {
+                        iframe.contentWindow.fitCertificate();
+                    }
+                } catch(e) {}
+            }, 150);
+            setTimeout(function() {
+                try {
+                    if (iframe.contentWindow && iframe.contentWindow.fitCertificate) {
+                        iframe.contentWindow.fitCertificate();
+                    }
+                } catch(e) {}
+            }, 400);
+        }
+
+        function zoomPreview(delta) {
+            const iframe = document.getElementById('preview-live-iframe');
+            if (!iframe) return;
+            try {
+                if (iframe.contentWindow && iframe.contentWindow.changeZoom) {
+                    iframe.contentWindow.changeZoom(delta);
+                }
+            } catch(e) {}
         }
 
         function closePreviewModal() {

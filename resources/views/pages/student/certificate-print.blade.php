@@ -555,6 +555,16 @@
             });
         }
 
+        var zoomMultiplier = 1.0;
+        function changeZoom(delta) {
+            if (delta === 0) {
+                zoomMultiplier = 1.0;
+            } else {
+                zoomMultiplier = Math.max(0.4, Math.min(2.5, zoomMultiplier + delta));
+            }
+            fitCertificate();
+        }
+
         // Rock-solid auto-scaling engine: fits canonical 1120x792 canvas perfectly inside available stage
         function fitCertificate() {
             var container = document.querySelector('.cert-viewport-container');
@@ -562,15 +572,28 @@
             var canvas = document.getElementById('certificateCanvas');
             if (!container || !wrapper || !canvas) return;
 
-            var pad = window.innerWidth < 640 ? 12 : 24;
-            var availW = Math.max(container.clientWidth - pad, 260);
-            var availH = Math.max(container.clientHeight - pad, 180);
+            var header = document.querySelector('header.no-print');
+            var headerH = header ? header.offsetHeight : 0;
+
+            var availW = container.clientWidth || window.innerWidth;
+            var availH = container.clientHeight || (window.innerHeight - headerH);
+
+            if (availW <= 0) availW = window.innerWidth;
+            if (availH <= 0) availH = window.innerHeight - headerH;
+
+            var padW = window.innerWidth < 640 ? 12 : 24;
+            var padH = window.innerWidth < 640 ? 12 : 20;
+
+            var targetW = Math.max(availW - padW, 280);
+            var targetH = Math.max(availH - padH, 200);
 
             var baseW = 1120;
             var baseH = 792;
 
-            var scale = Math.min(availW / baseW, availH / baseH);
-            wrapper.style.transform = 'scale(' + scale + ')';
+            var autoScale = Math.min(targetW / baseW, targetH / baseH);
+            var finalScale = autoScale * zoomMultiplier;
+
+            wrapper.style.transform = 'scale(' + finalScale + ')';
             wrapper.style.transformOrigin = 'center center';
             wrapper.style.width = baseW + 'px';
             wrapper.style.height = baseH + 'px';
@@ -579,9 +602,20 @@
         window.addEventListener('resize', fitCertificate);
         window.addEventListener('DOMContentLoaded', fitCertificate);
         window.addEventListener('load', fitCertificate);
+
+        if (window.ResizeObserver) {
+            var ro = new ResizeObserver(function() {
+                fitCertificate();
+            });
+            ro.observe(document.body);
+            var cont = document.querySelector('.cert-viewport-container');
+            if (cont) ro.observe(cont);
+        }
+
         setTimeout(fitCertificate, 20);
         setTimeout(fitCertificate, 150);
         setTimeout(fitCertificate, 400);
+        setTimeout(fitCertificate, 1000);
     </script>
 </body>
 </html>
