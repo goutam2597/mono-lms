@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LanguageSeeder::class,
             RolesAndPermissionsSeeder::class,
+            PageSeeder::class,
         ]);
 
         $this->seedAdmins();

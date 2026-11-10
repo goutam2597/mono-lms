@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\PaymentGatewayController as AdminPaymentGatewayController;
 use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
@@ -51,6 +52,7 @@ use App\Http\Controllers\Instructor\VerificationController as InstructorVerifica
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
@@ -115,6 +117,9 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/membership', [MembershipController::class, 'index'])->name('membership.index');
 Route::post('/membership/{plan:slug}/subscribe', [MembershipController::class, 'subscribe'])
     ->middleware('auth:student')->name('membership.subscribe');
+
+// Inbound Contact Message Submission
+Route::post('/contact/send', [PublicPageController::class, 'submitContact'])->name('contact.submit');
 
 // ------------------------------------------------------------ Language switch
 // Panel locale switches live OUTSIDE the guarded groups so they work from
@@ -389,6 +394,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::put('/homepage', [AdminHomePageController::class, 'update'])->name('homepage.update');
     Route::post('/homepage', [AdminHomePageController::class, 'update']);
 
+    // Static & Custom Pages
+    Route::middleware('permission:pages.manage')->group(function () {
+        Route::resource('pages', AdminPageController::class)->except('show');
+        Route::get('/pages/edit-by-slug/{slug}', [AdminPageController::class, 'editBySlug'])->name('pages.edit-by-slug');
+        Route::post('/pages/{page}/duplicate', [AdminPageController::class, 'duplicate'])->name('pages.duplicate');
+    });
+
     // Mail (SMTP) & Storage Services
     Route::get('/services', [AdminServicesController::class, 'index'])->name('services.index');
     Route::post('/services/mail', [AdminServicesController::class, 'updateMail'])->name('services.mail');
@@ -474,3 +486,8 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::get('/certificates', fn () => view('pages.student.certificates'))->name('certificates');
     Route::get('/quiz-attempts', fn () => view('pages.student.quiz-attempts'))->name('quiz-attempts');
 });
+
+// ------------------------------------------------------------- Dynamic Public Pages (Catch-all permalinks)
+Route::get('/{slug}', [PublicPageController::class, 'show'])
+    ->where('slug', '^[a-zA-Z0-9\-_]+$')
+    ->name('pages.show');

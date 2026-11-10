@@ -1,13 +1,24 @@
-<x-layouts.app :title="__('instructors.title').' - Mono LMS'" active="instructors">
+<x-layouts.app :title="($page?->meta_title ?: ($page?->title ?: __('instructors.title'))).' - Mono LMS'" active="instructors">
 
     <!-- Page Title Header -->
-    <div class="bg-[#f4f6f9] py-10 border-b border-[#e7e7e7]">
+    <div class="bg-[#f4f6f9] py-12 border-b border-[#e7e7e7]">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
-            <h1 class="text-3xl font-extrabold text-[#191919]">{{ __('instructors.title') }}</h1>
-            <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-2">
+            @if ($page?->setting('eyebrow'))
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] border border-[var(--theme-primary,#344c3d)]/20 mb-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[var(--theme-primary,#344c3d)]"></span>
+                    {{ $page->setting('eyebrow') }}
+                </span>
+            @endif
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-[#191919] tracking-tight">{{ $page?->title ?: __('instructors.title') }}</h1>
+            @if ($page?->setting('subtitle'))
+                <p class="text-sm sm:text-base text-slate-600 dark:text-neutral-400 mt-2 max-w-2xl leading-relaxed">
+                    {{ $page->setting('subtitle') }}
+                </p>
+            @endif
+            <nav class="flex items-center gap-2 text-xs text-[#6d6d6d] mt-4">
                 <a href="{{ route('home') }}" class="hover:text-[#344c3d]">{{ __('app.nav.home') }}</a>
                 <span>/</span>
-                <span class="text-[#738a6e] font-medium">{{ __('instructors.title') }}</span>
+                <span class="text-[#738a6e] font-medium">{{ $page?->title ?: __('instructors.title') }}</span>
             </nav>
         </div>
     </div>
@@ -52,6 +63,31 @@
         </div>
 
         <div class="mt-10">{{ $instructors->appends(request()->query())->links() }}</div>
+
+        @if ($page?->setting('cta_banner_enabled', true))
+            <!-- Become Instructor CTA Card -->
+            <div class="mt-16 bg-[#08131e] rounded-2xl p-8 sm:p-10 text-white relative overflow-hidden shadow-xl border border-slate-800">
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <span class="text-xs uppercase tracking-wider font-bold text-[#bfcfbb]">Teach with Us</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">
+                            {{ $page?->setting('cta_heading') ?: 'Are you passionate about teaching? Share your mastery.' }}
+                        </h2>
+                        <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+                            {{ $page?->setting('cta_subtitle') ?: 'Join our faculty of world-class instructors. Create interactive courses, mentor ambitious students, and earn recurring revenue.' }}
+                        </p>
+                    </div>
+                    <div class="shrink-0">
+                        <a href="{{ $page?->setting('cta_button_url') ?: url('/instructor/register') }}" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-[#344c3d] hover:bg-[#25372c] text-white shadow-lg transition-transform hover:scale-105">
+                            <span>{{ $page?->setting('cta_button_text') ?: 'Become an Instructor' }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
+
+</x-layouts.app>
 
 </x-layouts.app>

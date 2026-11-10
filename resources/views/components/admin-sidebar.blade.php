@@ -20,7 +20,13 @@
                     'title' => 'Pages',
                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />',
                     'children' => [
+                        ['id' => 'pages', 'label' => 'All Pages', 'route' => 'admin.pages.index', 'permission' => 'pages.manage'],
                         ['id' => 'homepage', 'label' => 'Home Page Editor', 'route' => 'admin.homepage.index'],
+                        ['id' => 'page_about', 'label' => 'About Us', 'route' => 'admin.pages.edit-by-slug', 'params' => ['slug' => 'about'], 'permission' => 'pages.manage'],
+                        ['id' => 'page_contact', 'label' => 'Contact Us', 'route' => 'admin.pages.edit-by-slug', 'params' => ['slug' => 'contact'], 'permission' => 'pages.manage'],
+                        ['id' => 'page_privacy', 'label' => 'Privacy Policy', 'route' => 'admin.pages.edit-by-slug', 'params' => ['slug' => 'privacy'], 'permission' => 'pages.manage'],
+                        ['id' => 'page_tnc', 'label' => 'Terms & Conditions', 'route' => 'admin.pages.edit-by-slug', 'params' => ['slug' => 'tnc'], 'permission' => 'pages.manage'],
+                        ['id' => 'page_instructors', 'label' => 'Instructors Page', 'route' => 'admin.pages.edit-by-slug', 'params' => ['slug' => 'instructors'], 'permission' => 'pages.manage'],
                     ],
                 ],
                 [
@@ -201,7 +207,10 @@
                         </a>
                     @else
                         @php
-                            $hasActiveChild = collect($item['children'])->contains(fn ($c) => $c['id'] === $active);
+                            $effectiveActive = (request()->routeIs('admin.instructors.*') && request('verification') === 'pending')
+                                ? 'instructor_verifications'
+                                : ((request()->routeIs('admin.instructors.*') && ($active === 'instructors' || $active === 'instructor_verifications')) ? 'instructors' : $active);
+                            $hasActiveChild = collect($item['children'])->contains(fn ($c) => $c['id'] === $effectiveActive || $c['id'] === $active);
                             $totalBadge = collect($item['children'])->sum(fn ($c) => $c['badge'] ?? 0);
                         @endphp
 
@@ -237,9 +246,7 @@
                                 <div class="border-l border-white/[0.08] pl-3 space-y-0.5 my-0.5">
                                     @foreach($item['children'] as $child)
                                         @php
-                                            $isChildActive = ($child['id'] === 'instructor_verifications' && request('verification') === 'pending')
-                                                || ($child['id'] === 'instructors' && $active === 'instructors' && request('verification') !== 'pending')
-                                                || ($child['id'] !== 'instructors' && $child['id'] !== 'instructor_verifications' && $active === $child['id']);
+                                            $isChildActive = ($child['id'] === $effectiveActive);
                                         @endphp
                                         <a href="{{ route($child['route'], $child['params'] ?? []) }}"
                                            class="group/item flex items-center justify-between px-2.5 py-1.5 rounded-[5px] text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[var(--theme-primary,#344c3d)] text-white font-semibold shadow-xs' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]' }}">

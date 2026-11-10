@@ -26,8 +26,8 @@
                 <ul class="space-y-2.5 text-sm text-gray-400">
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.help_center') }}</a></li>
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.faq') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
+                    <li><a href="{{ \App\Models\Page::url('contact', '/contact') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
+                    <li><a href="{{ \App\Models\Page::url('about', '/about') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
                 </ul>
             </div>
 
@@ -78,9 +78,9 @@
                 </div>
             @endif
             <div class="flex items-center gap-4">
-                <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
+                <a href="{{ \App\Models\Page::url('tnc', '/terms') }}" class="hover:text-white transition-colors">Terms & Conditions</a>
                 <span>|</span>
-                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="{{ \App\Models\Page::url('privacy', '/privacy') }}" class="hover:text-white transition-colors">Privacy Policy</a>
             </div>
         </div>
     </div>

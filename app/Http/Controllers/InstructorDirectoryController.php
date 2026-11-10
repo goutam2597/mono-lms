@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Instructor;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -24,8 +25,11 @@ class InstructorDirectoryController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        $page = Page::byKey('instructors');
+
         return view('pages.instructors.grid', [
             'instructors' => $instructors,
+            'page' => $page,
         ]);
     }
 

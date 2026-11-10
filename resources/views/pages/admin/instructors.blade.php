@@ -1,4 +1,4 @@
-<x-layouts.dashboard :title="__('admin.instructors.title').' - Mono LMS'" active="instructors" userType="admin">
+<x-layouts.dashboard :title="__('admin.instructors.title').' - Mono LMS'" :active="request('verification') === 'pending' ? 'instructor_verifications' : 'instructors'" userType="admin">
 
     <style>
         #instructor-modal { position: fixed; inset: 0; z-index: 120; display: none; align-items: center; justify-content: center; background: rgba(10, 10, 10, 0.65); backdrop-filter: blur(4px); padding: 24px; box-sizing: border-box; }
