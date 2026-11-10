@@ -162,4 +162,16 @@ class CertificateSystemTest extends TestCase
         $invalidResponse->assertOk();
         $invalidResponse->assertSee('Credential Not Found');
     }
+
+    public function test_admin_can_preview_certificate_template_in_print_layout(): void
+    {
+        $admin = Admin::first();
+        $template = CertificateTemplate::first();
+
+        $response = $this->actingAs($admin, 'admin')->get(route('admin.certificates.preview', $template));
+        $response->assertOk();
+        $response->assertSee('Back to My Certificates');
+        $response->assertSee('Print / Save PDF');
+        $response->assertSee('Dr. Julian Vance');
+    }
 }

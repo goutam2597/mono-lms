@@ -369,6 +369,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // Certificate Templates
     Route::get('/certificate-templates', [AdminCertificateController::class, 'index'])->name('certificates.index');
     Route::post('/certificate-templates', [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::get('/certificate-templates/{template}/preview', [AdminCertificateController::class, 'preview'])->name('certificates.preview');
     Route::put('/certificate-templates/{template}', [AdminCertificateController::class, 'update'])->name('certificates.update');
     Route::delete('/certificate-templates/{template}', [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
     Route::patch('/certificate-templates/{template}/default', [AdminCertificateController::class, 'makeDefault'])->name('certificates.default');

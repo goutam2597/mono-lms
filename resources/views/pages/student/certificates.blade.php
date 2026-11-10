@@ -1,16 +1,33 @@
 <x-layouts.dashboard title="My Certificates - Mono LMS" active="certificates" userType="student">
 
+    <!-- Google Fonts for Prestigious Diploma & Certificate Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        .font-cinzel { font-family: 'Cinzel', Georgia, serif; }
+        .font-playfair { font-family: 'Playfair Display', Georgia, serif; }
+        .font-cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
+        .font-modern { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-signature { font-family: 'Alex Brush', cursive; }
+        .font-signature-alt { font-family: 'Great Vibes', cursive; }
+        .gold-foil-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #fef3c7 35%, #b48608 70%, #fef08a 100%);
+        }
+    </style>
+
     @php
         $studentUser = auth('student')->user();
         $studentName = $studentUser?->name ?? 'Student';
     @endphp
 
     <div class="space-y-6">
-        <!-- Header (Boxy) -->
+        <!-- Header -->
         <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2.5">
-                    <h2 class="text-base font-bold uppercase tracking-wider text-slate-900">My Certificates</h2>
+                    <h2 class="text-base font-bold uppercase tracking-wider text-slate-900">My Certificates & Diplomas</h2>
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] border border-[var(--theme-primary,#344c3d)]/20">
                         {{ $totalCount ?? $certificates->total() }} Earned
                     </span>
@@ -37,7 +54,7 @@
                     <input type="text"
                            name="q"
                            value="{{ request('q') }}"
-                           placeholder="Search by course title or certificate ID..."
+                           placeholder="Search by course title or credential ID..."
                            class="w-full bg-white border border-slate-300 rounded-[6px] px-3.5 py-2 pl-9 text-xs focus:outline-none focus:border-[var(--theme-primary,#344c3d)]">
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
@@ -56,48 +73,142 @@
             @forelse($certificates as $cert)
                 @php
                     $template = $cert->template ?? \App\Models\CertificateTemplate::getDefault();
-                    $borderColor = $template?->border_color ?? '#344c3d';
-                    $bgColor = $template?->bg_color ?? '#ffffff';
+                    $style = $template?->template_type ?? 'classic';
+                    $primaryColor = $template?->border_color ?: '#344c3d';
+                    $accentColor = $template?->accent_color ?: '#738a6e';
+                    $bgColor = $template?->bg_color ?: ($style === 'modern' ? '#ffffff' : '#fdfbf7');
                 @endphp
-                <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between">
+                <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between group">
                     <div>
-                        <!-- Certificate Visual Representation -->
-                        <div class="relative aspect-[16/10] rounded-[6px] p-4 flex flex-col justify-between text-center mb-4 shadow-xs transition-transform hover:scale-[1.02]"
-                             style="background-color: {{ $bgColor }}; border: 3px double {{ $borderColor }};">
-                            <!-- Header ribbon -->
-                            <div class="flex items-center justify-between text-[8px] font-bold tracking-widest uppercase text-slate-500">
-                                <span class="font-mono">MONO LMS</span>
-                                <span class="text-emerald-700 bg-emerald-50 px-1.5 py-0.5 border border-emerald-200">VERIFIED ✓</span>
-                            </div>
+                        <!-- Certificate Clickable Visual Representation -->
+                        <a href="{{ route('student.certificates.print', $cert) }}"
+                           target="_blank"
+                           class="block relative aspect-[16/11] rounded-[6px] overflow-hidden mb-4 shadow-sm hover:shadow-md transition-transform group-hover:scale-[1.01]"
+                           title="Click to view full certificate">
 
-                            <div class="my-auto py-1">
-                                <span class="text-[8px] uppercase tracking-wider text-slate-400 block font-semibold">Certificate of Completion</span>
-                                <h4 class="text-xs font-bold text-slate-900 line-clamp-1 mt-0.5">{{ $cert->course_title }}</h4>
-                                <p class="text-[9px] text-[#344c3d] font-semibold mt-1">Awarded to {{ $cert->student_name }}</p>
-                            </div>
+                            @if ($style === 'modern')
+                                <!-- MODERN MINIATURE -->
+                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-left select-none border border-slate-200"
+                                     style="background-color: {{ $bgColor }};">
+                                    <div class="absolute top-0 left-0 right-0 h-1.5" style="background: linear-gradient(90deg, {{ $primaryColor }} 0%, {{ $accentColor }} 70%, #d4af37 100%);"></div>
+                                    <div class="absolute top-1.5 left-0 bottom-0 w-1.5" style="background: {{ $primaryColor }};"></div>
+                                    <span class="absolute top-2 right-2.5 font-mono text-[8px] text-slate-300 select-none">+</span>
+                                    <span class="absolute bottom-2 right-2.5 font-mono text-[8px] text-slate-300 select-none">+</span>
 
-                            <div class="flex items-center justify-between text-[8px] text-slate-500 border-t border-slate-200 pt-1 font-mono">
-                                <span>{{ $cert->certificate_number }}</span>
-                                <span class="text-slate-600 font-semibold">{{ $cert->issue_date->format('M Y') }}</span>
-                            </div>
-                        </div>
+                                    <div class="pl-2 pt-1">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full" style="background: {{ $primaryColor }};"></span>
+                                            <span class="font-mono text-[7px] font-bold uppercase tracking-widest text-slate-400">MONO LMS // REGISTRY</span>
+                                        </div>
+                                        <h4 class="font-modern text-[10px] font-black uppercase text-slate-900 mt-1 line-clamp-1">{{ $cert->course_title }}</h4>
+                                    </div>
+
+                                    <div class="pl-2 my-auto py-1">
+                                        <span class="font-mono text-[7px] text-slate-400 uppercase font-semibold">Awarded To</span>
+                                        <h5 class="font-modern text-[12px] font-extrabold tracking-tight" style="color: {{ $primaryColor }};">{{ $cert->student_name }}</h5>
+                                        <p class="text-[7px] text-slate-500 font-modern line-clamp-1 mt-0.5">{{ $cert->grade ?: 'Passed with Academic Distinction' }}</p>
+                                    </div>
+
+                                    <div class="pl-2 pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
+                                        <div>
+                                            <span class="font-mono font-bold text-slate-800 block text-[8px] truncate max-w-[100px]">{{ $cert->certificate_number }}</span>
+                                            <span class="font-mono text-slate-400 text-[6px]">{{ $cert->issue_date->format('M d, Y') }}</span>
+                                        </div>
+                                        <div class="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[7px] font-bold text-slate-700 flex items-center gap-1">
+                                            <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                                            <span>VERIFIED</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @elseif ($style === 'elegant')
+                                <!-- ELEGANT ROYAL MINIATURE -->
+                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-center select-none border-[5px] border-[#08131e]"
+                                     style="background-color: {{ $bgColor }};">
+                                    <div class="absolute inset-1 border pointer-events-none" style="border-color: #d4af37; opacity: 0.85;"></div>
+                                    <svg class="absolute top-1 left-1 w-4 h-4 text-[#d4af37]" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
+                                    <svg class="absolute top-1 right-1 w-4 h-4 text-[#d4af37] transform rotate-90" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
+                                    <svg class="absolute bottom-1 left-1 w-4 h-4 text-[#d4af37] transform -rotate-90" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
+                                    <svg class="absolute bottom-1 right-1 w-4 h-4 text-[#d4af37] transform rotate-180" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L40,0 C30,10 20,20 15,35 C10,50 10,70 0,100 L0,0 Z"/></svg>
+
+                                    <div class="relative z-10 pt-0.5">
+                                        <span class="font-cinzel text-[7px] font-bold uppercase tracking-[0.25em] text-[#854d0e] block">ROYAL FACULTY SENATE</span>
+                                        <h4 class="font-cinzel text-[9px] font-black uppercase text-slate-900 mt-0.5 line-clamp-1">{{ $cert->course_title }}</h4>
+                                    </div>
+
+                                    <div class="relative z-10 my-auto py-1">
+                                        <span class="font-cormorant italic text-[7px] text-slate-500 block">Conferred With Distinction Upon</span>
+                                        <p class="font-playfair text-[11px] font-black text-[#08131e] border-b border-[#d4af37] inline-block px-2 pb-0.5 mt-0.5">{{ $cert->student_name }}</p>
+                                    </div>
+
+                                    <div class="relative z-10 pt-1 border-t border-slate-200/90 flex items-end justify-between text-[7px]">
+                                        <div class="text-left w-16">
+                                            <span class="font-mono text-[7px] font-bold text-slate-800 block truncate">{{ $cert->certificate_number }}</span>
+                                            <span class="text-slate-400 text-[6px] block">{{ $cert->issue_date->format('M Y') }}</span>
+                                        </div>
+                                        <div class="relative -mb-1 w-6 h-6 rounded-full gold-foil-gradient border border-amber-600 shadow-sm flex items-center justify-center text-amber-950 font-bold text-[8px] shrink-0">
+                                            ★
+                                        </div>
+                                        <div class="text-right w-16">
+                                            <span class="font-mono text-[7px] font-bold text-amber-900 block">EXCELLENCE</span>
+                                            <span class="text-slate-400 text-[6px] block">ACCREDITED</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @else
+                                <!-- CLASSIC ACADEMIC MINIATURE -->
+                                <div class="w-full h-full p-3.5 flex flex-col justify-between text-center select-none"
+                                     style="background-color: {{ $bgColor }}; border: 4px double {{ $primaryColor }};">
+                                    <div class="absolute inset-1 border border-slate-300/70 pointer-events-none"></div>
+                                    <svg class="absolute top-1 left-1 w-5 h-5 pointer-events-none" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
+                                    <svg class="absolute top-1 right-1 w-5 h-5 pointer-events-none transform rotate-90" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
+                                    <svg class="absolute bottom-1 left-1 w-5 h-5 pointer-events-none transform -rotate-90" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
+                                    <svg class="absolute bottom-1 right-1 w-5 h-5 pointer-events-none transform rotate-180" style="color: {{ $primaryColor }};" viewBox="0 0 100 100" fill="currentColor"><path d="M0,0 L60,0 C45,15 35,25 25,45 C15,65 15,85 0,100 L0,0 Z M12,12 C18,25 28,35 40,40 C35,28 25,18 12,12 Z"/></svg>
+
+                                    <div class="relative z-10 pt-0.5">
+                                        <span class="font-cinzel text-[7px] font-bold uppercase tracking-[0.2em] text-slate-500 block leading-tight">MONO LMS SENATE</span>
+                                        <h4 class="font-cinzel text-[9px] font-black uppercase text-slate-900 mt-0.5 line-clamp-1" style="color: {{ $primaryColor }};">{{ $cert->course_title }}</h4>
+                                    </div>
+
+                                    <div class="relative z-10 my-auto py-1">
+                                        <span class="font-playfair italic text-[7px] text-slate-400 block">Proudly Awarded to</span>
+                                        <p class="font-playfair text-[11px] font-extrabold text-slate-900 border-b border-amber-600/40 inline-block px-2 pb-0.5 mt-0.5">{{ $cert->student_name }}</p>
+                                    </div>
+
+                                    <div class="relative z-10 pt-1 border-t border-slate-200/80 flex items-end justify-between text-[7px]">
+                                        <div class="text-left w-16">
+                                            <span class="font-mono text-[7px] font-bold text-slate-800 block truncate">{{ $cert->certificate_number }}</span>
+                                            <span class="text-slate-400 text-[6px] block">{{ $cert->issue_date->format('M Y') }}</span>
+                                        </div>
+                                        <div class="relative -mb-1 w-6 h-6 rounded-full gold-foil-gradient border-2 border-amber-600 shadow-sm flex items-center justify-center text-amber-950 font-bold text-[8px] shrink-0">
+                                            ★
+                                        </div>
+                                        <div class="text-right w-16">
+                                            <span class="font-mono text-[7px] font-bold text-slate-700 block">ACCREDITED</span>
+                                            <span class="text-slate-400 text-[6px] block">VERIFIED</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </a>
 
                         <h3 class="font-bold text-sm text-slate-900 mb-1 leading-snug line-clamp-2">
                             {{ $cert->course_title }}
                         </h3>
 
-                        <div class="text-xs text-slate-500 space-y-1 my-3 bg-slate-50 p-2.5 rounded-[6px] border border-slate-100">
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Credential ID:</span>
-                                <strong class="font-mono text-slate-800 text-[11px]">{{ $cert->certificate_number }}</strong>
+                        <div class="text-xs text-slate-500 space-y-1.5 my-3 bg-slate-50 p-2.5 rounded-[6px] border border-slate-100">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400 text-[11px]">Credential ID:</span>
+                                <strong class="font-mono text-slate-800 text-[11px] font-bold">{{ $cert->certificate_number }}</strong>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Issue Date:</span>
-                                <strong class="text-slate-700">{{ $cert->issue_date->format('M d, Y') }}</strong>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400 text-[11px]">Issue Date:</span>
+                                <strong class="text-slate-700 text-[11px]">{{ $cert->issue_date->format('M d, Y') }}</strong>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Standing:</span>
-                                <strong class="text-emerald-700 font-semibold">{{ $cert->grade ?: 'Passed with Distinction' }}</strong>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400 text-[11px]">Standing:</span>
+                                <strong class="text-emerald-700 font-semibold text-[11px]">{{ $cert->grade ?: 'Passed with Distinction' }}</strong>
                             </div>
                         </div>
                     </div>
@@ -112,7 +223,7 @@
 
                         <button type="button"
                                 onclick="copyShareLink('{{ $cert->verificationUrl() }}', this)"
-                                class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-[5px] transition-colors"
+                                class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-[5px] transition-colors cursor-pointer"
                                 title="Copy verification link">
                             <span>Share</span>
                         </button>
@@ -153,7 +264,7 @@
         function copyShareLink(url, btn) {
             navigator.clipboard.writeText(url).then(function() {
                 var original = btn.innerHTML;
-                btn.innerHTML = '<span class="text-emerald-600 font-bold">Copied!</span>';
+                btn.innerHTML = '<span class="text-emerald-600 font-bold">Copied! ✓</span>';
                 setTimeout(function() { btn.innerHTML = original; }, 2000);
             });
         }

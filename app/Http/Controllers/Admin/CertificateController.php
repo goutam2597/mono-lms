@@ -91,4 +91,27 @@ class CertificateController extends Controller
 
         return back()->with('success', "'{$template->title}' is now the default certificate template.");
     }
+
+    /**
+     * Preview sample certificate with this template in full-screen print view.
+     */
+    public function preview(CertificateTemplate $template): View
+    {
+        $dummy = new Certificate([
+            'certificate_number' => 'CERT-DEMO-'.strtoupper(bin2hex(random_bytes(3))),
+            'student_name' => 'Alexandre Montgomery',
+            'course_title' => 'Executive Full-Stack Engineering & System Architecture',
+            'instructor_name' => 'Dr. Julian Vance, Lead Faculty',
+            'issue_date' => now(),
+            'grade' => 'Highest Academic Distinction (98.5%)',
+            'score' => 98.5,
+        ]);
+        $dummy->id = 0;
+        $dummy->setRelation('template', $template);
+
+        return view('pages.student.certificate-print', [
+            'certificate' => $dummy,
+            'template' => $template,
+        ]);
+    }
 }
