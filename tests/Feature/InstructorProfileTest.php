@@ -17,11 +17,11 @@ class InstructorProfileTest extends TestCase
         Storage::fake('public');
 
         $instructor = Instructor::create([
-            'name' => 'Original Teacher',
-            'email' => 'teacher@mono-lms.test',
+            'name' => 'Original Instructor',
+            'email' => 'instructor.orig@mono-lms.test',
             'password' => 'password',
             'phone' => '123456789',
-            'designation' => 'Junior Teacher',
+            'designation' => 'Junior Instructor',
             'bio' => 'Teaching basic subjects.',
             'status' => 'active',
             'verification_status' => 'approved',
@@ -32,7 +32,7 @@ class InstructorProfileTest extends TestCase
         $page = $this->get(route('instructor.profile'));
         $page->assertOk();
         $page->assertSee('Profile Photo');
-        $page->assertSee('Original Teacher');
+        $page->assertSee('Original Instructor');
         // Notification bell should NOT point to admin messages in instructor panel
         $page->assertDontSee(route('admin.messages.index'));
 
@@ -40,8 +40,8 @@ class InstructorProfileTest extends TestCase
         $avatar = UploadedFile::fake()->image('headshot.jpg', 300, 300);
 
         $response = $this->put(route('instructor.profile.update'), [
-            'name' => 'Dr Original Teacher Updated',
-            'email' => 'teacher.new@mono-lms.test',
+            'name' => 'Dr Original Instructor Updated',
+            'email' => 'instructor.new@mono-lms.test',
             'phone' => '+1 555 987 6543',
             'designation' => 'Principal AI Researcher & Professor',
             'bio' => 'Over 15 years experience coaching industry professionals.',
@@ -52,8 +52,8 @@ class InstructorProfileTest extends TestCase
         $response->assertSessionHas('success');
 
         $instructor->refresh();
-        $this->assertSame('Dr Original Teacher Updated', $instructor->name);
-        $this->assertSame('teacher.new@mono-lms.test', $instructor->email);
+        $this->assertSame('Dr Original Instructor Updated', $instructor->name);
+        $this->assertSame('instructor.new@mono-lms.test', $instructor->email);
         $this->assertSame('+1 555 987 6543', $instructor->phone);
         $this->assertSame('Principal AI Researcher & Professor', $instructor->designation);
         $this->assertSame('Over 15 years experience coaching industry professionals.', $instructor->bio);

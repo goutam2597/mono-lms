@@ -13,7 +13,7 @@ return [
         'slides' => [
             'student' => 'Student learning online',
             'courses' => 'Hands-on course session',
-            'teachers' => 'Expert instructor teaching',
+            'instructors' => 'Expert instructor teaching',
             'graduation' => 'Graduation and success',
         ],
         'items' => [

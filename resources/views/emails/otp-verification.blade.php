@@ -29,7 +29,7 @@
             <div class="content">
                 <div class="greeting">Hello {{ $name }},</div>
                 <div class="message">
-                    Thank you for signing up for <strong>{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}</strong> as a {{ $role === 'instructor' ? 'Teacher / Instructor' : 'Student' }}!
+                    Thank you for signing up for <strong>{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}</strong> as an {{ $role === 'instructor' ? 'Instructor' : 'Student' }}!
                     Please use the following 6-digit verification code to complete your registration:
                 </div>
                 <div class="otp-box">

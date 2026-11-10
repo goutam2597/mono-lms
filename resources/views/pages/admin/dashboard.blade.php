@@ -23,6 +23,30 @@
             </div>
         </div>
 
+        @php
+            $pendingVerificationsCount = \App\Models\Instructor::where('verification_status', 'pending')->count();
+        @endphp
+        @if ($pendingVerificationsCount > 0)
+            <div class="p-4 rounded-[6px] bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm text-amber-950">
+                            {{ $pendingVerificationsCount }} {{ Str::plural('Instructor', $pendingVerificationsCount) }} Waiting for Verification Review
+                        </p>
+                        <p class="text-xs text-amber-800 mt-0.5">
+                            New instructor applications require review of their national ID and instructor certification before they can publish courses.
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="action-btn bg-amber-600 border-amber-600 hover:bg-amber-700 text-white text-[11px] h-8 px-4 rounded-xs shrink-0 font-semibold uppercase tracking-wider">
+                    Review Pending ({{ $pendingVerificationsCount }})
+                </a>
+            </div>
+        @endif
+
         <!-- 1. Four Metric Cards with Wave Sparklines (Figma Dev Mode Node 10060:83410) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Card 1: All Students (Primary Brand) -->

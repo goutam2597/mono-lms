@@ -87,7 +87,7 @@ class OtpController extends Controller
             Auth::guard('instructor')->login($instructor);
             $request->session()->regenerate();
 
-            return redirect()->route('instructor.dashboard')->with('status', 'Email verified successfully! Please submit your Teaching Certificate and National ID to complete instructor verification.');
+            return redirect()->route('instructor.dashboard')->with('status', 'Email verified successfully! Please submit your Instructor Certificate and National ID to complete instructor verification.');
         }
 
         // Student

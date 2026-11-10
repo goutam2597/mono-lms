@@ -11,10 +11,33 @@ use Illuminate\Validation\Rules\Password;
 
 class InstructorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $status = $request->query('status');
+        $verification = $request->query('verification');
+
+        $query = Instructor::withCount('courses')->latest();
+
+        if ($verification) {
+            $query->where('verification_status', $verification);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $counts = [
+            'all' => Instructor::count(),
+            'pending' => Instructor::where('verification_status', 'pending')->count(),
+            'approved' => Instructor::where('verification_status', 'approved')->count(),
+            'unverified' => Instructor::where('verification_status', 'unverified')->count(),
+            'rejected' => Instructor::where('verification_status', 'rejected')->count(),
+        ];
+
         return view('pages.admin.instructors', [
-            'instructors' => Instructor::withCount('courses')->latest()->paginate(10),
+            'instructors' => $query->paginate(15)->withQueryString(),
+            'activeFilter' => $verification ?: ($status ?: 'all'),
+            'counts' => $counts,
         ]);
     }
 

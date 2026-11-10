@@ -1,11 +1,11 @@
-<x-layouts.dashboard title="Teacher Verification - Mono LMS" active="verification" userType="instructor">
+<x-layouts.dashboard title="Instructor Verification - Mono LMS" active="verification" userType="instructor">
 
     <div class="space-y-6">
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-gray-100">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-[#191919]">Instructor Identity &amp; Certification Verification</h2>
-                <p class="text-xs sm:text-sm text-gray-500 mt-1">To ensure platform safety and quality, all teachers must be verified with their national ID and teaching certification by an administrator before creating courses.</p>
+                <p class="text-xs sm:text-sm text-gray-500 mt-1">To ensure platform safety and quality, all instructors must be verified with their national ID and instructor certification by an administrator before creating courses.</p>
             </div>
             <div>
                 @if ($instructor->isVerified())
@@ -47,8 +47,8 @@
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-lg font-bold text-emerald-900">Your Teacher Account is Fully Verified!</h3>
-                        <p class="text-xs text-emerald-800 leading-relaxed">Congratulations! Your teaching credentials and identity have been confirmed by our administration on {{ $instructor->verified_at ? $instructor->verified_at->format('M d, Y') : 'record' }}. You have complete access to create courses, publish curriculum, and your profile is listed in the public instructor directory.</p>
+                        <h3 class="text-lg font-bold text-emerald-900">Your Instructor Account is Fully Verified!</h3>
+                        <p class="text-xs text-emerald-800 leading-relaxed">Congratulations! Your instructor credentials and identity have been confirmed by our administration on {{ $instructor->verified_at ? $instructor->verified_at->format('M d, Y') : 'record' }}. You have complete access to create courses, publish curriculum, and your profile is listed in the public instructor directory.</p>
                         <div class="pt-3">
                             <a href="{{ route('instructor.courses.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold transition-all shadow-xs">
                                 <span>+ Create Your Next Course</span>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="space-y-2">
                         <h3 class="text-lg font-bold text-amber-900">Verification Under Admin Review</h3>
-                        <p class="text-xs text-amber-800 leading-relaxed">Your teaching certificate and national ID have been uploaded and are actively queued for admin review. Reviews are typically completed within 24 to 48 hours. Once approved, course creation tools will automatically unlock.</p>
+                        <p class="text-xs text-amber-800 leading-relaxed">Your instructor certificate and national ID have been uploaded and are actively queued for admin review. Reviews are typically completed within 24 to 48 hours. Once approved, course creation tools will automatically unlock.</p>
                         <div class="pt-2 text-xs text-gray-500">
                             <span>Uploaded files: </span>
                             @if ($instructor->certification_file)
@@ -108,12 +108,12 @@
                     @csrf
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Teaching Certification File -->
+                        <!-- Instructor Certification File -->
                         <div class="space-y-2">
                             <label class="block text-xs font-bold text-[#191919] uppercase tracking-wider">
-                                Teaching Certification / Degree <span class="text-red-500">*</span>
+                                Instructor Certification / Degree <span class="text-red-500">*</span>
                             </label>
-                            <p class="text-[11px] text-gray-400">Teaching certificate, university degree, diploma, or professional accreditation.</p>
+                            <p class="text-[11px] text-gray-400">Instructor certificate, university degree, diploma, or professional accreditation.</p>
 
                             <div class="border-2 border-dashed {{ $errors->has('certification_file') ? 'border-red-400' : 'border-slate-200' }} rounded-xl p-5 text-center bg-slate-50 hover:bg-slate-100/60 transition-colors">
                                 <svg class="w-8 h-8 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>

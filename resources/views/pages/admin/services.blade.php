@@ -113,7 +113,7 @@
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <span class="font-bold text-xs text-neutral-900 block">Require Email OTP for Sign Up</span>
-                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Teacher</span>
+                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Instructor</span>
                                     </div>
                                     <span class="text-[11px] text-neutral-500">Sends 6-digit OTP code to verifying email via SMTP before creating student or instructor accounts.</span>
                                 </div>

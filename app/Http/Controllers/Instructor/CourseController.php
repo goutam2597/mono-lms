@@ -21,7 +21,7 @@ class CourseController extends Controller
     {
         $instructor = auth('instructor')->user();
         if (! $instructor || ! $instructor->canAddCourses()) {
-            return redirect()->route('instructor.verification.show')->with('error', 'Teacher verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
+            return redirect()->route('instructor.verification.show')->with('error', 'Instructor verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
         }
 
         return view('pages.instructor.courses-form', [
@@ -34,7 +34,7 @@ class CourseController extends Controller
     {
         $instructor = auth('instructor')->user();
         if (! $instructor || ! $instructor->canAddCourses()) {
-            return redirect()->route('instructor.verification.show')->with('error', 'Teacher verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
+            return redirect()->route('instructor.verification.show')->with('error', 'Instructor verification required: Your account must be verified with certification and national ID and approved by an administrator before you can create courses.');
         }
 
         $data = $this->validated($request);

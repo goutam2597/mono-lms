@@ -32,6 +32,7 @@ class SearchSuggestionTest extends TestCase
             'password' => 'password',
             'designation' => 'Lead Python Architect',
             'status' => 'active',
+            'verification_status' => 'approved',
         ]);
 
         $inactiveInstructor = Instructor::create([

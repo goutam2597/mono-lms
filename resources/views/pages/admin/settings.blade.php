@@ -434,7 +434,7 @@
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <span class="font-bold text-xs text-neutral-900 dark:text-white block">Email OTP Sign-Up Verification</span>
-                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Teacher</span>
+                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Instructor</span>
                                     </div>
                                     <span class="text-[11px] text-neutral-400">Require 6-digit email OTP verification before activating new accounts via configured SMTP</span>
                                 </div>

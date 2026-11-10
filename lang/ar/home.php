@@ -13,7 +13,7 @@ return [
         'slides' => [
             'student' => 'طالب يتعلم عبر الإنترنت',
             'courses' => 'جلسة دورة عملية',
-            'teachers' => 'مدرّب خبير يدرّس',
+            'instructors' => 'مدرّب خبير يدرّس',
             'graduation' => 'التخرج والنجاح',
         ],
         'items' => [

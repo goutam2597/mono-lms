@@ -9,7 +9,7 @@
             @if (auth('instructor')->user()?->canAddCourses())
                 <a href="{{ route('instructor.courses.create') }}" class="action-btn action-btn-primary h-9 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">+ {{ __('instructor.courses.create') }}</a>
             @else
-                <a href="{{ route('instructor.verification.show') }}" class="inline-flex items-center gap-1.5 h-9 px-4 text-[11px] font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-colors" title="Complete teacher verification to unlock course creation">
+                <a href="{{ route('instructor.verification.show') }}" class="inline-flex items-center gap-1.5 h-9 px-4 text-[11px] font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-colors" title="Complete instructor verification to unlock course creation">
                     <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
                     <span>Verification Required to Add Courses</span>
                 </a>

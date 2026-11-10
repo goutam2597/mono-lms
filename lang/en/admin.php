@@ -73,7 +73,7 @@ return [
 
     'instructors' => [
         'title' => 'Manage Instructors',
-        'subtitle' => 'Create and manage teacher accounts',
+        'subtitle' => 'Create and manage instructor accounts',
         'create' => 'New Instructor',
         'edit' => 'Edit Instructor',
         'designation' => 'Designation',

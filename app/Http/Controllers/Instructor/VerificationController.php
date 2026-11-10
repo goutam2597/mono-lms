@@ -30,7 +30,7 @@ class VerificationController extends Controller
             'certification_file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
             'national_id_file' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'max:10240'],
         ], [
-            'certification_file.required' => 'Please upload your teaching certification or diploma.',
+            'certification_file.required' => 'Please upload your instructor certification or diploma.',
             'national_id_file.required' => 'Please upload your government-issued national ID or passport.',
         ]);
 

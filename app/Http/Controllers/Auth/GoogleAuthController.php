@@ -86,19 +86,19 @@ class GoogleAuthController extends Controller
         $instructor = Instructor::where('email', $googleUser->getEmail())->first();
 
         if (! $instructor) {
-            // Auto-provision on first Google sign-in: the signup page offers
-            // "Sign up with Google", so a new Google identity becomes an
-            // active instructor account.
+            // Auto-provision on first Google sign-in: newly registered instructors
+            // require credential verification before they can add courses or be listed.
             $instructor = Instructor::create([
                 'name' => $googleUser->getName() ?: ($googleUser->user['given_name'] ?? 'Instructor'),
                 'email' => $googleUser->getEmail(),
                 'password' => bin2hex(random_bytes(16)),
                 'avatar' => $this->storeGoogleAvatar($googleUser),
-                'status' => 'active',
+                'status' => 'pending_verification',
+                'verification_status' => 'unverified',
             ]);
         }
 
-        if ($instructor->status !== 'active') {
+        if ($instructor->status === 'inactive') {
             return redirect()->route('instructor.login')->withErrors(['email' => __('auth.account_inactive')]);
         }
 

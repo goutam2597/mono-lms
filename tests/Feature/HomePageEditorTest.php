@@ -258,6 +258,7 @@ class HomePageEditorTest extends TestCase
                 'email' => 'instructor'.$i.'@mono-lms.test',
                 'password' => '12345678',
                 'status' => 'active',
+                'verification_status' => 'approved',
                 'avatar' => 'https://example.com/avatar'.$i.'.jpg',
             ]);
         }

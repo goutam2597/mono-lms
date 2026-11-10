@@ -71,6 +71,7 @@
                         ['id' => 'users', 'label' => 'All Users Directory', 'route' => 'admin.users.index'],
                         ['id' => 'students', 'label' => 'Students', 'route' => 'admin.students.index'],
                         ['id' => 'instructors', 'label' => 'Instructors', 'route' => 'admin.instructors.index'],
+                        ['id' => 'instructor_verifications', 'label' => 'Verifications', 'route' => 'admin.instructors.index', 'params' => ['verification' => 'pending'], 'badge' => \App\Models\Instructor::where('verification_status', 'pending')->count()],
                         ['id' => 'admins', 'label' => 'Administrators', 'route' => 'admin.admins.index', 'super' => true],
                         ['id' => 'roles', 'label' => 'Roles & Permissions', 'route' => 'admin.roles.index', 'super' => true],
                     ],
@@ -235,8 +236,10 @@
                             <div class="submenu-container pl-4 pr-1 py-1 space-y-0.5 transition-all duration-200 {{ $hasActiveChild ? '' : 'hidden' }}">
                                 <div class="border-l border-white/[0.08] pl-3 space-y-0.5 my-0.5">
                                     @foreach($item['children'] as $child)
-                                        @php $isChildActive = ($active === $child['id']); @endphp
-                                        <a href="{{ route($child['route']) }}"
+                                        @php
+                                            $isChildActive = ($active === $child['id']) || ($child['id'] === 'instructor_verifications' && request('verification') === 'pending') || ($child['id'] === 'instructors' && $active === 'instructors' && !request('verification'));
+                                        @endphp
+                                        <a href="{{ route($child['route'], $child['params'] ?? []) }}"
                                            class="group/item flex items-center justify-between px-2.5 py-1.5 rounded-[5px] text-[12.5px] transition-all duration-150 {{ $isChildActive ? 'bg-[var(--theme-primary,#344c3d)] text-white font-semibold shadow-xs' : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]' }}">
                                             <div class="flex items-center gap-2 min-w-0">
                                                 <span class="w-1.5 h-1.5 rounded-full shrink-0 transition-colors {{ $isChildActive ? 'bg-white' : 'bg-slate-600 group-hover/item:bg-slate-400' }}"></span>

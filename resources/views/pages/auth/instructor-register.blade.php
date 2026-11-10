@@ -48,9 +48,9 @@
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2 text-xs">
                 <p class="font-bold text-[#191919] flex items-center gap-1.5">
                     <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                    <span>Teacher Verification Notice</span>
+                    <span>Instructor Verification Notice</span>
                 </p>
-                <p class="text-slate-600 text-[11px] leading-relaxed">After registration, you will need to submit your teaching certification and national ID for admin verification. Once verified, your profile will be listed publicly and you can begin creating courses.</p>
+                <p class="text-slate-600 text-[11px] leading-relaxed">After registration, you will need to submit your instructor certification and national ID for admin verification. Once verified, your profile will be listed publicly and you can begin creating courses.</p>
             </div>
 
             <div class="space-y-1.5">

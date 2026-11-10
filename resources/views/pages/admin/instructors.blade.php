@@ -15,6 +15,36 @@
             <button type="button" id="add-instructor-btn" class="action-btn action-btn-primary h-10 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">+ {{ __('admin.instructors.create') }}</button>
         </div>
 
+        <!-- Verification & Status Filter Tabs -->
+        <div class="px-6 py-2.5 bg-slate-50/70 border-b border-gray-100 flex flex-wrap items-center gap-2 text-xs">
+            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">Filter:</span>
+            <a href="{{ route('admin.instructors.index') }}"
+               class="px-3 py-1.5 rounded-[4px] font-medium transition-colors flex items-center gap-1.5 {{ ($activeFilter ?? 'all') === 'all' ? 'bg-[#08131e] text-white shadow-2xs font-semibold' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50' }}">
+                <span>All Instructors</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ ($activeFilter ?? 'all') === 'all' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600' }}">{{ $counts['all'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}"
+               class="px-3 py-1.5 rounded-[4px] font-medium transition-colors flex items-center gap-1.5 {{ ($activeFilter ?? '') === 'pending' ? 'bg-amber-600 text-white shadow-2xs font-semibold' : 'bg-white border border-amber-200 text-amber-700 hover:bg-amber-50/60' }}">
+                <span>Pending Verification</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ ($activeFilter ?? '') === 'pending' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-800' }}">{{ $counts['pending'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('admin.instructors.index', ['verification' => 'approved']) }}"
+               class="px-3 py-1.5 rounded-[4px] font-medium transition-colors flex items-center gap-1.5 {{ ($activeFilter ?? '') === 'approved' ? 'bg-emerald-700 text-white shadow-2xs font-semibold' : 'bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50/60' }}">
+                <span>Verified</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ ($activeFilter ?? '') === 'approved' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800' }}">{{ $counts['approved'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('admin.instructors.index', ['verification' => 'unverified']) }}"
+               class="px-3 py-1.5 rounded-[4px] font-medium transition-colors flex items-center gap-1.5 {{ ($activeFilter ?? '') === 'unverified' ? 'bg-slate-700 text-white shadow-2xs font-semibold' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50' }}">
+                <span>Unverified</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ ($activeFilter ?? '') === 'unverified' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600' }}">{{ $counts['unverified'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('admin.instructors.index', ['verification' => 'rejected']) }}"
+               class="px-3 py-1.5 rounded-[4px] font-medium transition-colors flex items-center gap-1.5 {{ ($activeFilter ?? '') === 'rejected' ? 'bg-red-700 text-white shadow-2xs font-semibold' : 'bg-white border border-red-200 text-red-700 hover:bg-red-50/60' }}">
+                <span>Rejected</span>
+                <span class="px-1.5 py-0.2 rounded-full text-[10px] {{ ($activeFilter ?? '') === 'rejected' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700' }}">{{ $counts['rejected'] ?? 0 }}</span>
+            </a>
+        </div>
+
         <x-bulk-toolbar action="{{ route('admin.instructors.bulk-destroy') }}" />
 
         <div class="overflow-x-auto">
@@ -259,7 +289,7 @@
         <div class="bg-white w-[600px] max-w-full max-h-[calc(100vh-48px)] overflow-y-auto p-6 border border-neutral-200 shadow-xl space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-neutral-200">
                 <div>
-                    <h3 class="text-base font-bold text-neutral-900">Teacher Verification Review</h3>
+                    <h3 class="text-base font-bold text-neutral-900">Instructor Verification Review</h3>
                     <p class="text-xs text-neutral-500 mt-0.5" id="verify-modal-subheading">Review uploaded certification and national ID documents</p>
                 </div>
                 <button type="button" id="verification-modal-close" class="text-neutral-400 hover:text-neutral-900 text-lg leading-none cursor-pointer">&times;</button>
@@ -277,11 +307,11 @@
 
             <!-- Documents Preview / Links -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <!-- Teaching Certificate -->
+                <!-- Instructor Certificate -->
                 <div class="p-4 border border-neutral-200 rounded-none bg-white space-y-2">
                     <div class="flex items-center gap-2 font-bold text-neutral-900">
                         <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        <span>Teaching Certification</span>
+                        <span>Instructor Certification</span>
                     </div>
                     <div id="verify-cert-content" class="pt-1">
                         <a id="verify-cert-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 text-white font-semibold text-[11px] rounded-xs hover:bg-neutral-800 transition-colors">

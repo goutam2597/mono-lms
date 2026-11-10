@@ -27,16 +27,6 @@ class Instructor extends Authenticatable
         ];
     }
 
-    protected static function booted(): void
-    {
-        static::creating(function (Instructor $instructor) {
-            if ($instructor->status === 'active' && empty($instructor->verification_status)) {
-                $instructor->verification_status = 'approved';
-                $instructor->verified_at = now();
-            }
-        });
-    }
-
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);

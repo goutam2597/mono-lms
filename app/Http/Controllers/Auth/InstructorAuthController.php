@@ -83,6 +83,6 @@ class InstructorAuthController extends PanelAuthController
         Auth::guard($this->guard())->login($instructor);
         $request->session()->regenerate();
 
-        return redirect()->route($this->panelHome())->with('status', 'Welcome to Mono LMS! Please submit your Teaching Certificate and National ID for verification.');
+        return redirect()->route($this->panelHome())->with('status', 'Welcome to Mono LMS! Please submit your Instructor Certificate and National ID for verification.');
     }
 }
