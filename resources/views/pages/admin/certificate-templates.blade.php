@@ -86,131 +86,41 @@
                     <!-- Certificate Miniature Graphical Canvas -->
                     <div class="p-4 sm:p-5 bg-slate-100/70 border-b border-slate-200 flex items-center justify-center">
 
-                        @if ($style === 'template_7' || $style === 'modern')
-                            <!-- FIGMA TEMPLATE 7 MINIATURE -->
-                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-left select-none border border-slate-200 group-hover:shadow-lg transition-shadow bg-white">
-                                <div class="absolute inset-1.5 border border-dashed border-slate-200 pointer-events-none"></div>
-                                <div class="absolute top-0 right-0 w-[55%] pointer-events-none opacity-90">
-                                    <img src="{{ asset('images/certificates/template-7/top-accent.svg') }}" class="w-full h-auto" alt="">
+                        <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-center select-none group-hover:shadow-lg transition-shadow bg-[#fdfcfa] border border-[#e5ddd0]">
+                            <!-- Ornamental gold corners/borders -->
+                            <div class="absolute inset-1.5 border border-[#b68d59] pointer-events-none"></div>
+                            <div class="relative z-10 pt-0.5">
+                                <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
+                                <div class="flex items-center justify-center gap-1 mt-0.5">
+                                    <span class="w-3 h-px bg-[#c29d6f]"></span>
+                                    <span class="font-baskerville text-[6px] text-[#383634] uppercase font-semibold">OF ACHIEVEMENT</span>
+                                    <span class="w-3 h-px bg-[#c29d6f]"></span>
                                 </div>
-                                <div class="relative z-10 pt-0.5">
-                                    <span class="font-baskerville text-[7px] text-[#5a5549] uppercase block leading-tight">CERTIFICATE of</span>
-                                    <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">ACHIEVEMENT</h4>
-                                </div>
-                                <div class="relative z-10 my-auto py-1">
-                                    <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 font-semibold block">Presented to</span>
-                                    <h5 class="font-island text-[18px] text-[#835a2a] leading-none">Alexandre Montgomery</h5>
-                                    <img src="{{ asset('images/certificates/template-7/name-underline.svg') }}" class="w-24 h-auto mt-0.5" alt="">
-                                </div>
-                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <img src="{{ asset('images/certificates/template-7/badge-seal.svg') }}" class="w-10 h-10 object-contain drop-shadow" alt="">
-                                </div>
-                                <div class="relative z-10 pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
-                                    <div>
-                                        <span class="font-signature text-xs text-slate-800 block select-none leading-none">{{ $template->signer_name }}</span>
-                                        <span class="text-slate-400 text-[6px] truncate block">{{ $template->signature_title }}</span>
-                                    </div>
-                                    <div class="font-mono text-[7px] text-slate-400">
-                                        VERIFIED ✓
-                                    </div>
+                                <div class="flex items-center justify-center gap-1 mt-0.5 text-[#c29d6f] text-[5px]">
+                                    <span>★</span><span>★</span><span>★</span><span>★</span>
                                 </div>
                             </div>
-
-                        @elseif ($style === 'template_8' || $style === 'elegant')
-                            <!-- FIGMA TEMPLATE 8 MINIATURE -->
-                            <div class="relative w-full aspect-[16/11] rounded-none shadow-md overflow-hidden flex text-left select-none border border-slate-200 group-hover:shadow-lg transition-shadow bg-white">
-                                <div class="w-[72%] p-3 flex flex-col justify-between">
-                                    <div>
-                                        <span class="font-baskerville text-[7px] text-[#5a5549] uppercase block leading-tight">CERTIFICATE of</span>
-                                        <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">ACHIEVEMENT</h4>
-                                    </div>
-                                    <div class="my-auto py-1">
-                                        <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 block font-semibold">Presented to</span>
-                                        <h5 class="font-island text-[18px] text-[#835a2a] leading-none">Alexandre Montgomery</h5>
-                                        <img src="{{ asset('images/certificates/template-8/name-underline.svg') }}" class="w-24 h-auto mt-0.5" alt="">
-                                    </div>
-                                    <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-[7px]">
-                                        <div>
-                                            <span class="font-signature text-xs text-slate-800 block select-none leading-none">{{ $template->signer_name }}</span>
-                                            <span class="text-slate-400 text-[6px] truncate block">{{ $template->signature_title }}</span>
-                                        </div>
-                                    </div>
+                            <div class="relative z-10 my-auto py-1">
+                                <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-[#87817a] font-medium block">THIS IS PROUDLY PRESENTED TO</span>
+                                <h5 class="font-signature text-[20px] text-[#7d5729] leading-none">Alexandre Montgomery</h5>
+                                <div class="w-28 h-px bg-[#c5a278] mx-auto mt-0.5"></div>
+                                <p class="text-[5.5px] text-[#6b6763] line-clamp-1 max-w-[200px] mx-auto mt-0.5">Full-Stack Engineering & System Architecture</p>
+                            </div>
+                            <div class="relative z-10 pt-1 border-t border-[#e5ddd0] flex items-end justify-between text-[7px]">
+                                <div class="text-left w-14">
+                                    <div class="w-8 h-px bg-[#b89160] mb-0.5"></div>
+                                    <span class="text-[#55514d] text-[6px] block">10 Oct 2024</span>
                                 </div>
-                                <div class="w-[28%] bg-slate-50 border-l border-[#e5cfb7] relative overflow-hidden">
-                                    <div class="absolute inset-0 opacity-70 -rotate-45 scale-125">
-                                        <img src="{{ asset('images/certificates/template-8/pattern-1.svg') }}" class="w-full h-auto" alt="">
-                                    </div>
-                                    <div class="absolute -left-4 top-1/2 -translate-y-1/2 z-10">
-                                        <img src="{{ asset('images/certificates/template-8/badge-seal.svg') }}" class="w-8 h-8 object-contain drop-shadow" alt="">
-                                    </div>
+                                <div class="flex flex-col items-center -mb-1">
+                                    <span class="text-[6px] font-serif font-bold text-[#b68d59] leading-tight">★ BEST ★</span>
+                                    <span class="text-[5px] font-serif text-[#b68d59] leading-none">AWARD</span>
+                                </div>
+                                <div class="text-right w-14">
+                                    <div class="w-8 h-px bg-[#b89160] mb-0.5 ml-auto"></div>
+                                    <span class="font-signature text-xs text-[#4a4642] block select-none leading-none truncate">{{ $template->signer_name }}</span>
                                 </div>
                             </div>
-
-                        @elseif ($style === 'template_9')
-                            <!-- FIGMA TEMPLATE 9 MINIATURE -->
-                            <div class="relative w-full aspect-[16/11] rounded-none shadow-md overflow-hidden flex text-left select-none border border-slate-200 group-hover:shadow-lg transition-shadow bg-[#fdfbf7]">
-                                <div class="w-[74%] p-3 flex flex-col justify-between">
-                                    <div>
-                                        <span class="font-baskerville text-[7px] text-[#4d493f] uppercase block leading-tight">Certificate of</span>
-                                        <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase">Achievement</h4>
-                                    </div>
-                                    <div class="my-auto py-1">
-                                        <span class="font-noto text-[6px] text-slate-500 block">Presented to</span>
-                                        <h5 class="font-island text-[18px] text-[#835a2a] leading-none">Alexandre Montgomery</h5>
-                                        <img src="{{ asset('images/certificates/template-9/line.svg') }}" class="w-24 h-auto mt-0.5" alt="">
-                                    </div>
-                                    <div class="pt-1 border-t border-slate-200 flex items-center justify-between text-[7px]">
-                                        <span class="font-noto text-[7px] text-slate-700">{{ $template->signer_name }}</span>
-                                        <span class="font-mono text-[6px] text-slate-400">VERIFIED</span>
-                                    </div>
-                                </div>
-                                <div class="w-[26%] bg-[#faf7f2] relative overflow-hidden border-l border-[#e5cfb7]">
-                                    <div class="absolute inset-0 opacity-80 rotate-12 scale-150">
-                                        <img src="{{ asset('images/certificates/template-9/pattern.svg') }}" class="w-full h-full object-cover" alt="">
-                                    </div>
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <img src="{{ asset('images/certificates/template-9/seal-circle.svg') }}" class="w-7 h-7 object-contain drop-shadow" alt="">
-                                    </div>
-                                </div>
-                            </div>
-
-                        @else
-                            <!-- FIGMA TEMPLATE 3 (DEFAULT) MINIATURE -->
-                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-center select-none group-hover:shadow-lg transition-shadow bg-white">
-                                <img src="{{ asset('images/certificates/template-3/bg-pattern.svg') }}" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80" alt="">
-                                <div class="absolute inset-1.5 pointer-events-none">
-                                    <img src="{{ asset('images/certificates/template-3/border-decor.svg') }}" class="w-full h-full object-fill" alt="">
-                                </div>
-                                <div class="relative z-10 pt-0.5">
-                                    <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
-                                    <div class="flex items-center justify-center gap-1 mt-0.5">
-                                        <img src="{{ asset('images/certificates/template-3/flourish-left.svg') }}" class="h-1.5 w-auto" alt="">
-                                        <span class="font-baskerville text-[6px] text-[#33312a] uppercase">OF ACHIEVEMENT</span>
-                                        <img src="{{ asset('images/certificates/template-3/flourish-right.svg') }}" class="h-1.5 w-auto" alt="">
-                                    </div>
-                                </div>
-                                <div class="relative z-10 my-auto py-1">
-                                    <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-slate-400 font-semibold block">Presented to</span>
-                                    <h5 class="font-island text-[20px] text-[#835a2a] leading-none">Alexandre Montgomery</h5>
-                                    <div class="flex items-center justify-center w-28 mx-auto -mt-0.5">
-                                        <img src="{{ asset('images/certificates/template-3/underline-left.svg') }}" class="h-1.5 w-auto" alt="">
-                                        <div class="flex-1 h-px bg-[#835a2a]"></div>
-                                        <img src="{{ asset('images/certificates/template-3/underline-right.svg') }}" class="h-1.5 w-auto" alt="">
-                                    </div>
-                                </div>
-                                <div class="relative z-10 pt-1 border-t border-slate-200/80 flex items-end justify-between text-[7px]">
-                                    <div class="text-left w-14">
-                                        <span class="text-slate-400 text-[6px] block truncate">Award Date</span>
-                                    </div>
-                                    <div class="relative -mb-1">
-                                        <img src="{{ asset('images/certificates/template-3/badge.svg') }}" class="w-7 h-7 object-contain drop-shadow" alt="Seal">
-                                    </div>
-                                    <div class="text-right w-14">
-                                        <span class="font-signature text-xs text-slate-800 block select-none leading-none truncate">{{ $template->signer_name }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+                        </div>
 
                     </div>
 
