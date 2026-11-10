@@ -53,8 +53,10 @@ use App\Http\Controllers\Instructor\VerificationController as InstructorVerifica
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\PublicCertificateController;
 use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\SearchSuggestionController;
+use App\Http\Controllers\Student\CertificateController as StudentCertificateController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\NotificationController as StudentNotificationController;
@@ -125,6 +127,10 @@ Route::post('/membership/{plan:slug}/subscribe', [MembershipController::class, '
 
 // Inbound Contact Message Submission
 Route::post('/contact/send', [PublicPageController::class, 'submitContact'])->name('contact.submit');
+
+// Public Certificate Verification
+Route::get('/certificates/verify/{code?}', [PublicCertificateController::class, 'show'])->name('certificates.verify.show');
+Route::post('/certificates/verify', [PublicCertificateController::class, 'search'])->name('certificates.verify.search');
 
 // ------------------------------------------------------------ Language switch
 // Panel locale switches live OUTSIDE the guarded groups so they work from
@@ -363,6 +369,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // Certificate Templates
     Route::get('/certificate-templates', [AdminCertificateController::class, 'index'])->name('certificates.index');
     Route::post('/certificate-templates', [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::put('/certificate-templates/{template}', [AdminCertificateController::class, 'update'])->name('certificates.update');
+    Route::delete('/certificate-templates/{template}', [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
     Route::patch('/certificate-templates/{template}/default', [AdminCertificateController::class, 'makeDefault'])->name('certificates.default');
 
     // Support Tickets & Contact Messages
@@ -494,8 +502,10 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::post('/notifications/{id}/read', [StudentNotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::delete('/notifications/{id}', [StudentNotificationController::class, 'destroy'])->name('notifications.destroy');
 
-    // Static UI-kit placeholders (no quiz/certificate engine yet)
-    Route::get('/certificates', fn () => view('pages.student.certificates'))->name('certificates');
+    // Certificates
+    Route::get('/certificates', [StudentCertificateController::class, 'index'])->name('certificates');
+    Route::get('/certificates/{certificate}/print', [StudentCertificateController::class, 'printCertificate'])->name('certificates.print');
+    Route::post('/certificates/claim/{course}', [StudentCertificateController::class, 'claim'])->name('certificates.claim');
     Route::get('/quiz-attempts', fn () => view('pages.student.quiz-attempts'))->name('quiz-attempts');
 });
 

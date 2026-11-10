@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Certificate;
 use App\Models\CertificateTemplate;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -10,12 +11,16 @@ use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $templates = CertificateTemplate::latest()->get();
+        $templates = CertificateTemplate::withCount('certificates')->latest()->get();
+        $issued = Certificate::with(['student', 'course', 'template'])->latest()->paginate(15);
 
         return view('pages.admin.certificate-templates', [
             'templates' => $templates,
+            'issued' => $issued,
+            'defaultTemplate' => CertificateTemplate::getDefault(),
+            'totalIssued' => Certificate::count(),
         ]);
     }
 
@@ -28,11 +33,55 @@ class CertificateController extends Controller
             'signer_name' => ['required', 'string', 'max:100'],
             'bg_color' => ['required', 'string', 'max:20'],
             'border_color' => ['required', 'string', 'max:20'],
+            'accent_color' => ['nullable', 'string', 'max:20'],
+            'subtitle' => ['nullable', 'string', 'max:500'],
+            'show_qr_code' => ['nullable', 'boolean'],
         ]);
+
+        $data['accent_color'] = $data['accent_color'] ?: '#738a6e';
+        $data['show_qr_code'] = $request->boolean('show_qr_code', true);
 
         CertificateTemplate::create($data);
 
         return back()->with('success', "Certificate template '{$data['title']}' created successfully.");
+    }
+
+    public function update(Request $request, CertificateTemplate $template): RedirectResponse
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'template_type' => ['required', 'string', 'in:classic,modern,elegant'],
+            'signature_title' => ['required', 'string', 'max:100'],
+            'signer_name' => ['required', 'string', 'max:100'],
+            'bg_color' => ['required', 'string', 'max:20'],
+            'border_color' => ['required', 'string', 'max:20'],
+            'accent_color' => ['nullable', 'string', 'max:20'],
+            'subtitle' => ['nullable', 'string', 'max:500'],
+            'show_qr_code' => ['nullable', 'boolean'],
+        ]);
+
+        $data['accent_color'] = $data['accent_color'] ?: '#738a6e';
+        $data['show_qr_code'] = $request->boolean('show_qr_code', true);
+
+        $template->update($data);
+
+        return back()->with('success', "Certificate template '{$template->title}' updated successfully.");
+    }
+
+    public function destroy(CertificateTemplate $template): RedirectResponse
+    {
+        if ($template->is_default) {
+            return back()->with('error', 'The default certificate template cannot be deleted. Set another template as default first.');
+        }
+
+        if (CertificateTemplate::count() <= 1) {
+            return back()->with('error', 'At least one certificate template must remain in the platform.');
+        }
+
+        $title = $template->title;
+        $template->delete();
+
+        return back()->with('success', "Certificate template '{$title}' removed.");
     }
 
     public function makeDefault(CertificateTemplate $template): RedirectResponse
