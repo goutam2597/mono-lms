@@ -295,84 +295,240 @@
 
                 <!-- Student Feedback & Reviews -->
                 <div id="reviews" class="bg-white border border-[#e7e7e7] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-                    <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-100 gap-2">
                         <div>
                             <h2 class="text-xl font-bold text-[#191919]">Student Reviews</h2>
-                            <p class="text-xs text-gray-500 mt-0.5">Real feedback from enrolled students</p>
+                            <p class="text-xs text-gray-500 mt-0.5">Real verified feedback from enrolled students</p>
                         </div>
-                        <div class="flex items-center gap-1.5 text-[#ffc107] font-bold text-base">
-                            <span>★</span>
-                            <span class="text-[#191919]">{{ $course->averageRating() ?: '5.0' }}</span>
-                            <span class="text-xs text-gray-400 font-normal">({{ $course->reviewCount() }} reviews)</span>
+                        <div class="flex items-center gap-2 text-[#ffc107] font-bold text-base">
+                            <span class="text-xl">★</span>
+                            <span class="text-[#191919] text-lg">{{ $course->averageRating() ?: '5.0' }}</span>
+                            <span class="text-xs text-gray-400 font-normal">({{ $course->reviewCount() }} {{ __('app.common.reviews') }})</span>
                         </div>
                     </div>
 
-                    <!-- Rating Distribution -->
+                    <!-- Dynamic Rating Distribution -->
+                    @php $breakdown = $ratingBreakdown ?? $course->ratingBreakdown(); @endphp
                     <div class="bg-[#f8faf8] border border-[#e7e7e7] rounded-xl p-5 flex flex-col sm:flex-row items-center gap-6">
-                        <div class="text-center sm:border-r sm:border-gray-200 sm:pr-8">
-                            <div class="text-4xl font-extrabold text-[#191919]">{{ $course->averageRating() ?: '5.0' }}</div>
-                            <div class="flex items-center justify-center gap-1 text-[#ffc107] my-1 text-sm">
-                                ★ ★ ★ ★ ★
+                        <div class="text-center sm:border-r sm:border-gray-200 sm:pr-8 shrink-0">
+                            <div class="text-4xl font-extrabold text-[#191919]">{{ $course->averageRating() ?: '0.0' }}</div>
+                            <div class="flex items-center justify-center gap-0.5 text-[#ffc107] my-1 text-base">
+                                @php $avgInt = (int) round($course->averageRating() ?: 5); @endphp
+                                {{ str_repeat('★', $avgInt) }}{{ str_repeat('☆', 5 - $avgInt) }}
                             </div>
                             <div class="text-xs text-gray-500 font-medium">Course Rating</div>
                         </div>
                         <div class="flex-1 w-full space-y-2 text-xs">
-                            <div class="flex items-center gap-3">
-                                <span class="w-12 text-gray-600 font-medium">5 stars</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-[#344c3d] rounded-full" style="width: 95%;"></div>
+                            @foreach ([5, 4, 3, 2, 1] as $star)
+                                @php $stat = $breakdown[$star] ?? ['count' => 0, 'percent' => 0]; @endphp
+                                <div class="flex items-center gap-3">
+                                    <span class="w-12 text-gray-600 font-medium">{{ $star }} stars</span>
+                                    <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-[var(--theme-primary,#344c3d)] rounded-full transition-all duration-300" style="width: {{ $stat['percent'] }}%;"></div>
+                                    </div>
+                                    <span class="w-14 text-right text-gray-500 text-[11px] font-mono">{{ $stat['percent'] }}% <span class="text-gray-400">({{ $stat['count'] }})</span></span>
                                 </div>
-                                <span class="w-8 text-right text-gray-500">95%</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="w-12 text-gray-600 font-medium">4 stars</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-[#738a6e] rounded-full" style="width: 5%;"></div>
-                                </div>
-                                <span class="w-8 text-right text-gray-500">5%</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="w-12 text-gray-600 font-medium">3 stars</span>
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-[#bfcabb] rounded-full" style="width: 0%;"></div>
-                                </div>
-                                <span class="w-8 text-right text-gray-500">0%</span>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
+
+                    <!-- Interactive Review Giving Form for Enrolled Students -->
+                    @if (auth('student')->check())
+                        @if ($isEnrolled ?? false)
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 sm:p-6 space-y-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                                            {{ ($userReview ?? false) ? 'Your Review' : 'Rate & Review This Course' }}
+                                        </h3>
+                                        <p class="text-xs text-slate-500 mt-0.5">
+                                            Share your learning experience to help other prospective students.
+                                        </p>
+                                    </div>
+
+                                    @if ($userReview ?? false)
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ $userReview->status === 'approved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : ($userReview->status === 'pending' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-rose-100 text-rose-800 border border-rose-300') }}">
+                                                {{ $userReview->status === 'approved' ? '✓ Approved & Public' : ($userReview->status === 'pending' ? '⏳ Pending Moderation' : 'Declined') }}
+                                            </span>
+
+                                            <form method="POST" action="{{ route('courses.reviews.destroy', $course->slug) }}" onsubmit="return confirm('Delete your review?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-xs text-rose-600 hover:text-rose-800 font-semibold underline">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                @if ($userReview && $userReview->status === 'pending')
+                                    <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-800 flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        <span>Your review has been submitted and is awaiting administrator moderation. It is currently only visible to you.</span>
+                                    </div>
+                                @endif
+
+                                <form method="POST" action="{{ route('courses.reviews.store', $course->slug) }}" class="space-y-4">
+                                    @csrf
+
+                                    <!-- Interactive Star Picker -->
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                            Select Your Rating <span class="text-rose-500">*</span>
+                                        </label>
+                                        @php $currentRating = (int) old('rating', $userReview->rating ?? 5); @endphp
+                                        <div class="flex items-center gap-1.5 text-2xl text-amber-400 select-none cursor-pointer" id="star-picker">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <button type="button"
+                                                        data-star-val="{{ $i }}"
+                                                        class="star-btn transition-transform hover:scale-125 focus:outline-none {{ $i <= $currentRating ? 'text-amber-400' : 'text-slate-300' }}"
+                                                        aria-label="{{ $i }} Stars">
+                                                    ★
+                                                </button>
+                                            @endfor
+                                            <input type="hidden" name="rating" id="rating-input" value="{{ $currentRating }}">
+                                            <span class="text-xs font-bold text-slate-600 ml-2" id="rating-label">{{ $currentRating }} Stars</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Review Comment Textarea -->
+                                    <div>
+                                        <label for="review-comment" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                            Review Comments (Optional)
+                                        </label>
+                                        <textarea id="review-comment"
+                                                  name="comment"
+                                                  rows="3"
+                                                  placeholder="What did you think of the course content, pacing, and instructor explanations? Share tips for future learners..."
+                                                  class="w-full bg-white border border-slate-300 rounded-lg p-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[var(--theme-primary,#344c3d)] focus:ring-1 focus:ring-[var(--theme-primary,#344c3d)]">{{ old('comment', $userReview->comment ?? '') }}</textarea>
+                                    </div>
+
+                                    <div class="flex items-center justify-end gap-3">
+                                        <button type="submit"
+                                                class="px-5 py-2.5 rounded-lg bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-xs">
+                                            {{ ($userReview ?? false) ? 'Update Review' : 'Submit Review' }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold shrink-0">
+                                        ℹ
+                                    </div>
+                                    <p class="text-slate-600">
+                                        <strong>Only enrolled students can leave reviews.</strong> Enroll in this course to share your feedback.
+                                    </p>
+                                </div>
+                                <form method="POST" action="{{ route('courses.enroll', $course->slug) }}" class="shrink-0">
+                                    @csrf
+                                    <button type="submit" class="px-4 py-2 bg-[var(--theme-primary,#344c3d)] text-white font-bold rounded-lg hover:bg-[var(--theme-primary-hover,#25372c)] transition-colors">
+                                        Enroll Now
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    @else
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 flex items-center justify-between gap-4 text-xs">
+                            <p class="text-slate-600">
+                                Want to leave a review? <a href="{{ route('login') }}" class="font-bold text-[var(--theme-primary,#344c3d)] underline">Sign in as a student</a> to post your feedback.
+                            </p>
+                            <a href="{{ route('login') }}" class="px-4 py-1.5 rounded-lg border border-slate-300 font-bold text-slate-700 hover:bg-slate-100 transition-colors">
+                                Sign In
+                            </a>
+                        </div>
+                    @endif
 
                     <!-- Reviews List -->
                     @if ($course->reviews->count())
                         <div class="space-y-4 pt-2">
                             @foreach ($course->reviews as $review)
-                                <div class="p-4 rounded-xl border border-gray-100 bg-white space-y-2">
+                                <div class="p-5 rounded-xl border border-gray-100 bg-white space-y-3 hover:border-slate-300 transition-colors">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-9 h-9 rounded-full bg-[#edf3ec] text-[#344c3d] font-bold text-xs flex items-center justify-center">
+                                            <div class="w-10 h-10 rounded-full bg-[#edf3ec] text-[#344c3d] font-bold text-xs flex items-center justify-center shrink-0">
                                                 {{ strtoupper(substr($review->student?->name ?? 'S', 0, 1)) }}
                                             </div>
                                             <div>
                                                 <h4 class="text-sm font-bold text-[#191919]">{{ $review->student?->name ?? 'Verified Student' }}</h4>
                                                 <div class="flex items-center gap-2 text-xs text-gray-400">
-                                                    <span class="text-[#ffc107]">{{ str_repeat('★', (int) $review->rating) }}</span>
+                                                    <span class="text-[#ffc107]">{{ str_repeat('★', (int) $review->rating) }}{{ str_repeat('☆', 5 - (int) $review->rating) }}</span>
                                                     <span>•</span>
                                                     <span>{{ $review->created_at ? $review->created_at->diffForHumans() : 'Recently' }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="text-sm text-[#5d5d5d] leading-relaxed pt-1">
-                                        {{ $review->comment }}
-                                    </p>
+
+                                    @if ($review->comment)
+                                        <p class="text-sm text-[#5d5d5d] leading-relaxed">
+                                            {{ $review->comment }}
+                                        </p>
+                                    @endif
+
+                                    <!-- Instructor / Admin Official Response -->
+                                    @if ($review->instructor_reply)
+                                        <div class="mt-3 ml-4 sm:ml-8 pl-4 border-l-2 border-[var(--theme-primary,#344c3d)] bg-slate-50 p-3.5 rounded-r-xl space-y-1">
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <span class="text-xs font-bold text-slate-800">{{ $course->instructor?->name ?? 'Course Instructor' }}</span>
+                                                <span class="text-[10px] font-bold uppercase tracking-wider bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] px-2 py-0.5 rounded">
+                                                    Instructor Response
+                                                </span>
+                                                @if ($review->replied_at)
+                                                    <span class="text-[10px] text-slate-400">• {{ $review->replied_at->diffForHumans() }}</span>
+                                                @endif
+                                            </div>
+                                            <p class="text-xs text-slate-600 leading-relaxed pt-0.5">
+                                                {{ $review->instructor_reply }}
+                                            </p>
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <div class="text-center py-6 text-gray-400 text-sm">
-                            No reviews submitted yet for this course.
+                        <div class="text-center py-8 text-gray-400 text-sm bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                            <p class="font-medium text-slate-600">No public reviews yet for this course.</p>
+                            <p class="text-xs text-slate-400 mt-1">Be the first enrolled student to review and rate the instructor!</p>
                         </div>
                     @endif
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const starPicker = document.getElementById('star-picker');
+                        if (!starPicker) return;
+
+                        const btns = starPicker.querySelectorAll('.star-btn');
+                        const input = document.getElementById('rating-input');
+                        const label = document.getElementById('rating-label');
+
+                        function updateStars(val) {
+                            btns.forEach(b => {
+                                const bVal = parseInt(b.dataset.starVal);
+                                if (bVal <= val) {
+                                    b.classList.remove('text-slate-300');
+                                    b.classList.add('text-amber-400');
+                                } else {
+                                    b.classList.remove('text-amber-400');
+                                    b.classList.add('text-slate-300');
+                                }
+                            });
+                            if (input) input.value = val;
+                            if (label) label.textContent = val + (val === 1 ? ' Star' : ' Stars');
+                        }
+
+                        btns.forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                const val = parseInt(this.dataset.starVal);
+                                updateStars(val);
+                            });
+                        });
+                    });
+                </script>
 
             </div>
 

@@ -39,6 +39,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
@@ -95,6 +96,10 @@ Route::prefix('courses')->name('courses.')->group(function () {
     Route::post('/{course:slug}/enroll', [CourseController::class, 'enroll'])
         ->middleware('auth:student')->name('enroll');
     Route::post('/{course}/wishlist', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/{course:slug}/reviews', [CourseReviewController::class, 'store'])
+        ->middleware('auth:student')->name('reviews.store');
+    Route::delete('/{course:slug}/reviews', [CourseReviewController::class, 'destroy'])
+        ->middleware('auth:student')->name('reviews.destroy');
 });
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
@@ -266,8 +271,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:reviews.moderate')->name('reviews.reject');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])
         ->middleware('permission:reviews.moderate')->name('reviews.destroy');
+    Route::post('/reviews/bulk-approve', [AdminReviewController::class, 'bulkApprove'])
+        ->middleware('permission:reviews.moderate')->name('reviews.bulk-approve');
+    Route::post('/reviews/bulk-reject', [AdminReviewController::class, 'bulkReject'])
+        ->middleware('permission:reviews.moderate')->name('reviews.bulk-reject');
     Route::post('/reviews/bulk-destroy', [AdminReviewController::class, 'bulkDestroy'])
         ->middleware('permission:reviews.moderate')->name('reviews.bulk-destroy');
+    Route::post('/reviews/{review}/reply', [AdminReviewController::class, 'reply'])
+        ->middleware('permission:reviews.moderate')->name('reviews.reply');
 
     // Languages & Translations
     Route::middleware('permission:languages.manage')->group(function () {
@@ -448,6 +459,7 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
 
     Route::get('/students', [InstructorStudentController::class, 'index'])->name('students');
     Route::get('/reviews', [InstructorReviewController::class, 'index'])->name('reviews');
+    Route::post('/reviews/{review}/reply', [InstructorReviewController::class, 'reply'])->name('reviews.reply');
     Route::get('/profile', [InstructorProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [InstructorProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [InstructorProfileController::class, 'updatePassword'])->name('profile.password');

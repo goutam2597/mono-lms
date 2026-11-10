@@ -93,6 +93,42 @@ class Course extends Model
         return (int) $this->reviews()->where('status', 'approved')->count();
     }
 
+    /**
+     * Get percentage and count distribution of approved ratings (1-5).
+     *
+     * @return array<int, array{count: int, percent: int}>
+     */
+    public function ratingBreakdown(): array
+    {
+        $reviews = $this->reviews()->where('status', 'approved')->pluck('rating');
+        $total = $reviews->count();
+
+        $breakdown = [
+            5 => ['count' => 0, 'percent' => 0],
+            4 => ['count' => 0, 'percent' => 0],
+            3 => ['count' => 0, 'percent' => 0],
+            2 => ['count' => 0, 'percent' => 0],
+            1 => ['count' => 0, 'percent' => 0],
+        ];
+
+        if ($total === 0) {
+            return $breakdown;
+        }
+
+        foreach ($reviews as $rating) {
+            $r = (int) $rating;
+            if (isset($breakdown[$r])) {
+                $breakdown[$r]['count']++;
+            }
+        }
+
+        foreach ($breakdown as $star => $data) {
+            $breakdown[$star]['percent'] = (int) round(($data['count'] / $total) * 100);
+        }
+
+        return $breakdown;
+    }
+
     public function enrolledCount(): int
     {
         return (int) $this->enrollments()->whereIn('status', ['active', 'completed'])->count();

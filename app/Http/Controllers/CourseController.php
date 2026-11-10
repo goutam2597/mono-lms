@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -28,11 +29,20 @@ class CourseController extends Controller
             ->take(3)
             ->get();
 
+        $student = auth('student')->user();
+        $isEnrolled = $student
+            && Enrollment::where('student_id', $student->id)->where('course_id', $course->id)->exists();
+
+        $userReview = $student
+            ? Review::where('student_id', $student->id)->where('course_id', $course->id)->first()
+            : null;
+
         return view('pages.courses.detail', [
             'course' => $course,
             'related' => $related,
-            'isEnrolled' => auth('student')->check()
-                && Enrollment::where('student_id', auth('student')->id())->where('course_id', $course->id)->exists(),
+            'isEnrolled' => $isEnrolled,
+            'userReview' => $userReview,
+            'ratingBreakdown' => $course->ratingBreakdown(),
         ]);
     }
 

@@ -83,12 +83,27 @@
                     </div>
                 </div>
 
-                <div class="shrink-0 w-full md:w-auto">
+                <div class="shrink-0 w-full md:w-auto flex flex-col sm:flex-row md:flex-col items-stretch sm:items-center md:items-end gap-2">
                     <a href="{{ route('courses.show', $enrollment->course->slug) }}"
-                       class="w-full md:w-auto inline-flex items-center justify-center gap-1.5 text-center bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold py-2.5 px-5 rounded-[6px] transition-colors shadow-xs">
+                       class="w-full inline-flex items-center justify-center gap-1.5 text-center bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold py-2.5 px-5 rounded-[6px] transition-colors shadow-xs">
                         <span>{{ $enrollment->progress >= 100 ? __('student.enrolled.download_certificate') : __('student.enrolled.continue') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
+
+                    @php $myReview = $enrollment->course->reviews->first(); @endphp
+                    @if ($myReview)
+                        <a href="{{ route('courses.show', $enrollment->course->slug) }}#reviews"
+                           class="w-full inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 py-1.5 px-3 rounded-[6px] transition-colors">
+                            <span>★ Rated {{ $myReview->rating }}.0</span>
+                            <span class="text-[10px] text-amber-600 font-normal">({{ ucfirst($myReview->status) }})</span>
+                        </a>
+                    @else
+                        <a href="{{ route('courses.show', $enrollment->course->slug) }}#reviews"
+                           class="w-full inline-flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 py-1.5 px-3 rounded-[6px] transition-colors">
+                            <span class="text-amber-500 font-bold">★</span>
+                            <span>Rate & Review</span>
+                        </a>
+                    @endif
                 </div>
             </div>
         @empty

@@ -9,8 +9,14 @@ class EnrollmentController extends Controller
 {
     public function index(Request $request)
     {
-        $enrollments = auth('student')->user()->enrollments()
-            ->with('course')
+        $student = auth('student')->user();
+
+        $enrollments = $student->enrollments()
+            ->with([
+                'course.instructor',
+                'course.category',
+                'course.reviews' => fn ($q) => $q->where('student_id', $student->id),
+            ])
             ->when($request->query('filter') === 'active', fn ($q) => $q->where('status', 'active'))
             ->when($request->query('filter') === 'completed', fn ($q) => $q->where('status', 'completed'))
             ->latest()
