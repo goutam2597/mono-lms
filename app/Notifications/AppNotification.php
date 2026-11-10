@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Setting;
+use App\Services\FirebaseNotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -52,6 +53,9 @@ class AppNotification extends Notification
         $channels = ['In-App'];
         if ($this->sendMail && ! empty($notifiable->email)) {
             $channels[] = 'Email (SMTP)';
+        }
+        if (FirebaseNotificationService::isConfigured()) {
+            $channels[] = 'Firebase Push (FCM)';
         }
 
         return [

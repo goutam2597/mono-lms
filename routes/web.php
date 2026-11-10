@@ -361,10 +361,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // Reports & Analytics
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
 
-    // Google Login Settings
+    // Google & Firebase Settings
     Route::middleware('permission:settings.manage')->group(function () {
         Route::get('/settings/google', [GoogleSettingsController::class, 'index'])->name('settings.google');
         Route::post('/settings/google', [GoogleSettingsController::class, 'store'])->name('settings.google.store');
+        Route::delete('/settings/google/firebase-service-account', [GoogleSettingsController::class, 'destroyServiceAccount'])->name('settings.google.firebase_service_account.destroy');
+        Route::post('/settings/google/firebase-test', [GoogleSettingsController::class, 'testFirebaseNotification'])->name('settings.google.firebase_test');
     });
 
     // General Settings

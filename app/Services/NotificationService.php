@@ -47,6 +47,24 @@ class NotificationService
             );
 
             $notifiable->notify($notification);
+
+            // Dispatch Firebase Cloud Messaging (FCM) push notification if configured and device token present
+            $deviceTokens = $metadata['fcm_token'] ?? $metadata['device_token'] ?? ($notifiable->fcm_token ?? null);
+            if ($deviceTokens && FirebaseNotificationService::isConfigured()) {
+                try {
+                    FirebaseNotificationService::sendPushNotification(
+                        deviceTokens: (array) $deviceTokens,
+                        title: $title,
+                        body: $message,
+                        data: array_merge($metadata, [
+                            'category' => $category,
+                            'action_url' => $actionUrl ?? '',
+                        ]),
+                    );
+                } catch (Throwable $fcmErr) {
+                    Log::warning('Firebase push notification dispatch error: '.$fcmErr->getMessage());
+                }
+            }
         } catch (Throwable $e) {
             // If sending via mail fails (e.g. invalid SMTP config), fallback to database only
             Log::warning('AppNotification failed with full channels, falling back to database: '.$e->getMessage());

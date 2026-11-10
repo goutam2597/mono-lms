@@ -11,6 +11,8 @@ use App\Models\SupportTicket;
 use App\Services\HomePageContent;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AdminPanelPagesTest extends TestCase
@@ -426,5 +428,66 @@ class AdminPanelPagesTest extends TestCase
         $this->assertSame('learnify-mobile-app', Setting::get('firebase_project_id'));
         $this->assertSame('AIzaSyFakeApiKey1234567890', Setting::get('firebase_api_key'));
         $this->assertTrue(Setting::enabled('firebase_enabled'));
+    }
+
+    public function test_admin_can_upload_and_destroy_firebase_admin_sdk_service_account(): void
+    {
+        Storage::fake('local');
+        $this->actingAs($this->admin, 'admin');
+
+        $fakeServiceAccount = [
+            'type' => 'service_account',
+            'project_id' => 'mono-lms-push-project',
+            'private_key_id' => 'privkey123456',
+            'private_key' => "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCfake\n-----END PRIVATE KEY-----\n",
+            'client_email' => 'firebase-adminsdk-fcm@mono-lms-push-project.iam.gserviceaccount.com',
+            'client_id' => '1092837465',
+        ];
+
+        $uploadedFile = UploadedFile::fake()->createWithContent(
+            'mono-lms-firebase-adminsdk.json',
+            json_encode($fakeServiceAccount)
+        );
+
+        $response = $this->post(route('admin.settings.google.store'), [
+            'firebase_enabled' => '1',
+            'firebase_service_account_file' => $uploadedFile,
+        ]);
+
+        $response->assertSessionHas('success');
+        Storage::disk('local')->assertExists('firebase/service-account.json');
+        $this->assertSame('firebase/service-account.json', Setting::get('firebase_service_account_path'));
+        $this->assertSame('mono-lms-firebase-adminsdk.json', Setting::get('firebase_service_account_filename'));
+        $this->assertSame('firebase-adminsdk-fcm@mono-lms-push-project.iam.gserviceaccount.com', Setting::get('firebase_service_account_client_email'));
+        $this->assertSame('mono-lms-push-project', Setting::get('firebase_service_account_project_id'));
+
+        // View page now shows configured state
+        $this->get(route('admin.settings.google'))
+            ->assertOk()
+            ->assertSee('Configured')
+            ->assertSee('firebase-adminsdk-fcm@mono-lms-push-project.iam.gserviceaccount.com');
+
+        // Admin can destroy/remove the service account key
+        $deleteResponse = $this->delete(route('admin.settings.google.firebase_service_account.destroy'));
+        $deleteResponse->assertSessionHas('success');
+        Storage::disk('local')->assertMissing('firebase/service-account.json');
+        $this->assertSame('', Setting::get('firebase_service_account_path'));
+    }
+
+    public function test_admin_upload_rejects_invalid_firebase_service_account(): void
+    {
+        Storage::fake('local');
+        $this->actingAs($this->admin, 'admin');
+
+        $invalidFile = UploadedFile::fake()->createWithContent(
+            'invalid.json',
+            json_encode(['random_key' => 'not_a_service_account'])
+        );
+
+        $response = $this->post(route('admin.settings.google.store'), [
+            'firebase_service_account_file' => $invalidFile,
+        ]);
+
+        $response->assertSessionHasErrors('firebase_service_account_file');
     }
 }
