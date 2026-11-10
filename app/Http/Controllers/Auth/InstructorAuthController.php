@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Instructor;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -47,6 +48,16 @@ class InstructorAuthController extends PanelAuthController
             'designation' => ['nullable', 'string', 'max:150'],
             'terms' => ['accepted'],
         ]);
+
+        if (Setting::isOtpSignupEnabled()) {
+            return app(OtpController::class)->initiateRegistration($request, [
+                'type' => 'instructor',
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+                'designation' => $data['designation'] ?? 'Instructor',
+            ]);
+        }
 
         $instructor = Instructor::create([
             'name' => $data['name'],

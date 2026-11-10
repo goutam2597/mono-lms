@@ -26,6 +26,7 @@ class SettingController extends Controller
             'footer_payment_methods' => Setting::get('footer_payment_methods', ''),
             'footer_payment_methods_enabled' => Setting::get('footer_payment_methods_enabled', '1') === '1',
             'footer_payment_methods_width' => Setting::get('footer_payment_methods_width', '340px'),
+            'otp_signup_enabled' => Setting::isOtpSignupEnabled(),
             'membership_enabled' => Setting::get('membership_enabled', '1') === '1',
             'blog_enabled' => Setting::get('blog_enabled', '1') === '1',
             'forums_enabled' => Setting::get('forums_enabled', '1') === '1',
@@ -76,6 +77,7 @@ class SettingController extends Controller
 
         // Toggles
         Setting::set('footer_payment_methods_enabled', $request->has('footer_payment_methods_enabled') ? '1' : '0');
+        Setting::set('otp_signup_enabled', $request->has('otp_signup_enabled') ? '1' : '0');
         Setting::set('membership_enabled', $request->has('membership_enabled') ? '1' : '0');
         Setting::set('blog_enabled', $request->has('blog_enabled') ? '1' : '0');
         Setting::set('forums_enabled', $request->has('forums_enabled') ? '1' : '0');

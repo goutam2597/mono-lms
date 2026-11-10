@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Setting;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,6 +104,15 @@ class StudentAuthController extends PanelAuthController
             'password' => ['required', 'string', Password::min(8)],
             'terms' => ['accepted'],
         ]);
+
+        if (Setting::isOtpSignupEnabled()) {
+            return app(OtpController::class)->initiateRegistration($request, [
+                'type' => 'student',
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => $data['password'],
+            ]);
+        }
 
         $student = Student::create([
             'name' => $data['name'],

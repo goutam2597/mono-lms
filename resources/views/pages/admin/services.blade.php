@@ -104,6 +104,26 @@
                         </div>
                     </div>
 
+                    <!-- Email OTP Verification Toggle -->
+                    <div class="border-t border-neutral-100 pt-4">
+                        <input type="hidden" name="otp_setting_present" value="1">
+                        <label class="flex items-start justify-between gap-3 p-3 border border-neutral-200 bg-neutral-50/70 hover:border-neutral-900 transition-colors cursor-pointer select-none">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" name="otp_signup_enabled" value="1" @checked($otp_signup_enabled ?? false) class="control mt-0.5">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-xs text-neutral-900 block">Require Email OTP for Sign Up</span>
+                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Teacher</span>
+                                    </div>
+                                    <span class="text-[11px] text-neutral-500">Sends 6-digit OTP code to verifying email via SMTP before creating student or instructor accounts.</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ ($otp_signup_enabled ?? false) ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-neutral-100 text-neutral-500 border border-transparent' }}">
+                                {{ ($otp_signup_enabled ?? false) ? 'Active' : 'Disabled' }}
+                            </span>
+                        </label>
+                    </div>
+
                     <div class="flex items-center justify-end pt-3 border-t border-neutral-100">
                         <button type="submit" class="action-btn h-10 px-6">
                             Save Mail Settings

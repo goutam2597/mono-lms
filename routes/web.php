@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\UserDirectoryController as AdminUserDirectoryCont
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\InstructorAuthController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\BlogController;
@@ -164,8 +165,10 @@ Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'
 Route::get('/set-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
 Route::post('/set-password', [PasswordResetController::class, 'reset'])->name('password.update');
 
-// Static UI-kit screens (kept for the screens hub)
-Route::get('/otp', fn () => view('pages.auth.otp'))->name('otp');
+// OTP sign-up verification
+Route::get('/otp', [OtpController::class, 'show'])->name('otp');
+Route::post('/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
+Route::post('/otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 Route::get('/lock-screen', fn () => view('pages.auth.lock-screen'))->name('lock-screen');
 
 // -------------------------------------------------------------- Admin panel

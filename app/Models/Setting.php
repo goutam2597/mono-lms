@@ -91,4 +91,9 @@ class Setting extends Model
 
         return $val;
     }
+
+    public static function isOtpSignupEnabled(): bool
+    {
+        return self::get('otp_signup_enabled', '0') === '1';
+    }
 }

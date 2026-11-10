@@ -426,6 +426,24 @@
                     </div>
 
                     <div class="space-y-3">
+                        <!-- Email OTP Verification for Sign Up -->
+                        <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
+                            <div class="flex items-start gap-3">
+                                <input type="checkbox" name="otp_signup_enabled" value="1" @checked($settings['otp_signup_enabled'] ?? false)
+                                       class="control mt-0.5">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-xs text-neutral-900 dark:text-white block">Email OTP Sign-Up Verification</span>
+                                        <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded">Student &amp; Teacher</span>
+                                    </div>
+                                    <span class="text-[11px] text-neutral-400">Require 6-digit email OTP verification before activating new accounts via configured SMTP</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex h-5 items-center px-2 text-[9px] font-bold uppercase tracking-wider {{ ($settings['otp_signup_enabled'] ?? false) ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40' : 'bg-neutral-100 dark:bg-[#1a1a1a] text-neutral-500 dark:text-neutral-400 border border-transparent dark:border-[#262626]' }}">
+                                {{ ($settings['otp_signup_enabled'] ?? false) ? 'Active' : 'Disabled' }}
+                            </span>
+                        </label>
+
                         <!-- Membership Subscriptions -->
                         <label class="group flex items-start justify-between gap-3 p-3.5 border border-neutral-200 dark:border-[#1f1f1f] bg-white dark:bg-[#121212] hover:border-neutral-900 dark:hover:border-neutral-700 transition-colors cursor-pointer select-none">
                             <div class="flex items-start gap-3">

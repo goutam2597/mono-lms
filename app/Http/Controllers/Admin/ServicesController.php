@@ -33,6 +33,7 @@ class ServicesController extends Controller
         return view('pages.admin.services', [
             'mail' => $mail,
             'storage' => $storage,
+            'otp_signup_enabled' => Setting::isOtpSignupEnabled(),
         ]);
     }
 
@@ -44,6 +45,10 @@ class ServicesController extends Controller
             if ($request->filled($f)) {
                 Setting::set($f, (string) $request->input($f));
             }
+        }
+
+        if ($request->has('otp_setting_present')) {
+            Setting::set('otp_signup_enabled', $request->has('otp_signup_enabled') ? '1' : '0');
         }
 
         return back()->with('success', 'SMTP mail settings saved successfully.');
