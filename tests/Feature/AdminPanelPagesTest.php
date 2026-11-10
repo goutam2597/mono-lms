@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\ContactMessage;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Role;
@@ -489,5 +490,125 @@ class AdminPanelPagesTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('firebase_service_account_file');
+    }
+
+    public function test_support_tickets_full_crud_and_reply_flow(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // 1. Create a ticket
+        $createRes = $this->post(route('admin.tickets.store'), [
+            'user_name' => 'Alice Student',
+            'user_email' => 'alice@learnify.test',
+            'subject' => 'Issue accessing quiz module',
+            'priority' => 'high',
+            'status' => 'open',
+            'message' => 'The quiz submit button is not responsive on lesson 3.',
+        ]);
+        $createRes->assertSessionHas('success');
+
+        $ticket = SupportTicket::where('user_email', 'alice@learnify.test')->first();
+        $this->assertNotNull($ticket);
+        $this->assertStringStartsWith('TK-', $ticket->ticket_number);
+        $this->assertSame('high', $ticket->priority);
+        $this->assertSame('open', $ticket->status);
+
+        // 2. View ticket in list with filters and search
+        $this->get(route('admin.tickets.index', ['search' => 'quiz module']))
+            ->assertOk()
+            ->assertSee($ticket->ticket_number)
+            ->assertSee('Alice Student')
+            ->assertSee('Issue accessing quiz module');
+
+        // 3. Reply to ticket
+        $replyRes = $this->patch(route('admin.tickets.reply', $ticket), [
+            'reply' => 'We have refreshed the quiz component for lesson 3. Please try again.',
+            'status' => 'resolved',
+            'send_email' => '0',
+        ]);
+        $replyRes->assertSessionHas('success');
+
+        $ticket->refresh();
+        $this->assertSame('resolved', $ticket->status);
+        $this->assertSame('We have refreshed the quiz component for lesson 3. Please try again.', $ticket->reply);
+        $this->assertNotNull($ticket->replied_at);
+
+        // 4. Update ticket priority
+        $this->patch(route('admin.tickets.update', $ticket), [
+            'priority' => 'urgent',
+        ])->assertSessionHas('success');
+
+        $ticket->refresh();
+        $this->assertSame('urgent', $ticket->priority);
+
+        // 5. Bulk action (change status to closed)
+        $this->post(route('admin.tickets.bulk-action'), [
+            'action' => 'status_closed',
+            'ids' => [$ticket->id],
+        ])->assertSessionHas('success');
+
+        $ticket->refresh();
+        $this->assertSame('closed', $ticket->status);
+
+        // 6. Delete ticket
+        $this->delete(route('admin.tickets.destroy', $ticket))->assertSessionHas('success');
+        $this->assertDatabaseMissing('support_tickets', ['id' => $ticket->id]);
+    }
+
+    public function test_contact_messages_full_crud_reply_and_export_flow(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // 1. Create a contact message
+        $msg = ContactMessage::create([
+            'name' => 'Dr. Robert Miller',
+            'email' => 'robert.miller@enterprise.test',
+            'phone' => '+1 555 8899',
+            'subject' => 'Enterprise LMS License Inquiry',
+            'message' => 'We would like to license Mono LMS for 500 medical staff.',
+            'is_read' => false,
+        ]);
+
+        // 2. View list and tabs
+        $this->get(route('admin.messages.index', ['tab' => 'unread']))
+            ->assertOk()
+            ->assertSee('Dr. Robert Miller')
+            ->assertSee('Enterprise LMS License Inquiry');
+
+        // 3. Toggle read status
+        $this->patch(route('admin.messages.toggle', $msg))->assertSessionHas('success');
+        $msg->refresh();
+        $this->assertTrue($msg->is_read);
+
+        // 4. Reply to contact message
+        $replyRes = $this->post(route('admin.messages.reply', $msg), [
+            'subject' => 'Re: Enterprise LMS Inquiry',
+            'reply' => 'Thank you Dr. Miller. Our enterprise solutions manager will contact you.',
+            'send_email' => '0',
+        ]);
+        $replyRes->assertSessionHas('success');
+
+        $msg->refresh();
+        $this->assertSame('Thank you Dr. Miller. Our enterprise solutions manager will contact you.', $msg->reply);
+        $this->assertNotNull($msg->replied_at);
+        $this->assertTrue($msg->isReplied());
+
+        // 5. Export messages to CSV
+        $exportRes = $this->get(route('admin.messages.export'));
+        $exportRes->assertOk();
+        $exportRes->assertHeader('content-type', 'text/csv; charset=UTF-8');
+
+        // 6. Bulk action (mark unread)
+        $this->post(route('admin.messages.bulk-action'), [
+            'action' => 'mark_unread',
+            'ids' => [$msg->id],
+        ])->assertSessionHas('success');
+
+        $msg->refresh();
+        $this->assertFalse($msg->is_read);
+
+        // 7. Delete message
+        $this->delete(route('admin.messages.destroy', $msg))->assertSessionHas('success');
+        $this->assertDatabaseMissing('contact_messages', ['id' => $msg->id]);
     }
 }

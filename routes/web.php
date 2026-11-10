@@ -348,10 +348,18 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
 
     // Support Tickets & Contact Messages
     Route::get('/tickets', [AdminSupportController::class, 'tickets'])->name('tickets.index');
+    Route::post('/tickets', [AdminSupportController::class, 'storeTicket'])->name('tickets.store');
+    Route::patch('/tickets/{ticket}', [AdminSupportController::class, 'updateTicket'])->name('tickets.update');
     Route::patch('/tickets/{ticket}/reply', [AdminSupportController::class, 'replyTicket'])->name('tickets.reply');
+    Route::delete('/tickets/{ticket}', [AdminSupportController::class, 'destroyTicket'])->name('tickets.destroy');
+    Route::post('/tickets/bulk-action', [AdminSupportController::class, 'bulkTickets'])->name('tickets.bulk-action');
+
     Route::get('/messages', [AdminSupportController::class, 'messages'])->name('messages.index');
+    Route::get('/messages/export', [AdminSupportController::class, 'exportMessages'])->name('messages.export');
+    Route::post('/messages/{message}/reply', [AdminSupportController::class, 'replyMessage'])->name('messages.reply');
     Route::patch('/messages/{message}/toggle', [AdminSupportController::class, 'toggleMessageRead'])->name('messages.toggle');
     Route::delete('/messages/{message}', [AdminSupportController::class, 'destroyMessage'])->name('messages.destroy');
+    Route::post('/messages/bulk-action', [AdminSupportController::class, 'bulkMessages'])->name('messages.bulk-action');
     Route::post('/messages/bulk-destroy', [AdminSupportController::class, 'bulkDestroyMessages'])->name('messages.bulk-destroy');
 
     // Payment Gateways
