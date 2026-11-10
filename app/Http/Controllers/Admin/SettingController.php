@@ -23,6 +23,9 @@ class SettingController extends Controller
             'currency_symbol' => Setting::get('currency_symbol', '$'),
             'timezone' => Setting::get('timezone', 'UTC'),
             'footer_copyright' => Setting::get('footer_copyright', '© 2026 Mono LMS. All rights reserved.'),
+            'footer_payment_methods' => Setting::get('footer_payment_methods', ''),
+            'footer_payment_methods_enabled' => Setting::get('footer_payment_methods_enabled', '1') === '1',
+            'footer_payment_methods_width' => Setting::get('footer_payment_methods_width', '340px'),
             'membership_enabled' => Setting::get('membership_enabled', '1') === '1',
             'blog_enabled' => Setting::get('blog_enabled', '1') === '1',
             'forums_enabled' => Setting::get('forums_enabled', '1') === '1',
@@ -54,6 +57,8 @@ class SettingController extends Controller
             'currency_symbol',
             'timezone',
             'footer_copyright',
+            'footer_payment_methods',
+            'footer_payment_methods_width',
             'seo_meta_title',
             'seo_meta_description',
             'theme_primary',
@@ -70,6 +75,7 @@ class SettingController extends Controller
         }
 
         // Toggles
+        Setting::set('footer_payment_methods_enabled', $request->has('footer_payment_methods_enabled') ? '1' : '0');
         Setting::set('membership_enabled', $request->has('membership_enabled') ? '1' : '0');
         Setting::set('blog_enabled', $request->has('blog_enabled') ? '1' : '0');
         Setting::set('forums_enabled', $request->has('forums_enabled') ? '1' : '0');

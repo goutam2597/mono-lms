@@ -1157,8 +1157,17 @@
     @endif
 
     @if ($home['banner_instructor']['enabled'] ?? true)
+    @php
+        $bannerWidth = $home['banner_instructor']['width'] ?? 'boxed';
+        $bannerContainerClass = match ($bannerWidth) {
+            'full' => 'w-full my-16 px-4 sm:px-8 lg:px-12',
+            'wide' => 'max-w-screen-2xl mx-auto px-4 sm:px-8 my-16',
+            'compact' => 'max-w-5xl mx-auto px-4 sm:px-8 my-16',
+            default => 'max-w-7xl mx-auto px-4 sm:px-8 my-16',
+        };
+    @endphp
     <!-- 10. BECOME AN INSTRUCTOR BANNER -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-8 my-16">
+    <section class="{{ $bannerContainerClass }}">
         <div class="bg-gradient-to-r from-[#344c3d] via-[#2d4235] to-[#738a6e] rounded-[20px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8 text-white shadow-xl">
             <div class="space-y-3 max-w-2xl text-center lg:text-left">
                 <h3 class="text-2xl sm:text-3xl lg:text-[32px] font-bold leading-tight">

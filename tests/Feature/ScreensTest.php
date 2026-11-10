@@ -54,4 +54,13 @@ class ScreensTest extends TestCase
         $this->get('/instructor')->assertRedirect(route('instructor.login'));
         $this->get('/admin')->assertRedirect(route('admin.login'));
     }
+
+    public function test_footer_renders_payment_methods(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('payment-methods.png');
+        $response->assertSee('Terms & Conditions', false);
+    }
 }

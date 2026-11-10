@@ -62,4 +62,33 @@ class Setting extends Model
 
         return $fallback;
     }
+
+    public static function paymentMethodsUrl(?string $fallback = null): string
+    {
+        $custom = self::get('footer_payment_methods');
+        $fallback ??= asset('images/payment-methods.png');
+
+        if (! empty($custom)) {
+            $url = PublicMedia::url($custom);
+            if (! empty($url)) {
+                return $url;
+            }
+        }
+
+        return $fallback;
+    }
+
+    public static function paymentMethodsWidth(?string $fallback = '340px'): string
+    {
+        $val = trim((string) self::get('footer_payment_methods_width', $fallback));
+        if ($val === '') {
+            return $fallback;
+        }
+
+        if (is_numeric($val)) {
+            return $val.'px';
+        }
+
+        return $val;
+    }
 }

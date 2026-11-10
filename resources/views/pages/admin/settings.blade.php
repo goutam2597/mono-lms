@@ -107,6 +107,50 @@
                                    placeholder="e.g. © 2026 Mono LMS. All rights reserved."
                                    class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
+
+                        <!-- Footer Payment Methods Badge -->
+                        <div class="border-t border-neutral-100 pt-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-wider">Footer Payment Methods</h4>
+                                    <p class="text-[11px] text-neutral-500">Displayed at the bottom of the storefront footer between Copyright and Terms &amp; Conditions.</p>
+                                </div>
+                                <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                                    <input type="checkbox" name="footer_payment_methods_enabled" value="1" @checked($settings['footer_payment_methods_enabled'] ?? true) class="control">
+                                    <span class="text-xs font-medium text-neutral-700">Display in footer</span>
+                                </label>
+                            </div>
+                            <x-media-selector
+                                name="footer_payment_methods"
+                                :value="$settings['footer_payment_methods']"
+                                label="Payment Methods Banner Image"
+                                hint="Upload a replacement strip (PNG, SVG, or WebP) or select from Media Library"
+                                shape="wide"
+                                :defaultUrl="asset('images/payment-methods.png')"
+                            />
+
+                            <!-- Strip Width Control -->
+                            <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-neutral-700 mb-1">Strip Display Width Preset</label>
+                                    <select id="footer_payment_methods_width_preset" onchange="if(this.value){ document.getElementById('footer_payment_methods_width_input').value = this.value; }" class="control w-full text-xs">
+                                        <option value="180px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '180px')>Compact (180px)</option>
+                                        <option value="260px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '260px')>Medium (260px)</option>
+                                        <option value="340px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '340px')>Standard (340px) &mdash; Default</option>
+                                        <option value="420px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '420px')>Large (420px)</option>
+                                        <option value="500px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '500px')>Extra Large (500px)</option>
+                                        <option value="auto" @selected(($settings['footer_payment_methods_width'] ?? '340px') === 'auto')>Natural / Auto</option>
+                                        <option value="" @selected(!in_array(($settings['footer_payment_methods_width'] ?? '340px'), ['180px', '260px', '340px', '420px', '500px', 'auto']))>Custom value</option>
+                                    </select>
+                                    <p class="text-[10px] text-neutral-400 mt-1">Select a preset to automatically populate the width.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-neutral-700 mb-1">Strip Width Value</label>
+                                    <input type="text" id="footer_payment_methods_width_input" name="footer_payment_methods_width" value="{{ $settings['footer_payment_methods_width'] ?? '340px' }}" placeholder="340px" class="control w-full text-xs font-mono">
+                                    <p class="text-[10px] text-neutral-400 mt-1">Accepts px (e.g. 340px), %, rem, or auto.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

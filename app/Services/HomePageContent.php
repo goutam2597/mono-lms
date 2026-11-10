@@ -124,6 +124,7 @@ class HomePageContent
                 'button_text' => 'Join Our Community',
                 'button_url' => '/instructor/register',
                 'background_image' => '',
+                'width' => 'boxed',
             ],
             'partners' => [
                 'enabled' => true,

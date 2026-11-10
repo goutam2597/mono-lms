@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Role;
 use App\Models\Setting;
 use App\Models\SupportTicket;
+use App\Services\HomePageContent;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -184,6 +185,73 @@ class AdminPanelPagesTest extends TestCase
         $this->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('--theme-primary: #065f46', false);
+    }
+
+    public function test_admin_can_update_footer_payment_methods(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->get(route('admin.settings.index'))
+            ->assertOk()
+            ->assertSee('Footer Payment Methods')
+            ->assertSee('footer_payment_methods')
+            ->assertSee('footer_payment_methods_width');
+
+        $this->post(route('admin.settings.update'), [
+            'footer_payment_methods' => 'media/custom-gateways.png',
+            'footer_payment_methods_enabled' => '1',
+            'footer_payment_methods_width' => '420px',
+        ])->assertRedirect();
+
+        $this->assertEquals('media/custom-gateways.png', Setting::get('footer_payment_methods'));
+        $this->assertEquals('1', Setting::get('footer_payment_methods_enabled'));
+        $this->assertEquals('420px', Setting::get('footer_payment_methods_width'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('max-width: 420px', false);
+
+        // Disabling it hides payment methods from footer
+        $this->post(route('admin.settings.update'), [
+            // No footer_payment_methods_enabled passed (unchecked)
+        ])->assertRedirect();
+
+        $this->assertEquals('0', Setting::get('footer_payment_methods_enabled'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('payment-methods.png')
+            ->assertDontSee('custom-gateways.png');
+    }
+
+    public function test_admin_can_update_homepage_banner_strip_width(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->get(route('admin.homepage.index'))
+            ->assertOk()
+            ->assertSee('Strip / Container Width', false);
+
+        $this->put(route('admin.homepage.update'), [
+            'sections' => [
+                'banner_instructor' => [
+                    'enabled' => '1',
+                    'heading' => 'Become An Instructor Today',
+                    'description' => 'Teach millions of students.',
+                    'button_text' => 'Join Now',
+                    'button_url' => '/instructor/register',
+                    'width' => 'full',
+                ],
+            ],
+        ])->assertRedirect();
+
+        $homeContent = app(HomePageContent::class);
+        $section = $homeContent->section('banner_instructor');
+        $this->assertSame('full', $section['width']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('w-full my-16 px-4 sm:px-8 lg:px-12', false);
     }
 
     public function test_media_picker_and_modals_rendered_on_admin_pages(): void

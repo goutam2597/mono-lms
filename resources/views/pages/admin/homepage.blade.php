@@ -741,7 +741,7 @@
                                 <label class="block font-semibold text-slate-700 mb-1">Description</label>
                                 <textarea name="sections[banner_instructor][description]" rows="2" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">{{ $sections['banner_instructor']['description'] ?? '' }}</textarea>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
                                     <label class="block font-semibold text-slate-700 mb-1">Button Text</label>
                                     <input type="text" name="sections[banner_instructor][button_text]" value="{{ $sections['banner_instructor']['button_text'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
@@ -749,6 +749,15 @@
                                 <div>
                                     <label class="block font-semibold text-slate-700 mb-1">Button URL</label>
                                     <input type="text" name="sections[banner_instructor][button_url]" value="{{ $sections['banner_instructor']['button_url'] ?? '' }}" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D]">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-700 mb-1">Strip / Container Width</label>
+                                    <select name="sections[banner_instructor][width]" class="w-full px-3.5 py-2.5 border border-slate-200 focus:outline-none focus:border-[#344C3D] bg-white">
+                                        <option value="boxed" @selected(($sections['banner_instructor']['width'] ?? 'boxed') === 'boxed')>Boxed (Standard - max-w-7xl)</option>
+                                        <option value="wide" @selected(($sections['banner_instructor']['width'] ?? 'boxed') === 'wide')>Wide Container (max-w-screen-2xl)</option>
+                                        <option value="compact" @selected(($sections['banner_instructor']['width'] ?? 'boxed') === 'compact')>Compact Container (max-w-5xl)</option>
+                                        <option value="full" @selected(($sections['banner_instructor']['width'] ?? 'boxed') === 'full')>Full Width (Edge-to-Edge)</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -66,9 +66,17 @@
             </div>
         </div>
 
-        <!-- Bottom Copyright -->
+        <!-- Bottom Copyright & Compliance -->
         <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-            <p>© {{ date('Y') }} Mono LMS. {{ __('app.footer.copyright') }}</p>
+            <p>{{ \App\Models\Setting::get('footer_copyright') ?: '© '.date('Y').' Mono LMS. '.__('app.footer.copyright') }}</p>
+            @if (\App\Models\Setting::get('footer_payment_methods_enabled', '1') === '1')
+                @php
+                    $stripWidth = \App\Models\Setting::paymentMethodsWidth();
+                @endphp
+                <div class="flex items-center justify-center py-1 md:py-0">
+                    <img src="{{ \App\Models\Setting::paymentMethodsUrl() }}" alt="Accepted Payment Methods" style="{{ $stripWidth !== 'auto' ? 'max-width: '.$stripWidth.';' : '' }} width: 100%; height: auto;" class="max-h-8 sm:max-h-9 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
+                </div>
+            @endif
             <div class="flex items-center gap-4">
                 <a href="#" class="hover:text-white transition-colors">Terms & Conditions</a>
                 <span>|</span>
