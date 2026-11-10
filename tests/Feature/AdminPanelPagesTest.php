@@ -92,6 +92,7 @@ class AdminPanelPagesTest extends TestCase
 
         // 8. Settings, Services, System
         $this->get(route('admin.settings.index'))->assertOk()->assertSee('Platform Settings');
+        $this->get(route('admin.settings.google'))->assertOk()->assertSee('Google & Firebase Settings');
         $this->get(route('admin.homepage.index'))->assertOk()->assertSee('Home Page Editor');
         $this->get(route('admin.services.index'))->assertOk()->assertSee('Outgoing Mail (SMTP)');
         $this->get(route('admin.languages.index'))->assertOk();
@@ -394,5 +395,36 @@ class AdminPanelPagesTest extends TestCase
             'email' => $this->admin->email,
             'password' => 'newsecretpassword123',
         ]));
+    }
+
+    public function test_admin_can_update_google_and_firebase_settings(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $this->get(route('admin.settings.google'))
+            ->assertOk()
+            ->assertSee('Google & Firebase Settings')
+            ->assertSee('Firebase Project ID')
+            ->assertSee('FCM Server Key');
+
+        $response = $this->post(route('admin.settings.google.store'), [
+            'google_login_enabled' => '1',
+            'google_client_id' => 'test-client-id.apps.googleusercontent.com',
+            'google_client_secret' => 'test-client-secret-12345',
+            'google_allow_student' => '1',
+            'google_allow_instructor' => '1',
+            'firebase_enabled' => '1',
+            'firebase_project_id' => 'learnify-mobile-app',
+            'firebase_api_key' => 'AIzaSyFakeApiKey1234567890',
+            'firebase_auth_domain' => 'learnify-mobile-app.firebaseapp.com',
+            'firebase_messaging_sender_id' => '109876543210',
+            'firebase_app_id' => '1:109876543210:web:abcdef123456',
+            'firebase_fcm_server_key' => 'AAAAFakeFcmServerKey123',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertSame('learnify-mobile-app', Setting::get('firebase_project_id'));
+        $this->assertSame('AIzaSyFakeApiKey1234567890', Setting::get('firebase_api_key'));
+        $this->assertTrue(Setting::enabled('firebase_enabled'));
     }
 }
