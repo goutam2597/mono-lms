@@ -1,6 +1,6 @@
 <x-layouts.dashboard title="Teacher Verification - Mono LMS" active="verification" userType="instructor">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="space-y-6">
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-gray-100">
             <div>

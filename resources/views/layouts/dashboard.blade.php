@@ -266,11 +266,108 @@
                         <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700 dark:text-neutral-200 h-full flex items-center [&>button]:h-full [&>button]:py-0 [&>button]:gap-1.5" />
                     </div>
 
-                    <!-- Notification Bell with Red Dot Indicator -->
-                    <a href="{{ route('admin.messages.index') }}" title="Notifications" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
-                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0d0d0d]"></span>
-                    </a>
+                    <!-- Notification Bell with Dropdown -->
+                    <div class="relative shrink-0" id="header-notifications-container">
+                        <button type="button"
+                                id="header-notifications-btn"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                title="Notifications"
+                                class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] relative transition-colors flex items-center justify-center shrink-0 cursor-pointer focus:outline-none">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#0d0d0d]"></span>
+                        </button>
+
+                        <!-- Notification Dropdown Menu -->
+                        <div id="header-notifications-dropdown"
+                             class="hidden absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white dark:bg-[#0d0d0d] border border-slate-200 dark:border-[#222222] rounded-[8px] shadow-2xl z-[70] text-xs text-slate-700 dark:text-neutral-300 transform origin-top-right transition-all overflow-hidden">
+                            <!-- Header -->
+                            <div class="px-4 py-3 border-b border-slate-100 dark:border-[#1f1f1f] flex items-center justify-between">
+                                <span class="font-bold text-slate-900 dark:text-white text-xs uppercase tracking-wider">Notifications</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] dark:text-emerald-400">
+                                    {{ $userType === 'admin' ? 'Admin Alerts' : 'Teacher Updates' }}
+                                </span>
+                            </div>
+
+                            <div class="divide-y divide-slate-100 dark:divide-[#1f1f1f] max-h-72 overflow-y-auto">
+                                @if ($userType === 'instructor')
+                                    @php $curInstructor = auth('instructor')->user(); @endphp
+                                    <!-- Verification Status Item -->
+                                    <a href="{{ route('instructor.verification.show') }}" class="p-3.5 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 {{ $curInstructor?->isVerified() ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40' : ($curInstructor?->isPendingVerification() ? 'bg-amber-50 text-amber-600 dark:bg-amber-950/40' : 'bg-red-50 text-red-600 dark:bg-red-950/40') }}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-semibold text-slate-900 dark:text-white text-[12px] leading-tight">
+                                                {{ $curInstructor?->isVerified() ? 'Teacher Verification Approved' : ($curInstructor?->isPendingVerification() ? 'Verification In Review' : ($curInstructor?->isVerificationRejected() ? 'Verification Rejected' : 'Action Required: Verify Account')) }}
+                                            </p>
+                                            <p class="text-[11px] text-slate-500 dark:text-neutral-400 mt-1 line-clamp-2">
+                                                {{ $curInstructor?->isVerified() ? 'Your account is active. Course creation and directory listing are active.' : ($curInstructor?->isPendingVerification() ? 'Documents submitted and queued for administrator review.' : 'Submit your teaching certificate and national ID.') }}
+                                            </p>
+                                        </div>
+                                    </a>
+
+                                    <!-- Reviews Item -->
+                                    <a href="{{ route('instructor.reviews') }}" class="p-3.5 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 flex items-center justify-center shrink-0">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-semibold text-slate-900 dark:text-white text-[12px] leading-tight">Student Feedback &amp; Reviews</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-neutral-400 mt-1 line-clamp-2">Check ratings, reviews, and questions left by students on your courses.</p>
+                                        </div>
+                                    </a>
+
+                                    <!-- Students Activity Item -->
+                                    <a href="{{ route('instructor.students') }}" class="p-3.5 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 flex items-center justify-center shrink-0">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-semibold text-slate-900 dark:text-white text-[12px] leading-tight">Enrolled Students</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-neutral-400 mt-1 line-clamp-2">View recently enrolled students and their learning progress.</p>
+                                        </div>
+                                    </a>
+                                @else
+                                    <!-- Admin Notifications -->
+                                    @php $unreadCount = \App\Models\ContactMessage::where('is_read', false)->count(); @endphp
+                                    <a href="{{ route('admin.messages.index') }}" class="p-3.5 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center shrink-0">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-semibold text-slate-900 dark:text-white text-[12px] leading-tight">Customer Messages</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-neutral-400 mt-1">
+                                                {{ $unreadCount > 0 ? "You have {$unreadCount} unread contact messages." : 'All contact inquiries read.' }}
+                                            </p>
+                                        </div>
+                                    </a>
+                                    <a href="{{ route('admin.instructors.index') }}" class="p-3.5 flex items-start gap-3 hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors block">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center shrink-0">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="font-semibold text-slate-900 dark:text-white text-[12px] leading-tight">Instructor Verifications</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-neutral-400 mt-1">Review pending teacher ID and certification applications.</p>
+                                        </div>
+                                    </a>
+                                @endif
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="px-4 py-2 bg-slate-50 dark:bg-[#121212] border-t border-slate-100 dark:border-[#1f1f1f] text-center">
+                                @if ($userType === 'instructor')
+                                    <a href="{{ route('instructor.verification.show') }}" class="text-[11px] font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">
+                                        View Verification Status &rarr;
+                                    </a>
+                                @else
+                                    <a href="{{ route('admin.messages.index') }}" class="text-[11px] font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">
+                                        View All Contact Messages &rarr;
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Dark/Light Mode Toggle (independent per panel) -->
                     <button type="button" id="theme-toggle-btn" title="Toggle Theme" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
@@ -580,6 +677,53 @@
 
                 btn.addEventListener('click', function (e) {
                     e.stopPropagation();
+                    var notifDropdown = document.getElementById('header-notifications-dropdown');
+                    if (notifDropdown) notifDropdown.classList.add('hidden');
+
+                    var isHidden = dropdown.classList.contains('hidden');
+                    if (isHidden) {
+                        openDropdown();
+                    } else {
+                        closeDropdown();
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!container.contains(e.target)) {
+                        closeDropdown();
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        closeDropdown();
+                    }
+                });
+            })();
+
+            // Header Notifications Dropdown Toggle
+            (function () {
+                var btn = document.getElementById('header-notifications-btn');
+                var dropdown = document.getElementById('header-notifications-dropdown');
+                var container = document.getElementById('header-notifications-container');
+
+                if (!btn || !dropdown || !container) return;
+
+                function closeDropdown() {
+                    dropdown.classList.add('hidden');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+
+                function openDropdown() {
+                    dropdown.classList.remove('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var userMenu = document.getElementById('header-user-menu-dropdown');
+                    if (userMenu) userMenu.classList.add('hidden');
+
                     var isHidden = dropdown.classList.contains('hidden');
                     if (isHidden) {
                         openDropdown();
