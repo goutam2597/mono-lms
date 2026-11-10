@@ -77,7 +77,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($templates as $template)
                 @php
-                    $style = $template->template_type ?? 'template_3';
+                    $style = $template->template_type ?? 'template_1';
                     $primaryColor = $template->border_color ?: '#1a1815';
                     $accentColor = $template->accent_color ?: '#835a2a';
                     $bgColor = $template->bg_color ?: '#ffffff';
@@ -86,14 +86,88 @@
                     <!-- Certificate Miniature Graphical Canvas -->
                     <div class="p-4 sm:p-5 bg-slate-100/70 border-b border-slate-200 flex items-center justify-center">
 
-                        @if($style === 'template_7')
-                            <!-- Template 7 Miniature Thumbnail: Top Gold Wave, Student Avatar Pop-out & Rosette Badge -->
-                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-left select-none group-hover:shadow-lg transition-shadow bg-white border border-[#e6e3dd]">
-                                <!-- Inset dashed border -->
-                                <div class="absolute inset-1.5 border border-dashed border-[#e6e3dd] pointer-events-none"></div>
+                            @if ($style === 'template_8')
+                                <!-- Template 8 Miniature Thumbnail: Navy & Gold Geometric Frame - Certificate of Appreciation (proportional, mirrors the full print view) -->
+                                <div class="@container relative w-full aspect-[16/11] rounded-none shadow-md overflow-hidden group-hover:shadow-lg transition-shadow border border-slate-200" style="--m8-navy: {{ $template->border_color ?: '#2e4a8f' }}; --m8-gold: {{ $template->accent_color ?: '#f2b824' }}; background: {{ $template->bg_color ?: '#ffffff' }};">
+                                    <!-- Geometric corner frame (proportional, colors follow the template) -->
+                                    <div class="absolute top-[4.5cqi] left-[4.5cqi] w-[48cqi] h-[1.6cqi] bg-[var(--m8-navy)]"></div>
+                                    <div class="absolute top-[4.5cqi] left-[4.5cqi] w-[1.6cqi] h-[59.5cqi] bg-[var(--m8-navy)]"></div>
+                                    <div class="absolute top-[4.5cqi] right-[4.5cqi] w-[1.6cqi] h-[16cqi] bg-[var(--m8-navy)]"></div>
+                                    <div class="absolute bottom-[4.5cqi] left-[4.5cqi] w-[16cqi] h-[1.6cqi] bg-[var(--m8-navy)]"></div>
+                                    <div class="absolute bottom-[4.5cqi] right-[4.5cqi] w-[50cqi] h-[1.6cqi] bg-[var(--m8-navy)]"></div>
+                                    <div class="absolute bottom-[4.5cqi] right-[4.5cqi] w-[1.6cqi] h-[59.5cqi] bg-[var(--m8-navy)]"></div>
 
-                                <!-- Top Wave Ribbon Graphic (miniaturized SVG) -->
-                                <div class="absolute top-0 right-0 w-36 h-12 pointer-events-none overflow-hidden">
+                                    <div class="absolute top-[3.4cqi] left-[3cqi] w-[58cqi] h-[0.45cqi] bg-[var(--m8-gold)]"></div>
+                                    <div class="absolute top-[3cqi] left-[3.4cqi] w-[0.45cqi] h-[63cqi] bg-[var(--m8-gold)]"></div>
+                                    <div class="absolute bottom-[3.4cqi] left-[2.5cqi] w-[22cqi] h-[0.45cqi] bg-[var(--m8-gold)]"></div>
+                                    <div class="absolute bottom-[3.4cqi] right-[2.5cqi] w-[58cqi] h-[0.45cqi] bg-[var(--m8-gold)]"></div>
+                                    <div class="absolute top-[3cqi] right-[3.4cqi] w-[0.45cqi] h-[63cqi] bg-[var(--m8-gold)]"></div>
+
+                                    <div class="absolute top-[7.4cqi] left-[4.5cqi] w-[38cqi] h-[0.3cqi] bg-[var(--m8-navy)] opacity-60"></div>
+                                    <div class="absolute top-[7.4cqi] left-[7.4cqi] w-[0.3cqi] h-[46cqi] bg-[var(--m8-navy)] opacity-60"></div>
+                                    <div class="absolute bottom-[7.4cqi] right-[4.5cqi] w-[40cqi] h-[0.3cqi] bg-[var(--m8-navy)] opacity-60"></div>
+                                    <div class="absolute bottom-[7.4cqi] right-[7.4cqi] w-[0.3cqi] h-[46cqi] bg-[var(--m8-navy)] opacity-60"></div>
+
+                                    <!-- Award medal with star & ribbon tails (mirrors the print view badge) -->
+                                    <div class="absolute left-[8cqi] top-[46%] -translate-y-1/2 w-[12cqi] h-[16cqi] z-10">
+                                        <div class="absolute top-[6.5cqi] left-[2.4cqi] w-[3.2cqi] h-[8cqi] bg-[var(--m8-navy)]" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);"></div>
+                                        <div class="absolute top-[6.5cqi] right-[2.4cqi] w-[3.2cqi] h-[8cqi] bg-[var(--m8-navy)]" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);"></div>
+                                        <div class="absolute inset-x-0 top-0 mx-auto w-[12cqi] h-[12cqi] rounded-full border-[0.9cqi] border-[#e3b64d] bg-[var(--m8-navy)] flex flex-col items-center justify-center">
+                                            <span class="text-[1.4cqi] leading-none text-[#f4d97c]">★</span>
+                                            <span class="text-[2.4cqi] font-bold text-[var(--m8-gold)] leading-none mt-[0.3cqi]">{{ now()->format('Y') }}</span>
+                                            <span class="text-[1.3cqi] font-semibold text-white tracking-[0.15em] leading-none mt-[0.4cqi]">AWARD</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Heading & recipient content (proportional) -->
+                                    <div class="relative z-10 h-full flex flex-col items-center pt-[10.5cqi] pb-[12cqi] px-[21cqi]">
+                                        <div class="text-center">
+                                            <div class="text-[4.6cqi] font-extrabold tracking-[0.18em] text-[var(--m8-navy)] uppercase leading-none">CERTIFICATE</div>
+                                            <div class="flex items-center justify-center gap-[2cqi] mt-[1.2cqi]">
+                                                <span class="w-[8cqi] h-[0.35cqi] bg-[var(--m8-navy)] opacity-40"></span>
+                                                <span class="text-[1.5cqi] font-semibold tracking-[0.35em] text-[var(--m8-navy)] uppercase">OF APPRECIATION</span>
+                                                <span class="w-[8cqi] h-[0.35cqi] bg-[var(--m8-navy)] opacity-40"></span>
+                                            </div>
+                                            <div class="w-[1.3cqi] h-[1.3cqi] bg-[var(--m8-gold)] rotate-45 mx-auto mt-[1.6cqi]"></div>
+                                        </div>
+                                        <div class="flex-1 w-full flex flex-col items-center justify-center text-center">
+                                            <span class="text-[1.35cqi] font-semibold tracking-[0.3em] text-[var(--m8-navy)] uppercase block">PROUDLY PRESENTED TO</span>
+                                            <span class="font-signature text-[5.8cqi] text-[var(--m8-navy)] leading-none block mt-[1.2cqi]">Alexandre Montgomery</span>
+                                            <p class="text-[1.4cqi] text-[#6f7683] line-clamp-2 w-full mt-[1.6cqi] leading-relaxed">Outstanding dedication and successful completion of the comprehensive curriculum.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Date & signature values over rules (mirrors print view) -->
+                                    <div class="absolute bottom-[3.5cqi] left-0 right-0 z-10 flex items-end justify-center gap-[9cqi]">
+                                        <div class="text-center w-[16cqi]">
+                                            <div class="text-[1.1cqi] text-[#6f7683] leading-none mb-[1cqi] whitespace-nowrap">{{ now()->format('d M Y') }}</div>
+                                            <span class="block w-full border-t-[0.35cqi] border-[var(--m8-navy)] opacity-50 mx-auto leading-none">&nbsp;</span>
+                                            <div class="text-[1.15cqi] font-bold tracking-[0.25em] text-[var(--m8-navy)] uppercase mt-[0.9cqi]">Date</div>
+                                        </div>
+                                        <div class="text-center w-[16cqi]">
+                                            <div class="font-signature text-[2.4cqi] text-[var(--m8-navy)] leading-none mb-[0.6cqi] whitespace-nowrap">{{ $template->signer_name }}</div>
+                                            <span class="block w-full border-t-[0.35cqi] border-[var(--m8-navy)] opacity-50 mx-auto leading-none">&nbsp;</span>
+                                            <div class="text-[1.15cqi] font-bold tracking-[0.25em] text-[var(--m8-navy)] uppercase mt-[0.9cqi]">{{ $template->signature_title ?: 'SIGNATURE' }}</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Verification QR (mirrors print view placement) -->
+                                    <div class="absolute right-[8.5cqi] bottom-[13cqi] z-10 text-center">
+                                        <div class="w-[7cqi] h-[7cqi] bg-white border-[0.3cqi] border-[var(--m8-navy)]/30 p-[0.6cqi] mx-auto">
+                                            <div class="w-full h-full flex items-center justify-center" style="background-image: repeating-linear-gradient(0deg, #1f2937 0 20%, transparent 20% 40%), repeating-linear-gradient(90deg, #1f2937 0 20%, transparent 20% 40%); background-size: 0.9cqi 0.9cqi; opacity: 0.75;"></div>
+                                        </div>
+                                        <div class="mt-[0.6cqi] text-[0.85cqi] font-bold tracking-[0.14em] text-[var(--m8-navy)] uppercase whitespace-nowrap">Scan to Verify</div>
+                                    </div>
+                                </div>
+                            @else
+
+                            <!-- Template 1 Miniature Thumbnail: Top Gold Wave, Big Avatar Portrait & Rosette Seal (proportional to the 1060x750 print canvas) -->
+                            <div class="@container relative w-full aspect-[16/11] rounded-none shadow-md overflow-hidden select-none group-hover:shadow-lg transition-shadow border border-[#e6e3dd]" style="background: {{ $template->bg_color ?: '#ffffff' }};">
+                                <!-- Inset dashed border -->
+                                <div class="absolute inset-[1.7cqi] border border-dashed border-[#e6e3dd] pointer-events-none"></div>
+
+                                <!-- Top Wave Ribbon Graphic (hugs the top-left corner like the print view) -->
+                                <div class="absolute top-0 left-0 w-[58cqi] h-[14.5cqi] pointer-events-none overflow-hidden -scale-x-100">
                                     <svg viewBox="0 0 400 120" class="w-full h-full" preserveAspectRatio="none">
                                         <path d="M 0,0 C 140,55 260,35 400,0 L 400,120 L 220,120 C 160,80 80,40 0,0 Z" fill="url(#miniWaveGold-{{ $template->id }})" opacity="0.9" />
                                         <defs>
@@ -106,79 +180,54 @@
                                     </svg>
                                 </div>
 
-                                <!-- Pop-out Avatar Circle with Rosette Badge -->
-                                <div class="absolute right-4 top-7 w-12 h-12 rounded-full bg-[#efe6dc] border-2 border-white shadow-md flex items-center justify-center overflow-visible z-10">
-                                    <div class="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-slate-200">
-                                        <img src="{{ \App\Models\Student::whereNotNull('avatar')->first()?->avatarOrDefault() ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80' }}" class="w-full h-full object-cover" alt="Student">
-                                    </div>
-                                    <!-- Scalloped Rosette Badge Overlay -->
-                                    <div class="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-[#d49c3d] text-white flex flex-col items-center justify-center shadow-xs text-[4px] font-bold border border-amber-200">
-                                        <span>★</span>
-                                    </div>
+                                <!-- Left Heading & Info (matches real layout: left column at top ~15.5cqi) -->
+                                <div class="absolute top-[15.5cqi] left-[8.7cqi] w-[43.5cqi] z-10">
+                                    <span class="font-baskerville text-[1.95cqi] text-[#4a4744] uppercase font-semibold block leading-tight">CERTIFICATE OF</span>
+                                    <h4 class="font-baskerville text-[4.1cqi] font-bold text-slate-900 uppercase leading-none mt-[0.5cqi]">ACHIEVEMENT</h4>
+                                    <span class="font-['Inter'] text-[1.05cqi] uppercase tracking-[0.2em] text-[#9b9690] font-medium block mt-[3.4cqi]">THIS IS PROUDLY PRESENTED TO</span>
+                                    <h5 class="font-signature text-[4.7cqi] text-[#7c5121] leading-none mt-[0.7cqi] whitespace-nowrap">Alexandre Montgomery</h5>
+                                    <div class="w-[38.5cqi] h-px bg-[#ebe8e2] mt-[0.6cqi]"></div>
+                                    <p class="text-[1.3cqi] text-[#6e6a65] line-clamp-3 mt-[2cqi] leading-relaxed">Executive Full-Stack Engineering & System Architecture, showcasing commitment to excellence and distinguished honors.</p>
                                 </div>
 
-                                <!-- Left Heading & Info -->
-                                <div class="relative z-10 pt-0.5 pr-14">
-                                    <span class="font-baskerville text-[6px] text-[#4a4744] uppercase font-semibold block leading-tight">CERTIFICATE OF</span>
-                                    <h4 class="font-baskerville text-[10.5px] font-bold text-slate-900 uppercase leading-none mt-0.5">ACHIEVEMENT</h4>
-                                    <span class="font-['Inter'] text-[4.5px] uppercase tracking-wider text-[#9b9690] font-medium block mt-2">THIS IS PROUDLY PRESENTED TO</span>
-                                    <h5 class="font-signature text-[16px] text-[#7c5121] leading-none mt-0.5">Alexandre Montgomery</h5>
-                                    <div class="w-24 h-px bg-[#ebe8e2] mt-0.5"></div>
-                                    <p class="text-[5px] text-[#6e6a65] line-clamp-1 max-w-[130px] mt-0.5">Executive Full-Stack Engineering & System Architecture</p>
-                                </div>
-
-                                <!-- Bottom Row: Signer & QR -->
-                                <div class="relative z-10 pt-1 border-t border-[#f0ede6] flex items-end justify-between text-[6px]">
-                                    <div>
-                                        <span class="font-signature text-[10px] text-[#222] block leading-none select-none">{{ $template->signer_name }}</span>
-                                        <span class="text-[4.5px] text-[#888] uppercase block mt-0.5">{{ $template->signature_title }}</span>
+                                <!-- Big Portrait Circle with Dashed Ring (right side, like the print view) -->
+                                <div class="absolute top-[17.4cqi] right-[13.4cqi] w-[29.8cqi] h-[36cqi] z-[8]">
+                                    <div class="absolute left-[-0.75cqi] bottom-[-1cqi] w-[31.3cqi] h-[31.3cqi] rounded-full border border-dashed border-[#e6e1d8]"></div>
+                                    <div class="absolute left-[0.4cqi] bottom-[0.1cqi] w-[29.1cqi] h-[29.1cqi] rounded-full" style="background: radial-gradient(circle at 50% 42%, #f5ede4 0%, #ede3d7 70%, #e5d9cb 100%);"></div>
+                                    <div class="absolute left-[0.4cqi] bottom-[0.1cqi] w-[29.1cqi] h-[35.1cqi] overflow-hidden rounded-t-[13.2cqi] rounded-b-[14.5cqi]">
+                                        <img src="{{ \App\Models\Student::whereNotNull('avatar')->first()?->avatarOrDefault() ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80' }}" class="w-full h-full object-cover object-top" alt="Student">
                                     </div>
-                                    <div class="text-right flex items-center gap-1">
-                                        <span class="text-[4.5px] text-[#999] uppercase leading-tight">PRESENTED ON<br>10 NOV 2026</span>
-                                        <div class="w-3.5 h-3.5 bg-slate-900 rounded-[1px] p-[1px] flex items-center justify-center">
-                                            <span class="text-[3px] text-white font-mono">QR</span>
+
+                                    <!-- Scalloped Rosette Seal overlapping the portrait's top-left -->
+                                    <div class="absolute top-[-1.1cqi] left-[-5.9cqi] w-[18.5cqi] h-[18.5cqi] z-20 drop-shadow-lg">
+                                        <div class="w-full h-full rounded-full border-[1.1cqi] border-[#caa04c] bg-[#f6ecd8] flex items-center justify-center">
+                                            <div class="w-[76%] h-[76%] rounded-full border border-[#d5a44b] bg-[#fdf8ec] flex flex-col items-center justify-center text-center">
+                                                <span class="text-[0.9cqi] text-[#b98a21] leading-none">★</span>
+                                                <span class="text-[1.7cqi] font-bold text-[#8a5c17] uppercase leading-none mt-[0.25cqi]" style="font-family: 'Playfair Display', Georgia, serif;">BEST</span>
+                                                <span class="text-[1.55cqi] font-bold text-[#8a5c17] uppercase leading-none mt-[0.2cqi]" style="font-family: 'Playfair Display', Georgia, serif;">AWARD</span>
+                                                <span class="text-[0.9cqi] text-[#b98a21] leading-none mt-[0.25cqi]">★</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @else
-                            <!-- Template 3: Heritage Grand Achievement Thumbnail -->
-                            <div class="relative w-full aspect-[16/11] p-3 rounded-none shadow-md overflow-hidden flex flex-col justify-between text-center select-none group-hover:shadow-lg transition-shadow bg-[#fdfcfa] border border-[#e5ddd0]">
-                                <!-- Ornamental gold corners/borders -->
-                                <div class="absolute inset-1.5 border border-[#b68d59] pointer-events-none"></div>
-                                <div class="relative z-10 pt-0.5">
-                                    <h4 class="font-baskerville text-[10px] font-bold text-slate-900 uppercase leading-none">CERTIFICATE</h4>
-                                    <div class="flex items-center justify-center gap-1 mt-0.5">
-                                        <span class="w-3 h-px bg-[#c29d6f]"></span>
-                                        <span class="font-baskerville text-[6px] text-[#383634] uppercase font-semibold">OF ACHIEVEMENT</span>
-                                        <span class="w-3 h-px bg-[#c29d6f]"></span>
-                                    </div>
-                                    <div class="flex items-center justify-center gap-1 mt-0.5 text-[#c29d6f] text-[5px]">
-                                        <span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
+
+                                <!-- Bottom-Left Signature Block -->
+                                <div class="absolute left-[8.7cqi] bottom-[5.5cqi] z-10 text-left">
+                                    <span class="font-['Sacramento'] text-[3.2cqi] text-[#1d1b19] leading-none block -rotate-3 whitespace-nowrap">{{ $template->signer_name }}</span>
+                                    <div class="w-[12.3cqi] h-px bg-[#dcd8d0] mt-[0.4cqi]"></div>
+                                    <span class="text-[0.9cqi] text-[#5a5652] uppercase tracking-[0.1em] font-semibold block mt-[0.4cqi]">{{ $template->signature_title }}</span>
                                 </div>
-                                <div class="relative z-10 my-auto py-1">
-                                    <span class="font-['Inter'] text-[6px] uppercase tracking-wider text-[#87817a] font-medium block">THIS IS PROUDLY PRESENTED TO</span>
-                                    <h5 class="font-signature text-[20px] text-[#7d5729] leading-none">Alexandre Montgomery</h5>
-                                    <div class="w-28 h-px bg-[#c5a278] mx-auto mt-0.5"></div>
-                                    <p class="text-[5.5px] text-[#6b6763] line-clamp-1 max-w-[200px] mx-auto mt-0.5">Executive Full-Stack Engineering & System Architecture</p>
-                                </div>
-                                <div class="relative z-10 pt-1 border-t border-[#e5ddd0] flex items-end justify-between text-[7px]">
-                                    <div class="text-left w-14">
-                                        <div class="w-8 h-px bg-[#b89160] mb-0.5"></div>
-                                        <span class="text-[#55514d] text-[6px] block">10 Oct 2024</span>
+
+                                <!-- Bottom-Right QR & Presented Date -->
+                                <div class="absolute right-[8.1cqi] bottom-[5.5cqi] z-10 flex flex-col items-end text-right">
+                                    <div class="w-[5.3cqi] h-[5.3cqi] bg-slate-900 rounded-[0.3cqi] p-[0.4cqi] flex items-center justify-center">
+                                        <span class="text-[1.3cqi] text-white font-mono">QR</span>
                                     </div>
-                                    <div class="flex flex-col items-center -mb-1">
-                                        <span class="text-[6px] font-serif font-bold text-[#b68d59] leading-tight">★ BEST ★</span>
-                                        <span class="text-[5px] font-serif text-[#b68d59] leading-none">AWARD</span>
-                                    </div>
-                                    <div class="text-right w-14">
-                                        <div class="w-8 h-px bg-[#b89160] mb-0.5 ml-auto"></div>
-                                        <span class="font-signature text-xs text-[#4a4642] block select-none leading-none truncate">{{ $template->signer_name }}</span>
-                                    </div>
+                                    <span class="text-[0.8cqi] text-[#8d8882] uppercase tracking-[0.08em] leading-tight mt-[1.2cqi]">Presented On</span>
+                                    <span class="text-[1.35cqi] text-[#2c2a28] font-medium leading-none mt-[0.3cqi]">10 Nov 2026</span>
                                 </div>
                             </div>
-                        @endif
+                            @endif
 
                     </div>
 
@@ -363,8 +412,8 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select name="template_type" id="create_template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3" selected>Template 3: Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
-                        <option value="template_7">Template 7: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
+                        <option value="template_1" selected>Template 1: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
+                        <option value="template_8">Template 8: Certificate of Appreciation (Navy & Gold Geometric Frame)</option>
                     </select>
                 </div>
 
@@ -437,8 +486,8 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
                     <select id="edit_template_type" name="template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
-                        <option value="template_3" selected>Template 3: Certificate of Achievement (Ornamental Gold & Laurel Medallion)</option>
-                        <option value="template_7">Template 7: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
+                        <option value="template_1" selected>Template 1: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
+                        <option value="template_8">Template 8: Certificate of Appreciation (Navy & Gold Geometric Frame)</option>
                     </select>
                 </div>
 
@@ -524,7 +573,7 @@
             form.action = baseAdminCertUrl + '/' + template.id;
 
             document.getElementById('edit_title').value = template.title || '';
-            document.getElementById('edit_template_type').value = template.template_type || 'template_3';
+            document.getElementById('edit_template_type').value = template.template_type || 'template_1';
             document.getElementById('edit_signer_name').value = template.signer_name || '';
             document.getElementById('edit_signature_title').value = template.signature_title || '';
             document.getElementById('edit_subtitle').value = template.subtitle || '';
@@ -540,9 +589,8 @@
         }
 
         function openPreviewModal(template) {
-            const isT7 = template.template_type === 'template_7';
-            const baseW = isT7 ? 1060 : 1120;
-            const baseH = isT7 ? 750 : 792;
+            const baseW = 1060;
+            const baseH = 750;
             const ratio = baseW / baseH;
 
             const modalBox = document.getElementById('previewModalBox');
@@ -550,7 +598,7 @@
                 modalBox.style.aspectRatio = ratio.toString();
                 modalBox.style.width = `min(94vw, ${baseW}px)`;
                 modalBox.style.height = `min(calc(94vw / ${ratio}), calc(100vh - 60px))`;
-                modalBox.style.backgroundColor = isT7 ? '#ffffff' : '#fdfcfa';
+                modalBox.style.backgroundColor = '#ffffff';
             }
 
             const url = baseAdminCertUrl + '/' + template.id + '/preview';

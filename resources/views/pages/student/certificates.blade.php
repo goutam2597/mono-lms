@@ -73,7 +73,6 @@
             @forelse($certificates as $cert)
                 @php
                     $template = $cert->template ?? \App\Models\CertificateTemplate::getDefault();
-                    $style = $template?->template_type ?? 'template_3';
                 @endphp
                 <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-5 shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between group">
                     <div>

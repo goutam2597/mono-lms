@@ -80,7 +80,7 @@ class CertificateSystemTest extends TestCase
         $first = CertificateTemplate::first();
         $second = CertificateTemplate::skip(1)->first() ?? CertificateTemplate::create([
             'title' => 'Secondary Certificate Template',
-            'template_type' => 'template_3',
+            'template_type' => 'template_1',
             'signer_name' => 'Prof. Test',
             'is_default' => false,
         ]);
@@ -127,6 +127,21 @@ class CertificateSystemTest extends TestCase
         $response->assertSee($certificate->certificate_number);
         $response->assertSee($student->name);
         $response->assertSee($course->title);
+    }
+
+    public function test_appreciation_template_print_view_renders(): void
+    {
+        $student = Student::first();
+        $course = Course::published()->first();
+
+        $certificate = Certificate::issueFor($student, $course);
+        $certificate->template->update(['template_type' => 'template_8']);
+
+        $response = $this->actingAs($student, 'student')->get(route('student.certificates.print', $certificate));
+        $response->assertOk();
+        $response->assertSee('OF APPRECIATION');
+        $response->assertSee($student->name);
+        $response->assertSee($certificate->issue_date->format('Y'));
     }
 
     public function test_unauthorized_student_cannot_print_another_students_certificate(): void

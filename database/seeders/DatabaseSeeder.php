@@ -394,10 +394,10 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 4. Seed Certificate Templates (Figma 3: Certificate of Achievement & Figma 7: Contemporary Prestige Award)
+        // 4. Seed Certificate Templates (Contemporary Prestige Award & Certificate of Appreciation)
         $certTemplates = [
-            ['Certificate of Achievement', 'template_3', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#1a1815', '#835a2a', true],
-            ['Contemporary Prestige Award', 'template_7', 'Manager, CTO', 'Dr. Julian Vance', '#ffffff', '#1a1815', '#835a2a', false],
+            ['Contemporary Prestige Award', 'template_1', 'Manager, CTO', 'Dr. Julian Vance', '#ffffff', '#1a1815', '#835a2a', true],
+            ['Certificate of Appreciation', 'template_8', 'Program Director', 'Dr. Alexander Wright', '#ffffff', '#2e4a8f', '#f2b824', false],
         ];
         foreach ($certTemplates as [$ctTitle, $ctType, $ctSig, $ctName, $ctBg, $ctBorder, $ctAccent, $ctDef]) {
             CertificateTemplate::updateOrCreate(

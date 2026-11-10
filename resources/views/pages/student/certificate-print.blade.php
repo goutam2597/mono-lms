@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ $certificate->certificate_number }} - Certificate of Achievement</title>
+  <title>{{ $certificate->certificate_number }} - {{ $template->title ?? 'Certificate' }}</title>
   <link rel="icon" href="{{ \App\Models\Setting::faviconUrl() }}">
 
   <!-- Google Fonts for both Certificate Designs -->
@@ -11,10 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Kaushan+Script&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
 
-  @php
-    $layout = $template->template_type ?? 'template_3';
-    $isTemplate7 = $layout === 'template_7';
-  @endphp
+
+  <?php $isAppreciation = ($template->template_type ?? 'template_1') === 'template_8'; ?>
 
   <style>
     * {
@@ -34,7 +32,7 @@
         background: transparent !important;
         overflow: hidden !important;
       @else
-        background-color: {{ $isTemplate7 ? '#dde0e3' : '#262523' }};
+        background-color: #dde0e3;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -143,9 +141,8 @@
     }
 
     /* -------------------------------------------------------------
-       STYLES FOR TEMPLATE 7: CONTEMPORARY PRESTIGE AWARD
+       STYLES FOR TEMPLATE 1: CONTEMPORARY PRESTIGE AWARD
        ------------------------------------------------------------- */
-    @if ($isTemplate7)
       :root {
         --outer-bg: #dde0e3;
         --card-bg: #ffffff;
@@ -158,7 +155,7 @@
         --portrait-beige: #efe6dc;
       }
 
-      .certificate-canvas-t7 {
+      .certificate-canvas-t1 {
         position: relative;
         width: 1060px;
         height: 750px;
@@ -194,7 +191,7 @@
         text-align: left;
       }
 
-      .cert-label-t7 {
+      .cert-label-t1 {
         font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
         font-weight: 600;
         font-size: 21px;
@@ -205,7 +202,7 @@
         margin: 0;
       }
 
-      .cert-main-heading-t7 {
+      .cert-main-heading-t1 {
         font-family: 'Libre Baskerville', 'Playfair Display', Georgia, serif;
         font-weight: 700;
         font-size: 45px;
@@ -217,7 +214,7 @@
         transform: scaleY(1.03);
       }
 
-      .presented-label-t7 {
+      .presented-label-t1 {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         font-weight: 500;
         font-size: 11.5px;
@@ -228,7 +225,7 @@
         margin: 38px 0 0 0;
       }
 
-      .recipient-wrapper-t7 {
+      .recipient-wrapper-t1 {
         position: relative;
         margin-top: 4px;
         width: 412px;
@@ -236,7 +233,7 @@
         padding-bottom: 2px;
       }
 
-      .recipient-script-t7 {
+      .recipient-script-t1 {
         font-family: 'Caveat', 'Kaushan Script', cursive;
         font-weight: 700;
         font-size: 58px;
@@ -249,7 +246,7 @@
         white-space: nowrap;
       }
 
-      .body-copy-t7 {
+      .body-copy-t1 {
         font-family: 'Inter', sans-serif;
         font-weight: 400;
         font-size: 14.2px;
@@ -260,7 +257,7 @@
         letter-spacing: 0.003em;
       }
 
-      .signature-block-t7 {
+      .signature-block-t1 {
         position: absolute;
         left: 92px;
         bottom: 58px;
@@ -268,7 +265,7 @@
         text-align: left;
       }
 
-      .signature-line-wrap-t7 {
+      .signature-line-wrap-t1 {
         position: relative;
         width: 140px;
         height: 44px;
@@ -276,7 +273,7 @@
         align-items: center;
       }
 
-      .signature-rule-t7 {
+      .signature-rule-t1 {
         position: absolute;
         left: 0;
         bottom: 11px;
@@ -286,7 +283,7 @@
         pointer-events: none;
       }
 
-      .signature-handwriting-t7 {
+      .signature-handwriting-t1 {
         position: relative;
         z-index: 2;
         font-family: 'Sacramento', cursive;
@@ -298,7 +295,7 @@
         white-space: nowrap;
       }
 
-      .signature-role-t7 {
+      .signature-role-t1 {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         font-weight: 600;
         font-size: 9.5px;
@@ -308,7 +305,7 @@
         margin-top: 2px;
       }
 
-      .portrait-area-t7 {
+      .portrait-area-t1 {
         position: absolute;
         right: 142px;
         top: 184px;
@@ -317,7 +314,7 @@
         z-index: 8;
       }
 
-      .portrait-dashed-ring-t7 {
+      .portrait-dashed-ring-t1 {
         position: absolute;
         left: -8px;
         bottom: -11px;
@@ -330,7 +327,7 @@
         clip-path: polygon(0% 18%, 100% 18%, 100% 100%, 0% 100%);
       }
 
-      .portrait-beige-circle-t7 {
+      .portrait-beige-circle-t1 {
         position: absolute;
         left: 4px;
         bottom: 1px;
@@ -342,7 +339,7 @@
         z-index: 2;
       }
 
-      .portrait-popout-mask-t7 {
+      .portrait-popout-mask-t1 {
         position: absolute;
         left: 4px;
         bottom: 1px;
@@ -356,7 +353,7 @@
         overflow: hidden;
       }
 
-      .portrait-popout-mask-t7 img {
+      .portrait-popout-mask-t1 img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -364,7 +361,7 @@
         display: block;
       }
 
-      .gold-badge-wrapper-t7 {
+      .gold-badge-wrapper-t1 {
         position: absolute;
         left: -62px;
         top: -12px;
@@ -375,7 +372,7 @@
         pointer-events: none;
       }
 
-      .qr-date-block-t7 {
+      .qr-date-block-t1 {
         position: absolute;
         right: 86px;
         bottom: 58px;
@@ -386,13 +383,13 @@
         text-align: right;
       }
 
-      .qr-box-t7 {
+      .qr-box-t1 {
         width: 56px;
         height: 56px;
         margin-bottom: 14px;
       }
 
-      .presented-on-label-t7 {
+      .presented-on-label-t1 {
         font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
         font-weight: 500;
         font-size: 8.5px;
@@ -402,7 +399,7 @@
         line-height: 1.2;
       }
 
-      .presented-date-t7 {
+      .presented-date-t1 {
         font-family: 'Inter', sans-serif;
         font-weight: 500;
         font-size: 14.5px;
@@ -410,211 +407,228 @@
         margin-top: 3px;
         letter-spacing: -0.01em;
       }
-    @else
-      /* -------------------------------------------------------------
-         STYLES FOR TEMPLATE 3: HERITAGE GRAND ACHIEVEMENT
-         ------------------------------------------------------------- */
-      :root {
-        --gold: #b68d59;
-        --gold-light: #c7a477;
-        --gold-dark: #7d5729;
-        --charcoal: #1e1e1e;
-        --sub-charcoal: #383634;
-        --muted-grey: #87817a;
-        --body-grey: #6b6763;
-        --bg-cream: #fdfcfa;
-      }
 
-      .certificate-canvas-t3 {
+    /* -------------------------------------------------------------
+       STYLES FOR TEMPLATE 8: CERTIFICATE OF APPRECIATION
+       (Navy & gold geometric frame, laurel-free modern layout)
+       ------------------------------------------------------------- */
+      .t8-canvas {
         position: relative;
-        width: 1120px;
-        height: 792px;
-        background-color: var(--bg-cream);
+        width: 1060px;
+        height: 750px;
         overflow: hidden;
         user-select: none;
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
       }
 
-      .guilloche-bg {
+      /* --- Geometric corner frame: thick navy bands + gold thread lines --- */
+      .t8-band, .t8-line {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
         pointer-events: none;
-        z-index: 1;
-        opacity: 0.42;
+        z-index: 4;
       }
+      .t8-band.t8-tl-top   { top: 42px; left: 42px; width: 52%; height: 16px; background: var(--t8-navy); }
+      .t8-band.t8-tl-side  { top: 42px; left: 42px; width: 16px; height: calc(100% - 84px); background: var(--t8-navy); }
+      .t8-band.t8-tr-side  { top: 42px; right: 42px; width: 16px; height: 168px; background: var(--t8-navy); }
+      .t8-band.t8-bl-bottom { bottom: 42px; left: 42px; width: 170px; height: 16px; background: var(--t8-navy); }
+      .t8-band.t8-br-bottom { bottom: 42px; right: 42px; width: 54%; height: 16px; background: var(--t8-navy); }
+      .t8-band.t8-br-side  { bottom: 42px; right: 42px; width: 16px; height: 63%; background: var(--t8-navy); }
 
-      .frame-layer {
+      .t8-line { background: var(--t8-gold); z-index: 5; }
+      .t8-line.t8-tl-top   { top: 32px; left: 24px; width: calc(52% + 76px); height: 3px; }
+      .t8-line.t8-tl-side  { top: 24px; left: 32px; width: 3px; height: calc(100% - 55px); }
+      .t8-line.t8-bl-bottom { bottom: 32px; left: 24px; width: 250px; height: 3px; }
+      .t8-line.t8-br-bottom { bottom: 32px; right: 24px; width: calc(54% + 76px); height: 3px; }
+      .t8-line.t8-br-side  { top: 24px; right: 32px; width: 3px; height: calc(100% - 55px); }
+
+      .t8-line.thin { background: var(--t8-navy); opacity: 0.8; }
+      .t8-line.t8-tl-top.thin    { top: 69px; left: 42px; width: 43%; height: 2px; }
+      .t8-line.t8-tl-side.thin   { top: 69px; left: 69px; width: 2px; height: 62%; }
+      .t8-line.t8-br-bottom.thin { bottom: 69px; right: 42px; width: 45%; height: 2px; }
+      .t8-line.t8-br-side.thin   { bottom: 69px; right: 69px; width: 2px; height: 53%; }
+
+      /* --- Anniversary award badge with ribbon tails --- */
+      .t8-badge {
         position: absolute;
-        inset: 18px;
-        pointer-events: none;
-        z-index: 2;
+        left: 80px;
+        top: 282px;
+        width: 134px;
+        z-index: 10;
       }
 
-      .content-layer {
-        position: relative;
-        z-index: 5;
-        width: 100%;
-        height: 100%;
+      /* --- Company brand (top right) --- */
+      .t8-brand {
+        position: absolute;
+        top: 58px;
+        right: 92px;
+        z-index: 10;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 72px 100px 58px 100px;
+        gap: 10px;
+      }
+      .t8-brand-name {
+        font-weight: 800;
+        font-size: 11.5px;
+        letter-spacing: 0.2em;
+        color: var(--t8-navy);
+        text-transform: uppercase;
+        line-height: 1.8;
+        max-width: 118px;
         text-align: center;
       }
 
-      .cert-title {
-        font-family: 'Libre Baskerville', 'Times New Roman', Georgia, serif;
-        font-weight: 700;
-        font-size: 74px;
-        line-height: 1;
-        letter-spacing: 0.03em;
-        color: var(--charcoal);
-        margin: 0;
-        transform: scaleY(1.04);
+      /* --- Centered heading --- */
+      .t8-heading {
+        position: absolute;
+        top: 118px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        text-align: center;
       }
-
-      .subtitle-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 24px;
-        margin-top: 18px;
-        width: 100%;
-      }
-
-      .cert-subtitle {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-weight: 600;
-        font-size: 30.5px;
+      .t8-title {
+        font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+        font-weight: 800;
+        font-size: 54px;
         line-height: 1;
-        letter-spacing: 0.04em;
-        color: var(--sub-charcoal);
-        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        text-indent: 0.16em;
+        color: var(--t8-navy);
         margin: 0;
       }
-
-      .stars-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 17px;
-        margin-top: 14px;
-        color: #c29d6f;
-      }
-
-      .presented-to {
-        font-family: 'Inter', sans-serif;
-        font-weight: 500;
-        font-size: 15.5px;
-        letter-spacing: 0.145em;
-        color: var(--muted-grey);
-        text-transform: uppercase;
-        margin-top: 24px;
-        margin-bottom: 0;
-      }
-
-      .recipient-name-wrap {
-        position: relative;
-        margin-top: 12px;
-        margin-bottom: 2px;
-        display: inline-block;
-        max-width: 820px;
-      }
-
-      .recipient-name {
-        font-family: 'Alex Brush', 'Great Vibes', cursive;
-        font-weight: 400;
-        font-size: 76px;
-        line-height: 1;
-        color: var(--gold-dark);
-        letter-spacing: 0.01em;
-        padding: 0 18px;
-        white-space: nowrap;
-        text-shadow:
-          -1px 0px 0px var(--bg-cream),
-          -2.2px 0.6px 0px rgba(125, 87, 41, 0.72);
-      }
-
-      .name-divider {
-        width: 560px;
-        height: 18px;
-        margin-top: 4px;
-      }
-
-      .cert-body {
-        font-family: 'Inter', sans-serif;
-        font-weight: 400;
-        font-size: 15.2px;
-        line-height: 1.65;
-        color: var(--body-grey);
-        max-width: 660px;
+      .t8-subline {
         margin-top: 16px;
-        margin-bottom: 0;
-        letter-spacing: 0.005em;
-      }
-
-      .cert-body strong {
-        font-weight: 700;
-        color: #54504c;
-      }
-
-      .cert-footer {
-        margin-top: auto;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 220px 1fr;
-        align-items: center;
-        padding: 0 42px;
-        margin-bottom: 6px;
-      }
-
-      .footer-side {
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 16px;
+      }
+      .t8-subline-rule { width: 66px; height: 1.5px; background: var(--t8-navy); opacity: 0.35; }
+      .t8-subline-text {
+        font-size: 13.5px;
+        font-weight: 600;
+        letter-spacing: 0.5em;
+        text-indent: 0.5em;
+        color: var(--t8-navy);
+        text-transform: uppercase;
+      }
+      .t8-heading-diamond {
+        width: 9px;
+        height: 9px;
+        background: var(--t8-gold);
+        transform: rotate(45deg);
+        margin: 18px auto 0;
       }
 
-      .tapered-line {
-        width: 184px;
-        height: 2px;
-        background: radial-gradient(ellipse at center, #b89160 0%, #cfb089 55%, rgba(207, 176, 137, 0) 100%);
-        margin-bottom: 10px;
+      /* --- Recipient & body copy --- */
+      .t8-center {
+        position: absolute;
+        top: 330px;
+        left: 176px;
+        right: 148px;
+        z-index: 10;
+        text-align: center;
       }
-
-      .date-text {
-        font-family: 'Inter', sans-serif;
+      .t8-presented {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        text-indent: 0.34em;
+        color: var(--t8-navy);
+        text-transform: uppercase;
+        margin: 0 0 2px;
+      }
+      .t8-name {
+        font-family: 'Great Vibes', cursive;
+        font-size: 64px;
+        line-height: 1.15;
+        color: var(--t8-navy);
         font-weight: 400;
-        font-size: 18.5px;
-        color: #55514d;
+        margin: 0;
+      }
+      .t8-copy {
+        font-size: 12.8px;
+        line-height: 1.8;
+        color: #6f7683;
+        max-width: 600px;
+        margin: 16px auto 0;
         letter-spacing: 0.01em;
-        min-height: 30px;
+      }
+      .t8-copy strong { color: #3b4250; font-weight: 600; }
+
+      /* --- Bottom date & signature columns --- */
+      .t8-sign-row {
+        position: absolute;
+        bottom: 96px;
+        left: 0;
+        right: 0;
+        z-index: 10;
         display: flex;
-        align-items: center;
+        justify-content: center;
+        gap: 80px;
+      }
+      .t8-sign-col { width: 200px; text-align: center; }
+      .t8-sign-value {
+        font-size: 12.5px;
+        color: #6f7683;
+        height: 30px;
+        line-height: 30px;
+        margin: 0;
+      }
+      .t8-sign-script {
+        font-family: 'Great Vibes', cursive;
+        font-size: 26px;
+        color: var(--t8-navy);
+        height: 30px;
+        line-height: 30px;
+        overflow: visible;
+        margin: 0;
+        white-space: nowrap;
+      }
+      .t8-sign-rule { border-top: 1.5px solid var(--t8-navy); opacity: 0.5; }
+      .t8-sign-label {
+        margin-top: 8px;
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        color: var(--t8-navy);
+        text-transform: uppercase;
       }
 
-      .signature-text {
-        font-family: 'Sacramento', cursive;
-        font-weight: 400;
-        font-size: 34px;
-        line-height: 1;
-        color: #4a4642;
-        transform: rotate(-3deg);
-        min-height: 30px;
-        display: flex;
-        align-items: center;
-        letter-spacing: 0.01em;
+      /* --- Verification QR --- */
+      .t8-qr {
+        position: absolute;
+        right: 92px;
+        bottom: 132px;
+        z-index: 10;
+        text-align: center;
+      }
+      .t8-qr-box {
+        width: 62px;
+        height: 62px;
+        padding: 5px;
+        background: #ffffff;
+        border: 1px solid rgba(46, 74, 143, 0.25);
+      }
+      .t8-qr-box img { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .t8-qr-caption {
+        margin-top: 6px;
+        font-size: 7.5px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: var(--t8-navy);
+        text-transform: uppercase;
         white-space: nowrap;
       }
 
-      .seal-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: translateY(4px);
+      .t8-brand-logo {
+        display: block;
+        max-height: 46px;
+        max-width: 130px;
+        object-fit: contain;
       }
-    @endif
   </style>
 </head>
 <body>
@@ -623,11 +637,107 @@
   <div class="viewport-wrapper">
     <div id="scaler" class="certificate-scaler">
 
-      @if ($isTemplate7)
+        @if ($isAppreciation)
         <!-- =========================================================
-             TEMPLATE 7: CONTEMPORARY PRESTIGE AWARD
+             TEMPLATE 8: CERTIFICATE OF APPRECIATION
+             (Navy & gold geometric frame with award medallion)
              ========================================================= -->
-        <div class="certificate-canvas-t7" id="certificate">
+        <div class="t8-canvas" id="certificate" style="--t8-navy: {{ $template->border_color ?: '#2e4a8f' }}; --t8-gold: {{ $template->accent_color ?: '#f2b824' }}; background: {{ $template->bg_color ?: '#ffffff' }};">
+
+          <!-- Geometric corner frame: navy bands, gold thread lines, inner navy rules -->
+          <div class="t8-band t8-tl-top"></div>
+          <div class="t8-band t8-tl-side"></div>
+          <div class="t8-band t8-tr-side"></div>
+          <div class="t8-band t8-bl-bottom"></div>
+          <div class="t8-band t8-br-bottom"></div>
+          <div class="t8-band t8-br-side"></div>
+
+          <div class="t8-line t8-tl-top"></div>
+          <div class="t8-line t8-tl-side"></div>
+          <div class="t8-line t8-bl-bottom"></div>
+          <div class="t8-line t8-br-bottom"></div>
+          <div class="t8-line t8-br-side"></div>
+
+          <div class="t8-line thin t8-tl-top"></div>
+          <div class="t8-line thin t8-tl-side"></div>
+          <div class="t8-line thin t8-br-bottom"></div>
+          <div class="t8-line thin t8-br-side"></div>
+
+          <!-- Anniversary Award Badge with Ribbon Tails -->
+          <div class="t8-badge">
+            <svg viewBox="0 0 134 180" width="134" height="180" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="t8BadgeGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f9e08a" />
+                  <stop offset="45%" stop-color="#e3b64d" />
+                  <stop offset="100%" stop-color="#b98a21" />
+                </linearGradient>
+              </defs>
+              <polygon points="44,106 66,106 66,166 55,155.5 44,166" style="fill: var(--t8-navy);" />
+              <polygon points="90,106 68,106 68,166 79,155.5 90,166" style="fill: var(--t8-navy);" />
+              <circle cx="67" cy="72" r="50" fill="url(#t8BadgeGold)" />
+              <circle cx="67" cy="72" r="44" style="fill: var(--t8-navy);" />
+              <circle cx="67" cy="72" r="37" fill="none" stroke="#f4d97c" stroke-width="1.3" stroke-dasharray="0.2 5.8" stroke-linecap="round" />
+              <polygon points="67,27 70.5,36.5 80.5,37 72.8,43 75.6,52.5 67,47 58.4,52.5 61.2,43 53.5,37 63.5,36.5" fill="url(#t8BadgeGold)" />
+              <text x="67" y="80" text-anchor="middle" style="fill: var(--t8-gold);" font-family="'Playfair Display', Georgia, serif" font-weight="700" font-size="21" letter-spacing="1">{{ $certificate->issue_date->format('Y') }}</text>
+              <text x="67" y="96" text-anchor="middle" fill="#ffffff" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-weight="700" font-size="10" letter-spacing="2.6">AWARD</text>
+            </svg>
+          </div>
+
+          <!-- Company Brand Mark (top right) — always the site logo from settings -->
+          <div class="t8-brand">
+            <img class="t8-brand-logo" src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ config('app.name') }}" />
+          </div>
+
+          <!-- Heading -->
+          <div class="t8-heading">
+            <h1 class="t8-title">CERTIFICATE</h1>
+            <div class="t8-subline">
+              <div class="t8-subline-rule"></div>
+              <div class="t8-subline-text">OF APPRECIATION</div>
+              <div class="t8-subline-rule"></div>
+            </div>
+            <div class="t8-heading-diamond"></div>
+          </div>
+
+          <!-- Recipient, Course & Body Copy -->
+          <div class="t8-center">
+            <p class="t8-presented">Proudly Presented To</p>
+            <h2 class="t8-name">{{ $certificate->student_name }}</h2>
+            <p class="t8-copy">
+              {{ $template->subtitle ?: 'This certificate of appreciation is proudly awarded in sincere recognition of the dedication, perseverance, and outstanding spirit demonstrated throughout the successful completion of' }}
+              <strong>{{ $certificate->course_title }}</strong>{{ $certificate->grade ? ', achieving ' . $certificate->grade . '.' : '.' }}
+            </p>
+          </div>
+
+          <!-- Date & Signature -->
+          <div class="t8-sign-row">
+            <div class="t8-sign-col">
+              <div class="t8-sign-value">{{ $certificate->issue_date->format('d M Y') }}</div>
+              <div class="t8-sign-rule"></div>
+              <div class="t8-sign-label">Date</div>
+            </div>
+            <div class="t8-sign-col">
+              <div class="t8-sign-script">{{ $certificate->instructor_name ?: ($template->signer_name ?? 'Dr. Alexander Wright') }}</div>
+              <div class="t8-sign-rule"></div>
+              <div class="t8-sign-label">{{ $template->signature_title ?: 'SIGNATURE' }}</div>
+            </div>
+          </div>
+
+          <!-- Verification QR -->
+          @if ($template->show_qr_code ?? true)
+            <div class="t8-qr">
+              <div class="t8-qr-box"><img src="{{ $certificate->qrCodeUrl() }}" alt="QR Code" /></div>
+              <div class="t8-qr-caption">Scan to Verify</div>
+            </div>
+          @endif
+        </div>
+        @else
+
+        <!-- =========================================================
+             TEMPLATE 1: CONTEMPORARY PRESTIGE AWARD
+             ========================================================= -->
+        <div class="certificate-canvas-t1" id="certificate">
           <!-- Subtle inset dashed border -->
           <div class="inset-dashed-frame"></div>
 
@@ -688,36 +798,36 @@
 
           <!-- Left Column: Headings, Recipient Name, Body Text -->
           <div class="left-column">
-            <h2 class="cert-label-t7">CERTIFICATE OF</h2>
-            <h1 class="cert-main-heading-t7">ACHIEVEMENT</h1>
+            <h2 class="cert-label-t1">CERTIFICATE OF</h2>
+            <h1 class="cert-main-heading-t1">ACHIEVEMENT</h1>
 
-            <p class="presented-label-t7">THIS IS PROUDLY PRESENTED TO</p>
+            <p class="presented-label-t1">THIS IS PROUDLY PRESENTED TO</p>
 
-            <div class="recipient-wrapper-t7">
-              <div class="recipient-script-t7">{{ $certificate->student_name }}</div>
+            <div class="recipient-wrapper-t1">
+              <div class="recipient-script-t1">{{ $certificate->student_name }}</div>
             </div>
 
-            <p class="body-copy-t7">
+            <p class="body-copy-t1">
               {{ $template->subtitle ?: 'This certificate acknowledges your outstanding contribution and dedication to successfully completing the curriculum of' }}<br />
               <strong>{{ $certificate->course_title }}</strong>@if($certificate->grade), showcasing commitment to excellence and distinguished honors ({{ $certificate->grade }}).@endif
             </p>
           </div>
 
           <!-- Bottom-Left Signature Block -->
-          <div class="signature-block-t7">
-            <div class="signature-line-wrap-t7">
-              <div class="signature-rule-t7"></div>
-              <div class="signature-handwriting-t7">{{ $certificate->instructor_name ?: ($template->signer_name ?? 'Dr. Julian Vance') }}</div>
+          <div class="signature-block-t1">
+            <div class="signature-line-wrap-t1">
+              <div class="signature-rule-t1"></div>
+              <div class="signature-handwriting-t1">{{ $certificate->instructor_name ?: ($template->signer_name ?? 'Dr. Julian Vance') }}</div>
             </div>
-            <div class="signature-role-t7">{{ $template->signature_title ?? 'MANAGER, CTO' }}</div>
+            <div class="signature-role-t1">{{ $template->signature_title ?? 'MANAGER, CTO' }}</div>
           </div>
 
           <!-- Right Column: Student Avatar Portrait & 3D Gold Rosette Seal -->
-          <div class="portrait-area-t7">
-            <div class="portrait-dashed-ring-t7"></div>
-            <div class="portrait-beige-circle-t7"></div>
+          <div class="portrait-area-t1">
+            <div class="portrait-dashed-ring-t1"></div>
+            <div class="portrait-beige-circle-t1"></div>
 
-            <div class="portrait-popout-mask-t7">
+            <div class="portrait-popout-mask-t1">
               <img
                 id="portraitImg"
                 src="{{ $certificate->studentAvatarUrl() }}"
@@ -779,7 +889,7 @@
             </div>
 
             <!-- 3D Metallic Gold Rosette Seal Badge ("BEST AWARD") -->
-            <div class="gold-badge-wrapper-t7">
+            <div class="gold-badge-wrapper-t1">
               <svg viewBox="-100 -100 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="rosetteOuterGrad" x1="-80%" y1="-80%" x2="80%" y2="80%">
@@ -848,184 +958,16 @@
           </div>
 
           <!-- Bottom-Right QR Code & Presented Date Block -->
-          <div class="qr-date-block-t7">
-            <div class="qr-box-t7">
+          <div class="qr-date-block-t1">
+            <div class="qr-box-t1">
               <img src="{{ $certificate->qrCodeUrl() }}" style="width: 100%; height: 100%; object-fit: contain; display: block;" alt="QR Code" />
             </div>
-            <div class="presented-on-label-t7">PRESENTED ON</div>
-            <div class="presented-date-t7">{{ $certificate->issue_date->format('d M Y') }}</div>
+            <div class="presented-on-label-t1">PRESENTED ON</div>
+            <div class="presented-date-t1">{{ $certificate->issue_date->format('d M Y') }}</div>
           </div>
         </div>
+        @endif
 
-      @else
-        <!-- =========================================================
-             TEMPLATE 3: HERITAGE GRAND ACHIEVEMENT
-             ========================================================= -->
-        <div class="certificate-canvas-t3" id="certificate">
-          <!-- Subtle diagonal wavy guilloche watermark background -->
-          <svg class="guilloche-bg" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-              <pattern id="wavyGuilloche" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
-                <path d="M 0 7 Q 7 2, 14 7 T 28 7" fill="none" stroke="#e5ddd0" stroke-width="0.9" />
-                <path d="M 0 14 Q 7 9, 14 14 T 28 14" fill="none" stroke="#e5ddd0" stroke-width="0.9" />
-                <path d="M 0 21 Q 7 16, 14 21 T 28 21" fill="none" stroke="#e5ddd0" stroke-width="0.9" />
-                <path d="M 0 28 Q 7 23, 14 28 T 28 28" fill="none" stroke="#e5ddd0" stroke-width="0.9" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#wavyGuilloche)" />
-          </svg>
-
-          <!-- Ornamental gold border & corners -->
-          <svg class="frame-layer" viewBox="0 0 1084 756" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <g id="cornerFiligree" fill="#b68d59">
-                <path d="M 2,2 L 29,2 C 21,10 10,21 2,29 Z" />
-                <path d="M 24,24 C 31,20 40,26 42,35 C 34,39 22,33 24,24 Z" />
-                <path d="M 41,41 C 55,34 73,41 85,56 C 73,57 59,54 47,47 C 54,59 57,73 56,85 C 41,73 34,55 41,41 Z" />
-                <path d="M 44,44 C 60,48 76,60 88,88 C 60,76 48,60 44,44 Z" />
-                <path d="M 73,53 C 83,50 94,55 98,64 C 89,66 78,61 73,53 Z" />
-                <path d="M 53,73 C 50,83 55,94 64,98 C 66,89 61,78 53,73 Z" />
-                <path d="M 38,2 L 88,2 C 88,12 80,22 68,24 C 77,15 76,8 65,8 C 54,8 48,18 52,28 C 40,24 35,12 38,2 Z" />
-                <path d="M 94,2 C 102,2 114,5 123,14 C 115,17 105,19 96,26 C 90,31 82,36 73,34 C 81,28 87,19 89,11 C 91,5 92,2 94,2 Z" />
-                <path d="M 58,28 C 68,26 78,32 82,42 C 74,43 65,37 58,28 Z" />
-                <path d="M 88,36 C 96,30 107,30 114,37 C 105,41 94,41 88,36 Z" />
-                <path d="M 2,38 L 2,88 C 12,88 22,80 24,68 C 15,77 8,76 8,65 C 8,54 18,48 28,52 C 24,40 12,35 2,38 Z" />
-                <path d="M 2,94 C 2,102 5,114 14,123 C 17,115 19,105 26,96 C 31,90 36,82 34,73 C 28,81 19,87 11,89 C 5,91 2,92 2,94 Z" />
-                <path d="M 28,58 C 26,68 32,78 42,82 C 43,74 37,65 28,58 Z" />
-                <path d="M 36,88 C 30,96 30,107 37,114 C 41,105 41,94 36,88 Z" />
-              </g>
-
-              <g id="edgeKnotBar" fill="#b68d59">
-                <rect x="0" y="-1.3" width="38" height="2.6" />
-                <polygon points="37,0 44,-4.5 51,0 44,4.5" />
-                <path d="M 49,0 L 63,-8.5 C 66,-5 66,5 63,8.5 Z" />
-                <circle cx="73" cy="-7.2" r="7.2" />
-                <circle cx="73" cy="7.2" r="7.2" />
-                <rect x="67" y="-7" width="12" height="14" />
-                <path d="M 97,0 L 83,-8.5 C 80,-5 80,5 83,8.5 Z" />
-                <polygon points="95,0 102,-4.5 109,0 102,4.5" />
-                <rect x="108" y="-1.3" width="38" height="2.6" />
-              </g>
-
-              <polygon id="smallStar" points="0,-6.5 1.9,-2 6.8,-1.5 3.1,1.7 4.2,6.5 0,3.9 -4.2,6.5 -3.1,1.7 -6.8,-1.5 -1.9,-2" fill="#c29d6f" />
-            </defs>
-
-            <use href="#cornerFiligree" x="0" y="0" />
-            <use href="#cornerFiligree" x="0" y="0" transform="translate(1084, 0) scale(-1, 1)" />
-            <use href="#cornerFiligree" x="0" y="0" transform="translate(0, 756) scale(1, -1)" />
-            <use href="#cornerFiligree" x="0" y="0" transform="translate(1084, 756) scale(-1, -1)" />
-
-            <use href="#edgeKnotBar" transform="translate(122, 16)" />
-            <line x1="281" y1="16" x2="808" y2="16" stroke="#c5a173" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="0.1 11.4" />
-            <use href="#edgeKnotBar" transform="translate(962, 16) scale(-1, 1)" />
-
-            <use href="#edgeKnotBar" transform="translate(122, 740)" />
-            <line x1="281" y1="740" x2="808" y2="740" stroke="#c5a173" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="0.1 11.4" />
-            <use href="#edgeKnotBar" transform="translate(962, 740) scale(-1, 1)" />
-
-            <use href="#edgeKnotBar" transform="translate(14, 120) rotate(90)" />
-            <line x1="14" y1="266" x2="14" y2="490" stroke="#b68d59" stroke-width="2.6" />
-            <use href="#edgeKnotBar" transform="translate(14, 636) rotate(-90)" />
-
-            <use href="#edgeKnotBar" transform="translate(1070, 120) rotate(90)" />
-            <line x1="1070" y1="266" x2="1070" y2="490" stroke="#b68d59" stroke-width="2.6" />
-            <use href="#edgeKnotBar" transform="translate(1070, 636) rotate(-90)" />
-          </svg>
-
-          <!-- Inner Content Layer -->
-          <div class="content-layer">
-            <h1 class="cert-title">CERTIFICATE</h1>
-
-            <div class="subtitle-row">
-              <svg width="86" height="14" viewBox="0 0 86 14" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="0,7 5,4 10,7 5,10" fill="#c29d6f" />
-                <polygon points="8,7 15,2.5 22,7 15,11.5" fill="#c29d6f" />
-                <line x1="20" y1="7" x2="86" y2="7" stroke="#c29d6f" stroke-width="1.6" />
-              </svg>
-
-              <h2 class="cert-subtitle">OF ACHIEVEMENT</h2>
-
-              <svg width="86" height="14" viewBox="0 0 86 14" xmlns="http://www.w3.org/2000/svg">
-                <line x1="0" y1="7" x2="66" y2="7" stroke="#c29d6f" stroke-width="1.6" />
-                <polygon points="64,7 71,2.5 78,7 71,11.5" fill="#c29d6f" />
-                <polygon points="76,7 81,4 86,7 81,10" fill="#c29d6f" />
-              </svg>
-            </div>
-
-            <div class="stars-row" aria-hidden="true">
-              <svg width="98" height="16" viewBox="0 0 98 16" xmlns="http://www.w3.org/2000/svg">
-                <use href="#smallStar" x="10" y="8" />
-                <use href="#smallStar" x="36" y="8" />
-                <use href="#smallStar" x="62" y="8" />
-                <use href="#smallStar" x="88" y="8" />
-              </svg>
-            </div>
-
-            <p class="presented-to">THIS IS PROUDLY PRESENTED TO</p>
-
-            <div class="recipient-name-wrap">
-              <div class="recipient-name">{{ $certificate->student_name }}</div>
-            </div>
-
-            <svg class="name-divider" viewBox="0 0 560 18" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="2,9 9,5.5 16,9 9,12.5" fill="#c5a278" />
-              <path d="M 13,9 L 25,3.5 L 35,9 L 25,14.5 Z" fill="#c5a278" />
-              <line x1="33" y1="9" x2="527" y2="9" stroke="#c5a278" stroke-width="1.5" />
-              <path d="M 525,9 L 535,3.5 L 547,9 L 535,14.5 Z" fill="#c5a278" />
-              <polygon points="544,9 551,5.5 558,9 551,12.5" fill="#c5a278" />
-            </svg>
-
-            <p class="cert-body">
-              {{ $template->subtitle ?: 'This certificate acknowledges your outstanding contribution and dedication to successfully completing the curriculum of' }}<br />
-              <strong>{{ $certificate->course_title }}</strong>@if($certificate->grade), showcasing commitment to excellence and distinguished honors ({{ $certificate->grade }}).@endif
-            </p>
-
-            <div class="cert-footer">
-              <div class="footer-side">
-                <div class="tapered-line"></div>
-                <div class="date-text">{{ $certificate->issue_date->format('d M Y') }}</div>
-              </div>
-
-              <div class="seal-container">
-                <svg id="laurelSeal" width="166" height="166" viewBox="-90 -90 180 180" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <polygon id="emblemStar" points="0,-10 2.9,-3.1 10.3,-2.3 4.7,2.6 6.4,9.8 0,6 -6.4,9.8 -4.7,2.6 -10.3,-2.3 -2.9,-3.1" fill="#b68d59" />
-                    <polygon id="emblemDiamond" points="0,-6 4.6,0 0,6 -4.6,0" fill="#b68d59" />
-                  </defs>
-
-                  <g id="wreathLeaves" fill="#b68d59"></g>
-
-                  <use href="#emblemStar" transform="translate(-8.5, 67) scale(0.55)" />
-                  <use href="#emblemStar" transform="translate(8.5, 67) scale(0.55)" />
-
-                  <use href="#emblemStar" transform="translate(-19, -31) scale(0.58)" />
-                  <use href="#emblemStar" transform="translate(0, -39) scale(0.95)" />
-                  <use href="#emblemStar" transform="translate(19, -31) scale(0.58)" />
-
-                  <text x="0" y="-6" text-anchor="middle" fill="#b68d59" font-family="'Cinzel', 'Libre Baskerville', Georgia, serif" font-weight="700" font-size="22" letter-spacing="1.2">BEST</text>
-                  <text x="0" y="16" text-anchor="middle" fill="#b68d59" font-family="'Cinzel', 'Libre Baskerville', Georgia, serif" font-weight="700" font-size="21" letter-spacing="0.8">AWARD</text>
-
-                  <use href="#emblemDiamond" transform="translate(-19, 32) scale(0.72)" />
-                  <use href="#emblemDiamond" transform="translate(0, 32) scale(1.05)" />
-                  <use href="#emblemDiamond" transform="translate(19, 32) scale(0.72)" />
-                </svg>
-              </div>
-
-              <div class="footer-side">
-                <div class="tapered-line"></div>
-                <div class="signature-text">{{ $certificate->instructor_name ?: ($template->signer_name ?? 'Dr. Alexander Wright') }}</div>
-              </div>
-            </div>
-          </div>
-
-          @if ($template->show_qr_code ?? true)
-            <div class="no-print" style="position: absolute; bottom: 22px; right: 28px; z-index: 10; display: flex; align-items: center; gap: 6px; background: rgba(253, 252, 250, 0.95); padding: 3px 6px; border: 1px solid #e5ddd0; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
-              <img src="{{ $certificate->qrCodeUrl() }}" style="width: 26px; height: 26px; object-fit: contain; display: block;" alt="QR">
-              <span style="font-family: monospace; font-size: 7px; color: #87817a; text-transform: uppercase; line-height: 1.1; letter-spacing: 0.05em;">VERIFIED<br>REGISTRY</span>
-            </div>
-          @endif
-        </div>
-      @endif
 
     </div>
   </div>
@@ -1061,7 +1003,7 @@
 
   <script>
     /**
-     * Top Wave Guilloche Lines for Template 7
+     * Top Wave Guilloche Lines for Template 1
      */
     function buildTopGuillocheWaves() {
       const group = document.getElementById('guillocheWaveLines');
@@ -1089,7 +1031,7 @@
     }
 
     /**
-     * Rosette paths for Template 7
+     * Rosette paths for Template 1
      */
     function buildScallopedRosette() {
       const makeRosettePath = (baseR, amp, lobes, phaseRad = 0) => {
@@ -1115,63 +1057,14 @@
     }
 
     /**
-     * Laurel Wreath leaves for Template 3
-     */
-    function buildLaurelWreath() {
-      const container = document.getElementById('wreathLeaves');
-      if (!container) return;
-
-      const radius = 66;
-      const steps = 11;
-      const startAngleDeg = 72;
-      const endAngleDeg = -76;
-
-      let svgMarkup = '';
-
-      [-1, 1].forEach((side) => {
-        for (let i = 0; i <= steps; i++) {
-          const t = i / steps;
-          const deg = startAngleDeg + t * (endAngleDeg - startAngleDeg);
-          const rad = (deg * Math.PI) / 180;
-          const x = side * radius * Math.cos(rad);
-          const y = radius * Math.sin(rad);
-          const tangentDeg = side === 1 ? deg - 90 : 90 - deg;
-          const scale = i === steps ? 0.52 : 1 - t * 0.34;
-
-          if (i < steps) {
-            const outerAngle = tangentDeg + side * 28;
-            svgMarkup += `
-              <path d="M 0,0 C -3.8,-6 -3.5,-14 0,-20 C 3.5,-14 3.8,-6 0,0 Z"
-                    transform="translate(${x.toFixed(2)}, ${y.toFixed(2)}) rotate(${outerAngle.toFixed(2)}) scale(${scale.toFixed(2)})" />
-            `;
-            const innerAngle = tangentDeg - side * 26;
-            svgMarkup += `
-              <path d="M 0,0 C -3.6,-5.5 -3.3,-13 0,-18.5 C 3.3,-13 3.6,-5.5 0,0 Z"
-                    transform="translate(${x.toFixed(2)}, ${y.toFixed(2)}) rotate(${innerAngle.toFixed(2)}) scale(${(scale * 0.92).toFixed(2)})" />
-            `;
-          } else {
-            const topAngle = tangentDeg - side * 6;
-            svgMarkup += `
-              <path d="M 0,0 C -3.2,-5 -3,-12 0,-17 C 3,-12 3.2,-5 0,0 Z"
-                    transform="translate(${x.toFixed(2)}, ${y.toFixed(2)}) rotate(${topAngle.toFixed(2)}) scale(${scale.toFixed(2)})" />
-            `;
-          }
-        }
-      });
-
-      container.innerHTML = svgMarkup;
-    }
-
-    /**
      * Smooth viewport scaler that handles both 1060x750 and 1120x792
      */
     function fitCertificateToScreen() {
       const scaler = document.getElementById('scaler');
       if (!scaler) return;
 
-      const isT7 = {{ $isTemplate7 ? 'true' : 'false' }};
-      const certWidth = isT7 ? 1060 : 1120;
-      const certHeight = isT7 ? 750 : 792;
+      const certWidth = 1060;
+      const certHeight = 750;
       const isEmbed = {{ request('embed') ? 'true' : 'false' }};
 
       if (isEmbed) {
@@ -1232,14 +1125,12 @@
     window.addEventListener('DOMContentLoaded', () => {
       buildTopGuillocheWaves();
       buildScallopedRosette();
-      buildLaurelWreath();
       fitCertificateToScreen();
     });
 
     window.addEventListener('load', () => {
       buildTopGuillocheWaves();
       buildScallopedRosette();
-      buildLaurelWreath();
       fitCertificateToScreen();
     });
 

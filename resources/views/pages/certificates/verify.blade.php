@@ -54,11 +54,6 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-8 py-12">
         @if ($searched)
             @if ($certificate)
-                @php
-                    $template = $certificate->template ?? \App\Models\CertificateTemplate::getDefault();
-                    $style = $template?->template_type ?? 'template_3';
-                @endphp
-
                 <!-- Verified Result Card -->
                 <div class="bg-white border-2 border-emerald-500 rounded-2xl p-6 sm:p-10 shadow-xl space-y-8 animate-in fade-in zoom-in-95 duration-200">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
