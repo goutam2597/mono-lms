@@ -26,6 +26,11 @@
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
+                try {
+                    if (localStorage.getItem('mono-sidebar-collapsed') === '1') {
+                        document.documentElement.classList.add('panel-sidebar-collapsed');
+                    }
+                } catch (e) {}
             })();
         </script>
 
@@ -60,6 +65,44 @@
             }
             .custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
                 background: rgba(255, 255, 255, 0.24);
+            }
+
+            /* ---------------- Collapsible sidebar (mono_market pattern) ---------------- */
+            #dashboard-sidebar { width: 16rem; }
+            #dashboard-main { transition: padding-left .3s ease; }
+            @media (min-width: 1024px) {
+                #dashboard-main { padding-left: 16rem; }
+                .panel-sidebar-collapsed #dashboard-main { padding-left: 5rem; }
+                .panel-sidebar-collapsed #dashboard-sidebar { width: 5rem; }
+            }
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-caption,
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-label,
+            .panel-sidebar-collapsed #dashboard-sidebar .chevron-arrow,
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-badge-pill { display: none !important; }
+            .panel-sidebar-collapsed #dashboard-sidebar .custom-sidebar-scroll a,
+            .panel-sidebar-collapsed #dashboard-sidebar .custom-sidebar-scroll button[data-accordion-toggle] { justify-content: center; padding-left: .5rem; padding-right: .5rem; gap: 0; }
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-logo-full { display: none; }
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-logo-icon { display: flex; }
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-user-info,
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-card-actions { display: none; }
+            .panel-sidebar-collapsed #dashboard-sidebar .sidebar-profile-card { justify-content: center; padding-left: .5rem; padding-right: .5rem; }
+            .panel-sidebar-collapsed #dashboard-sidebar [data-accordion-item] { position: relative; overflow: visible; }
+            .panel-sidebar-collapsed #dashboard-sidebar [data-accordion-item] .submenu-container { display: none !important; }
+            @media (min-width: 1024px) {
+                .panel-sidebar-collapsed #dashboard-sidebar { width: 5rem; translate: none; }
+                .panel-sidebar-collapsed #dashboard-sidebar [data-accordion-item] .submenu-container.panel-flyout-open {
+                    display: block !important;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    min-width: 210px;
+                    background: #0b0d0e;
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 6px;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.35);
+                    padding: .5rem;
+                    z-index: 60;
+                }
             }
 
             /* ---------------- Action buttons (mono_market pattern) ---------------- */
@@ -126,14 +169,20 @@
         <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/70 z-40 hidden lg:hidden transition-opacity backdrop-blur-xs"></div>
 
         <!-- Full-height Standalone Sidebar (Figma Dev Mode Dark #0b0d0e) -->
-        <aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0b0d0e] text-[#94a3b8] flex flex-col justify-between border-r border-[#1e293b]/70 transition-transform duration-300 -translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none select-none">
+        <aside id="dashboard-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0b0d0e] text-[#94a3b8] flex flex-col justify-between border-r border-[#1e293b]/70 transition-[width,transform] duration-300 -translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none select-none">
             <!-- Sidebar Header & Scrollable Nav -->
             <div class="flex-1 flex flex-col min-h-0">
                 <!-- Top Brand Header -->
-                <div class="h-[60px] px-5 flex items-center justify-between border-b border-white/[0.07] bg-[#07090a] shrink-0">
-                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : ($userType === 'instructor' ? route('instructor.dashboard') : route('student.dashboard')) }}" class="flex items-center gap-2.5 group">
-                        <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="h-6 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                <div class="h-[60px] px-3.5 flex items-center justify-between gap-1 border-b border-white/[0.07] bg-[#07090a] shrink-0">
+                    <a href="{{ $userType === 'admin' ? route('admin.dashboard') : ($userType === 'instructor' ? route('instructor.dashboard') : route('student.dashboard')) }}" class="flex items-center gap-2.5 group min-w-0 flex-1">
+                        <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="sidebar-logo-full h-8 w-auto object-contain transition-transform duration-200 group-hover:scale-105" />
+                        <span class="sidebar-logo-icon hidden flex-none items-center justify-center">
+                            <img src="{{ asset('images/favicon.png') }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" class="h-8 w-8 object-contain" onerror="this.style.display='none'" />
+                        </span>
                     </a>
+                    <button type="button" id="sidebar-collapse-btn" class="hidden lg:flex p-1.5 rounded-[5px] text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer flex-none" aria-label="Collapse sidebar" title="Collapse sidebar">
+                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l4-5-4-5M4 17l4-5-4-5"/></svg>
+                    </button>
                     <button type="button" id="sidebar-close" class="lg:hidden p-1.5 rounded-[5px] text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors" aria-label="Close sidebar">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -180,7 +229,7 @@
                         default => 'User',
                     };
                 @endphp
-                <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2">
+                <div class="bg-white/[0.03] border border-white/[0.06] rounded-[6px] p-2 flex items-center justify-between gap-2 sidebar-profile-card">
                     <a href="{{ $sidebarProfileRoute }}" title="Edit Profile" class="flex items-center gap-2.5 min-w-0 group hover:opacity-90 transition-opacity">
                         <div class="relative shrink-0">
                             @if ($sidebarAvatar)
@@ -195,12 +244,12 @@
                             @endif
                             <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#07090a]"></span>
                         </div>
-                        <div class="min-w-0">
+                        <div class="sidebar-user-info min-w-0">
                             <p class="text-xs font-semibold text-white group-hover:text-[var(--theme-accent,#738a6e)] transition-colors truncate leading-tight">{{ $sidebarUser->name ?? 'User' }}</p>
                             <p class="text-[10px] text-slate-400 truncate mt-0.5">{{ $sidebarSubtitle }}</p>
                         </div>
                     </a>
-                    <div class="flex items-center gap-0.5 shrink-0">
+                    <div class="sidebar-card-actions flex items-center gap-0.5 shrink-0">
                         <a href="{{ $sidebarProfileRoute }}" title="Edit Profile" class="p-1 rounded-[4px] text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                         </a>
@@ -219,7 +268,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-w-0 lg:pl-64 min-h-screen">
+        <div id="dashboard-main" class="flex-1 flex flex-col min-w-0 min-h-screen">
             <!-- Full-width Sticky Top Header (Figma Dev Mode Node 10073:144208) -->
             <header class="h-[60px] bg-white dark:bg-[#0a0a0a] border-b border-[#e2e8f0] dark:border-[#1f1f1f] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-[0px_1px_3px_rgba(0,0,0,0.02)]">
                 <!-- Search Keyword with ⌘ Badge -->
@@ -584,26 +633,87 @@
             </footer>
         </div>
 
-        <!-- Mobile sidebar drawer toggle script -->
+        <!-- Sidebar collapse (desktop) & mobile drawer control script -->
         <script>
             (function () {
-                const toggle = document.getElementById('sidebar-toggle');
-                const closeBtn = document.getElementById('sidebar-close');
-                const sidebar = document.getElementById('dashboard-sidebar');
-                const backdrop = document.getElementById('sidebar-backdrop');
+                var html = document.documentElement;
+                var key = 'mono-sidebar-collapsed';
+                var collapseBtn = document.getElementById('sidebar-collapse-btn');
+                if (collapseBtn) {
+                    collapseBtn.addEventListener('click', function () {
+                        var collapsed = html.classList.toggle('panel-sidebar-collapsed');
+                        try { localStorage.setItem(key, collapsed ? '1' : '0'); } catch (e) {}
+                    });
+                }
+            })();
+
+            /* Collapsed flyout: groups reveal their submenus as fixed-position
+               panels anchored next to the hovered icon (mono_market pattern) */
+            (function () {
+                var html = document.documentElement;
+                var sidebar = document.getElementById('dashboard-sidebar');
+                if (!sidebar) return;
+                var items = sidebar.querySelectorAll('[data-accordion-item]');
+
+                function hideAll() {
+                    items.forEach(function (item) {
+                        var sub = item.querySelector('.submenu-container');
+                        if (sub) sub.classList.remove('panel-flyout-open');
+                    });
+                }
+
+                items.forEach(function (item) {
+                    var toggle = item.querySelector('[data-accordion-toggle]');
+                    var sub = item.querySelector('.submenu-container');
+                    if (!toggle || !sub) return;
+                    toggle.addEventListener('mouseenter', function () {
+                        if (!html.classList.contains('panel-sidebar-collapsed')) return;
+                        if (!window.matchMedia('(min-width: 1024px)').matches) return;
+                        hideAll();
+                        var r = toggle.getBoundingClientRect();
+                        sub.classList.add('panel-flyout-open');
+                        var top = Math.min(r.top, window.innerHeight - sub.offsetHeight - 12);
+                        sub.style.top = Math.max(top, 8) + 'px';
+                        sub.style.left = (r.right + 8) + 'px';
+                    });
+                    item.addEventListener('mouseleave', function () {
+                        sub.classList.remove('panel-flyout-open');
+                    });
+                });
+                html.addEventListener('click', function (e) {
+                    if (!e.target.closest('#dashboard-sidebar')) hideAll();
+                });
+            })();
+
+            (function () {
+                var toggle = document.getElementById('sidebar-toggle');
+                var closeBtn = document.getElementById('sidebar-close');
+                var sidebar = document.getElementById('dashboard-sidebar');
+                var backdrop = document.getElementById('sidebar-backdrop');
                 if (!toggle || !sidebar) return;
 
-                function open() {
+                function openNav() {
                     sidebar.classList.remove('-translate-x-full');
                     if (backdrop) backdrop.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
-                function close() {
+                function closeNav() {
                     sidebar.classList.add('-translate-x-full');
                     if (backdrop) backdrop.classList.add('hidden');
+                    document.body.style.overflow = '';
                 }
-                toggle.addEventListener('click', open);
-                if (closeBtn) closeBtn.addEventListener('click', close);
-                if (backdrop) backdrop.addEventListener('click', close);
+                toggle.addEventListener('click', openNav);
+                if (closeBtn) closeBtn.addEventListener('click', closeNav);
+                if (backdrop) backdrop.addEventListener('click', closeNav);
+                sidebar.addEventListener('click', function (e) {
+                    if (e.target.closest('a')) closeNav();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeNav();
+                });
+                window.addEventListener('resize', function () {
+                    if (window.innerWidth >= 1024) closeNav();
+                });
             })();
         </script>
 

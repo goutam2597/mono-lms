@@ -48,7 +48,7 @@
 @endphp
 
 <div class="space-y-1 text-[13px]">
-    <div class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 select-none">
+    <div class="sidebar-caption px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 select-none">
         <span>Instructor Menu</span>
     </div>
 
@@ -61,10 +61,10 @@
                     {!! $item['icon'] !!}
                 </svg>
             </div>
-            <span class="truncate flex-1">{{ $item['label'] }}</span>
+            <span class="sidebar-label truncate flex-1">{{ $item['label'] }}</span>
 
             @if($isActive)
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                <span class="sidebar-badge-pill w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
             @endif
         </a>
     @endforeach

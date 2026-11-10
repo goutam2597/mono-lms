@@ -189,7 +189,7 @@
         @if(count($visibleSectionItems) > 0)
             <div class="space-y-1">
                 <!-- Section Category Header (Figma Dev Mode font) -->
-                <div class="px-2.5 pt-2 pb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748b] select-none">
+                <div class="sidebar-caption px-2.5 pt-2 pb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#64748b] select-none">
                     <span>{{ $section['heading'] }}</span>
                 </div>
 
@@ -203,7 +203,7 @@
                                     {!! $item['icon'] !!}
                                 </svg>
                             </div>
-                            <span class="truncate flex-1 text-[13.5px]">{{ $item['label'] }}</span>
+                            <span class="sidebar-label truncate flex-1 text-[13.5px]">{{ $item['label'] }}</span>
                         </a>
                     @else
                         @php
@@ -226,10 +226,10 @@
                                     </svg>
                                 </div>
 
-                                <span class="truncate flex-1 text-[13.5px]">{{ $item['title'] }}</span>
+                                <span class="sidebar-label truncate flex-1 text-[13.5px]">{{ $item['title'] }}</span>
 
                                 @if($totalBadge > 0)
-                                    <span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
+                                    <span class="sidebar-badge-pill px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
                                         {{ $totalBadge }}
                                     </span>
                                 @endif
