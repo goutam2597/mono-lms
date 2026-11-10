@@ -39,8 +39,17 @@
                         data-ms-autosubmit
                         triggerClass="bg-white border border-[#e7e7e7] text-xs font-medium text-[#191919] px-3 py-2 rounded-lg" />
                     <div class="relative">
-                        <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('app.common.search') }}..." class="bg-white border border-[#e7e7e7] text-xs text-[#191919] px-3 py-2 rounded-lg focus:outline-none w-48 sm:w-56 pr-8">
-                        <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text"
+                               name="q"
+                               value="{{ request('q') }}"
+                               placeholder="{{ __('app.common.search') }}..."
+                               autocomplete="off"
+                               data-suggest="{{ route('api.search.suggestions') }}"
+                               data-suggest-container=".relative"
+                               class="bg-white border border-[#e7e7e7] text-xs text-[#191919] px-3 py-2 rounded-lg focus:outline-none focus:border-[var(--theme-primary,#344c3d)] w-48 sm:w-64 pr-8 transition-colors">
+                        <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-2.5 pointer-events-none" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/>
+                        </svg>
                     </div>
                 </form>
             </div>

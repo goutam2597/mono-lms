@@ -180,6 +180,8 @@
                            value="{{ request('q') }}"
                            placeholder="{{ __('app.common.search_placeholder') ?? 'What do you want to learn today?' }}"
                            autocomplete="off"
+                           data-suggest="{{ route('api.search.suggestions') }}"
+                           data-suggest-container="#global-search-bar form"
                            class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-slate-900 placeholder:text-slate-400 text-sm sm:text-base font-medium rounded-xl border border-slate-200 focus:border-[var(--theme-primary,#344c3d)] focus:ring-3 focus:ring-[var(--theme-primary,#344c3d)]/10 pl-11 sm:pl-12 pr-28 sm:pr-32 py-3 sm:py-3.5 transition-all outline-none">
 
                     <div class="absolute right-2 sm:right-2.5 flex items-center gap-1.5">
@@ -221,3 +223,14 @@
 
 <!-- Backdrop overlay when search is open -->
 <div id="global-search-backdrop" class="hidden fixed inset-0 bg-slate-950/20 backdrop-blur-2xs z-30 transition-opacity"></div>
+
+<script>
+    window.searchSuggestI18n = {
+        courses: @json(__('app.nav.courses') ?? 'Courses'),
+        categories: @json(__('home.categories.badge') ?? 'Categories'),
+        instructors: @json(__('app.nav.instructors') ?? 'Instructors'),
+        courses_count: @json(__('courses') ?? 'courses'),
+        no_results_for: @json(__('app.common.no_results_for') ?? 'No results for'),
+        see_all_results: @json(__('app.common.see_all_results') ?? 'See all results for')
+    };
+</script>

@@ -1,5 +1,6 @@
 import './toast';
 import './global-search';
+import './search-suggest';
 import './mselect';
 import './mono-select';
 import './hero-showcase';

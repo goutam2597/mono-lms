@@ -46,6 +46,7 @@ use App\Http\Controllers\Instructor\StudentController as InstructorStudentContro
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
@@ -73,6 +74,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/locale/{code}', [LocaleController::class, 'switchStore'])->name('locale.switch');
+
+// Search Suggestions API (mono_market pattern)
+Route::get('/api/search-suggestions', [SearchSuggestionController::class, 'index'])->name('api.search.suggestions');
 
 // Public catalog (DB-driven)
 Route::prefix('courses')->name('courses.')->group(function () {
