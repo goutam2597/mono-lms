@@ -280,7 +280,8 @@
 
                         <!-- Notification Dropdown Menu -->
                         <div id="header-notifications-dropdown"
-                             class="hidden absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-[440px] bg-white dark:bg-[#111111] border border-slate-200 dark:border-neutral-800 rounded-xl shadow-xl z-[70] text-slate-700 dark:text-neutral-200 transform origin-top-right transition-all overflow-hidden">
+                             style="width: 440px; min-width: 440px;"
+                             class="hidden absolute right-0 top-full mt-2 bg-white dark:bg-[#111111] border border-slate-200 dark:border-neutral-800 rounded-xl shadow-xl z-[70] text-slate-700 dark:text-neutral-200 transform origin-top-right transition-all overflow-visible">
                             <!-- Header -->
                             <div class="px-4 py-3 border-b border-slate-100 dark:border-neutral-800 flex items-center justify-between">
                                 <span class="font-semibold text-slate-900 dark:text-white text-[13px]">Notifications</span>
