@@ -1179,7 +1179,7 @@
             </div>
 
             <div class="shrink-0">
-                <a href="{{ url($home['banner_instructor']['button_url'] ?? route('instructor.register')) }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
+                <a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : url($home['banner_instructor']['button_url'] ?? route('instructor.register')) }}" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-white text-[#191919] hover:bg-[#dce7da] text-base font-semibold shadow-lg transition-all">
                     {{ $home['banner_instructor']['button_text'] ?? 'Join Our Community' }}
                 </a>
             </div>

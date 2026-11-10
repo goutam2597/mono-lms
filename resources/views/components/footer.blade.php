@@ -46,10 +46,10 @@
             <div class="lg:col-span-2">
                 <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.useful') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.become_instructor') }}</a></li>
-                    <li><a href="{{ route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.instructor_portal') }}</a></li>
-                    <li><a href="{{ route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.student_portal') }}</a></li>
-                    <li><a href="{{ route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
+                    <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.become_instructor') }}</a></li>
+                    <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.instructor_portal') }}</a></li>
+                    <li><a href="{{ auth('student')->check() ? route('student.dashboard') : route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.student_portal') }}</a></li>
+                    <li><a href="{{ auth('student')->check() ? route('student.dashboard') : route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
                 </ul>
             </div>
 
