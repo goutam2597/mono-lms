@@ -532,9 +532,9 @@
     </div>
 
     <!-- Live Preview Modal -->
-    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white max-w-5xl w-full border border-slate-800 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-6">
-            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closePreviewModal()">
+        <div class="bg-white max-w-5xl w-full border border-slate-800 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col max-h-[94vh]">
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50 shrink-0">
                 <div class="flex items-center gap-3">
                     <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
                     <h3 class="font-bold text-slate-900 text-sm" id="preview-modal-title">Live Certificate Preview</h3>
@@ -543,21 +543,23 @@
                 <div class="flex items-center gap-2.5">
                     <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3.5 text-xs font-semibold">
                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                        <span>Full A4 Printable View</span>
+                        <span>Full A4 Tab</span>
                     </a>
-                    <button type="button" onclick="document.getElementById('previewCertModal').classList.add('hidden')" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-500 hover:text-slate-900 cursor-pointer">
+                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-500 hover:text-slate-900 cursor-pointer">
                         Close &times;
                     </button>
                 </div>
             </div>
 
-            <div class="p-6 sm:p-10 bg-slate-200/70 flex items-center justify-center overflow-x-auto">
-                <iframe id="preview-live-iframe" src="" class="w-full max-w-4xl aspect-[1.414/1] border border-slate-300 shadow-2xl bg-white rounded-none"></iframe>
+            <div class="p-3 sm:p-6 bg-slate-200/80 flex-1 flex items-center justify-center overflow-auto">
+                <iframe id="preview-live-iframe" src="" class="w-full max-w-4xl aspect-[1.414/1] min-h-[460px] sm:min-h-[580px] border border-slate-300 shadow-2xl bg-white rounded-none"></iframe>
             </div>
         </div>
     </div>
 
     <script>
+        const baseAdminCertUrl = "{{ url('admin/certificate-templates') }}";
+
         function openCreateModal() {
             document.getElementById('createCertModal').classList.add('open');
         }
@@ -568,7 +570,7 @@
 
         function openEditModal(template) {
             const form = document.getElementById('editTemplateForm');
-            form.action = '/admin/certificate-templates/' + template.id;
+            form.action = baseAdminCertUrl + '/' + template.id;
 
             document.getElementById('edit_title').value = template.title || '';
             document.getElementById('edit_template_type').value = template.template_type || 'template_3';
@@ -589,11 +591,16 @@
         function openPreviewModal(template) {
             const title = template.title || 'Certificate Preview';
             document.getElementById('preview-modal-title').textContent = 'Live Preview: ' + title;
-            const url = '/admin/certificate-templates/' + template.id + '/preview';
+            const url = baseAdminCertUrl + '/' + template.id + '/preview';
             document.getElementById('preview-fullscreen-link').href = url;
-            document.getElementById('preview-live-iframe').src = url;
+            document.getElementById('preview-live-iframe').src = url + '?embed=1';
 
             document.getElementById('previewCertModal').classList.remove('hidden');
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewCertModal').classList.add('hidden');
+            document.getElementById('preview-live-iframe').src = '';
         }
     </script>
 

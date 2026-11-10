@@ -51,7 +51,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-900 min-h-screen py-8 px-4 flex flex-col items-center justify-center font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
+<body class="@if (request('embed')) bg-slate-100 p-2 sm:p-4 @else bg-slate-950 text-slate-900 min-h-screen py-8 px-4 @endif flex flex-col items-center justify-center font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
 
     @php
         $layoutType = $template->template_type ?? 'template_3';
@@ -60,45 +60,47 @@
         $bgColor = $template->bg_color ?: '#ffffff';
     @endphp
 
-    <!-- Top Action Toolbar (Hidden in Print) -->
-    <div class="no-print w-full max-w-5xl mb-6 flex flex-wrap items-center justify-between gap-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-4 rounded-xl text-white shadow-2xl">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('student.certificates') }}" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                <span>Back to My Certificates</span>
-            </a>
-            <div class="hidden sm:block">
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-white font-mono">{{ $certificate->certificate_number }}</span>
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                        {{ $template->title ?? 'Accredited Award' }}
-                    </span>
+    @if (! request('embed'))
+        <!-- Top Action Toolbar (Hidden in Print) -->
+        <div class="no-print w-full max-w-5xl mb-6 flex flex-wrap items-center justify-between gap-4 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-4 rounded-xl text-white shadow-2xl">
+            <div class="flex items-center gap-3">
+                <a href="{{ route('student.certificates') }}" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    <span>Back to My Certificates</span>
+                </a>
+                <div class="hidden sm:block">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-white font-mono">{{ $certificate->certificate_number }}</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            {{ $template->title ?? 'Accredited Award' }}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Awarded to {{ $certificate->student_name }} on {{ $certificate->issue_date->format('F d, Y') }}</p>
                 </div>
-                <p class="text-[11px] text-slate-400 mt-0.5">Awarded to {{ $certificate->student_name }} on {{ $certificate->issue_date->format('F d, Y') }}</p>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+                <button type="button"
+                        onclick="copyVerificationLink('{{ $certificate->verificationUrl() }}')"
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700 cursor-pointer">
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    <span id="copy-btn-text">Share Link</span>
+                </button>
+
+                <a href="{{ $certificate->verificationUrl() }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Verify Registry</span>
+                </a>
+
+                <button type="button"
+                        onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-transform hover:scale-105 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    <span>Print / Save PDF</span>
+                </button>
             </div>
         </div>
-
-        <div class="flex items-center gap-2.5">
-            <button type="button"
-                    onclick="copyVerificationLink('{{ $certificate->verificationUrl() }}')"
-                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700 cursor-pointer">
-                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                <span id="copy-btn-text">Share Link</span>
-            </button>
-
-            <a href="{{ $certificate->verificationUrl() }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold transition-colors border border-slate-700">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span>Verify Registry</span>
-            </a>
-
-            <button type="button"
-                    onclick="window.print()"
-                    class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-transform hover:scale-105 cursor-pointer">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                <span>Print / Save PDF</span>
-            </button>
-        </div>
-    </div>
+    @endif
 
     <!-- ========================================================================= -->
     <!-- CERTIFICATE CANVAS: A4 Landscape Aspect Ratio (1.414 / 1) -->
