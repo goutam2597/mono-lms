@@ -532,27 +532,27 @@
     </div>
 
     <!-- Live Preview Modal -->
-    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closePreviewModal()">
-        <div class="bg-white max-w-5xl w-full border border-slate-800 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col max-h-[94vh]">
-            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50 shrink-0">
+    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-2 sm:p-5 overflow-hidden" onclick="if(event.target===this)closePreviewModal()">
+        <div class="bg-slate-900 max-w-6xl w-full border border-slate-700 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col h-[92vh] rounded-xl">
+            <div class="px-5 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/95 shrink-0 text-white">
                 <div class="flex items-center gap-3">
-                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                    <h3 class="font-bold text-slate-900 text-sm" id="preview-modal-title">Live Certificate Preview</h3>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h3 class="font-bold text-white text-sm" id="preview-modal-title">Live Certificate Preview</h3>
                 </div>
 
                 <div class="flex items-center gap-2.5">
                     <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3.5 text-xs font-semibold">
-                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                        <span>Full A4 Tab</span>
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        <span>Open Full A4 Tab</span>
                     </a>
-                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-500 hover:text-slate-900 cursor-pointer">
+                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-400 hover:text-white cursor-pointer">
                         Close &times;
                     </button>
                 </div>
             </div>
 
-            <div class="p-3 sm:p-6 bg-slate-200/80 flex-1 flex items-center justify-center overflow-auto">
-                <iframe id="preview-live-iframe" src="" class="w-full max-w-4xl aspect-[1.414/1] min-h-[460px] sm:min-h-[580px] border border-slate-300 shadow-2xl bg-white rounded-none"></iframe>
+            <div class="flex-1 w-full bg-slate-950 overflow-hidden flex items-center justify-center p-2 sm:p-3">
+                <iframe id="preview-live-iframe" src="" class="w-full h-full border-0 bg-transparent block" onload="try{this.contentWindow.fitCertificate()}catch(e){}"></iframe>
             </div>
         </div>
     </div>
