@@ -50,6 +50,8 @@
                     <option value="">All Statuses</option>
                     <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Paid</option>
                     <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="failed" {{ request('status') === 'failed' ? 'selected' : '' }}>Failed</option>
+                    <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     <option value="refunded" {{ request('status') === 'refunded' ? 'selected' : '' }}>Refunded</option>
                 </select>
 
@@ -57,7 +59,8 @@
                     <option value="">All Methods</option>
                     <option value="stripe" {{ request('method') === 'stripe' ? 'selected' : '' }}>Stripe</option>
                     <option value="paypal" {{ request('method') === 'paypal' ? 'selected' : '' }}>PayPal</option>
-                    <option value="manual" {{ request('method') === 'manual' ? 'selected' : '' }}>Manual</option>
+                    <option value="razorpay" {{ request('method') === 'razorpay' ? 'selected' : '' }}>Razorpay</option>
+                    <option value="offline" {{ request('method') === 'offline' ? 'selected' : '' }}>Bank / Manual</option>
                 </select>
             </div>
 
@@ -128,12 +131,16 @@
                                             'paid' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
                                              'pending' => 'bg-amber-50 text-amber-700 border-amber-200',
                                             'refunded' => 'bg-rose-50 text-rose-700 border-rose-200',
+                                            'failed', 'cancelled' => 'bg-slate-100 text-slate-600 border-slate-200',
                                             default => 'bg-slate-100 text-slate-600 border-slate-200'
                                         };
                                     @endphp
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-none text-[10px] font-bold uppercase tracking-[0.12em] border {{ $badgeClass }}">
                                         {{ ucfirst($order->payment_status) }}
                                     </span>
+                                    @if ($order->isAwaitingVerification())
+                                        <span class="mt-1 block text-[10px] font-mono text-blue-700">Trx: {{ $order->payment_reference }}</span>
+                                    @endif
                                 </td>
                                 <td class="py-3.5 px-4 text-slate-400 whitespace-nowrap text-[11px]">
                                     {{ $order->created_at?->format('M d, Y') }}
@@ -168,7 +175,25 @@
         <div class="row-action-menu" id="order-menu-{{ $order->id }}" role="menu">
             <a href="{{ route('admin.orders.show', $order) }}" class="menu-item">View Receipt</a>
             <div class="menu-sep"></div>
-            @if ($order->payment_status !== 'paid')
+
+            {{-- Course purchases with a submitted payment go through verification (activates enrollment) --}}
+            @if ($order->course_id && $order->payment_status !== 'paid' && $order->payment_status !== 'cancelled')
+                <form method="POST" action="{{ route('admin.orders.verify', $order) }}">
+                    @csrf
+                    <input type="hidden" name="action" value="approve">
+                    <button type="submit" class="menu-item font-semibold">✓ Approve Payment (enroll)</button>
+                </form>
+                @if ($order->payment_status === 'pending')
+                    <form method="POST" action="{{ route('admin.orders.verify', $order) }}" onsubmit="return confirm('Reject this payment? The student will be notified.')">
+                        @csrf
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="menu-item danger">✕ Reject Payment</button>
+                    </form>
+                @endif
+                <div class="menu-sep"></div>
+            @endif
+
+            @if ($order->payment_status !== 'paid' && ! $order->course_id)
                 <form method="POST" action="{{ route('admin.orders.status', $order) }}">
                     @csrf
                     @method('PATCH')
@@ -176,7 +201,7 @@
                     <button type="submit" class="menu-item">Mark Paid</button>
                 </form>
             @endif
-            @if ($order->payment_status !== 'pending')
+            @if ($order->payment_status !== 'pending' && $order->payment_status !== 'paid')
                 <form method="POST" action="{{ route('admin.orders.status', $order) }}">
                     @csrf
                     @method('PATCH')

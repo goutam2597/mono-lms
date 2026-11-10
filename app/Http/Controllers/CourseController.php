@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Review;
+use App\Services\PaymentMethodService;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -18,7 +19,7 @@ class CourseController extends Controller
     public function show(string $slug)
     {
         $course = Course::published()
-            ->with(['instructor', 'category', 'lessons', 'reviews' => fn ($q) => $q->where('status', 'approved')->with('student')])
+            ->with(['instructor', 'category', 'lessons', 'liveClasses', 'reviews' => fn ($q) => $q->where('status', 'approved')->with('student')])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -43,11 +44,14 @@ class CourseController extends Controller
             'isEnrolled' => $isEnrolled,
             'userReview' => $userReview,
             'ratingBreakdown' => $course->ratingBreakdown(),
+            'paymentMethods' => PaymentMethodService::available(),
+            'upcomingClasses' => $course->liveClasses->filter(fn ($c) => $c->isUpcoming())->take(3),
         ]);
     }
 
     /**
      * Enroll the signed-in student into a published course.
+     * Free courses enroll directly; paid courses go through the checkout flow.
      */
     public function enroll(Request $request, Course $course)
     {
@@ -59,8 +63,16 @@ class CourseController extends Controller
 
         if ($existing) {
             return redirect()
-                ->route('courses.show', $course->slug)
+                ->route('student.courses.learn', $course)
                 ->with('info', __('courses.already_enrolled'));
+        }
+
+        // Paid courses must go through checkout (60-minute reservation +
+        // payment method + verification). Free courses enroll directly.
+        if ($course->price > 0) {
+            return redirect()
+                ->route('courses.show', $course->slug)
+                ->with('info', 'This course requires a purchase — choose a payment method below.');
         }
 
         Enrollment::create([
@@ -71,7 +83,7 @@ class CourseController extends Controller
         ]);
 
         return redirect()
-            ->route('student.enrolled-courses')
+            ->route('student.courses.learn', $course)
             ->with('success', __('courses.enrolled_success'));
     }
 

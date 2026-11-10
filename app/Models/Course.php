@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'instructor_id', 'category_id', 'title', 'slug', 'subtitle', 'description',
-    'image', 'price', 'old_price', 'level', 'duration_minutes',
+    'image', 'price', 'old_price', 'level', 'duration_minutes', 'type',
     'is_published', 'is_featured', 'is_trending',
 ])]
 class Course extends Model
 {
+    public const TYPES = ['recorded', 'live', 'combined'];
+
     protected function casts(): array
     {
         return [
@@ -40,6 +42,11 @@ class Course extends Model
     public function lessons(): HasMany
     {
         return $this->hasMany(Lesson::class)->orderBy('sort_order');
+    }
+
+    public function liveClasses(): HasMany
+    {
+        return $this->hasMany(LiveClass::class)->orderBy('starts_at');
     }
 
     public function enrollments(): HasMany
@@ -76,6 +83,47 @@ class Course extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true);
+    }
+
+    public function scopeOfType(Builder $query, string $type): Builder
+    {
+        return $query->where('type', $type);
+    }
+
+    public function isLive(): bool
+    {
+        return $this->type === 'live';
+    }
+
+    public function isRecorded(): bool
+    {
+        return $this->type === 'recorded';
+    }
+
+    public function isCombined(): bool
+    {
+        return $this->type === 'combined';
+    }
+
+    /** Whether the course includes pre-recorded video lessons. */
+    public function hasRecordedContent(): bool
+    {
+        return in_array($this->type, ['recorded', 'combined'], true);
+    }
+
+    /** Whether the course includes scheduled live classes. */
+    public function hasLiveContent(): bool
+    {
+        return in_array($this->type, ['live', 'combined'], true);
+    }
+
+    public function typeLabel(): string
+    {
+        return match ($this->type) {
+            'live' => 'Live',
+            'combined' => 'Combined',
+            default => 'Recorded',
+        };
     }
 
     public function scopeFeatured(Builder $query): Builder

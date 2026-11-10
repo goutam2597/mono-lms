@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CourseController extends Controller
 {
@@ -53,7 +54,7 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         return view('pages.admin.courses-form', [
-            'course' => $course->load('lessons'),
+            'course' => $course->load(['lessons', 'liveClasses']),
             'categories' => Category::orderBy('name')->get(),
             'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),
@@ -73,20 +74,26 @@ class CourseController extends Controller
 
     public function storeLesson(Request $request, Course $course): RedirectResponse
     {
-        $data = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:600'],
-            'video_url' => ['nullable', 'string', 'max:500'],
-        ]);
-
+        $data = $this->lessonValidated($request);
         $data['sort_order'] = $course->lessons()->count() + 1;
         $course->lessons()->create($data);
 
         return back()->with('success', __('instructor.lessons.created') ?: 'Lesson added successfully.');
     }
 
+    public function updateLesson(Request $request, Lesson $lesson): RedirectResponse
+    {
+        $lesson->update($this->lessonValidated($request, $lesson));
+
+        return back()->with('success', __('instructor.lessons.updated') ?: 'Lesson updated successfully.');
+    }
+
     public function destroyLesson(Lesson $lesson): RedirectResponse
     {
+        if ($lesson->video_source === Lesson::SOURCE_UPLOAD && $lesson->video_path) {
+            Storage::disk('public')->delete($lesson->video_path);
+        }
+
         $lesson->delete();
 
         return back()->with('success', __('instructor.lessons.deleted') ?: 'Lesson removed successfully.');
@@ -192,14 +199,75 @@ class CourseController extends Controller
             'price' => ['required', 'numeric', 'min:0', 'max:9999'],
             'old_price' => ['nullable', 'numeric', 'min:0', 'max:9999'],
             'level' => ['required', 'in:beginner,intermediate,advanced'],
+            'type' => ['nullable', 'in:'.implode(',', Course::TYPES)],
         ]);
 
         $data['is_published'] = $request->boolean('is_published');
         $data['is_featured'] = $request->boolean('is_featured');
         $data['is_trending'] = $request->boolean('is_trending');
+        $data['type'] = $data['type'] ?? 'recorded';
         unset($data['instructor_id']);
 
         return $data;
+    }
+
+    /**
+     * Lesson validation with the two video systems: YouTube URL or file upload.
+     *
+     * @return array<string, mixed>
+     */
+    private function lessonValidated(Request $request, ?Lesson $existing = null): array
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:600'],
+            'video_source' => ['nullable', 'string', 'in:'.Lesson::SOURCE_YOUTUBE.','.Lesson::SOURCE_UPLOAD],
+            'video_url' => ['nullable', 'string', 'max:500'],
+            'video' => ['nullable', 'file', 'mimes:mp4,webm,ogg,mov,mkv', 'max:512000'],
+        ]);
+
+        $data['video_source'] = match ($data['video_source'] ?? null) {
+            Lesson::SOURCE_UPLOAD => Lesson::SOURCE_UPLOAD,
+            Lesson::SOURCE_YOUTUBE => Lesson::SOURCE_YOUTUBE,
+            default => filled($data['video_url'] ?? null) ? Lesson::SOURCE_YOUTUBE : null,
+        };
+
+        if ($data['video_source'] === Lesson::SOURCE_YOUTUBE) {
+            if (blank($data['video_url'] ?? null)) {
+                throw ValidationException::withMessages(['video_url' => 'Enter the YouTube URL for this lesson.']);
+            }
+
+            if (! (new Lesson($data))->youtubeId()) {
+                throw ValidationException::withMessages(['video_url' => 'This is not a valid YouTube URL.']);
+            }
+
+            $data['video_path'] = null;
+        }
+
+        if ($data['video_source'] === Lesson::SOURCE_UPLOAD) {
+            if (! $request->hasFile('video')) {
+                if (blank($request->input('keep_video_path')) && blank($existing?->video_path)) {
+                    throw ValidationException::withMessages(['video' => 'Choose a video file to upload.']);
+                }
+
+                $data['video_path'] = $request->input('keep_video_path') ?: $existing?->video_path;
+            } else {
+                if ($existing && $existing->video_source === Lesson::SOURCE_UPLOAD && $existing->video_path) {
+                    Storage::disk('public')->delete($existing->video_path);
+                }
+
+                $data['video_path'] = $request->file('video')->store('videos/lessons', 'public');
+            }
+
+            $data['video_url'] = null;
+        }
+
+        if ($data['video_source'] === null) {
+            $data['video_url'] = null;
+            $data['video_path'] = null;
+        }
+
+        return collect($data)->only(['title', 'duration_minutes', 'video_url', 'video_source', 'video_path'])->all();
     }
 
     private function uniqueSlug(string $title, ?int $ignoreId = null): string

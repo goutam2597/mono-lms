@@ -106,6 +106,42 @@
                 </table>
             </div>
 
+            <!-- Verification / Admin Actions Panel -->
+            @if ($order->course_id && in_array($order->payment_status, ['pending', 'failed']))
+                <div class="border rounded-none p-5 space-y-3 {{ $order->isAwaitingVerification() ? 'bg-blue-50 border-blue-200' : 'bg-amber-50 border-amber-200' }}">
+                    <div class="flex items-center justify-between gap-4 flex-wrap">
+                        <div>
+                            <h4 class="text-sm font-bold {{ $order->isAwaitingVerification() ? 'text-blue-800' : 'text-amber-800' }}">
+                                @if ($order->isAwaitingVerification())
+                                    Manual payment submitted — awaiting verification
+                                @else
+                                    Payment pending
+                                @endif
+                            </h4>
+                            <p class="text-xs mt-1 {{ $order->isAwaitingVerification() ? 'text-blue-700' : 'text-amber-700' }}">
+                                @if ($order->isAwaitingVerification())
+                                    Transaction ID: <span class="font-mono font-bold">{{ $order->payment_reference }}</span> · Method: {{ $order->methodLabel() }} · Amount: {{ __('app.common.currency') }}{{ number_format($order->amount, 2) }}
+                                @else
+                                    Reservation deadline: {{ $order->payment_deadline?->format('d M Y, h:i A') ?? '—' }}
+                                @endif
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <form method="POST" action="{{ route('admin.orders.verify', $order) }}">
+                                @csrf
+                                <input type="hidden" name="action" value="approve">
+                                <button type="submit" class="action-btn action-btn-primary h-9 px-4 text-xs font-semibold uppercase tracking-wider">✓ Approve (enroll student)</button>
+                            </form>
+                            <form method="POST" action="{{ route('admin.orders.verify', $order) }}" onsubmit="return confirm('Reject this payment? The student will be notified.')">
+                                @csrf
+                                <input type="hidden" name="action" value="reject">
+                                <button type="submit" class="action-btn action-btn-danger h-9 px-4 text-xs font-semibold uppercase tracking-wider">✕ Reject</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Admin Status Update Tool in Sheet -->
             <div class="bg-slate-50 border border-slate-200 rounded-none p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
@@ -120,6 +156,7 @@
                         <option value="pending" {{ $order->payment_status === 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="refunded" {{ $order->payment_status === 'refunded' ? 'selected' : '' }}>Refunded</option>
                         <option value="failed" {{ $order->payment_status === 'failed' ? 'selected' : '' }}>Failed</option>
+                        <option value="cancelled" {{ $order->payment_status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
                     <button type="submit" class="action-btn action-btn-primary h-9 px-4 text-xs font-semibold uppercase tracking-wider">
                         Update Status

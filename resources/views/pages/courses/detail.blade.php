@@ -63,6 +63,13 @@
 
                     <!-- Instructor & Meta Row -->
                     <div class="flex flex-wrap items-center gap-y-3 gap-x-6 pt-3 text-xs sm:text-sm text-gray-300">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/10 text-white border border-white/20">
+                            @if ($course->isLive())🔴 Live Classes
+                            @elseif ($course->isCombined())⚙️ Recorded + Live
+                            @else📹 Pre-recorded
+                            @endif
+                        </span>
+
                         <div class="flex items-center gap-2.5">
                             @if ($course->instructor?->avatarUrl())
                                 <img src="{{ $course->instructor->avatarUrl() }}" class="w-8 h-8 rounded-full object-cover border border-[#bfcabb]/40" alt="{{ $course->instructor->name }}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
@@ -209,7 +216,41 @@
                         </div>
                     @else
                         <div class="text-center py-8 text-gray-400 text-sm">
-                            {{ __('instructor.lessons.no_lessons') }}
+                            @if ($course->isLive())
+                                This is a fully live course — see the live class schedule below.
+                            @else
+                                {{ __('instructor.lessons.no_lessons') }}
+                            @endif
+                        </div>
+                    @endif
+
+                    @if ($course->hasLiveContent())
+                        <!-- Live Class Schedule -->
+                        <div class="pt-2 border-t border-gray-100">
+                            <div class="flex items-center gap-2.5 pt-2">
+                                <span class="w-8 h-8 rounded-lg bg-[#dce7da] text-[#344c3d] flex items-center justify-center font-bold text-sm">▶</span>
+                                <h3 class="text-base font-bold text-[#191919]">Live Class Schedule</h3>
+                            </div>
+                            @forelse ($course->liveClasses as $live)
+                                <div class="mt-3 flex items-center justify-between bg-[#f8faf8] border border-[#e7e7e7] rounded-xl px-4 py-3.5 text-sm">
+                                    <div class="min-w-0">
+                                        <p class="text-[#191919] font-medium truncate">{{ $live->title }}</p>
+                                        <p class="text-[11px] text-gray-400 mt-0.5">{{ $live->starts_at->format('D, d M Y · h:i A') }} · {{ $live->platformLabel() }} · {{ $live->duration_minutes }} min · <span class="uppercase">{{ $live->status }}</span></p>
+                                    </div>
+                                    @if ($isEnrolled && $live->isUpcoming())
+                                        <a href="{{ route('student.live-classes.join', $live) }}" target="_blank" rel="noopener" class="shrink-0 bg-[#344c3d] hover:bg-[#25372c] text-white text-[11px] font-bold px-3.5 py-2 rounded-lg transition-colors">Join Class</a>
+                                    @elseif ($isEnrolled && $live->recording_url)
+                                        <a href="{{ $live->recording_url }}" target="_blank" rel="noopener" class="shrink-0 border border-[#dce7da] text-[#344c3d] text-[11px] font-bold px-3.5 py-2 rounded-lg hover:bg-white transition-colors">Recording</a>
+                                    @else
+                                        <span class="shrink-0 text-[11px] text-gray-400 font-semibold">🔒 Enroll to access</span>
+                                    @endif
+                                </div>
+                            @empty
+                                <p class="mt-3 text-center text-xs text-gray-400">Live sessions will be announced soon.</p>
+                            @endforelse
+                            @if (! $isEnrolled && $upcomingClasses->count())
+                                <p class="mt-2 text-[11px] text-gray-400">🔒 Enroll to get the meeting links for {{ $upcomingClasses->count() }} upcoming live session(s).</p>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -570,18 +611,48 @@
                     <div class="space-y-3">
                         @auth('student')
                             @if ($isEnrolled)
-                                <a href="{{ route('student.enrolled-courses') }}" class="block w-full text-center bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">
+                                <a href="{{ route('student.courses.learn', $course) }}" class="block w-full text-center bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">
                                     <span>{{ __('courses.go_to_course') }}</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </a>
                             @else
-                                <form action="{{ route('courses.enroll', $course) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm cursor-pointer flex items-center justify-center gap-2">
-                                        <span>{{ $course->price > 0 ? __('courses.enroll_now') : __('courses.enroll_free') }}</span>
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                                    </button>
-                                </form>
+                                @if ($course->price > 0)
+                                    {{-- Paid course: pick a payment method, then start checkout --}}
+                                    <form action="{{ route('checkout.start', $course->slug) }}" method="POST" class="space-y-3">
+                                        @csrf
+
+                                        <div class="space-y-2" data-method-group>
+                                            @foreach ($paymentMethods as $key => $method)
+                                                <label class="flex items-center gap-3 border border-[#e7e7e7] rounded-xl px-4 py-3 cursor-pointer hover:border-[#344c3d] transition-colors has-[:checked]:border-[#344c3d] has-[:checked]:bg-[#f8fafb]">
+                                                    <input type="radio" name="payment_method" value="{{ $key }}" @checked($loop->first) class="control mt-0">
+                                                    <span class="min-w-0">
+                                                        <span class="block text-xs font-bold text-[#191919]">{{ $method['label'] }}</span>
+                                                        <span class="block text-[11px] text-gray-400 truncate">{{ $method['description'] }}</span>
+                                                    </span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="space-y-1.5">
+                                            <input type="text" name="coupon_code" placeholder="Coupon code (optional)" class="w-full border border-[#e7e7e7] rounded-xl px-4 py-2.5 text-xs uppercase tracking-wide focus:outline-none focus:border-[#344c3d]">
+                                            @error('coupon')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
+                                        </div>
+
+                                        <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm cursor-pointer flex items-center justify-center gap-2">
+                                            <span>{{ __('courses.enroll_now') }}</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                        </button>
+                                        <p class="text-center text-[11px] text-gray-400">Your seat is reserved for 60 minutes after checkout.</p>
+                                    </form>
+                                @else
+                                    <form action="{{ route('courses.enroll', $course) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm cursor-pointer flex items-center justify-center gap-2">
+                                            <span>{{ __('courses.enroll_free') }}</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         @else
                             <a href="{{ route('login') }}" class="block w-full text-center bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">

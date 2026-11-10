@@ -84,9 +84,17 @@
                 </div>
 
                 <div class="shrink-0 w-full md:w-auto flex flex-col sm:flex-row md:flex-col items-stretch sm:items-center md:items-end gap-2">
-                    <a href="{{ route('courses.show', $enrollment->course->slug) }}"
+                    @if ($enrollment->progress >= 100)
+                        <a href="{{ route('student.certificates') }}"
+                           class="w-full inline-flex items-center justify-center gap-1.5 text-center bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold py-2.5 px-5 rounded-[6px] transition-colors shadow-xs">
+                            <span>{{ __('student.enrolled.download_certificate') }}</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    @endif
+
+                    <a href="{{ route('student.courses.learn', $enrollment->course) }}"
                        class="w-full inline-flex items-center justify-center gap-1.5 text-center bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold py-2.5 px-5 rounded-[6px] transition-colors shadow-xs">
-                        <span>{{ $enrollment->progress >= 100 ? __('student.enrolled.download_certificate') : __('student.enrolled.continue') }}</span>
+                        <span>{{ __('student.enrolled.continue') }}</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
 

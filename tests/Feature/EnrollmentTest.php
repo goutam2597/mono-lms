@@ -27,17 +27,19 @@ class EnrollmentTest extends TestCase
             'slug' => 'test-course',
             'price' => 49.99,
             'level' => 'beginner',
+            'type' => 'recorded',
             'is_published' => true,
         ]);
         $this->student = Student::create(['name' => 'S', 'email' => 's@test.dev', 'password' => 'password', 'status' => 'active']);
     }
 
-    public function test_student_can_enroll_in_a_published_course(): void
+    public function test_student_can_enroll_free_course_directly(): void
     {
-        $this->actingAs($this->student, 'student');
+        $this->course->update(['price' => 0]);
 
-        $this->post(route('courses.enroll', $this->course))
-            ->assertRedirect(route('student.enrolled-courses'));
+        $this->actingAs($this->student, 'student')
+            ->post(route('courses.enroll', $this->course))
+            ->assertRedirect(route('student.courses.learn', $this->course));
 
         $this->assertDatabaseHas('enrollments', [
             'student_id' => $this->student->id,
@@ -49,6 +51,16 @@ class EnrollmentTest extends TestCase
             ->assertSessionHas('info');
 
         $this->assertDatabaseCount('enrollments', 1);
+    }
+
+    public function test_paid_course_enroll_redirects_to_checkout(): void
+    {
+        $this->actingAs($this->student, 'student')
+            ->post(route('courses.enroll', $this->course))
+            ->assertRedirect(route('courses.show', $this->course->slug))
+            ->assertSessionHas('info');
+
+        $this->assertDatabaseCount('enrollments', 0);
     }
 
     public function test_guest_cannot_enroll(): void

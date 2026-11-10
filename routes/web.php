@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\HomePageController as AdminHomePageController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
+use App\Http\Controllers\Admin\LiveClassController as AdminLiveClassController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -38,12 +39,14 @@ use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
 use App\Http\Controllers\Instructor\LessonController;
+use App\Http\Controllers\Instructor\LiveClassController as InstructorLiveClassController;
 use App\Http\Controllers\Instructor\NotificationController as InstructorNotificationController;
 use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
 use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
@@ -59,7 +62,9 @@ use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\Student\CertificateController as StudentCertificateController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Student\LearnController;
 use App\Http\Controllers\Student\NotificationController as StudentNotificationController;
+use App\Http\Controllers\Student\OrderController as StudentOrderController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
 use App\Http\Controllers\Student\TicketController as StudentTicketController;
 use App\Http\Controllers\Student\WishlistController;
@@ -102,6 +107,20 @@ Route::prefix('courses')->name('courses.')->group(function () {
         ->middleware('auth:student')->name('reviews.store');
     Route::delete('/{course:slug}/reviews', [CourseReviewController::class, 'destroy'])
         ->middleware('auth:student')->name('reviews.destroy');
+});
+
+// ------------------------------------------------------------- Purchase flow
+// mono_market pattern: pending order with a 60-minute reservation, then a
+// dedicated summary page per payment method -> gateway / manual verification.
+Route::prefix('checkout')->name('checkout.')->middleware('auth:student')->group(function () {
+    Route::post('/{course:slug}', [CheckoutController::class, 'start'])->name('start');
+    Route::get('/pay/{order}/{method}', [CheckoutController::class, 'payPage'])
+        ->whereIn('method', ['stripe', 'paypal', 'razorpay', 'offline'])->name('pay');
+    Route::post('/pay/{order}/{method}/initiate', [CheckoutController::class, 'initiate'])
+        ->whereIn('method', ['stripe', 'paypal', 'razorpay', 'offline'])->name('pay.initiate');
+    Route::get('/payment-success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment-cancel', [CheckoutController::class, 'paymentCancel'])->name('payment.cancel');
+    Route::get('/success/{order}', [CheckoutController::class, 'success'])->name('success');
 });
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
@@ -254,8 +273,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:courses.manage')->name('courses.update');
     Route::post('/courses/{course}/lessons', [AdminCourseController::class, 'storeLesson'])
         ->middleware('permission:courses.manage')->name('courses.lessons.store');
+    Route::put('/lessons/{lesson}', [AdminCourseController::class, 'updateLesson'])
+        ->middleware('permission:courses.manage')->name('courses.lessons.update');
     Route::delete('/lessons/{lesson}', [AdminCourseController::class, 'destroyLesson'])
         ->middleware('permission:courses.manage')->name('courses.lessons.destroy');
+    Route::post('/courses/{course}/live-classes', [AdminLiveClassController::class, 'store'])
+        ->middleware('permission:courses.manage')->name('live-classes.store');
+    Route::put('/live-classes/{liveClass}', [AdminLiveClassController::class, 'update'])
+        ->middleware('permission:courses.manage')->name('live-classes.update');
+    Route::delete('/live-classes/{liveClass}', [AdminLiveClassController::class, 'destroy'])
+        ->middleware('permission:courses.manage')->name('live-classes.destroy');
     Route::post('/courses/bulk-destroy', [AdminCourseController::class, 'bulkDestroy'])
         ->middleware('permission:courses.manage')->name('courses.bulk-destroy');
     Route::match(['post', 'patch'], '/courses/{course}/publish', [AdminCourseController::class, 'publish'])
@@ -354,6 +381,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+    Route::post('/orders/{order}/verify', [AdminOrderController::class, 'verifyPayment'])->name('orders.verify');
 
     // Coupons
     Route::get('/coupons', [AdminCouponController::class, 'index'])->name('coupons.index');
@@ -466,6 +494,11 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
     Route::put('/lessons/{lesson}', [LessonController::class, 'update'])->name('lessons.update');
     Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy'])->name('lessons.destroy');
 
+    // Live classes (live / combined courses)
+    Route::post('/courses/{course}/live-classes', [InstructorLiveClassController::class, 'store'])->name('live-classes.store');
+    Route::put('/live-classes/{liveClass}', [InstructorLiveClassController::class, 'update'])->name('live-classes.update');
+    Route::delete('/live-classes/{liveClass}', [InstructorLiveClassController::class, 'destroy'])->name('live-classes.destroy');
+
     Route::get('/students', [InstructorStudentController::class, 'index'])->name('students');
     Route::get('/reviews', [InstructorReviewController::class, 'index'])->name('reviews');
     Route::post('/reviews/{review}/reply', [InstructorReviewController::class, 'reply'])->name('reviews.reply');
@@ -487,6 +520,16 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::get('/saved-courses', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist', fn () => redirect()->route('student.wishlist'))->name('wishlist.alias');
     Route::delete('/saved-courses/{course}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    // My Orders (purchase history + payment retry)
+    Route::get('/orders', [StudentOrderController::class, 'index'])->name('orders');
+    Route::get('/orders/{order}', [StudentOrderController::class, 'show'])->name('orders.show');
+
+    // Learning: lesson player, live classes, completion tracking
+    Route::get('/courses/{course}/learn', [LearnController::class, 'show'])->name('courses.learn');
+    Route::post('/lessons/{lesson}/complete', [LearnController::class, 'complete'])->name('lessons.complete');
+    Route::get('/live-classes/{liveClass}/join', [LearnController::class, 'join'])
+        ->name('live-classes.join');
     Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');

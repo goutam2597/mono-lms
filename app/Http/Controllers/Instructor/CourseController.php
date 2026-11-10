@@ -50,7 +50,7 @@ class CourseController extends Controller
         $this->authorizeCourse($course);
 
         return view('pages.instructor.courses-form', [
-            'course' => $course->load('lessons'),
+            'course' => $course->load(['lessons', 'liveClasses']),
             'categories' => Category::orderBy('name')->get(),
         ]);
     }
@@ -99,8 +99,9 @@ class CourseController extends Controller
             'price' => ['required', 'numeric', 'min:0', 'max:9999'],
             'old_price' => ['nullable', 'numeric', 'min:0', 'max:9999'],
             'level' => ['required', 'in:beginner,intermediate,advanced'],
+            'type' => ['nullable', 'in:'.implode(',', Course::TYPES)],
             'is_published' => ['sometimes', 'boolean'],
-        ]);
+        ]) + ['type' => $request->input('type', 'recorded')];
     }
 
     private function uniqueSlug(string $title, ?int $ignoreId = null): string
