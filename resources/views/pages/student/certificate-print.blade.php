@@ -76,7 +76,7 @@
         .font-signature-alt { font-family: 'Great Vibes', cursive; }
     </style>
 </head>
-<body class="@if (request('embed')) bg-slate-950 @else bg-slate-950 text-slate-900 @endif w-full h-full flex flex-col font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
+<body class="@if (request('embed')) bg-white dark:bg-[#111111] @else bg-slate-950 text-slate-900 @endif w-full h-full flex flex-col font-sans antialiased selection:bg-amber-100 selection:text-amber-900">
 
     @php
         $layoutType = $template->template_type ?? 'template_3';
@@ -130,10 +130,10 @@
     @endif
 
     <!-- ========================================================================= -->
-    <!-- CERTIFICATE STAGE: Auto-scales Canonical 1120x792 Canvas into Available Viewport -->
+    <!-- CERTIFICATE STAGE: Canonical 1120x792 Canvas -->
     <!-- ========================================================================= -->
-    <main class="cert-viewport-container flex-1 w-full flex items-center justify-center overflow-hidden p-2 sm:p-4">
-        <div id="certScaleWrapper" class="cert-scale-wrapper origin-center transition-transform duration-100 flex items-center justify-center">
+    <main class="cert-viewport-container flex-1 w-full flex items-center justify-center overflow-hidden @if (!request('embed')) p-2 sm:p-4 @endif relative">
+        <div id="certScaleWrapper" class="cert-scale-wrapper transition-transform duration-75">
 
             @if ($layoutType === 'template_7' || $layoutType === 'modern')
                 <!-- --------------------------------------------------------------------- -->
@@ -555,48 +555,48 @@
             });
         }
 
-        var zoomMultiplier = 1.0;
-        function changeZoom(delta) {
-            if (delta === 0) {
-                zoomMultiplier = 1.0;
-            } else {
-                zoomMultiplier = Math.max(0.4, Math.min(2.5, zoomMultiplier + delta));
-            }
-            fitCertificate();
-        }
-
-        // Rock-solid auto-scaling engine: fits canonical 1120x792 canvas perfectly inside available stage
+        // Precision certificate viewport scaler
         function fitCertificate() {
-            var container = document.querySelector('.cert-viewport-container');
             var wrapper = document.getElementById('certScaleWrapper');
             var canvas = document.getElementById('certificateCanvas');
-            if (!container || !wrapper || !canvas) return;
+            if (!wrapper || !canvas) return;
 
-            var header = document.querySelector('header.no-print');
-            var headerH = header ? header.offsetHeight : 0;
-
-            var availW = container.clientWidth || window.innerWidth;
-            var availH = container.clientHeight || (window.innerHeight - headerH);
-
-            if (availW <= 0) availW = window.innerWidth;
-            if (availH <= 0) availH = window.innerHeight - headerH;
-
-            var padW = window.innerWidth < 640 ? 12 : 24;
-            var padH = window.innerWidth < 640 ? 12 : 20;
-
-            var targetW = Math.max(availW - padW, 280);
-            var targetH = Math.max(availH - padH, 200);
-
+            var isEmbed = {{ request('embed') ? 'true' : 'false' }};
             var baseW = 1120;
             var baseH = 792;
 
-            var autoScale = Math.min(targetW / baseW, targetH / baseH);
-            var finalScale = autoScale * zoomMultiplier;
+            if (isEmbed) {
+                // In modal embed mode, the modal container is exactly aspect-[1.414/1].
+                // Scale from top-left so the certificate fills 100% of the modal view edge-to-edge.
+                var availW = window.innerWidth;
+                var availH = window.innerHeight;
+                if (availW <= 0 || availH <= 0) return;
 
-            wrapper.style.transform = 'scale(' + finalScale + ')';
-            wrapper.style.transformOrigin = 'center center';
-            wrapper.style.width = baseW + 'px';
-            wrapper.style.height = baseH + 'px';
+                var scale = Math.min(availW / baseW, availH / baseH);
+                wrapper.style.transformOrigin = 'top left';
+                wrapper.style.transform = 'scale(' + scale + ')';
+                wrapper.style.position = 'absolute';
+                wrapper.style.top = '0';
+                wrapper.style.left = '0';
+                wrapper.style.width = baseW + 'px';
+                wrapper.style.height = baseH + 'px';
+            } else {
+                // In standalone tab view: center and scale to fit viewport below header
+                var header = document.querySelector('header.no-print');
+                var headerH = header ? header.offsetHeight : 0;
+                var pad = window.innerWidth < 640 ? 12 : 24;
+                var availW = Math.max(window.innerWidth - pad, 280);
+                var availH = Math.max(window.innerHeight - headerH - pad, 200);
+
+                var scale = Math.min(availW / baseW, availH / baseH);
+                wrapper.style.transformOrigin = 'center center';
+                wrapper.style.transform = 'scale(' + scale + ')';
+                wrapper.style.position = 'relative';
+                wrapper.style.top = 'auto';
+                wrapper.style.left = 'auto';
+                wrapper.style.width = baseW + 'px';
+                wrapper.style.height = baseH + 'px';
+            }
         }
 
         window.addEventListener('resize', fitCertificate);

@@ -532,41 +532,25 @@
     </div>
 
     <!-- Live Preview Modal -->
-    <div id="previewCertModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-hidden" onclick="if(event.target===this)closePreviewModal()">
-        <div class="bg-slate-900 w-[96vw] max-w-7xl border border-slate-700 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 my-auto flex flex-col h-[94vh] rounded-2xl">
-            <div class="px-5 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-900/95 shrink-0 text-white">
-                <div class="flex items-center gap-3">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <h3 class="font-bold text-white text-sm" id="preview-modal-title">Live Certificate Preview</h3>
-                    <span class="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-slate-800 text-slate-300 border border-slate-700">Full Visual Mode</span>
-                </div>
+    <div id="previewCertModal" class="modal-overlay" role="dialog" aria-modal="true" onclick="if(event.target===this)closePreviewModal()">
+        <div class="panel max-w-5xl w-[94vw] flex flex-col p-0! overflow-hidden rounded-lg border border-slate-200 dark:border-neutral-800 bg-white dark:bg-[#1a1a1a] shadow-2xl my-auto">
+            <div class="flex items-center justify-between px-5 py-3 border-b border-slate-100 dark:border-neutral-800 bg-white dark:bg-[#1a1a1a] shrink-0">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white" id="preview-modal-title">Certificate Preview</h3>
 
                 <div class="flex items-center gap-2">
-                    <!-- Zoom & Fit Controls -->
-                    <div class="inline-flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700 mr-1">
-                        <button type="button" onclick="zoomPreview(-0.1)" title="Zoom Out" class="px-2.5 py-1 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
-                            &minus;
-                        </button>
-                        <button type="button" onclick="zoomPreview(0)" title="Reset to Fit View" class="px-2.5 py-1 text-[11px] font-semibold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
-                            Fit
-                        </button>
-                        <button type="button" onclick="zoomPreview(0.1)" title="Zoom In" class="px-2.5 py-1 text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-700 rounded transition cursor-pointer">
-                            +
-                        </button>
-                    </div>
-
-                    <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3.5 text-xs font-semibold">
-                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    <a id="preview-fullscreen-link" href="#" target="_blank" class="action-btn action-btn-primary h-8 px-3 text-xs font-semibold inline-flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         <span>Full A4 Tab</span>
                     </a>
-                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-3 text-xs text-slate-400 hover:text-white cursor-pointer">
-                        Close &times;
+                    <button type="button" onclick="closePreviewModal()" class="action-btn action-btn-ghost h-8 px-2.5 text-slate-500 hover:text-slate-800 dark:text-neutral-400 dark:hover:text-white text-base leading-none cursor-pointer">
+                        &times;
                     </button>
                 </div>
             </div>
 
-            <div class="flex-1 w-full bg-slate-950 overflow-hidden flex items-center justify-center p-2 sm:p-4">
-                <iframe id="preview-live-iframe" src="" class="w-full h-full border-0 bg-transparent block" onload="try{this.contentWindow.fitCertificate()}catch(e){}"></iframe>
+            <!-- Modal body exactly matches the landscape A4 certificate ratio (1.414 : 1) -->
+            <div class="w-full aspect-[1.414/1] bg-white dark:bg-[#111111] overflow-hidden relative">
+                <iframe id="preview-live-iframe" src="" class="absolute inset-0 w-full h-full border-0 block bg-transparent" onload="try{this.contentWindow.fitCertificate()}catch(e){}"></iframe>
             </div>
         </div>
     </div>
@@ -604,13 +588,15 @@
 
         function openPreviewModal(template) {
             const title = template.title || 'Certificate Preview';
-            document.getElementById('preview-modal-title').textContent = 'Live Preview: ' + title;
+            document.getElementById('preview-modal-title').textContent = title;
             const url = baseAdminCertUrl + '/' + template.id + '/preview';
             document.getElementById('preview-fullscreen-link').href = url;
             const iframe = document.getElementById('preview-live-iframe');
             iframe.src = url + '?embed=1';
 
-            document.getElementById('previewCertModal').classList.remove('hidden');
+            const modal = document.getElementById('previewCertModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('open');
 
             setTimeout(function() {
                 try {
@@ -618,28 +604,13 @@
                         iframe.contentWindow.fitCertificate();
                     }
                 } catch(e) {}
-            }, 150);
-            setTimeout(function() {
-                try {
-                    if (iframe.contentWindow && iframe.contentWindow.fitCertificate) {
-                        iframe.contentWindow.fitCertificate();
-                    }
-                } catch(e) {}
-            }, 400);
-        }
-
-        function zoomPreview(delta) {
-            const iframe = document.getElementById('preview-live-iframe');
-            if (!iframe) return;
-            try {
-                if (iframe.contentWindow && iframe.contentWindow.changeZoom) {
-                    iframe.contentWindow.changeZoom(delta);
-                }
-            } catch(e) {}
+            }, 100);
         }
 
         function closePreviewModal() {
-            document.getElementById('previewCertModal').classList.add('hidden');
+            const modal = document.getElementById('previewCertModal');
+            modal.classList.remove('open');
+            modal.classList.add('hidden');
             document.getElementById('preview-live-iframe').src = '';
         }
     </script>
