@@ -143,6 +143,9 @@
 
     function errorMessage(body, fallback) {
         if (body && typeof body === 'object') {
+            if (typeof body.detail === 'string' && body.detail.trim()) {
+                return (body.message ? body.message + ' — ' : '') + body.detail;
+            }
             if (typeof body.message === 'string') return body.message;
             if (body.errors) {
                 var first = Object.keys(body.errors)[0];

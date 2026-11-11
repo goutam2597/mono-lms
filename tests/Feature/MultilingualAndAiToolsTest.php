@@ -273,4 +273,56 @@ class MultilingualAndAiToolsTest extends TestCase
             'description' => '<p>Learn everything new in PHP 8.4.</p>',
         ]);
     }
+
+    public function test_ai_translation_service_translates_fields_without_type_error(): void
+    {
+        $admin = $this->superAdmin();
+        $this->actingAs($admin, 'admin');
+
+        $provider = AiProvider::create([
+            'name' => 'SenseNova',
+            'type' => 'openai',
+            'base_url' => 'https://token.sensenova.ai/v1',
+            'api_key' => 'test-key',
+            'model' => 'sensenova-6.8-flash-lite',
+            'is_active' => true,
+        ]);
+        Setting::set('ai_translator_provider', $provider->id.'|'.$provider->model);
+
+        Language::create(['code' => 'en', 'name' => 'English', 'native_name' => 'English', 'is_default' => true, 'is_active' => true]);
+        Language::create(['code' => 'hi', 'name' => 'Hindi', 'native_name' => 'हिन्दी', 'is_default' => false, 'is_active' => true]);
+
+        $mockService = $this->getMockBuilder(AiTranslationService::class)
+            ->onlyMethods(['chatWithFallback'])
+            ->getMock();
+
+        $mockService->expects($this->atLeastOnce())
+            ->method('chatWithFallback')
+            ->with(
+                $this->isInstanceOf(AiProvider::class),
+                $this->isType('string'),
+                $this->isType('string'),
+                $this->identicalTo('translator'),
+                $this->isNull()
+            )
+            ->willReturn(json_encode([
+                'title' => 'नमस्ते दुनिया',
+            ]));
+
+        $this->app->instance(AiTranslationService::class, $mockService);
+
+        $response = $this->postJson(route('admin.translate'), [
+            'context' => 'course',
+            'source' => 'en',
+            'targets' => ['hi'],
+            'fields' => [
+                'en' => [
+                    'title' => 'Hello World',
+                ],
+            ],
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('translations.hi.title', 'नमस्ते दुनिया');
+    }
 }

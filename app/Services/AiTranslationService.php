@@ -151,6 +151,7 @@ class AiTranslationService
                 $provider,
                 $system,
                 json_encode($small, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'translator',
                 $vendorId
             ));
 
@@ -174,6 +175,7 @@ class AiTranslationService
                     $provider,
                     $system,
                     json_encode(["{$key}::seg{$index}" => $segment], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                    'translator',
                     $vendorId
                 ));
 
