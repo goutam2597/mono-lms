@@ -165,17 +165,43 @@
         var overwrite = toolbar.querySelector('[data-translate-overwrite]');
         if (!buttons.length) return;
 
+        function setVisibility(el, visible) {
+            if (!el) return;
+            el.hidden = !visible;
+            if (visible) {
+                el.classList.remove('hidden');
+                el.style.removeProperty('display');
+            } else {
+                el.classList.add('hidden');
+                el.style.display = 'none';
+            }
+        }
+
         function localeFromSelector(selector) {
-            if (selector.dataset.translateLocaleTab) return selector.dataset.translateLocaleTab;
+            if (selector.dataset.translateLocaleTab) {
+                return selector.dataset.translateLocaleTab === 'default'
+                    ? (toolbar.dataset.source || config.defaultLocale || '')
+                    : selector.dataset.translateLocaleTab;
+            }
+            if (selector.dataset.courseLangBtn) {
+                return selector.dataset.courseLangBtn === 'default'
+                    ? (toolbar.dataset.source || config.defaultLocale || '')
+                    : selector.dataset.courseLangBtn;
+            }
+            if (selector.dataset.instCourseLangBtn) {
+                return selector.dataset.instCourseLangBtn === 'default'
+                    ? (toolbar.dataset.source || config.defaultLocale || '')
+                    : selector.dataset.instCourseLangBtn;
+            }
             if (selector.dataset.menuLocale) return selector.dataset.menuLocale;
             var panel = selector.dataset.langPanel || selector.dataset.bundleLang || '';
             if (!panel || /(?:^|-)default$/.test(panel)) return toolbar.dataset.source || config.defaultLocale || '';
-            return panel.replace(/^.*?-lang-panel-/, '').replace(/^.*?-lang-/, '').replace(/^lang-panel-/, '');
+            return panel.replace(/^.*?-lang-panel-/, '').replace(/^.*?-lang-/, '').replace(/^lang-panel-/, '').replace(/^cat-panel-/, '').replace(/^blog-lang-panel-/, '');
         }
 
         function languageSelectors() {
             var root = targetRoot(toolbar);
-            return query(root, '[data-translate-locale-tab], .lang-tab[data-lang-panel], .bundle-lang-tab[data-bundle-lang], .mp-lang-tab[data-menu-locale]');
+            return query(root, '[data-translate-locale-tab], .lang-tab, .course-lang-btn, .inst-course-lang-btn, [data-course-lang-btn], [data-inst-course-lang-btn], .bundle-lang-tab[data-bundle-lang], .mp-lang-tab[data-menu-locale]');
         }
 
         function activeLocale() {
@@ -193,10 +219,13 @@
             query(toolbar, '[data-translate-target]').forEach(function (candidate) {
                 // On the default/source tab, only Translate All remains; on a
                 // target tab, exactly that language's button — never both.
-                candidate.hidden = isSource || candidate.dataset.translateTarget !== locale;
+                var shouldShow = !isSource && candidate.dataset.translateTarget === locale;
+                setVisibility(candidate, shouldShow);
             });
             var all = toolbar.querySelector('[data-translate-all]');
-            if (all) all.hidden = !isSource;
+            if (all) {
+                setVisibility(all, isSource);
+            }
         }
 
         languageSelectors().forEach(function (selector) {
@@ -206,6 +235,13 @@
                 setTimeout(function () { syncLanguageButton(localeFromSelector(selector)); }, 0);
             });
         });
+
+        document.addEventListener('translate:locale-change', function (e) {
+            if (e.detail && e.detail.locale) {
+                syncLanguageButton(e.detail.locale);
+            }
+        });
+
         syncLanguageButton(activeLocale());
 
         buttons.forEach(function (button) {

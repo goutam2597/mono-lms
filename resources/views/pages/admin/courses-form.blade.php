@@ -35,6 +35,7 @@
                     <div class="flex flex-wrap items-center gap-1.5" role="tablist">
                         <button type="button"
                                 data-course-lang-btn="default"
+                                data-translate-locale-tab="{{ $defaultCode }}"
                                 data-lang-panel="lang-panel-default"
                                 role="tab"
                                 aria-selected="true"
@@ -48,6 +49,7 @@
                         @foreach ($transLangs as $lang)
                             <button type="button"
                                     data-course-lang-btn="{{ $lang->code }}"
+                                    data-translate-locale-tab="{{ $lang->code }}"
                                     data-lang-panel="lang-panel-{{ $lang->code }}"
                                     role="tab"
                                     aria-selected="false"
@@ -505,6 +507,9 @@
 
             var aiLangSel = document.getElementById('aiWriteLang');
             if (aiLangSel && code !== 'default') aiLangSel.value = code;
+
+            var locale = (code === 'default') ? @json($defaultCode) : code;
+            document.dispatchEvent(new CustomEvent('translate:locale-change', { detail: { locale: locale } }));
         };
 
         // Delegated AI Image Modal trigger for course thumbnail

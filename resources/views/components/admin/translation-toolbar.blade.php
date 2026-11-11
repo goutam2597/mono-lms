@@ -34,8 +34,8 @@
             <button type="button"
                     data-translate-run
                     data-translate-target="{{ $targetLanguage->code }}"
-                    @if ($targetCodes->count() > 1) hidden @endif
-                    class="action-btn action-btn-ghost h-9 text-[10px] tracking-[0.14em]">
+                    hidden
+                    class="action-btn action-btn-ghost h-9 text-[10px] tracking-[0.14em] hidden">
                 {{ $label }} · {{ $targetLanguage->native_name ?: strtoupper($targetLanguage->code) }}
             </button>
         @endforeach

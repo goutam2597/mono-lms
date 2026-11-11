@@ -133,12 +133,12 @@
                 <!-- Language tabs + AI toolbar -->
                 <div class="flex flex-wrap items-end justify-between gap-3 border-b border-neutral-200 dark:border-neutral-800">
                     <div class="lang-tabs -mb-px flex flex-wrap gap-1" role="tablist">
-                        <button type="button" class="lang-tab is-active" data-lang-panel="cat-panel-default" role="tab" aria-selected="true">
+                        <button type="button" class="lang-tab is-active" data-lang-panel="cat-panel-default" data-translate-locale-tab="{{ $defaultCode }}" role="tab" aria-selected="true">
                             <span>{{ $languages->firstWhere('code', $defaultCode)?->native_name ?? strtoupper($defaultCode) }}</span>
                             <span class="lang-badge">{{ __('admin.courses.lang_default_badge') ?? 'Default' }}</span>
                         </button>
                         @foreach ($transLangs as $lang)
-                            <button type="button" class="lang-tab" data-lang-panel="cat-panel-{{ $lang->code }}" role="tab" aria-selected="false">
+                            <button type="button" class="lang-tab" data-lang-panel="cat-panel-{{ $lang->code }}" data-translate-locale-tab="{{ $lang->code }}" role="tab" aria-selected="false">
                                 <span>{{ $lang->native_name }}</span>
                             </button>
                         @endforeach

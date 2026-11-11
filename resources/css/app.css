@@ -468,3 +468,7 @@
 .modal-overlay .panel-md, .modal-overlay .panel.panel-md { width: 520px; }
 .modal-overlay .panel-lg, .modal-overlay .panel.panel-lg { width: 640px; }
 .modal-overlay .panel-xl, .modal-overlay .panel.panel-xl { width: 920px; }
+
+[hidden] {
+    display: none !important;
+}
