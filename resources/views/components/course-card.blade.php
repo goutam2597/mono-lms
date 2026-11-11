@@ -1,8 +1,9 @@
 @props([
     'id' => 1,
     'slug' => null,
-    'title' => 'Information About UI/UX Design Degree',
-    'category' => 'Web Design',
+    'title' => null,
+    'category' => null,
+    'course' => null,
     'instructor' => 'Rolands Granger',
     'instructorAvatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
     'image' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80',
@@ -16,6 +17,15 @@
 ])
 
 @php
+    if ($course instanceof \App\Models\Course) {
+        $title = $title ?? $course->trans('title');
+        $category = $category ?? $course->category?->trans('name') ?? 'General';
+        $slug = $slug ?? $course->slug;
+    } else {
+        $title = $title ?? 'Information About UI/UX Design Degree';
+        $category = $category ?? 'Web Design';
+    }
+
     $formattedLevel = ucfirst($level ?? 'Beginner');
 
     $formattedDuration = $duration ?? '6h 30m';

@@ -7,14 +7,26 @@
     </style>
 
     <div class="bg-white border border-[#e7e7e7] overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between gap-4">
+        <div class="px-6 py-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
             <div>
                 <h3 class="font-bold text-[#191919]">{{ __('admin.categories.title') }}</h3>
                 <p class="text-xs text-gray-400 mt-0.5">{{ __('admin.categories.subtitle') }}</p>
             </div>
-            <button type="button" id="btn-add-category" class="action-btn action-btn-primary h-10 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">
-                + {{ __('admin.categories.create') }}
-            </button>
+            <div class="flex items-center gap-3">
+                @if ($translatorSet ?? false)
+                    <button type="button" id="bulk-translate-btn"
+                            data-confirm="{{ __('admin.languages.bulk_taxonomy_confirm') ?? 'Translate missing category names across all active languages using AI?' }}"
+                            data-running="{{ __('admin.languages.translating') ?? 'Translating Categories…' }}"
+                            data-done="{{ __('admin.languages.bulk_taxonomy_done_alert') ?? 'Translated :count categories into :targets.' }}"
+                            data-none="{{ __('admin.languages.bulk_taxonomy_none') ?? 'All categories are already translated.' }}"
+                            class="action-btn action-btn-ghost h-10 px-4 text-[11px] font-medium uppercase tracking-[0.14em]">
+                        {{ __('admin.languages.translate_all') ?? 'Translate All Categories' }}
+                    </button>
+                @endif
+                <button type="button" id="btn-add-category" class="action-btn action-btn-primary h-10 px-5 text-[11px] font-medium uppercase tracking-[0.14em]">
+                    + {{ __('admin.categories.create') }}
+                </button>
+            </div>
         </div>
 
         <x-bulk-toolbar action="{{ route('admin.categories.bulk-destroy') }}" />
@@ -36,16 +48,16 @@
                     @forelse ($categories as $category)
                         <tr class="hover:bg-[#f8fafb] transition-colors" id="category-row-{{ $category->id }}">
                             <td class="w-10 px-6 py-3.5">
-                                <input type="checkbox" class="control row-check" name="ids[]" value="{{ $category->id }}" form="bulk-form" aria-label="{{ $category->name }}">
+                                <input type="checkbox" class="control row-check" name="ids[]" value="{{ $category->id }}" form="bulk-form" aria-label="{{ $category->trans('name') }}">
                             </td>
                             <td class="px-6 py-3.5 font-semibold text-[#191919]">
-                                {{ $category->name }}
+                                {{ $category->trans('name') }}
                                 <span class="text-xs text-gray-400 font-normal">({{ $category->slug }})</span>
                             </td>
                             <td class="px-6 py-3.5">
                                 @if ($category->imageUrl())
                                     <img src="{{ $category->imageUrl() }}" 
-                                         alt="{{ $category->name }}" 
+                                         alt="{{ $category->trans('name') }}" 
                                          class="w-8 h-8 object-contain rounded-md bg-white border border-gray-200 p-0.5"
                                          onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
                                          loading="lazy">
@@ -72,6 +84,7 @@
                                         data-id="{{ $category->id }}"
                                         data-action="{{ route('admin.categories.update', $category) }}"
                                         data-name="{{ $category->name }}"
+                                        data-translations='@json($category->name_translations ?? [])'
                                         data-color="{{ $category->color ?? '#137547' }}"
                                         data-icon="{{ $category->icon ?? '' }}"
                                         data-image="{{ $category->image ?? '' }}"
@@ -108,19 +121,93 @@
                 @csrf
                 <input type="hidden" name="_method" id="cat-form-method" value="POST" disabled>
 
-                <div class="space-y-1.5">
-                    <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
-                    <input type="text" name="name" id="cat-name-input" required maxlength="100" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                @php
+                    $languages = $languages ?? \App\Models\Language::active();
+                    $defaultCode = $defaultCode ?? \App\Models\Language::defaultCode();
+                    $transLangs = $languages->where('code', '!=', $defaultCode)->values();
+                    $translatorSet = $translatorSet ?? (bool) app(\App\Services\AiTranslationService::class)->provider();
+                    $generatorSet = $generatorSet ?? (bool) \App\Models\AiProvider::resolveConfigured('ai_generator_provider');
+                    $imageSet = $imageSet ?? (bool) \App\Models\AiProvider::resolveConfigured('ai_image_provider');
+                @endphp
+
+                <!-- Language tabs + AI toolbar -->
+                <div class="flex flex-wrap items-end justify-between gap-3 border-b border-neutral-200 dark:border-neutral-800">
+                    <div class="lang-tabs -mb-px flex flex-wrap gap-1" role="tablist">
+                        <button type="button" class="lang-tab is-active" data-lang-panel="cat-panel-default" role="tab" aria-selected="true">
+                            <span>{{ $languages->firstWhere('code', $defaultCode)?->native_name ?? strtoupper($defaultCode) }}</span>
+                            <span class="lang-badge">{{ __('admin.courses.lang_default_badge') ?? 'Default' }}</span>
+                        </button>
+                        @foreach ($transLangs as $lang)
+                            <button type="button" class="lang-tab" data-lang-panel="cat-panel-{{ $lang->code }}" role="tab" aria-selected="false">
+                                <span>{{ $lang->native_name }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+                    @if ($generatorSet || $translatorSet)
+                        <div class="flex flex-wrap items-center gap-3 pb-2">
+                            <span id="cat-generate-status" class="text-[12px] text-neutral-400"></span>
+                            @if ($generatorSet)
+                                <button type="button" id="cat-generate-ai" class="action-btn action-btn-ghost h-9 inline-flex items-center gap-1.5 text-[10px] tracking-[0.14em]">
+                                    <svg class="w-3.5 h-3.5 text-brand" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"/>
+                                    </svg>
+                                    <span>{{ __('admin.categories.generate_ai') ?? 'Generate with AI' }}</span>
+                                </button>
+                            @endif
+                            @if ($translatorSet)
+                                <x-admin.translation-toolbar :enabled="$translatorSet" context="taxonomy" container="#cat-form" :source="$defaultCode" />
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
-                <!-- Category Image Media Selector -->
+                @if ($generatorSet)
+                    <div id="cat-generate-row" class="hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 p-4">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <input type="text" id="cat-generate-prompt" maxlength="500" placeholder="{{ __('admin.categories.generate_ph') ?? 'Describe the category in a few words…' }}"
+                                   class="h-9 min-w-0 basis-full flex-1 border sm:min-w-[240px] sm:basis-auto border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 dark:focus:border-neutral-100 focus:outline-none">
+                            <button type="button" id="cat-generate-run" class="action-btn h-9 px-5 text-[10px] font-medium tracking-[0.14em]">
+                                {{ __('admin.categories.generate') ?? 'Generate' }}
+                            </button>
+                            <span id="cat-generate-row-status" class="text-[12px] text-neutral-400"></span>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Default Language Panel -->
+                <div id="cat-panel-default" class="lang-panel space-y-1.5" role="tabpanel">
+                    <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
+                    <input type="text" name="name" id="cat-name-input" required maxlength="100"
+                           data-translate-key="name" data-translate-locale="{{ $defaultCode }}"
+                           class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                </div>
+
+                <!-- Other Language Panels -->
+                @foreach ($transLangs as $lang)
+                    <div id="cat-panel-{{ $lang->code }}" class="lang-panel hidden space-y-1.5" role="tabpanel" dir="{{ $lang->direction }}">
+                        <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} ({{ $lang->native_name }})</label>
+                        <input type="text" name="translations[{{ $lang->code }}][name]" id="cat-trans-name-{{ $lang->code }}" maxlength="100"
+                               data-translate-key="name" data-translate-locale="{{ $lang->code }}"
+                               class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <p class="text-[11px] text-neutral-400">Blank falls back to default language name.</p>
+                    </div>
+                @endforeach
+
+                <!-- Category Image Media Selector + AI Button -->
                 <div id="cat-media-wrapper">
+                    <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600 mb-1.5">Category Image / Logo</label>
                     <x-media-selector
                         name="image"
-                        label="Category Image / Logo"
                         shape="square"
-                        hint="Used inside the central square on category cards. Leave blank to use fallback icon."
-                    />
+                        hint="Used inside category cards. Leave blank to use fallback icon."
+                    >
+                        @if ($imageSet)
+                            <button type="button" id="cat-ai-img-btn" class="action-btn h-9 px-4 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] cursor-pointer">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.2 6.9L21 11.1l-6.8 2.2L12 20.2l-2.2-6.9L3 11.1l6.8-2.2L12 2z"/></svg>
+                                <span>{{ __('admin.imagegen.button') ?? 'Generate with AI' }}</span>
+                            </button>
+                        @endif
+                    </x-media-selector>
                 </div>
 
                 <!-- Accent Color -->
@@ -161,6 +248,8 @@
         var closeBtn   = document.getElementById('cat-modal-close');
         var cancelBtn  = document.getElementById('cat-modal-cancel');
         var mediaWrap  = document.getElementById('cat-media-wrapper');
+        var aiImgBtn   = document.getElementById('cat-ai-img-btn');
+        var bulkBtn    = document.getElementById('bulk-translate-btn');
         var storeUrl   = @json(route('admin.categories.store'));
 
         function setMediaValue(path, url) {
@@ -182,6 +271,178 @@
             }
         }
 
+        function resetTabs() {
+            document.querySelectorAll('#cat-modal .lang-tab').forEach(function (b, idx) {
+                var isActive = (idx === 0);
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            document.querySelectorAll('#cat-modal .lang-panel').forEach(function (p, idx) {
+                p.classList.toggle('hidden', idx !== 0);
+            });
+        }
+
+        // Tab click handler
+        document.querySelectorAll('#cat-modal .lang-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('#cat-modal .lang-tab').forEach(function (t) {
+                    var isActive = (t === tab);
+                    t.classList.toggle('is-active', isActive);
+                    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+                document.querySelectorAll('#cat-modal .lang-panel').forEach(function (p) {
+                    p.classList.add('hidden');
+                });
+                var target = document.getElementById(tab.dataset.langPanel);
+                if (target) target.classList.remove('hidden');
+            });
+        });
+
+        // Category AI Text Content Generation
+        var catGenBtn = document.getElementById('cat-generate-ai');
+        if (catGenBtn) {
+            var gRow = document.getElementById('cat-generate-row');
+            var gPrompt = document.getElementById('cat-generate-prompt');
+            var gRun = document.getElementById('cat-generate-run');
+            var gStatus = document.getElementById('cat-generate-status');
+            var gRowStatus = document.getElementById('cat-generate-row-status');
+            var gUrl = @json(route('admin.generate'));
+            var gToken = @json(csrf_token());
+            var gLang = @json($defaultCode);
+            var lblGenerating = @json(__('admin.categories.generating') ?? 'Generating…');
+            var lblGenDone = @json(__('admin.categories.generate_done') ?? 'Generated — review and save.');
+            var lblGenFailed = @json(__('admin.categories.generate_failed') ?? 'Generation failed.');
+            var lblGenEmpty = @json(__('admin.categories.generate_empty') ?? 'Enter a few words about the category first.');
+            var lblGenIdle = @json(__('admin.categories.generate') ?? 'Generate');
+            var generating = false;
+
+            catGenBtn.addEventListener('click', function () {
+                gRow.classList.toggle('hidden');
+                if (! gRow.classList.contains('hidden')) {
+                    gPrompt.focus();
+                }
+            });
+
+            gPrompt.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    gRun.click();
+                }
+            });
+
+            gRun.addEventListener('click', function () {
+                var prompt = gPrompt.value.trim();
+                if (! prompt) {
+                    if (gRowStatus) gRowStatus.textContent = lblGenEmpty;
+                    return;
+                }
+                if (generating) return;
+                generating = true;
+                gRun.disabled = true;
+
+                var gFx = window.aiFx && window.aiFx.button
+                    ? window.aiFx.button.start(gRun, { label: lblGenerating, console: 'CATEGORY CONTENT GENERATOR', note: '“' + prompt + '” · ' + gLang })
+                    : null;
+                if (! gFx) gRun.textContent = lblGenerating;
+                var gOk = false, gMsg = '';
+                if (gRowStatus) gRowStatus.textContent = '';
+                if (gStatus) gStatus.textContent = '';
+
+                fetch(gUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': gToken, 'Accept': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, language: gLang, type: 'category' })
+                })
+                .then(function (res) {
+                    return res.text().then(function (raw) {
+                        var body;
+                        try { body = raw ? JSON.parse(raw) : {}; }
+                        catch (e) { throw new Error(lblGenFailed + ' (HTTP ' + res.status + ')'); }
+                        if (! res.ok) throw new Error(body.message || lblGenFailed);
+                        return body;
+                    });
+                })
+                .then(function (body) {
+                    if (nameIn && (body.name || body.title)) {
+                        nameIn.value = body.name || body.title;
+                        nameIn.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+
+                    if (gRowStatus) gRowStatus.textContent = lblGenDone;
+                    if (gStatus) gStatus.textContent = lblGenDone;
+                    gMsg = lblGenDone;
+                    gOk = true;
+                })
+                .catch(function (e) {
+                    if (gRowStatus) gRowStatus.textContent = e.message;
+                    if (gStatus) gStatus.textContent = e.message;
+                    gMsg = e.message;
+                })
+                .finally(function () {
+                    generating = false;
+                    gRun.disabled = false;
+                    if (gFx) gFx.done(gOk, gMsg);
+                    else gRun.textContent = lblGenIdle;
+                });
+            });
+        }
+
+        if (aiImgBtn) {
+            aiImgBtn.addEventListener('click', function () {
+                if (!window.aiImageModal) {
+                    console.error('aiImageModal not initialized');
+                    return;
+                }
+                window.aiImageModal.open({
+                    title: nameIn.value,
+                    style: {!! json_encode(__('admin.imagegen.style_category') ?: 'Clean minimal category icon or illustration, modern flat aesthetic, neutral background, no text, no watermark') !!},
+                    size: '1024x1024',
+                    multiple: false,
+                    onApply: function (imgs) {
+                        if (!imgs || !imgs.length) return;
+                        setMediaValue(imgs[0].path, imgs[0].url);
+                    }
+                });
+            });
+        }
+
+        if (bulkBtn) {
+            bulkBtn.addEventListener('click', function () {
+                if (!window.confirm(bulkBtn.dataset.confirm)) return;
+                bulkBtn.disabled = true;
+                var originalText = bulkBtn.textContent;
+                bulkBtn.textContent = bulkBtn.dataset.running;
+
+                fetch(@json(route('admin.translate.taxonomy')), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': @json(csrf_token()),
+                        'Accept': 'application/json'
+                    },
+                    body: '{}'
+                }).then(function (res) {
+                    return res.json().then(function (body) { return { ok: res.ok, body: body }; });
+                }).then(function (data) {
+                    if (!data.ok) {
+                        window.alert(data.body.message || 'Translation failed.');
+                    } else if ((data.body.count || 0) === 0) {
+                        window.alert(bulkBtn.dataset.none);
+                    } else {
+                        window.alert(bulkBtn.dataset.done
+                            .replace(':count', data.body.count)
+                            .replace(':targets', data.body.targets));
+                        window.location.reload();
+                    }
+                }).catch(function () {
+                    window.alert('Translation failed.');
+                }).finally(function () {
+                    bulkBtn.disabled = false;
+                    bulkBtn.textContent = originalText;
+                });
+            });
+        }
+
         function openAdd() {
             heading.textContent = @json(__('admin.categories.create'));
             form.action = storeUrl;
@@ -191,6 +452,10 @@
             colorPrev.value = '#137547';
             iconIn.value = '';
             setMediaValue('', '');
+            document.querySelectorAll('[id^="cat-trans-name-"]').forEach(function (input) {
+                input.value = '';
+            });
+            resetTabs();
             modal.classList.add('open');
             setTimeout(function () { nameIn.focus(); }, 100);
         }
@@ -205,6 +470,15 @@
             colorPrev.value = btn.dataset.color || '#137547';
             iconIn.value = btn.dataset.icon || '';
             setMediaValue(btn.dataset.image || '', btn.dataset.imageUrl || '');
+
+            var trans = {};
+            try { trans = JSON.parse(btn.dataset.translations || '{}'); } catch (e) {}
+            document.querySelectorAll('[id^="cat-trans-name-"]').forEach(function (input) {
+                var code = input.id.replace('cat-trans-name-', '');
+                input.value = typeof trans[code] === 'string' ? trans[code] : '';
+            });
+
+            resetTabs();
             modal.classList.add('open');
             setTimeout(function () { nameIn.focus(); }, 100);
         }

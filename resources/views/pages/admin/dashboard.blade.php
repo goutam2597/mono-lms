@@ -5,13 +5,13 @@
         <!-- Top Welcome & Date Filter Header (Figma Dev Mode Node 10060:83402) -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <div class="text-[11px] font-semibold text-[var(--theme-primary,#344c3d)] uppercase tracking-wider mb-0.5">Admin overview</div>
+                <div class="text-[11px] font-semibold text-[var(--theme-primary,#344c3d)] uppercase tracking-wider mb-0.5">{{ __('admin.dashboard.overview') }}</div>
                 <h1 class="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight">
-                    Welcome back, {{ auth('admin')->user()?->name ?? 'Administrator' }}
+                    {{ __('admin.dashboard.welcome_back', ['name' => auth('admin')->user()?->name ?? 'Administrator']) }}
                 </h1>
                 <p class="text-xs sm:text-[13px] text-[#64748b] mt-0.5">
-                    Today you have <span class="font-semibold text-[#0f172a]">{{ $stats['action_items'] ?? 0 }} action items</span> and <span class="font-semibold text-[#0f172a]">{{ $stats['reviews'] ?? 0 }} reviews</span>,
-                    <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] font-semibold hover:underline">View Details</a>
+                    {{ __('admin.dashboard.today_summary', ['actions' => $stats['action_items'] ?? 0, 'reviews' => $stats['reviews'] ?? 0]) }}
+                    <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] font-semibold hover:underline">{{ __('admin.dashboard.view_details') }}</a>
                 </p>
             </div>
             <!-- Date Range Filter Pill -->
@@ -34,15 +34,15 @@
                     </div>
                     <div>
                         <p class="font-bold text-sm text-amber-950">
-                            {{ $pendingVerificationsCount }} {{ Str::plural('Instructor', $pendingVerificationsCount) }} Waiting for Verification Review
+                            {{ __('admin.dashboard.waiting_verification', ['count' => $pendingVerificationsCount]) }}
                         </p>
                         <p class="text-xs text-amber-800 mt-0.5">
-                            New instructor applications require review of their national ID and instructor certification before they can publish courses.
+                            {{ __('admin.dashboard.waiting_verification_hint') }}
                         </p>
                     </div>
                 </div>
                 <a href="{{ route('admin.instructors.index', ['verification' => 'pending']) }}" class="action-btn bg-amber-600 border-amber-600 hover:bg-amber-700 text-white text-[11px] h-8 px-4 rounded-xs shrink-0 font-semibold uppercase tracking-wider">
-                    Review Pending ({{ $pendingVerificationsCount }})
+                    {{ __('admin.dashboard.review_pending', ['count' => $pendingVerificationsCount]) }}
                 </a>
             </div>
         @endif
@@ -59,7 +59,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Students</p>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">{{ __('admin.dashboard.total_students') }}</p>
                             <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</p>
                         </div>
                     </div>
@@ -88,11 +88,11 @@
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-[#e65c00] text-white flex items-center justify-center shrink-0 shadow-xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18-3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Courses</p>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">{{ __('admin.dashboard.total_courses') }}</p>
                             <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_courses'] ?? $stats['courses'] ?? 0) }}</p>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Instructors</p>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">{{ __('admin.dashboard.total_instructors') }}</p>
                             <p class="text-[20px] font-bold text-[#0f172a] mt-1">{{ number_format($stats['total_instructors'] ?? $stats['instructors'] ?? 0) }}</p>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">Total Revenue</p>
+                            <p class="text-[13px] text-[#64748b] font-medium leading-tight">{{ __('admin.dashboard.total_revenue') }}</p>
                             <p class="text-[20px] font-bold text-[#0f172a] mt-1">${{ number_format($stats['total_revenue'] ?? $stats['revenue'] ?? 0, 2) }}</p>
                         </div>
                     </div>
@@ -188,10 +188,10 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-amber-200/60">
                     <div class="flex items-center gap-2.5">
                         <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                        <h2 class="text-sm font-bold text-slate-900">Action Required: Pending Approvals &amp; Moderation</h2>
+                        <h2 class="text-sm font-bold text-slate-900">{{ __('admin.dashboard.action_required') }}</h2>
                     </div>
                     <span class="text-xs font-semibold px-2.5 py-0.5 rounded-[4px] bg-amber-100 text-amber-800 self-start sm:self-auto">
-                        {{ ($pendingCourses ? $pendingCourses->count() : 0) + ($pendingReviews ? $pendingReviews->count() : 0) }} Items Pending
+                        {{ __('admin.dashboard.items_pending', ['count' => ($pendingCourses ? $pendingCourses->count() : 0) + ($pendingReviews ? $pendingReviews->count() : 0)]) }}
                     </span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
@@ -200,9 +200,9 @@
                             <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                                 <span class="flex items-center gap-1.5">
                                     <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-                                    Courses Awaiting Publication
+                                    {{ __('admin.dashboard.courses_awaiting_pub') }}
                                 </span>
-                                <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">View All</a>
+                                <a href="{{ route('admin.courses.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">{{ __('app.common.view_all') }}</a>
                             </div>
                             @foreach($pendingCourses->take(3) as $pCourse)
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
@@ -214,7 +214,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
-                                            Publish
+                                            {{ __('admin.dashboard.publish') }}
                                         </button>
                                     </form>
                                 </div>
@@ -227,9 +227,9 @@
                             <div class="flex items-center justify-between text-xs font-semibold text-slate-700">
                                 <span class="flex items-center gap-1.5">
                                     <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-                                    Reviews to Moderate
+                                    {{ __('admin.dashboard.reviews_to_moderate') }}
                                 </span>
-                                <a href="{{ route('admin.reviews.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">View All</a>
+                                <a href="{{ route('admin.reviews.index') }}" class="text-[var(--theme-primary,#344c3d)] hover:underline">{{ __('app.common.view_all') }}</a>
                             </div>
                             @foreach($pendingReviews->take(3) as $pRev)
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
@@ -241,7 +241,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" class="px-2.5 py-1 rounded-[4px] bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white font-semibold text-[11px] transition-colors whitespace-nowrap cursor-pointer">
-                                            Approve
+                                            {{ __('admin.dashboard.approve') }}
                                         </button>
                                     </form>
                                 </div>
@@ -258,9 +258,9 @@
             <div class="lg:col-span-5 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Recent Enrollments</h2>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.recent_enrollments') }}</h2>
                         <a href="{{ route('admin.orders.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">
-                            All Enrollments
+                            {{ __('admin.dashboard.all_enrollments') }}
                         </a>
                     </div>
 
@@ -286,14 +286,14 @@
                                 </div>
                             </div>
                         @empty
-                            <p class="py-4 text-xs text-slate-400 text-center">No recent enrollments found.</p>
+                            <p class="py-4 text-xs text-slate-400 text-center">{{ __('admin.dashboard.no_recent_orders') }}</p>
                         @endforelse
                     </div>
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 text-center">
                     <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">
-                        View All Orders & Invoices &rarr;
+                        {{ __('admin.dashboard.view_all_orders') }} &rarr;
                     </a>
                 </div>
             </div>
@@ -303,25 +303,25 @@
                 <div>
                     <!-- Header with Title and View All Button -->
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Students Statistics &mdash; Revenue & Enrollments</h2>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{!! __('admin.dashboard.student_statistics') !!}</h2>
                         <a href="{{ route('admin.reports.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">
-                            View All
+                            {{ __('app.common.view_all') }}
                         </a>
                     </div>
 
                     <!-- Subheader: Total Count & Color Legends (Figma Node 10060:83581) -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-3 pb-2 text-xs">
                         <p class="font-semibold text-sm text-[#0f172a]">
-                            Total No of Students: <span class="font-bold text-[var(--theme-primary,#344c3d)]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span>
+                            {{ __('admin.dashboard.total_no_students') }} <span class="font-bold text-[var(--theme-primary,#344c3d)]">{{ number_format($stats['total_students'] ?? $stats['students'] ?? 0) }}</span>
                         </p>
                         <div class="flex items-center gap-4 text-xs font-medium">
                             <span class="flex items-center gap-1.5 text-[#334155]">
                                 <span class="w-2.5 h-2.5 rounded-full bg-[var(--theme-primary,#344c3d)]"></span>
-                                New Students
+                                {{ __('admin.dashboard.new_students') }}
                             </span>
                             <span class="flex items-center gap-1.5 text-[#334155]">
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#bfcfbb]"></span>
-                                Total Enrollments
+                                {{ __('admin.dashboard.total_enrollments') }}
                             </span>
                         </div>
                     </div>
@@ -386,20 +386,20 @@
                 <!-- Mini Metric Badges (Fills vertical void, aligns card height with left column) -->
                 <div class="grid grid-cols-3 gap-3 mt-4 pt-3.5 border-t border-gray-100 dark:border-[#1f1f1f]">
                     <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Weekly Growth</p>
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">{{ __('admin.dashboard.weekly_growth') }}</p>
                         <p class="text-[14px] font-bold text-[#09800f] dark:text-emerald-400 mt-0.5 flex items-center justify-center gap-1">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
                             +14.6%
                         </p>
                     </div>
                     <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Daily Active</p>
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">{{ __('admin.dashboard.daily_active') }}</p>
                         <p class="text-[14px] font-bold text-[#0f172a] dark:text-white mt-0.5">
                             412 <span class="text-[10px] font-normal text-[#64748b] dark:text-neutral-400">avg</span>
                         </p>
                     </div>
                     <div class="bg-[#f8fafc] dark:bg-[#121212] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] p-2.5 text-center">
-                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">Completion Rate</p>
+                        <p class="text-[11px] text-[#64748b] dark:text-neutral-400 font-medium truncate">{{ __('admin.dashboard.completion_rate') }}</p>
                         <p class="text-[14px] font-bold text-[var(--theme-primary,#344c3d)] dark:text-[#86efac] mt-0.5">
                             88.4%
                         </p>
@@ -415,7 +415,7 @@
                 <div class="bg-[var(--theme-primary,#344c3d)]/10 dark:bg-[var(--theme-primary,#344c3d)]/25 w-full py-3 rounded-[5px] text-[var(--theme-primary,#344c3d)] dark:text-[#86efac] flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-[#86efac] mt-2.5 truncate w-full">Students</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[var(--theme-primary,#344c3d)] dark:group-hover:text-[#86efac] mt-2.5 truncate w-full">{{ __('admin.nav.items.students') }}</p>
             </a>
 
             <!-- 2. Instructors -->
@@ -423,7 +423,7 @@
                 <div class="bg-[#eef9f1] dark:bg-emerald-950/30 w-full py-3 rounded-[5px] text-[#137547] dark:text-emerald-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#137547] dark:group-hover:text-emerald-400 mt-2.5 truncate w-full">Instructors</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#137547] dark:group-hover:text-emerald-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.instructors') }}</p>
             </a>
 
             <!-- 3. All Courses -->
@@ -431,7 +431,7 @@
                 <div class="bg-[#fff8ef] dark:bg-amber-950/30 w-full py-3 rounded-[5px] text-[#d97706] dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#d97706] dark:group-hover:text-amber-400 mt-2.5 truncate w-full">Courses</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#d97706] dark:group-hover:text-amber-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.courses') }}</p>
             </a>
 
             <!-- 4. Categories -->
@@ -439,7 +439,7 @@
                 <div class="bg-[#f1ebf7] dark:bg-purple-950/30 w-full py-3 rounded-[5px] text-[#7c3aed] dark:text-purple-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#7c3aed] dark:group-hover:text-purple-400 mt-2.5 truncate w-full">Categories</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#7c3aed] dark:group-hover:text-purple-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.categories') }}</p>
             </a>
 
             <!-- 5. Media Library (User requested) -->
@@ -447,7 +447,7 @@
                 <div class="bg-[#e0f2fe] dark:bg-sky-950/30 w-full py-3 rounded-[5px] text-[#0284c7] dark:text-sky-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0284c7] dark:group-hover:text-sky-400 mt-2.5 truncate w-full">Media</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0284c7] dark:group-hover:text-sky-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.media') }}</p>
             </a>
 
             <!-- 6. All Orders -->
@@ -455,7 +455,7 @@
                 <div class="bg-[#fbecea] dark:bg-rose-950/30 w-full py-3 rounded-[5px] text-[#dc2626] dark:text-rose-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#dc2626] dark:group-hover:text-rose-400 mt-2.5 truncate w-full">Orders</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#dc2626] dark:group-hover:text-rose-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.orders') }}</p>
             </a>
 
             <!-- 7. Live Events -->
@@ -463,7 +463,7 @@
                 <div class="bg-[#fdf4ff] dark:bg-fuchsia-950/30 w-full py-3 rounded-[5px] text-[#c026d3] dark:text-fuchsia-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#c026d3] dark:group-hover:text-fuchsia-400 mt-2.5 truncate w-full">Events</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#c026d3] dark:group-hover:text-fuchsia-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.events') }}</p>
             </a>
 
             <!-- 8. Certificates -->
@@ -471,7 +471,7 @@
                 <div class="bg-[#ebf2f1] dark:bg-teal-950/30 w-full py-3 rounded-[5px] text-[#0d9488] dark:text-teal-400 flex items-center justify-center transition-transform group-hover:scale-105">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 </div>
-                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0d9488] dark:group-hover:text-teal-400 mt-2.5 truncate w-full">Certificates</p>
+                <p class="font-semibold text-xs text-[#0f172a] dark:text-neutral-200 group-hover:text-[#0d9488] dark:group-hover:text-teal-400 mt-2.5 truncate w-full">{{ __('admin.nav.items.certificates') }}</p>
             </a>
         </div>
 
@@ -481,8 +481,8 @@
             <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Course Reports</h2>
-                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.course_reports') }}</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">{{ __('app.common.view_all') }}</a>
                     </div>
                     <div class="divide-y divide-gray-100 mt-2">
                         @foreach($coursesByCategory->take(5) as $cat)
@@ -493,7 +493,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <p class="text-[13px] font-semibold text-[#0f172a] truncate">{{ $cat->name }}</p>
-                                        <p class="text-[11px] text-[#64748b]">{{ $cat->courses_count }} Active Courses</p>
+                                        <p class="text-[11px] text-[#64748b]">{{ __('admin.dashboard.active_courses', ['count' => $cat->courses_count]) }}</p>
                                     </div>
                                 </div>
                                 <a href="{{ route('admin.courses.index', ['category' => $cat->slug]) }}" class="w-7 h-7 rounded-[4px] border border-[#e2e8f0] text-slate-500 hover:text-[var(--theme-primary,#344c3d)] hover:border-[var(--theme-primary,#344c3d)] flex items-center justify-center transition-colors">
@@ -504,7 +504,7 @@
                     </div>
                 </div>
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.categories.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Categories &rarr;</a>
+                    <a href="{{ route('admin.categories.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">{{ __('admin.dashboard.manage_categories') }} &rarr;</a>
                 </div>
             </div>
 
@@ -512,8 +512,8 @@
             <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Student Visits</h2>
-                        <a href="{{ route('admin.reports.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">View All</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.student_visits') }}</h2>
+                        <a href="{{ route('admin.reports.index') }}" class="border border-[#e2e8f0] bg-white hover:bg-slate-50 px-2.5 py-1 text-xs rounded-[5px] font-semibold text-[#0f172a] transition-colors">{{ __('app.common.view_all') }}</a>
                     </div>
 
                     <!-- Dual-Track Segmented Radial Gauge Chart (Figma Dev Mode Node 10060:83765) -->
@@ -522,7 +522,7 @@
                             <img src="{{ asset('images/chart-patient-visits.svg') }}" alt="Student Visits Radial Gauge" class="w-full h-full object-contain pointer-events-none select-none">
                             <!-- Center Label Inside the Dual-Track Arch (Figma Node 10060:83894) -->
                             <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none pt-1">
-                                <span class="text-[13px] text-[#334155] font-normal leading-tight">All Students</span>
+                                <span class="text-[13px] text-[#334155] font-normal leading-tight">{{ __('admin.dashboard.all_students') }}</span>
                                 <span class="text-[25px] font-bold text-[#0f172a] leading-none mt-1">80%</span>
                             </div>
                         </div>
@@ -536,10 +536,10 @@
                                         <img src="{{ asset('images/icon-male.svg') }}" alt="Male" class="w-4 h-4 pointer-events-none">
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">Male</p>
+                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">{{ __('admin.dashboard.male') }}</p>
                                         <p class="text-[12px] leading-tight mt-0.5">
                                             <span class="text-[#09800f] font-semibold">-15%</span>
-                                            <span class="text-[#334155]">Since Last Week</span>
+                                            <span class="text-[#334155]">{{ __('admin.dashboard.since_last_week') }}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -553,10 +553,10 @@
                                         <img src="{{ asset('images/icon-female.svg') }}" alt="Female" class="w-4 h-4 pointer-events-none">
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">Female</p>
+                                        <p class="font-semibold text-sm text-[#0f172a] leading-tight">{{ __('admin.dashboard.female') }}</p>
                                         <p class="text-[12px] leading-tight mt-0.5">
                                             <span class="text-[#09800f] font-semibold">-15%</span>
-                                            <span class="text-[#334155]">Since Last Week</span>
+                                            <span class="text-[#334155]">{{ __('admin.dashboard.since_last_week') }}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -574,8 +574,8 @@
             <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Top Instructors</h2>
-                        <a href="{{ route('admin.instructors.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.top_instructors') }}</h2>
+                        <a href="{{ route('admin.instructors.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">{{ __('app.common.view_all') }}</a>
                     </div>
                     <div class="divide-y divide-gray-100 mt-2">
                         @foreach(\App\Models\Instructor::take(5)->get() as $inst)
@@ -604,7 +604,7 @@
                     </div>
                 </div>
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.instructors.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Instructors &rarr;</a>
+                    <a href="{{ route('admin.instructors.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">{{ __('admin.dashboard.manage_instructors') }} &rarr;</a>
                 </div>
             </div>
         </div>
@@ -615,8 +615,8 @@
             <div class="lg:col-span-4 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Courses by Category</h2>
-                        <a href="{{ route('admin.categories.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">All Categories</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.courses_by_category') }}</h2>
+                        <a href="{{ route('admin.categories.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">{{ __('admin.dashboard.manage_categories') }}</a>
                     </div>
 
                     <!-- Donut Chart with Center Text -->
@@ -630,7 +630,7 @@
                                 <circle cx="50" cy="50" r="38" stroke="#eab308" stroke-width="12" fill="transparent" stroke-dasharray="35 240" stroke-dashoffset="-205"/>
                             </svg>
                             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span class="text-[10px] text-[#64748b] font-medium leading-none">Courses</span>
+                                <span class="text-[10px] text-[#64748b] font-medium leading-none">{{ __('admin.dashboard.total_courses') }}</span>
                                 <span class="text-lg font-bold text-[#0f172a] mt-0.5">{{ $stats['total_courses'] ?? $stats['courses'] ?? 0 }}</span>
                             </div>
                         </div>
@@ -654,11 +654,11 @@
                 <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100 text-xs">
                     <div>
                         <p class="text-base font-bold text-[#0f172a]">${{ number_format($stats['revenue_this_month'] ?? 0, 2) }}</p>
-                        <p class="text-[10px] text-[#64748b]">Revenue Generated</p>
+                        <p class="text-[10px] text-[#64748b]">{{ __('admin.dashboard.revenue_generated') }}</p>
                     </div>
                     <div>
                         <p class="text-base font-bold text-[#0f172a]">{{ $stats['enrollments_count'] ?? $stats['enrollments'] ?? 3125 }}+</p>
-                        <p class="text-[10px] text-[#64748b]">Total Enrollments</p>
+                        <p class="text-[10px] text-[#64748b]">{{ __('admin.dashboard.total_enrollments') }}</p>
                     </div>
                 </div>
             </div>
@@ -667,19 +667,19 @@
             <div class="lg:col-span-8 bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)] flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                        <h2 class="text-sm font-bold text-[#0f172a]">Top Courses &amp; Performance</h2>
-                        <a href="{{ route('admin.courses.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
+                        <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.top_courses_perf') }}</h2>
+                        <a href="{{ route('admin.courses.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">{{ __('app.common.view_all') }}</a>
                     </div>
 
                     <div class="overflow-x-auto mt-2">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-[#f8fafc] text-[#64748b] uppercase text-[10px] font-bold tracking-wider border-b border-[#e2e8f0]">
                                 <tr>
-                                    <th class="py-2.5 px-3">Course Name</th>
-                                    <th class="py-2.5 px-3">Instructor</th>
-                                    <th class="py-2.5 px-3">Category</th>
-                                    <th class="py-2.5 px-3">Price</th>
-                                    <th class="py-2.5 px-3 text-right">Students</th>
+                                    <th class="py-2.5 px-3">{{ __('admin.dashboard.course_name') }}</th>
+                                    <th class="py-2.5 px-3">{{ __('admin.dashboard.instructor') }}</th>
+                                    <th class="py-2.5 px-3">{{ __('admin.dashboard.category') }}</th>
+                                    <th class="py-2.5 px-3">{{ __('admin.dashboard.price') }}</th>
+                                    <th class="py-2.5 px-3 text-right">{{ __('admin.dashboard.students') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
@@ -705,7 +705,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="py-4 text-center text-slate-400">No course data available.</td>
+                                        <td colspan="5" class="py-4 text-center text-slate-400">{{ __('admin.dashboard.no_course_data') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -714,7 +714,7 @@
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">Manage All Courses &rarr;</a>
+                    <a href="{{ route('admin.courses.index') }}" class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline">{{ __('admin.dashboard.manage_all_courses') }} &rarr;</a>
                 </div>
             </div>
         </div>
@@ -722,21 +722,21 @@
         <!-- 6. Full-Width Latest Enrollments & Orders Table (Figma Dev Mode Node 10060:84086) -->
         <div class="bg-white border border-[#e2e8f0] rounded-[5px] p-5 shadow-[0px_4px_7px_rgba(238,238,238,0.25)]">
             <div class="flex items-center justify-between pb-3.5 border-b border-gray-100">
-                <h2 class="text-sm font-bold text-[#0f172a]">Recent Orders &amp; Latest Enrollments</h2>
-                <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">View All</a>
+                <h2 class="text-sm font-bold text-[#0f172a]">{{ __('admin.dashboard.recent_orders_enrollments') }}</h2>
+                <a href="{{ route('admin.orders.index') }}" class="text-[11px] font-semibold text-[#64748b] hover:text-[var(--theme-primary,#344c3d)]">{{ __('app.common.view_all') }}</a>
             </div>
 
             <div class="overflow-x-auto mt-3">
                 <table class="w-full text-left text-xs">
                     <thead class="bg-[#f8fafc] text-[#64748b] uppercase text-[10px] font-bold tracking-wider border-b border-[#e2e8f0]">
                         <tr>
-                            <th class="py-3 px-3.5">Order ID</th>
-                            <th class="py-3 px-3.5">Student Name</th>
-                            <th class="py-3 px-3.5">Course Program</th>
-                            <th class="py-3 px-3.5">Amount</th>
-                            <th class="py-3 px-3.5">Status</th>
-                            <th class="py-3 px-3.5">Date & Time</th>
-                            <th class="py-3 px-3.5 text-right">Action</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.order_id') }}</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.student_name') }}</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.course_program') }}</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.amount') }}</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.status') }}</th>
+                            <th class="py-3 px-3.5">{{ __('admin.dashboard.date_time') }}</th>
+                            <th class="py-3 px-3.5 text-right">{{ __('admin.dashboard.action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -775,7 +775,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-4 text-center text-slate-400">No recent orders recorded.</td>
+                                <td colspan="7" class="py-4 text-center text-slate-400">{{ __('admin.dashboard.no_recent_orders') }}</td>
                             </tr>
                         @endforelse
                     </tbody>

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiProvider;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Instructor;
+use App\Models\Language;
 use App\Models\Lesson;
+use App\Services\AiTranslationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -37,6 +40,11 @@ class CourseController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),
+            'languages' => Language::active(),
+            'defaultCode' => Language::defaultCode(),
+            'translatorSet' => (bool) app(AiTranslationService::class)->provider(),
+            'generatorSet' => (bool) AiProvider::resolveConfigured('ai_generator_provider'),
+            'imageSet' => (bool) AiProvider::resolveConfigured('ai_image_provider'),
         ]);
     }
 
@@ -58,6 +66,11 @@ class CourseController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),
+            'languages' => Language::active(),
+            'defaultCode' => Language::defaultCode(),
+            'translatorSet' => (bool) app(AiTranslationService::class)->provider(),
+            'generatorSet' => (bool) AiProvider::resolveConfigured('ai_generator_provider'),
+            'imageSet' => (bool) AiProvider::resolveConfigured('ai_image_provider'),
         ]);
     }
 
@@ -200,7 +213,19 @@ class CourseController extends Controller
             'old_price' => ['nullable', 'numeric', 'min:0', 'max:9999'],
             'level' => ['required', 'in:beginner,intermediate,advanced'],
             'type' => ['nullable', 'in:'.implode(',', Course::TYPES)],
+            'translations' => ['nullable', 'array'],
+            'translations.*.title' => ['nullable', 'string', 'max:255'],
+            'translations.*.subtitle' => ['nullable', 'string', 'max:500'],
+            'translations.*.description' => ['nullable', 'string', 'max:20000'],
         ]);
+
+        $rawTrans = $request->input('translations', []);
+        if (is_array($rawTrans)) {
+            $data['title_translations'] = Course::cleanTranslations($rawTrans, 'title');
+            $data['subtitle_translations'] = Course::cleanTranslations($rawTrans, 'subtitle');
+            $data['description_translations'] = Course::cleanTranslations($rawTrans, 'description');
+        }
+        unset($data['translations']);
 
         $data['is_published'] = $request->boolean('is_published');
         $data['is_featured'] = $request->boolean('is_featured');
@@ -224,7 +249,10 @@ class CourseController extends Controller
             'video_source' => ['nullable', 'string', 'in:'.Lesson::SOURCE_YOUTUBE.','.Lesson::SOURCE_UPLOAD],
             'video_url' => ['nullable', 'string', 'max:500'],
             'video' => ['nullable', 'file', 'mimes:mp4,webm,ogg,mov,mkv', 'max:512000'],
+            'is_free' => ['nullable', 'boolean'],
         ]);
+
+        $data['is_free'] = $request->boolean('is_free');
 
         $data['video_source'] = match ($data['video_source'] ?? null) {
             Lesson::SOURCE_UPLOAD => Lesson::SOURCE_UPLOAD,
@@ -267,7 +295,7 @@ class CourseController extends Controller
             $data['video_path'] = null;
         }
 
-        return collect($data)->only(['title', 'duration_minutes', 'video_url', 'video_source', 'video_path'])->all();
+        return collect($data)->only(['title', 'duration_minutes', 'video_url', 'video_source', 'video_path', 'is_free'])->all();
     }
 
     private function uniqueSlug(string $title, ?int $ignoreId = null): string

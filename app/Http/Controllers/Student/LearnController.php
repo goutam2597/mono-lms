@@ -22,8 +22,37 @@ final class LearnController extends Controller
 
         $enrollment = Enrollment::where('student_id', $student->id)->where('course_id', $course->id)->first();
 
+        // If the course is free (price = 0), auto-enroll the signed in student!
+        if ((! $enrollment || $enrollment->status === 'cancelled') && $course->isFree()) {
+            $enrollment = Enrollment::firstOrCreate(
+                ['student_id' => $student->id, 'course_id' => $course->id],
+                ['status' => 'active', 'progress' => 0]
+            );
+        }
+
         if (! $enrollment || $enrollment->status === 'cancelled') {
-            abort(403);
+            // Allow watching a single unlocked free preview lesson on the learn page
+            $requested = (int) $request->input('lesson');
+            $targetLesson = $requested ? $course->lessons()->find($requested) : null;
+
+            if ($targetLesson && $targetLesson->isFree()) {
+                return view('pages.student.learn', [
+                    'course' => $course,
+                    'enrollment' => null,
+                    'lessons' => $course->lessons,
+                    'lesson' => $targetLesson,
+                    'completedIds' => [],
+                    'liveClasses' => collect(),
+                    'upcomingClasses' => collect(),
+                    'hasRecordedContent' => true,
+                    'hasLiveContent' => false,
+                    'isPreviewMode' => true,
+                ]);
+            }
+
+            return redirect()
+                ->route('courses.show', $course->slug)
+                ->with('info', 'Please enroll in this course to access this lesson.');
         }
 
         $course = $enrollment->course()->with(['lessons', 'instructor', 'category'])->firstOrFail();
@@ -63,6 +92,13 @@ final class LearnController extends Controller
         $student = auth('student')->user();
 
         $enrollment = Enrollment::where('student_id', $student->id)->where('course_id', $lesson->course_id)->first();
+
+        if ((! $enrollment || $enrollment->status === 'cancelled') && $lesson->course?->isFree()) {
+            $enrollment = Enrollment::firstOrCreate(
+                ['student_id' => $student->id, 'course_id' => $lesson->course_id],
+                ['status' => 'active', 'progress' => 0]
+            );
+        }
 
         if (! $enrollment || $enrollment->status === 'cancelled') {
             abort(403);

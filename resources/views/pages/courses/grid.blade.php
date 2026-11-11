@@ -80,7 +80,7 @@
                                 <label class="flex items-center justify-between cursor-pointer hover:text-[#191919]">
                                     <div class="flex items-center gap-2">
                                         <input type="radio" name="category" value="{{ $category->slug }}" @checked(request('category') === $category->slug) class="control" onchange="this.form.requestSubmit()">
-                                        <span>{{ $category->name }}</span>
+                                        <span>{{ $category->trans('name') }}</span>
                                     </div>
                                     <span class="text-gray-400">({{ $category->courses_count }})</span>
                                 </label>
@@ -197,8 +197,8 @@
 @forelse ($courses as $course)
                     <x-course-card
                         :slug="$course->slug"
-                        :title="$course->title"
-                        :category="$course->category?->name ?? ''"
+                        :title="$course->trans('title')"
+                        :category="$course->category?->trans('name') ?? ''"
                         :instructor="$course->instructor?->name ?? ''"
                         :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$course->image"

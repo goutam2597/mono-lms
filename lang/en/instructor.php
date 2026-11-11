@@ -10,9 +10,11 @@ return [
         'students' => 'Students',
         'reviews' => 'Reviews',
         'profile' => 'My Profile',
+        'verification' => 'Verification',
         'tickets' => 'Help & Support',
         'settings' => 'Settings',
         'logout' => 'Logout',
+        'menu' => 'Instructor Menu',
     ],
 
     'dashboard' => [
@@ -64,7 +66,7 @@ return [
         'deleted' => 'Lesson deleted.',
         'fields' => [
             'title' => 'Lesson Title',
-            'duration' => 'Duration (minutes)',
+            'duration' => 'Duration (mins)',
             'video_url' => 'Video URL',
             'sort_order' => 'Order',
         ],

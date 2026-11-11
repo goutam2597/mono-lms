@@ -50,6 +50,7 @@ return [
     ],
 
     'categories' => [
+        'badge' => 'Categories',
         'heading' => 'Browse Top Categories',
         'subtitle' => 'Explore our most popular learning categories',
         'courses_count' => ':count courses',

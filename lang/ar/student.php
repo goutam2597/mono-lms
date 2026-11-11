@@ -1,24 +1,38 @@
 <?php
 
-// لوحة الطالب.
 return [
     'panel' => 'لوحة الطالب',
-
     'nav' => [
         'dashboard' => 'لوحة التحكم',
         'profile' => 'ملفي الشخصي',
         'enrolled' => 'الدورات المسجَّل بها',
+        'orders' => 'طلباتي',
         'saved_courses' => 'الدورات المحفوظة',
         'certificates' => 'شهاداتي',
         'quiz' => 'محاولات الاختبار',
+        'tickets' => 'المساعدة والدعم',
         'browse' => 'تصفح الدورات',
         'settings' => 'الإعدادات',
         'logout' => 'تسجيل الخروج',
+        'menu' => 'قائمة الطالب',
     ],
-
     'dashboard' => [
         'title' => 'لوحة تحكم الطالب',
         'welcome' => 'مرحباً بعودتك، :name',
+        'welcome_subtitle' => 'إليك ملخص لتقدمك في التعلم وتحديثات المناهج الدراسية.',
+        'browse_courses' => 'تصفح الدورات',
+        'active_catalog' => 'الكتالوج النشط',
+        'underway' => 'قيد التقدم',
+        'finished_100' => 'مكتمل 100%',
+        'accredited' => 'معتمد',
+        'current_in_progress' => 'الدورة الحالية قيد التقدم',
+        'last_activity' => 'آخر نشاط :time',
+        'review_course' => 'مراجعة الدورة',
+        'resume_lesson' => 'استئناف الدرس',
+        'in_curriculum' => 'الدورات الموجودة حالياً في خطتك الدراسية',
+        'done' => 'منجز',
+        'invoices_subtitle' => 'إيصالات الدفع ومعاملات التسجيل',
+        'records' => ':count سجلات',
         'enrolled' => 'الدورات المسجَّل بها',
         'in_progress' => 'قيد التقدم',
         'completed' => 'مكتملة',
@@ -37,7 +51,6 @@ return [
         'keep_learning' => 'واصل التعلّم',
         'completed_label' => 'مكتملة',
     ],
-
     'enrolled' => [
         'title' => 'الدورات المسجَّل بها',
         'all' => 'جميع الدورات',
@@ -48,9 +61,9 @@ return [
         'no_courses' => 'لا توجد دورات في هذا التصنيف.',
         'progress' => 'التقدم',
     ],
-
     'profile' => [
         'title' => 'ملفي الشخصي',
+        'subtitle' => 'إدارة معلوماتك الشخصية وأمان حسابك.',
         'first_name' => 'الاسم الأول',
         'last_name' => 'اسم العائلة',
         'username' => 'اسم المستخدم',
@@ -61,13 +74,14 @@ return [
         'new_password_hint' => 'اتركها فارغة للاحتفاظ بكلمة المرور الحالية.',
         'password_updated' => 'تم تغيير كلمة المرور بنجاح.',
         'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة.',
+        'avatar_hint' => 'ارفع صورة الملف الشخصي',
+        'upload_avatar' => 'رفع صورة جديدة',
+        'remove_avatar' => 'إزالة',
     ],
-
     'certificates' => [
         'title' => 'شهاداتي',
         'empty' => 'أكمل دورة للحصول على شهادتك الأولى.',
     ],
-
     'quiz' => [
         'title' => 'محاولات الاختبار',
         'empty' => 'لا توجد محاولات اختبار بعد.',

@@ -71,7 +71,7 @@
                         <span class="text-xs text-gray-400 font-medium shrink-0">{{ __('home.hero.popular') }}</span>
                         @foreach ($categories->take(3) as $chipCategory)
                             <a href="{{ route('courses.index', ['category' => $chipCategory->slug]) }}" class="px-3 py-1.5 rounded-full bg-white border border-[#BFCFBB]/80 text-xs font-medium text-[#191919] hover:border-[#738A6E] hover:text-[#344C3D] hover:bg-[#DCE7DA]/30 transition-colors shrink-0 whitespace-nowrap">
-                                {{ $chipCategory->name }}
+                                {{ $chipCategory->trans('name') }}
                             </a>
                         @endforeach
                     </div>
@@ -483,7 +483,7 @@
                                                 <!-- Category Image / SVG / Emoji with Graceful Fallback -->
                                                 @if ($category->imageUrl())
                                                     <img src="{{ $category->imageUrl() }}" 
-                                                         alt="{{ $category->name }}" 
+                                                         alt="{{ $category->trans('name') }}" 
                                                          class="w-11 h-11 sm:w-12 sm:h-12 object-contain pointer-events-none"
                                                          onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
                                                          loading="lazy">
@@ -507,7 +507,7 @@
 
                                             <!-- Category Title -->
                                             <h4 class="font-bold text-[15px] sm:text-[16px] text-[#0f172a] group-hover:text-[#344c3d] transition-colors leading-snug line-clamp-2 min-h-[2.4rem] flex items-center justify-center">
-                                                {{ $category->name }}
+                                                {{ $category->trans('name') }}
                                             </h4>
                                         </div>
 
@@ -630,8 +630,8 @@
                     <div class="featured-course-card transition-all duration-300" data-tags="{{ $tagsAttr }}">
                         <x-course-card
                             :slug="$course->slug"
-                            :title="$course->title"
-                            :category="$course->category?->name ?? ''"
+                            :title="$course->trans('title')"
+                            :category="$course->category?->trans('name') ?? ''"
                             :instructor="$course->instructor?->name ?? ''"
                             :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                             :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
@@ -998,8 +998,8 @@
                                 <div class="shrink-0 w-[280px] sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)] lg:w-[calc(25%-18px)]" data-slider-card>
                                     <x-course-card
                                         :slug="$course->slug"
-                                        :title="$course->title"
-                                        :category="$course->category?->name ?? ''"
+                                        :title="$course->trans('title')"
+                                        :category="$course->category?->trans('name') ?? ''"
                                         :instructor="$course->instructor?->name ?? ''"
                                         :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                                         :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
@@ -1037,8 +1037,8 @@
                     @foreach ($trendingCourses as $course)
                         <x-course-card
                             :slug="$course->slug"
-                            :title="$course->title"
-                            :category="$course->category?->name ?? ''"
+                            :title="$course->trans('title')"
+                            :category="$course->category?->trans('name') ?? ''"
                             :instructor="$course->instructor?->name ?? ''"
                             :instructorAvatar="$course->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($course->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                             :image="$course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420'"
@@ -1378,7 +1378,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         @forelse ($posts as $post)
                             <a href="{{ route('blog.show', $post->slug) }}" class="rounded-[14px] overflow-hidden relative shadow-md group min-h-[220px] flex flex-col justify-end p-5">
-                                <img src="{{ $post->imageUrl() ?? $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->title }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src="{{ $post->imageUrl() ?? $post->image ?? 'https://picsum.photos/seed/post-'.$post->id.'/640/420' }}" alt="{{ $post->trans('title') }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                                 <div class="relative z-10 space-y-2">
                                     <div class="flex items-center gap-2 text-[11px] text-white">
@@ -1386,7 +1386,7 @@
                                         <span class="opacity-80">{{ $post->published_at?->format('d M Y') }}</span>
                                     </div>
                                     <h4 class="text-sm font-bold text-white group-hover:text-[#738a6e] transition-colors line-clamp-2">
-                                        {{ $post->title }}
+                                        {{ $post->trans('title') }}
                                     </h4>
                                 </div>
                             </a>

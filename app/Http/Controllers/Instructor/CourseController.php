@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiProvider;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Language;
+use App\Services\AiTranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -27,6 +30,11 @@ class CourseController extends Controller
         return view('pages.instructor.courses-form', [
             'course' => new Course,
             'categories' => Category::orderBy('name')->get(),
+            'languages' => Language::active(),
+            'defaultCode' => Language::defaultCode(),
+            'translatorSet' => (bool) app(AiTranslationService::class)->provider(),
+            'generatorSet' => (bool) AiProvider::resolveConfigured('ai_generator_provider'),
+            'imageSet' => (bool) AiProvider::resolveConfigured('ai_image_provider'),
         ]);
     }
 
@@ -52,6 +60,11 @@ class CourseController extends Controller
         return view('pages.instructor.courses-form', [
             'course' => $course->load(['lessons', 'liveClasses']),
             'categories' => Category::orderBy('name')->get(),
+            'languages' => Language::active(),
+            'defaultCode' => Language::defaultCode(),
+            'translatorSet' => (bool) app(AiTranslationService::class)->provider(),
+            'generatorSet' => (bool) AiProvider::resolveConfigured('ai_generator_provider'),
+            'imageSet' => (bool) AiProvider::resolveConfigured('ai_image_provider'),
         ]);
     }
 
@@ -90,7 +103,7 @@ class CourseController extends Controller
 
     private function validated(Request $request, ?Course $course = null): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'subtitle' => ['nullable', 'string', 'max:500'],
             'category_id' => ['nullable', 'exists:categories,id'],
@@ -101,7 +114,21 @@ class CourseController extends Controller
             'level' => ['required', 'in:beginner,intermediate,advanced'],
             'type' => ['nullable', 'in:'.implode(',', Course::TYPES)],
             'is_published' => ['sometimes', 'boolean'],
+            'translations' => ['nullable', 'array'],
+            'translations.*.title' => ['nullable', 'string', 'max:255'],
+            'translations.*.subtitle' => ['nullable', 'string', 'max:500'],
+            'translations.*.description' => ['nullable', 'string', 'max:20000'],
         ]) + ['type' => $request->input('type', 'recorded')];
+
+        $rawTrans = $request->input('translations', []);
+        if (is_array($rawTrans)) {
+            $data['title_translations'] = Course::cleanTranslations($rawTrans, 'title');
+            $data['subtitle_translations'] = Course::cleanTranslations($rawTrans, 'subtitle');
+            $data['description_translations'] = Course::cleanTranslations($rawTrans, 'description');
+        }
+        unset($data['translations']);
+
+        return $data;
     }
 
     private function uniqueSlug(string $title, ?int $ignoreId = null): string

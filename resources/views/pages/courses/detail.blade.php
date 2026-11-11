@@ -1,4 +1,4 @@
-<x-layouts.app :title="$course->title.' - Mono LMS'" active="courses">
+<x-layouts.app :title="$course->trans('title').' - Mono LMS'" active="courses">
 
     @if (session('success') || session('info'))
         <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-6">
@@ -26,17 +26,17 @@
                         <a href="{{ route('courses.index') }}" class="hover:text-white transition-colors">Courses</a>
                         @if ($course->category)
                             <span class="text-white/40">/</span>
-                            <a href="{{ route('courses.index', ['category' => $course->category->slug]) }}" class="hover:text-white transition-colors">{{ $course->category->name }}</a>
+                            <a href="{{ route('courses.index', ['category' => $course->category->slug]) }}" class="hover:text-white transition-colors">{{ $course->category->trans('name') }}</a>
                         @endif
                         <span class="text-white/40">/</span>
-                        <span class="text-white font-medium truncate max-w-xs sm:max-w-md">{{ $course->title }}</span>
+                        <span class="text-white font-medium truncate max-w-xs sm:max-w-md">{{ $course->trans('title') }}</span>
                     </nav>
 
                     <!-- Category & Level Badges -->
                     <div class="flex flex-wrap items-center gap-2.5 pt-1">
                         @if ($course->category)
                             <a href="{{ route('courses.index', ['category' => $course->category->slug]) }}" class="inline-flex items-center gap-1.5 bg-[#dce7da] text-[#344c3d] text-xs font-semibold px-3 py-1 rounded-full hover:bg-white transition-colors shadow-xs">
-                                <span>{{ $course->category->name }}</span>
+                                <span>{{ $course->category->trans('name') }}</span>
                             </a>
                         @endif
                         <span class="inline-flex items-center gap-1 bg-white/10 text-white/90 text-xs font-medium px-3 py-1 rounded-full backdrop-blur-xs">
@@ -52,12 +52,12 @@
 
                     <!-- Course Title -->
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                        {{ $course->title }}
+                        {{ $course->trans('title') }}
                     </h1>
 
-                    @if ($course->subtitle)
+                    @if ($course->trans('subtitle'))
                         <p class="text-[#dce7da]/90 text-sm sm:text-base leading-relaxed max-w-3xl">
-                            {{ $course->subtitle }}
+                            {{ $course->trans('subtitle') }}
                         </p>
                     @endif
 
@@ -166,9 +166,9 @@
                 <div id="overview" class="bg-white border border-[#e7e7e7] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
                     <h2 class="text-xl font-bold text-[#191919]">{{ __('courses.description') }}</h2>
                     <div class="text-sm text-[#5d5d5d] leading-relaxed space-y-3">
-                        <p>{{ $course->description }}</p>
-                        @if (!$course->description)
-                            <p>Welcome to <strong>{{ $course->title }}</strong>. This in-depth course provides hands-on, practical guidance from seasoned professionals to help you reach career-level mastery with clear demonstrations, real code, and interactive practice.</p>
+                        <p>{{ $course->trans('description') }}</p>
+                        @if (!$course->trans('description'))
+                            <p>Welcome to <strong>{{ $course->trans('title') }}</strong>. This in-depth course provides hands-on, practical guidance from seasoned professionals to help you reach career-level mastery with clear demonstrations, real code, and interactive practice.</p>
                         @endif
                     </div>
                 </div>
@@ -203,8 +203,30 @@
                                         <span class="text-[#191919] font-medium truncate">{{ $lesson->title }}</span>
                                     </div>
                                     <div class="flex items-center gap-3 shrink-0 ml-4">
-                                        @if ($loop->first)
-                                            <span class="bg-[#dce7da] text-[#344c3d] text-[11px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">Preview</span>
+                                        @if ($isEnrolled)
+                                            <a href="{{ route('student.courses.learn', ['course' => $course, 'lesson' => $lesson->id]) }}" class="inline-flex items-center gap-1.5 bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold px-3 py-1 rounded-lg transition-colors">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                <span>Play</span>
+                                            </a>
+                                        @elseif (($course->isFree() || $lesson->isFree()) && $lesson->hasVideo())
+                                            <button type="button"
+                                                    data-preview-trigger
+                                                    data-preview-url="{{ $lesson->playerUrl() }}"
+                                                    data-preview-title="{{ $lesson->title }}"
+                                                    data-preview-type="{{ $lesson->isUploadedVideo() ? 'video' : 'youtube' }}"
+                                                    class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1 rounded-lg transition-colors shadow-xs cursor-pointer">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                <span>{{ $course->isFree() ? 'Free Lesson' : 'Free Preview' }}</span>
+                                            </button>
+                                        @elseif ($course->isFree() || $lesson->isFree())
+                                            <span class="inline-flex items-center gap-1 text-xs text-emerald-700 font-medium bg-emerald-50 px-2.5 py-0.5 rounded-md">
+                                                <span>Free</span>
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 text-xs text-neutral-400 font-medium bg-neutral-100 px-2.5 py-0.5 rounded-md">
+                                                <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                                                <span>Locked</span>
+                                            </span>
                                         @endif
                                         <span class="text-xs text-gray-500 font-medium flex items-center gap-1">
                                             <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -576,16 +598,29 @@
             <!-- Right Sticky Pricing Card -->
             <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
                 <div class="bg-white border border-[#e7e7e7] rounded-2xl p-6 shadow-xl space-y-6">
+                    @php
+                        $previewLesson = $course->lessons->firstWhere(fn ($l) => $l->isFree() && $l->hasVideo())
+                            ?? $course->lessons->firstWhere(fn ($l) => $l->hasVideo());
+                    @endphp
                     <!-- Video Preview Container -->
                     <div class="relative aspect-video rounded-xl overflow-hidden bg-[#132018] group shadow-inner">
-                        <img src="{{ $course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" alt="{{ $course->title }}">
+                        <img src="{{ $course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/640/420' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" alt="{{ $course->trans('title') }}">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 flex items-center justify-center">
-                            <button type="button" class="w-14 h-14 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform cursor-pointer" aria-label="Play course preview">
-                                <svg class="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </button>
+                            @if ($previewLesson)
+                                <button type="button"
+                                        data-preview-trigger
+                                        data-preview-url="{{ $previewLesson->playerUrl() }}"
+                                        data-preview-title="{{ $previewLesson->title }}"
+                                        data-preview-type="{{ $previewLesson->isUploadedVideo() ? 'video' : 'youtube' }}"
+                                        class="w-14 h-14 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform cursor-pointer"
+                                        aria-label="Play course preview">
+                                    <svg class="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </button>
+                            @endif
                         </div>
-                        <div class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-xs text-white text-[11px] font-medium px-2 py-0.5 rounded-lg">
-                            Preview Video
+                        <div class="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-xs text-white text-[11px] font-medium px-2 py-0.5 rounded-lg flex items-center gap-1.5">
+                            <svg class="w-3 h-3 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <span>Preview Video</span>
                         </div>
                     </div>
 
@@ -593,9 +628,13 @@
                     <div class="space-y-1">
                         <div class="flex items-baseline gap-3">
                             <span class="text-3xl sm:text-4xl font-extrabold text-[#191919]">
-                                {{ $course->price > 0 ? __('app.common.currency').number_format($course->price, 2) : __('courses.price_free') }}
+                                {{ $course->isFree() ? 'Free' : (__('app.common.currency').number_format($course->price, 2)) }}
                             </span>
-                            @if ($course->old_price && $course->old_price > $course->price)
+                            @if ($course->isFree())
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-lg border border-emerald-200">
+                                    100% FREE
+                                </span>
+                            @elseif ($course->old_price && $course->old_price > $course->price)
                                 <span class="text-base text-gray-400 line-through">
                                     {{ __('app.common.currency') }}{{ number_format($course->old_price, 2) }}
                                 </span>
@@ -655,13 +694,23 @@
                                 @endif
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="block w-full text-center bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">
-                                <span>{{ __('courses.enroll_now') }}</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            </a>
-                            <p class="text-center text-[11px] text-gray-400">
-                                {{ __('courses.guest_enroll_hint') }}
-                            </p>
+                            @if ($course->isFree())
+                                <a href="{{ route('login') }}" class="block w-full text-center bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">
+                                    <span>Enroll for Free (Sign In)</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                                <p class="text-center text-[11px] text-gray-400">
+                                    This course is 100% free! Sign in or register to unlock all video lessons.
+                                </p>
+                            @else
+                                <a href="{{ route('login') }}" class="block w-full text-center bg-[#344c3d] hover:bg-[#25372c] text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm flex items-center justify-center gap-2">
+                                    <span>{{ __('courses.enroll_now') }}</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </a>
+                                <p class="text-center text-[11px] text-gray-400">
+                                    {{ __('courses.guest_enroll_hint') }}
+                                </p>
+                            @endif
                         @endauth
 
                         @php
@@ -730,11 +779,11 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-[#191919]">{{ __('courses.related_courses') }}</h3>
-                    <p class="text-xs text-gray-500 mt-1">More popular courses in {{ $course->category?->name ?? 'this category' }}</p>
+                    <p class="text-xs text-gray-500 mt-1">More popular courses in {{ $course->category?->trans('name') ?? 'this category' }}</p>
                 </div>
                 @if ($course->category)
                     <a href="{{ route('courses.index', ['category' => $course->category->slug]) }}" class="text-xs font-semibold text-[#344c3d] hover:text-[#738a6e] flex items-center gap-1 transition-colors">
-                        <span>View all {{ $course->category->name }} courses</span>
+                        <span>View all {{ $course->category->trans('name') }} courses</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 @endif
@@ -745,8 +794,8 @@
                     <x-course-card
                         :id="$rel->id"
                         :slug="$rel->slug"
-                        :title="$rel->title"
-                        :category="$rel->category?->name ?? 'Course'"
+                        :title="$rel->trans('title')"
+                        :category="$rel->category?->trans('name') ?? 'Course'"
                         :instructor="$rel->instructor?->name ?? 'Instructor'"
                         :instructorAvatar="$rel->instructor?->avatarUrl() ?? 'https://ui-avatars.com/api/?name='.urlencode($rel->instructor?->name ?? 'I').'&background=344C3D&color=DCE7DA'"
                         :image="$rel->image ?? 'https://picsum.photos/seed/course-'.$rel->id.'/640/420'"
@@ -762,5 +811,167 @@
             </div>
         </div>
     @endif
+
+    <!-- Login Required Modal for Free Video Lessons (Must be logged in to watch) -->
+    <div id="course-login-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-xs p-4" role="dialog" aria-modal="true">
+        <div class="relative w-full max-w-md bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 p-6 sm:p-7 text-center">
+            <button type="button" id="modal-login-close" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1 rounded-lg transition-colors cursor-pointer" aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 border border-emerald-100">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                </svg>
+            </div>
+
+            <h3 class="text-lg font-bold text-[#191919] mb-1.5">Sign In to Watch Free Lesson</h3>
+            <p class="text-xs text-gray-500 leading-relaxed mb-6">
+                This lesson is unlocked for free preview! Please sign in to your student account (or create a free account) to start watching the video lecture.
+            </p>
+
+            <div class="space-y-2.5">
+                <a href="{{ route('login') }}" class="block w-full py-3 px-4 rounded-xl bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm">
+                    Sign In to Watch
+                </a>
+                <a href="{{ route('register') }}" class="block w-full py-3 px-4 rounded-xl border border-gray-200 hover:bg-gray-50 text-[#191919] text-xs font-bold uppercase tracking-wider transition-colors">
+                    Create Free Student Account
+                </a>
+            </div>
+
+            <p class="text-[11px] text-gray-400 mt-4">
+                100% Free · Instant access after sign-in
+            </p>
+        </div>
+    </div>
+
+    <!-- Free Lesson Video Preview Modal -->
+    <div id="course-video-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-xs p-4" role="dialog" aria-modal="true">
+        <div class="relative w-full max-w-4xl bg-[#0b0d0e] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-white/5">
+                <div class="flex items-center gap-2.5 min-w-0 pr-4">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                        Free Preview
+                    </span>
+                    <h3 id="modal-video-title" class="text-sm font-semibold text-white truncate">Lesson Preview</h3>
+                </div>
+                <button type="button" id="modal-video-close" class="text-neutral-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer" aria-label="Close">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Modal Video Player Body -->
+            <div class="aspect-video bg-black relative flex items-center justify-center">
+                <iframe id="modal-video-iframe" class="w-full h-full hidden" src="" title="Video preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <video id="modal-video-player" class="w-full h-full hidden" controls preload="metadata"></video>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-5 py-3.5 bg-white/5 border-t border-white/10 flex items-center justify-between gap-3 text-xs text-neutral-400">
+                <span>Free lesson unlocked by instructor to sample the course curriculum.</span>
+                @if (! $isEnrolled)
+                    <a href="#curriculum" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-1.5 rounded-lg transition-colors shrink-0">
+                        View Curriculum
+                    </a>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var isStudentLoggedIn = @json(auth('student')->check());
+            var videoModal = document.getElementById('course-video-modal');
+            var loginModal = document.getElementById('course-login-modal');
+            var loginCloseBtn = document.getElementById('modal-login-close');
+            var iframe = document.getElementById('modal-video-iframe');
+            var videoPlayer = document.getElementById('modal-video-player');
+            var titleEl = document.getElementById('modal-video-title');
+            var closeBtn = document.getElementById('modal-video-close');
+
+            function closeVideoModal() {
+                if (!videoModal) return;
+                videoModal.classList.add('hidden');
+                videoModal.classList.remove('flex');
+                if (iframe) { iframe.src = ''; iframe.classList.add('hidden'); }
+                if (videoPlayer) { videoPlayer.pause(); videoPlayer.src = ''; videoPlayer.classList.add('hidden'); }
+                document.body.style.overflow = '';
+            }
+
+            function closeLoginModal() {
+                if (!loginModal) return;
+                loginModal.classList.add('hidden');
+                loginModal.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+
+            function openLoginModal() {
+                if (!loginModal) return;
+                loginModal.classList.remove('hidden');
+                loginModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function openVideoModal(url, type, title) {
+                if (!videoModal || !url) return;
+                if (titleEl) titleEl.textContent = title || 'Lesson Preview';
+
+                if (type === 'video') {
+                    if (iframe) { iframe.src = ''; iframe.classList.add('hidden'); }
+                    if (videoPlayer) {
+                        videoPlayer.src = url;
+                        videoPlayer.classList.remove('hidden');
+                        videoPlayer.play().catch(function () {});
+                    }
+                } else {
+                    if (videoPlayer) { videoPlayer.pause(); videoPlayer.src = ''; videoPlayer.classList.add('hidden'); }
+                    if (iframe) {
+                        iframe.src = url;
+                        iframe.classList.remove('hidden');
+                    }
+                }
+
+                videoModal.classList.remove('hidden');
+                videoModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+
+            document.querySelectorAll('[data-preview-trigger]').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // MANDATORY: Student must be logged in to watch ANY video
+                    if (! isStudentLoggedIn) {
+                        openLoginModal();
+                        return;
+                    }
+
+                    var url = this.getAttribute('data-preview-url');
+                    var type = this.getAttribute('data-preview-type') || 'youtube';
+                    var title = this.getAttribute('data-preview-title') || 'Course Preview';
+                    openVideoModal(url, type, title);
+                });
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', closeVideoModal);
+            if (loginCloseBtn) loginCloseBtn.addEventListener('click', closeLoginModal);
+            if (videoModal) {
+                videoModal.addEventListener('click', function (e) {
+                    if (e.target === videoModal) closeVideoModal();
+                });
+            }
+            if (loginModal) {
+                loginModal.addEventListener('click', function (e) {
+                    if (e.target === loginModal) closeLoginModal();
+                });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    if (videoModal && !videoModal.classList.contains('hidden')) closeVideoModal();
+                    if (loginModal && !loginModal.classList.contains('hidden')) closeLoginModal();
+                }
+            });
+        });
+    </script>
 
 </x-layouts.app>

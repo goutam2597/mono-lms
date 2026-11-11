@@ -226,11 +226,11 @@
 
 <script>
     window.searchSuggestI18n = {
-        courses: @json(__('app.nav.courses') ?? 'Courses'),
-        categories: @json(__('home.categories.badge') ?? 'Categories'),
-        instructors: @json(__('app.nav.instructors') ?? 'Instructors'),
-        courses_count: @json(__('courses') ?? 'courses'),
-        no_results_for: @json(__('app.common.no_results_for') ?? 'No results for'),
-        see_all_results: @json(__('app.common.see_all_results') ?? 'See all results for')
+        courses: @json(__('app.nav.courses')),
+        categories: @json(__('home.categories.badge')),
+        instructors: @json(__('app.nav.instructors')),
+        courses_count: @json(__('app.common.courses')),
+        no_results_for: @json(__('app.common.no_results_for')),
+        see_all_results: @json(__('app.common.see_all_results'))
     };
 </script>

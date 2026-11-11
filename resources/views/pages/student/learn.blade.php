@@ -9,17 +9,29 @@
                     My Courses
                 </a>
                 <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 mt-1 truncate">{{ $course->title }}</h1>
-                <p class="text-xs text-neutral-400">By {{ $course->instructor?->name }} · {{ $course->typeLabel() }} · {{ $enrollment->progress }}% complete</p>
+                <p class="text-xs text-neutral-400">By {{ $course->instructor?->name }} · {{ $course->typeLabel() }} · {{ $enrollment?->progress ?? 0 }}% complete</p>
             </div>
             <div class="shrink-0 bg-white border border-[#e7e7e7] rounded-xl px-5 py-3 min-w-[180px]">
                 <div class="flex items-center justify-between text-[11px] font-semibold text-neutral-500">
-                    <span>Progress</span><span>{{ $enrollment->progress }}%</span>
+                    <span>Progress</span><span>{{ $enrollment?->progress ?? 0 }}%</span>
                 </div>
                 <div class="h-2 bg-neutral-100 rounded-full mt-1.5 overflow-hidden">
-                    <div class="h-full bg-[#344c3d] rounded-full transition-all" style="width: {{ $enrollment->progress }}%"></div>
+                    <div class="h-full bg-[#344c3d] rounded-full transition-all" style="width: {{ $enrollment?->progress ?? 0 }}%"></div>
                 </div>
             </div>
         </div>
+
+        @if ($isPreviewMode ?? false)
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75A2.25 2.25 0 001.5 12.75v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                    <span><strong>Free Preview Lesson:</strong> You are currently watching an unlocked sample lecture. Enroll in the full course to track progress and earn your certificate.</span>
+                </span>
+                <a href="{{ route('courses.show', $course->slug) }}" class="bg-[#344c3d] hover:bg-[#25372c] text-white px-4 py-2 rounded-lg font-bold shrink-0 text-center transition-colors">
+                    Enroll Full Course
+                </a>
+            </div>
+        @endif
 
         <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6 items-start">
             <!-- Player / Live Classes -->
@@ -113,7 +125,12 @@
                                 @if (in_array($l->id, $completedIds))✓@else{{ $l->sort_order }}@endif
                             </span>
                             <span class="min-w-0 flex-1">
-                                <span class="block text-[13px] font-medium text-[#191919] truncate">{{ $l->title }}</span>
+                                <span class="flex items-center gap-1.5 justify-between">
+                                    <span class="text-[13px] font-medium text-[#191919] truncate">{{ $l->title }}</span>
+                                    @if ($l->isFree())
+                                        <span class="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">Free Preview</span>
+                                    @endif
+                                </span>
                                 <span class="block text-[11px] text-neutral-400">{{ $l->duration_minutes }} min @if($l->isUploadedVideo()) · 📹 uploaded @elseif($l->video_url) · ▶ youtube @endif</span>
                             </span>
                         </a>

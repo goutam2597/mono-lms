@@ -34,6 +34,15 @@ class CourseController extends Controller
         $isEnrolled = $student
             && Enrollment::where('student_id', $student->id)->where('course_id', $course->id)->exists();
 
+        // If the course is free (price = 0) and student is signed in, auto-enroll them so it unlocks automatically!
+        if ($student && ! $isEnrolled && $course->isFree()) {
+            Enrollment::firstOrCreate(
+                ['student_id' => $student->id, 'course_id' => $course->id],
+                ['status' => 'active', 'progress' => 0]
+            );
+            $isEnrolled = true;
+        }
+
         $userReview = $student
             ? Review::where('student_id', $student->id)->where('course_id', $course->id)->first()
             : null;
@@ -59,6 +68,10 @@ class CourseController extends Controller
 
         $student = auth('student')->user();
 
+        if (! $student) {
+            return redirect()->guest(route('login'))->with('info', 'Please log in to your student account to enroll.');
+        }
+
         $existing = Enrollment::where('student_id', $student->id)->where('course_id', $course->id)->first();
 
         if ($existing) {
@@ -69,7 +82,7 @@ class CourseController extends Controller
 
         // Paid courses must go through checkout (60-minute reservation +
         // payment method + verification). Free courses enroll directly.
-        if ($course->price > 0) {
+        if (! $course->isFree()) {
             return redirect()
                 ->route('courses.show', $course->slug)
                 ->with('info', 'This course requires a purchase — choose a payment method below.');

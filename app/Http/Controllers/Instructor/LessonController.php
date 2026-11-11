@@ -71,7 +71,10 @@ class LessonController extends Controller
                 'mimes:mp4,webm,ogg,mov,mkv',
                 'max:512000', // 500 MB (php.ini upload_max_filesize must allow it)
             ],
+            'is_free' => ['nullable', 'boolean'],
         ]);
+
+        $data['is_free'] = $request->boolean('is_free');
 
         $data['video_source'] = match ($data['video_source'] ?? null) {
             Lesson::SOURCE_UPLOAD => Lesson::SOURCE_UPLOAD,
@@ -116,6 +119,6 @@ class LessonController extends Controller
             $data['video_path'] = null;
         }
 
-        return collect($data)->only(['title', 'duration_minutes', 'video_url', 'video_source', 'video_path'])->all();
+        return collect($data)->only(['title', 'duration_minutes', 'video_url', 'video_source', 'video_path', 'is_free'])->all();
     }
 }

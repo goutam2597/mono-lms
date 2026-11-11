@@ -10,8 +10,11 @@ return [
         'students' => 'छात्र',
         'reviews' => 'समीक्षाएँ',
         'profile' => 'मेरी प्रोफ़ाइल',
+        'verification' => 'सत्यापन',
+        'tickets' => 'सहायता और समर्थन',
         'settings' => 'सेटिंग्स',
         'logout' => 'लॉगआउट',
+        'menu' => 'प्रशिक्षक मेनू',
     ],
 
     'dashboard' => [

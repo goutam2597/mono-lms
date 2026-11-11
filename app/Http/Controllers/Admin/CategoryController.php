@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AiProvider;
 use App\Models\Category;
+use App\Models\Language;
+use App\Services\AiTranslationService;
 use App\Services\MediaService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +20,11 @@ class CategoryController extends Controller
     {
         return view('pages.admin.categories', [
             'categories' => Category::withCount('courses')->orderBy('name')->paginate(10),
+            'languages' => Language::active(),
+            'defaultCode' => Language::defaultCode(),
+            'translatorSet' => (bool) app(AiTranslationService::class)->provider(),
+            'generatorSet' => (bool) AiProvider::resolveConfigured('ai_generator_provider'),
+            'imageSet' => (bool) AiProvider::resolveConfigured('ai_image_provider'),
         ]);
     }
 
@@ -35,7 +43,12 @@ class CategoryController extends Controller
             $data['image'] = $request->input('image');
         } elseif ($request->filled('media_image')) {
             $data['image'] = $request->input('media_image');
+        } elseif ($request->filled('ai_image')) {
+            $data['image'] = $request->input('ai_image');
         }
+
+        $data['name_translations'] = Category::cleanTranslations($request->input('translations', []), 'name');
+        unset($data['translations'], $data['ai_image']);
 
         Category::create($data + ['slug' => Str::slug($data['name'])]);
 
@@ -65,7 +78,12 @@ class CategoryController extends Controller
             $data['image'] = $request->input('image');
         } elseif ($request->filled('media_image')) {
             $data['image'] = $request->input('media_image');
+        } elseif ($request->filled('ai_image')) {
+            $data['image'] = $request->input('ai_image');
         }
+
+        $data['name_translations'] = Category::cleanTranslations($request->input('translations', []), 'name');
+        unset($data['translations'], $data['ai_image']);
 
         $category->update($data + ['slug' => Str::slug($data['name'])]);
 
@@ -133,7 +151,10 @@ class CategoryController extends Controller
                 ? ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:5120']
                 : ['nullable', 'string', 'max:500'],
             'media_image' => ['nullable', 'string', 'max:500'],
+            'ai_image' => ['nullable', 'string', 'max:500'],
             'remove_image' => ['nullable', 'boolean'],
+            'translations' => ['nullable', 'array'],
+            'translations.*.name' => ['nullable', 'string', 'max:100'],
         ]);
     }
 }

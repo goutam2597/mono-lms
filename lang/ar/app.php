@@ -1,12 +1,10 @@
 <?php
 
-// سلاسل واجهة المستخدم المشتركة: الترويسة، التذييل، الإجراءات الشائعة، الحالات.
 return [
     'brand' => [
         'name' => 'MonoLMS',
         'tagline' => 'تعلّم أي شيء، في أي مكان.',
     ],
-
     'nav' => [
         'home' => 'الرئيسية',
         'courses' => 'الدورات',
@@ -25,8 +23,25 @@ return [
         'my_account' => 'حسابي',
         'profile' => 'الملف الشخصي',
         'dashboard' => 'لوحة التحكم',
+        'notifications' => 'الإشعارات',
+        'new' => 'جديد',
+        'mark_all_read' => 'تحديد الكل كمقروء',
+        'no_notifications' => 'لا توجد إشعارات حتى الآن',
+        'all_caught_up' => 'تم الاطلاع على كل شيء!',
+        'view_all_notifications' => 'عرض جميع الإشعارات',
+        'view_website' => 'عرض الموقع',
+        'edit_profile' => 'تعديل الملف الشخصي',
+        'help_support' => 'المساعدة والدعم',
+        'general_settings' => 'الإعدادات العامة',
+        'admins_staff' => 'المدراء وفريق العمل',
+        'enrolled_courses' => 'الدورات المسجلة',
+        'saved_courses' => 'الدورات المحفوظة',
+        'search_placeholder' => 'بحث بالكلمات المفتاحية...',
+        'toggle_fullscreen' => 'تبديل وضع ملء الشاشة',
+        'collapse_sidebar' => 'طي الشريط الجانبي',
+        'close_sidebar' => 'إغلاق الشريط الجانبي',
+        'all_rights_reserved' => 'جميع الحقوق محفوظة',
     ],
-
     'footer' => [
         'about' => 'منصة تعلّم عبر الإنترنت عالية الجودة تقدم دورات بقيادة خبراء للجميع، في كل مكان.',
         'support' => 'الدعم',
@@ -49,7 +64,6 @@ return [
         'address' => '1442 كروسويند درايف، ماديسونفيل',
         'phone' => '+1 458877 77874',
     ],
-
     'common' => [
         'view_all' => 'عرض الكل',
         'read_more' => 'اقرأ المزيد',
@@ -102,8 +116,12 @@ return [
         'currency' => '$',
         'joined' => 'تاريخ الانضمام',
         'browse' => 'تصفح الدورات',
+        'student' => 'طالب',
+        'user' => 'مستخدم',
+        'courses' => 'الدورات',
+        'no_results_for' => 'لا توجد نتائج لـ',
+        'see_all_results' => 'عرض جميع النتائج لـ',
     ],
-
     'levels' => [
         'beginner' => 'مبتدئ',
         'intermediate' => 'متوسط',

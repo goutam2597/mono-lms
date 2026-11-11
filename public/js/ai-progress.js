@@ -6,8 +6,14 @@
  *                       (caller knows the total) or simulated mode (single
  *                       request, creeps toward 90% and snaps to 100%).
  * window.aiFx.console — a terminal-style "what's cooking inside" panel.
- *                       Only translation flows open it, per spec: open on
- *                       button tap, auto-close after the run settles.
+ *                       Every AI flow opens it (text, image, translations):
+ *                       open on button tap, auto-close after the run
+ *                       settles, stays open on failure so the cause stays
+ *                       readable.
+ *
+ * button.start(btn, { console, note, waiting, … }) layers the console onto
+ * the progress button: `console` is the panel title, `note` a dim context
+ * line (prompt, language, size…), `waiting` the thinking-line text.
  */
 (function () {
     'use strict';
@@ -26,6 +32,11 @@
         return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
         });
+    }
+
+    function clip(s, n) {
+        s = String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+        return s.length > n ? s.slice(0, n - 1) + '…' : s;
     }
 
     function ensureConsole() {
@@ -227,8 +238,38 @@
         }
     }
 
+    /* start() wraps the bare progress button. When opts.console is set the
+       terminal panel runs alongside: context note, thinking spinner while
+       the request is in flight, then ✓/✗ with the elapsed time. Success
+       auto-closes the panel; failure leaves it open so the error stays
+       readable — the same contract the translation flows follow. */
+    function startWithConsole(btn, opts) {
+        var fx = startButton(btn, opts);
+        if (!opts || !opts.console) return fx;
+        var con = consoleApi, t0 = Date.now();
+        con.open(opts.console === true ? (opts.label || 'AI CONSOLE') : String(opts.console));
+        if (opts.note) con.log(clip(opts.note, 140), 'dim');
+        con.thinking(opts.waiting || 'waiting for the model…');
+        return {
+            update: fx.update,
+            done: function (ok, text) {
+                var secs = ((Date.now() - t0) / 1000).toFixed(1) + 's';
+                if (ok) {
+                    con.done('✓ ' + (text || 'done') + ' — ' + secs);
+                    con.closeAfter(2600);
+                } else {
+                    con.fail('✗ ' + (text || 'failed') + ' — ' + secs);
+                }
+                // Error text stays out of the button label: it can be a whole
+                // server message, and the console already shows it in full.
+                fx.done(ok, ok ? text : undefined);
+            },
+            restore: fx.restore
+        };
+    }
+
     window.aiFx = {
         console: consoleApi,
-        button: { start: startButton }
+        button: { start: startWithConsole }
     };
 })();

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AiController;
 use App\Http\Controllers\Admin\AiSettingsController;
+use App\Http\Controllers\Admin\AiTranslationController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
@@ -339,6 +341,19 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         Route::delete('/settings/ai/{aiProvider}', [AiSettingsController::class, 'destroy'])->name('settings.ai.destroy');
     });
 
+    // AI Tools (Translation & Image Generation)
+    Route::post('/translate', AiTranslationController::class)
+        ->middleware('throttle:30,1')
+        ->name('translate');
+    Route::post('/translate/taxonomy', [AiController::class, 'bulkTranslateTaxonomy'])
+        ->middleware('throttle:10,1')
+        ->name('translate.taxonomy');
+    Route::post('/generate-image', [AiController::class, 'generateImage'])
+        ->name('generate.image');
+    Route::post('/generate', [AiController::class, 'generateContent'])
+        ->middleware('throttle:30,1')
+        ->name('generate');
+
     // Blog
     Route::middleware('permission:blog.manage')->group(function () {
         Route::get('/blog', [AdminPostController::class, 'index'])->name('blog.index');
@@ -489,6 +504,9 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
     Route::get('/courses/{course}/edit', [InstructorCourseController::class, 'edit'])->name('courses.edit');
     Route::put('/courses/{course}', [InstructorCourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{course}', [InstructorCourseController::class, 'destroy'])->name('courses.destroy');
+    Route::post('/translate', AiTranslationController::class)->middleware('throttle:30,1')->name('translate');
+    Route::post('/generate-image', [AiController::class, 'generateImage'])->name('generate.image');
+    Route::post('/generate', [AiController::class, 'generateContent'])->middleware('throttle:30,1')->name('generate');
 
     Route::post('/courses/{course}/lessons', [LessonController::class, 'store'])->name('lessons.store');
     Route::put('/lessons/{lesson}', [LessonController::class, 'update'])->name('lessons.update');

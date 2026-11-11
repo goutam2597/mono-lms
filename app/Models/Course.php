@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasTranslations;
 use App\Support\PublicMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,11 +12,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'instructor_id', 'category_id', 'title', 'slug', 'subtitle', 'description',
+    'title_translations', 'subtitle_translations', 'description_translations',
     'image', 'price', 'old_price', 'level', 'duration_minutes', 'type',
     'is_published', 'is_featured', 'is_trending',
 ])]
 class Course extends Model
 {
+    use HasTranslations;
+
     public const TYPES = ['recorded', 'live', 'combined'];
 
     protected function casts(): array
@@ -26,7 +30,15 @@ class Course extends Model
             'is_published' => 'boolean',
             'is_featured' => 'boolean',
             'is_trending' => 'boolean',
+            'title_translations' => 'array',
+            'subtitle_translations' => 'array',
+            'description_translations' => 'array',
         ];
+    }
+
+    public function isFree(): bool
+    {
+        return (float) $this->price <= 0;
     }
 
     public function instructor(): BelongsTo

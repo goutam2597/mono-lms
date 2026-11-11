@@ -4,13 +4,13 @@
         <!-- Top Welcome Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">Welcome back, {{ auth('student')->user()?->name ?? 'Student' }}! 👋</h1>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-neutral-400 mt-1">Here is a summary of your learning progress and curriculum updates.</p>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{{ __('student.dashboard.welcome', ['name' => auth('student')->user()?->name ?? 'Student']) }}! 👋</h1>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-neutral-400 mt-1">{{ __('student.dashboard.welcome_subtitle') }}</p>
             </div>
             <div class="flex items-center gap-2">
                 <a href="{{ route('courses.index') }}" class="action-btn action-btn-primary text-xs flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <span>Browse Courses</span>
+                    <span>{{ __('student.dashboard.browse_courses') }}</span>
                 </a>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <div>
                     <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">{{ __('student.dashboard.enrolled') }}</p>
                     <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">{{ str_pad((string) $stats['enrolled'], 2, '0', STR_PAD_LEFT) }}</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Active catalog</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">{{ __('student.dashboard.active_catalog') }}</p>
                 </div>
                 <div class="w-11 h-11 rounded-[6px] bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] flex items-center justify-center shrink-0 border border-[var(--theme-primary,#344c3d)]/20">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -34,7 +34,7 @@
                 <div>
                     <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">{{ __('student.dashboard.in_progress') }}</p>
                     <p class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mt-1">{{ str_pad((string) $stats['in_progress'], 2, '0', STR_PAD_LEFT) }}</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Underway</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">{{ __('student.dashboard.underway') }}</p>
                 </div>
                 <div class="w-11 h-11 rounded-[6px] bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -46,7 +46,7 @@
                 <div>
                     <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">{{ __('student.dashboard.completed') }}</p>
                     <p class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1">{{ str_pad((string) $stats['completed'], 2, '0', STR_PAD_LEFT) }}</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Finished 100%</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">{{ __('student.dashboard.finished_100') }}</p>
                 </div>
                 <div class="w-11 h-11 rounded-[6px] bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -58,7 +58,7 @@
                 <div>
                     <p class="text-[11px] uppercase tracking-wider font-bold text-slate-400">{{ __('student.dashboard.certificates') }}</p>
                     <p class="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1">{{ str_pad((string) $stats['certificates'], 2, '0', STR_PAD_LEFT) }}</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Accredited</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">{{ __('student.dashboard.accredited') }}</p>
                 </div>
                 <div class="w-11 h-11 rounded-[6px] bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14a6 6 0 100-12 6 6 0 000 12zm-3-6l2 2 4-4m2.5 7.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
@@ -72,9 +72,9 @@
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">Current Course In Progress</h2>
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">{{ __('student.dashboard.current_in_progress') }}</h2>
                     </div>
-                    <span class="text-xs font-semibold text-slate-500">Last activity {{ $continueCourse->updated_at->diffForHumans() }}</span>
+                    <span class="text-xs font-semibold text-slate-500">{{ __('student.dashboard.last_activity', ['time' => $continueCourse->updated_at->diffForHumans()]) }}</span>
                 </div>
 
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-5">
@@ -146,7 +146,7 @@
 
                             <a href="{{ route('courses.show', $continueCourse->course->slug) }}"
                                class="inline-flex items-center gap-2 bg-[var(--theme-primary,#344c3d)] hover:bg-[var(--theme-primary-hover,#25372c)] text-white text-xs font-semibold px-4 py-2 rounded-[6px] transition-colors shadow-xs">
-                                <span>{{ $continueCourse->progress >= 100 ? 'Review Course' : 'Resume Lesson' }}</span>
+                                <span>{{ $continueCourse->progress >= 100 ? __('student.dashboard.review_course') : __('student.dashboard.resume_lesson') }}</span>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
                         </div>
@@ -160,7 +160,7 @@
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                 <div>
                     <h3 class="text-base font-bold text-slate-900">{{ __('student.dashboard.recently_enrolled') }}</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Courses currently in your curriculum</p>
+                    <p class="text-xs text-slate-500 mt-0.5">{{ __('student.dashboard.in_curriculum') }}</p>
                 </div>
                 <a href="{{ route('student.enrolled-courses') }}"
                    class="text-xs font-semibold text-[var(--theme-primary,#344c3d)] hover:underline inline-flex items-center gap-1">
@@ -209,7 +209,7 @@
                         <div class="w-28 sm:w-32">
                             <div class="flex items-center justify-between text-[11px] mb-1 font-semibold">
                                 <span class="text-slate-500">{{ $enrollment->progress }}%</span>
-                                <span class="text-slate-400">{{ $enrollment->status === 'completed' ? 'Done' : 'Active' }}</span>
+                                <span class="text-slate-400">{{ $enrollment->status === 'completed' ? __('student.dashboard.done') : __('app.common.active') }}</span>
                             </div>
                             <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                                 <div class="h-full rounded-full {{ $enrollment->progress >= 100 ? 'bg-emerald-500' : 'bg-[var(--theme-primary,#344c3d)]' }}"
@@ -219,7 +219,7 @@
 
                         <a href="{{ route('courses.show', $enrollment->course->slug) }}"
                            class="bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-[5px] transition-colors whitespace-nowrap">
-                            {{ $enrollment->progress >= 100 ? 'Review' : __('student.dashboard.keep_learning') }}
+                            {{ $enrollment->progress >= 100 ? __('student.dashboard.review_course') : __('student.dashboard.keep_learning') }}
                         </a>
                     </div>
                 </div>
@@ -241,9 +241,9 @@
             <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
                 <div>
                     <h3 class="font-bold text-sm text-slate-900 uppercase tracking-wider">{{ __('student.dashboard.invoices') }}</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Payment receipts and enrollment transactions</p>
+                    <p class="text-xs text-slate-500 mt-0.5">{{ __('student.dashboard.invoices_subtitle') }}</p>
                 </div>
-                <span class="text-xs font-semibold text-slate-400 font-mono">{{ $enrollments->count() }} records</span>
+                <span class="text-xs font-semibold text-slate-400 font-mono">{{ __('student.dashboard.records', ['count' => $enrollments->count()]) }}</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs text-left">

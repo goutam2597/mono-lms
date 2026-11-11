@@ -274,17 +274,18 @@ class AiTranslationService
         return $segments;
     }
 
-    private function chatWithFallback(AiProvider $primary, string $system, string $user, ?int $vendorId = null): string
+    public function chatWithFallback(AiProvider $primary, string $system, string $user, string $kind = 'translator', ?int $vendorId = null): string
     {
         $candidates = $this->providerCandidates($primary);
         $errors = [];
 
         foreach ($candidates as $provider) {
             try {
-                return $this->chat($provider, $system, $user, $vendorId);
+                return $this->chatDirect($provider, $system, [['role' => 'user', 'content' => $user]], $kind, $vendorId)['content'];
             } catch (\Throwable $e) {
                 $errors[] = $provider->name.' / '.$provider->model.': '.$e->getMessage();
-                Log::warning('AI translation provider attempt failed.', [
+                Log::warning('AI provider attempt failed.', [
+                    'kind' => $kind,
                     'provider' => $provider->name,
                     'model' => $provider->model,
                     'error' => substr($e->getMessage(), 0, 300),
@@ -292,7 +293,7 @@ class AiTranslationService
             }
         }
 
-        throw new RuntimeException(implode(' | ', $errors) ?: 'No translator provider attempt succeeded.');
+        throw new RuntimeException(implode(' | ', $errors) ?: 'No AI provider attempt succeeded.');
     }
 
     /** @return list<AiProvider> */

@@ -145,9 +145,11 @@ class LessonVideoTest extends TestCase
 
     public function test_non_enrolled_student_cannot_access_player(): void
     {
+        $this->course->update(['price' => 49.99]);
+
         $this->actingAs($this->student, 'student')
             ->get(route('student.courses.learn', $this->course))
-            ->assertForbidden();
+            ->assertRedirect(route('courses.show', $this->course->slug));
     }
 
     public function test_enrolled_student_sees_player_with_video(): void

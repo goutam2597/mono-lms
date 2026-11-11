@@ -375,6 +375,11 @@
     padding: 0 10px;
     font-size: 9px;
 }
+.action-btn.h-8 { height: 32px; }
+.action-btn.h-9 { height: 36px; }
+.action-btn.h-10 { height: 40px; }
+.action-btn.h-11 { height: 44px; }
+.action-btn.h-12 { height: 48px; }
 
 /* ---------------- Row actions dropdown (mono_market pattern) ---------------- */
 .row-action-menu {
