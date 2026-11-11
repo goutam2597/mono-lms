@@ -38,11 +38,23 @@
                     @forelse ($posts as $post)
                         <tr class="hover:bg-slate-50/60 transition-colors">
                             <td class="w-10 px-6 py-3.5">
-                                <input type="checkbox" class="control row-check" name="ids[]" value="{{ $post->id }}" form="bulk-form" aria-label="{{ $post->title }}">
+                                <input type="checkbox" class="control row-check" name="ids[]" value="{{ $post->id }}" form="bulk-form" aria-label="{{ $post->trans('title') }}">
                             </td>
                             <td class="px-6 py-3.5">
-                                <p class="font-bold text-[#191919] text-xs">{{ \Illuminate\Support\Str::limit($post->title, 50) }}</p>
-                                <p class="text-xs text-slate-400 mt-0.5">{{ \Illuminate\Support\Str::limit($post->excerpt ?? '', 60) }}</p>
+                                <p class="font-bold text-[#191919] text-xs">
+                                    <span>{{ \Illuminate\Support\Str::limit($post->trans('title'), 50) }}</span>
+                                    @if ($post->trans('title') !== $post->title)
+                                        <span class="text-[10px] text-gray-400 italic">({{ \Illuminate\Support\Str::limit($post->title, 25) }})</span>
+                                    @endif
+                                    @if (!empty($post->title_translations))
+                                        <span class="inline-flex items-center gap-1 ml-1.5 align-middle">
+                                            @foreach (array_keys($post->title_translations) as $code)
+                                                <span class="px-1.5 py-0.2 text-[9px] font-mono font-semibold rounded bg-neutral-100 text-neutral-600 border border-neutral-200 uppercase">{{ $code }}</span>
+                                            @endforeach
+                                        </span>
+                                    @endif
+                                </p>
+                                <p class="text-xs text-slate-400 mt-0.5">{{ \Illuminate\Support\Str::limit($post->trans('excerpt') ?? '', 60) }}</p>
                             </td>
                             <td class="px-6 py-3.5 text-xs text-slate-600 font-mono">{{ $post->published_at?->format('d M Y') ?? '—' }}</td>
                             <td class="px-6 py-3.5">

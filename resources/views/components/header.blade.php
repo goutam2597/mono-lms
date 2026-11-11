@@ -211,7 +211,7 @@
                         @foreach ($searchCategories as $cat)
                             <a href="{{ route('courses.index', ['category' => $cat->id]) }}"
                                class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors">
-                                {{ $cat->name }}
+                                {{ $cat->trans('name') }}
                             </a>
                         @endforeach
                     </div>

@@ -117,7 +117,7 @@
                                     </div>
                                 </td>
                                 <td class="py-3.5 px-4 font-medium text-slate-700 max-w-[200px] truncate">
-                                    {{ $order->course?->title ?? ($order->plan?->name ? $order->plan->name.' Membership' : 'Curriculum Access') }}
+                                    {{ $order->course?->trans('title') ?? ($order->plan?->name ? $order->plan->name.' Membership' : 'Curriculum Access') }}
                                 </td>
                                 <td class="py-3.5 px-4 font-bold text-slate-900">
                                     ${{ number_format($order->amount, 2) }}

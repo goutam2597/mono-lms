@@ -1,4 +1,4 @@
-<x-layouts.dashboard title="Learn: {{ $course->title }} - Mono LMS" active="enrolled-courses" userType="student">
+<x-layouts.dashboard :title="'Learn: ' . $course->trans('title') . ' - Mono LMS'" active="enrolled-courses" userType="student">
 
     <div class="space-y-6">
         <!-- Header -->
@@ -8,7 +8,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                     My Courses
                 </a>
-                <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 mt-1 truncate">{{ $course->title }}</h1>
+                <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 mt-1 truncate">{{ $course->trans('title') }}</h1>
                 <p class="text-xs text-neutral-400">By {{ $course->instructor?->name }} · {{ $course->typeLabel() }} · {{ $enrollment?->progress ?? 0 }}% complete</p>
             </div>
             <div class="shrink-0 bg-white border border-[#e7e7e7] rounded-xl px-5 py-3 min-w-[180px]">

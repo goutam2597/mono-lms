@@ -30,7 +30,7 @@
 
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <p class="font-semibold text-[#191919] text-sm truncate">{{ $order->course?->title ?? 'Course purchase' }}</p>
+                                <p class="font-semibold text-[#191919] text-sm truncate">{{ $order->course?->trans('title') ?? 'Course purchase' }}</p>
                                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide
                                     {{ $order->statusTone() === 'emerald' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : '' }}
                                     {{ $order->statusTone() === 'amber' ? 'bg-amber-50 text-amber-700 border border-amber-200' : '' }}

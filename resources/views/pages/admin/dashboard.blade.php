@@ -207,8 +207,8 @@
                             @foreach($pendingCourses->take(3) as $pCourse)
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
                                     <div class="min-w-0">
-                                        <p class="font-bold text-slate-800 truncate">{{ $pCourse->title }}</p>
-                                        <p class="text-[11px] text-slate-500 truncate">{{ $pCourse->instructor?->name ?? 'Instructor' }} &bull; {{ $pCourse->category?->name ?? 'Uncategorized' }}</p>
+                                        <p class="font-bold text-slate-800 truncate">{{ $pCourse->trans('title') }}</p>
+                                        <p class="text-[11px] text-slate-500 truncate">{{ $pCourse->instructor?->name ?? 'Instructor' }} &bull; {{ $pCourse->category?->trans('name') ?? 'Uncategorized' }}</p>
                                     </div>
                                     <form action="{{ route('admin.courses.publish', $pCourse) }}" method="POST">
                                         @csrf
@@ -235,7 +235,7 @@
                                 <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100 gap-2">
                                     <div class="min-w-0">
                                         <p class="font-bold text-slate-800 truncate">&ldquo;{{ Str::limit($pRev->comment, 40) }}&rdquo;</p>
-                                        <p class="text-[11px] text-slate-500 truncate">{{ $pRev->student?->name ?? 'Student' }} on {{ $pRev->course?->title ?? 'Course' }}</p>
+                                        <p class="text-[11px] text-slate-500 truncate">{{ $pRev->student?->name ?? 'Student' }} on {{ $pRev->course?->trans('title') ?? 'Course' }}</p>
                                     </div>
                                     <form action="{{ route('admin.reviews.approve', $pRev) }}" method="POST">
                                         @csrf
@@ -686,14 +686,14 @@
                                 @forelse($topCourses->take(5) as $course)
                                     <tr class="hover:bg-[#f8fafc]/80 transition-colors">
                                         <td class="py-3 px-3 font-semibold text-[#0f172a] max-w-[200px] truncate">
-                                            {{ $course->title }}
+                                            {{ $course->trans('title') }}
                                         </td>
                                         <td class="py-3 px-3 text-[#64748b]">
                                             {{ $course->instructor?->name ?? 'Instructor' }}
                                         </td>
                                         <td class="py-3 px-3">
                                             <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[10px] font-semibold bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)]">
-                                                {{ $course->category?->name ?? 'General' }}
+                                                {{ $course->category?->trans('name') ?? 'General' }}
                                             </span>
                                         </td>
                                         <td class="py-3 px-3 font-semibold text-[#0f172a]">

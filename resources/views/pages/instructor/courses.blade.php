@@ -31,7 +31,22 @@
                 <tbody class="divide-y divide-gray-100">
                     @forelse ($courses as $course)
                         <tr class="hover:bg-[#f8fafb] transition-colors">
-                            <td class="px-4 py-3.5 font-semibold text-[#191919]">{{ \Illuminate\Support\Str::limit($course->title, 40) }}</td>
+                            <td class="px-4 py-3.5 font-semibold text-[#191919]">
+                                <a href="{{ route('instructor.courses.edit', $course) }}" class="hover:underline">{{ \Illuminate\Support\Str::limit($course->trans('title'), 50) }}</a>
+                                <div class="flex flex-wrap items-center gap-2 mt-0.5">
+                                    <span class="text-xs text-gray-400">{{ $course->category?->trans('name') ?? '—' }}</span>
+                                    @if ($course->trans('title') !== $course->title)
+                                        <span class="text-[10px] text-gray-400 italic">({{ \Illuminate\Support\Str::limit($course->title, 25) }})</span>
+                                    @endif
+                                    @if (!empty($course->title_translations))
+                                        <span class="inline-flex items-center gap-1">
+                                            @foreach (array_keys($course->title_translations) as $code)
+                                                <span class="text-[9px] font-bold uppercase tracking-wider px-1 py-0.2 rounded bg-neutral-100 text-neutral-500">{{ $code }}</span>
+                                            @endforeach
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
                             <td class="px-4 py-3.5 text-[#5d5d5d]">{{ $course->enrollments_count }}</td>
                             <td class="px-4 py-3.5 text-[#5d5d5d]">{{ $course->lessons_count }}</td>
                             <td class="px-4 py-3.5 font-semibold text-[#392c7d]">{{ __('app.common.currency') }}{{ number_format($course->price, 2) }}</td>

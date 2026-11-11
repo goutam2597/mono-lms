@@ -84,7 +84,7 @@
                     <tbody class="divide-y divide-gray-100">
                         @forelse ($topCourses as $course)
                             <tr>
-                                <td class="px-6 py-3.5 font-semibold text-[#191919]">{{ \Illuminate\Support\Str::limit($course->title, 40) }}</td>
+                                <td class="px-6 py-3.5 font-semibold text-[#191919]">{{ \Illuminate\Support\Str::limit($course->trans('title'), 40) }}</td>
                                 <td class="px-6 py-3.5 text-[#5d5d5d]">{{ $course->enrollments_count }}</td>
                                 <td class="px-6 py-3.5 font-semibold text-[#392c7d]">{{ __('app.common.currency') }}{{ number_format($course->price, 2) }}</td>
                                 <td class="px-6 py-3.5">

@@ -54,7 +54,7 @@
                                     {{ $idx + 1 }}
                                 </span>
                                 <div class="min-w-0">
-                                    <p class="font-bold text-slate-900 truncate">{{ $course->title }}</p>
+                                    <p class="font-bold text-slate-900 truncate">{{ $course->trans('title') }}</p>
                                     <p class="text-[11px] text-slate-400 truncate mt-0.5">{{ $course->instructor?->name ?? 'Staff Instructor' }}</p>
                                 </div>
                             </div>

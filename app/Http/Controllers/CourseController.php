@@ -104,9 +104,15 @@ class CourseController extends Controller
     {
         $courses = Course::published()
             ->with(['instructor', 'category'])
-            ->when($request->filled('q'), fn ($q) => $q->where(fn ($w) => $w
-                ->where('title', 'like', '%'.$request->string('q').'%')
-                ->orWhere('subtitle', 'like', '%'.$request->string('q').'%')))
+            ->when($request->filled('q'), function ($q) use ($request) {
+                $term = '%'.$request->string('q').'%';
+                $q->where(function ($w) use ($term) {
+                    $w->where('title', 'like', $term)
+                        ->orWhere('subtitle', 'like', $term)
+                        ->orWhere('title_translations', 'like', $term)
+                        ->orWhere('subtitle_translations', 'like', $term);
+                });
+            })
             ->when($request->filled('category'), fn ($q) => $q->whereHas('category', fn ($c) => $c->where('slug', $request->query('category'))))
             ->when(in_array($request->query('level'), ['beginner', 'intermediate', 'advanced']), fn ($q) => $q->where('level', $request->query('level')))
             ->when($request->query('sort') === 'price_low', fn ($q) => $q->orderBy('price'))

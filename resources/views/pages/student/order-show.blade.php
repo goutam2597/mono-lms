@@ -58,7 +58,7 @@
                         <div class="p-5 flex items-center gap-4">
                             <img src="{{ $order->course->imageUrl() }}" alt="" class="w-24 h-16 rounded-lg object-cover shrink-0">
                             <div class="min-w-0 flex-1">
-                                <p class="font-semibold text-[#191919] text-sm">{{ $order->course->title }}</p>
+                                <p class="font-semibold text-[#191919] text-sm">{{ $order->course->trans('title') }}</p>
                                 <p class="text-[11px] text-gray-400 mt-0.5">By {{ $order->course->instructor?->name }} · {{ $order->course->typeLabel() }} · {{ $order->course->level }}</p>
                             </div>
                             @if ($order->payment_status === 'paid')

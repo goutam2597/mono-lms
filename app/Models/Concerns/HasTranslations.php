@@ -30,6 +30,11 @@ trait HasTranslations
         return (string) $this->getAttribute($field);
     }
 
+    protected function asJson($value, $flags = 0)
+    {
+        return json_encode($value, $flags | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
     /**
      * Translate an array field (e.g. JSON sections). Returns the translated
      * array for the locale, falling back to default, then to the base column.

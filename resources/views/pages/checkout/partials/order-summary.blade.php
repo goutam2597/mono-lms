@@ -14,7 +14,7 @@
             <div class="flex items-center gap-3">
                 <img src="{{ $order->course->imageUrl() }}" alt="" class="w-16 h-12 rounded-lg object-cover shrink-0">
                 <div class="min-w-0">
-                    <p class="text-sm font-semibold text-[#191919] leading-snug line-clamp-2">{{ $order->course->title }}</p>
+                    <p class="text-sm font-semibold text-[#191919] leading-snug line-clamp-2">{{ $order->course->trans('title') }}</p>
                     <p class="text-[11px] text-gray-400 mt-0.5">By {{ $order->course->instructor?->name }} · {{ $order->course->typeLabel() }}</p>
                 </div>
             </div>

@@ -75,7 +75,7 @@
                         <tr>
                             <td class="py-4 px-4">
                                 <p class="font-bold text-slate-900 text-sm">
-                                    {{ $order->course?->title ?? ($order->plan?->name ? $order->plan->name.' Membership Plan' : 'Curriculum Enrollment') }}
+                                    {{ $order->course?->trans('title') ?? ($order->plan?->name ? $order->plan->name.' Membership Plan' : 'Curriculum Enrollment') }}
                                 </p>
                                 <p class="text-slate-500 text-[11px] mt-0.5">Lifetime full access with certificates & projects.</p>
                             </td>

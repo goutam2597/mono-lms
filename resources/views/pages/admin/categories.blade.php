@@ -51,7 +51,17 @@
                                 <input type="checkbox" class="control row-check" name="ids[]" value="{{ $category->id }}" form="bulk-form" aria-label="{{ $category->trans('name') }}">
                             </td>
                             <td class="px-6 py-3.5 font-semibold text-[#191919]">
-                                {{ $category->trans('name') }}
+                                <span>{{ $category->trans('name') }}</span>
+                                @if ($category->trans('name') !== $category->name)
+                                    <span class="text-[10px] text-gray-400 italic">({{ \Illuminate\Support\Str::limit($category->name, 25) }})</span>
+                                @endif
+                                @if (!empty($category->name_translations))
+                                    <span class="inline-flex items-center gap-1 ml-1.5 align-middle">
+                                        @foreach (array_keys($category->name_translations) as $code)
+                                            <span class="px-1.5 py-0.2 text-[9px] font-mono font-semibold rounded bg-neutral-100 text-neutral-600 border border-neutral-200 uppercase">{{ $code }}</span>
+                                        @endforeach
+                                    </span>
+                                @endif
                                 <span class="text-xs text-gray-400 font-normal">({{ $category->slug }})</span>
                             </td>
                             <td class="px-6 py-3.5">

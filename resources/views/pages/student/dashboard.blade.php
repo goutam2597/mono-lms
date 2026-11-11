@@ -80,7 +80,7 @@
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-5">
                     <div class="relative w-full md:w-52 h-32 rounded-[8px] overflow-hidden shrink-0 border border-slate-200 bg-slate-100 group">
                         <img src="{{ $continueCourse->course->image ?? 'https://picsum.photos/seed/course-'.$continueCourse->course->id.'/320/200' }}"
-                             alt="{{ $continueCourse->course->title }}"
+                             alt="{{ $continueCourse->course->trans('title') }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
                             <span class="w-10 h-10 rounded-full bg-white/90 text-[var(--theme-primary,#344c3d)] flex items-center justify-center shadow-md">
@@ -93,7 +93,7 @@
                         <div class="flex flex-wrap items-center gap-2 mb-1.5">
                             @if ($continueCourse->course->category)
                                 <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-[4px] bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] border border-[var(--theme-primary,#344c3d)]/20">
-                                    {{ $continueCourse->course->category->name }}
+                                    {{ $continueCourse->course->category->trans('name') }}
                                 </span>
                             @endif
                             <span class="text-xs text-slate-400">
@@ -103,7 +103,7 @@
 
                         <h3 class="text-base sm:text-lg font-bold text-slate-900 truncate">
                             <a href="{{ route('courses.show', $continueCourse->course->slug) }}" class="hover:text-[var(--theme-primary,#344c3d)] transition-colors">
-                                {{ $continueCourse->course->title }}
+                                {{ $continueCourse->course->trans('title') }}
                             </a>
                         </h3>
 
@@ -173,17 +173,17 @@
                 <div class="border border-slate-100 hover:border-slate-300 rounded-[8px] p-3.5 mb-3 transition-colors bg-white hover:bg-slate-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div class="flex items-start sm:items-center gap-3.5 min-w-0 flex-1">
                         <img src="{{ $enrollment->course->image ?? 'https://picsum.photos/seed/course-'.$enrollment->course->id.'/160/120' }}"
-                             alt="{{ $enrollment->course->title }}"
+                             alt="{{ $enrollment->course->trans('title') }}"
                              class="w-20 sm:w-24 h-16 object-cover rounded-[6px] shrink-0 border border-slate-200">
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-2">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-[var(--theme-accent,#738a6e)]">
-                                    {{ $enrollment->course->category?->name ?? 'Course' }}
+                                    {{ $enrollment->course->category?->trans('name') ?? 'Course' }}
                                 </span>
                             </div>
                             <h4 class="font-bold text-sm text-slate-900 truncate">
                                 <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="hover:text-[var(--theme-primary,#344c3d)]">
-                                    {{ $enrollment->course->title }}
+                                    {{ $enrollment->course->trans('title') }}
                                 </a>
                             </h4>
                             <div class="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
@@ -264,7 +264,7 @@
                                 </td>
                                 <td class="px-5 py-3">
                                     <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="font-semibold text-slate-900 hover:text-[var(--theme-primary,#344c3d)] truncate max-w-xs block">
-                                        {{ $enrollment->course->title }}
+                                        {{ $enrollment->course->trans('title') }}
                                     </a>
                                 </td>
                                 <td class="px-5 py-3 text-slate-500">

@@ -215,7 +215,7 @@
                                     <div class="max-w-[200px]">
                                         @if ($review->course)
                                             <a href="{{ route('courses.show', $review->course->slug) }}" target="_blank" class="font-semibold text-slate-800 hover:text-[var(--theme-primary,#344c3d)] line-clamp-1">
-                                                {{ $review->course->title }}
+                                                {{ $review->course->trans('title') }}
                                             </a>
                                             <p class="text-[11px] text-slate-400 mt-0.5">By {{ $review->course->instructor?->name ?? 'Instructor' }}</p>
                                         @else

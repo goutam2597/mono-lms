@@ -26,7 +26,7 @@
             <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-4 sm:p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center gap-5 hover:border-slate-300 transition-colors">
                 <div class="w-full md:w-44 h-28 rounded-[8px] overflow-hidden shrink-0 border border-slate-200 bg-slate-100 relative group">
                     <img src="{{ $enrollment->course->image ?? 'https://picsum.photos/seed/course-'.$enrollment->course->id.'/240/160' }}"
-                         alt="{{ $enrollment->course->title }}"
+                         alt="{{ $enrollment->course->trans('title') }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <span class="w-9 h-9 rounded-full bg-white/95 text-[var(--theme-primary,#344c3d)] flex items-center justify-center shadow-md">
@@ -39,7 +39,7 @@
                     <div class="flex items-center gap-2 mb-1">
                         @if ($enrollment->course->category)
                             <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-[4px] bg-[var(--theme-primary,#344c3d)]/10 text-[var(--theme-primary,#344c3d)] border border-[var(--theme-primary,#344c3d)]/20">
-                                {{ $enrollment->course->category->name }}
+                                {{ $enrollment->course->category->trans('name') }}
                             </span>
                         @endif
                         <span class="text-[11px] text-slate-400">
@@ -49,7 +49,7 @@
 
                     <h3 class="font-bold text-sm sm:text-base text-slate-900 truncate">
                         <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="hover:text-[var(--theme-primary,#344c3d)] transition-colors">
-                            {{ $enrollment->course->title }}
+                            {{ $enrollment->course->trans('title') }}
                         </a>
                     </h3>
 

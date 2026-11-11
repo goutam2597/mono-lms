@@ -40,7 +40,7 @@
                         <!-- Category Select Pill (custom MonoSelect) -->
                         <div class="bg-[#DCE7DA]/50 rounded-[6px] flex items-center relative z-10">
                             <x-select name="category"
-                                :options="$categories->pluck('name', 'slug')"
+                                :options="$categories->mapWithKeys(fn($c) => [$c->slug => $c->trans('name')])"
                                 :selected="request('category')"
                                 placeholder="{{ __('home.hero.select_category') }}"
                                 :searchable="false"

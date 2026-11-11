@@ -22,7 +22,13 @@ class CourseController extends Controller
     {
         $courses = Course::with(['instructor', 'category'])
             ->withCount('enrollments')
-            ->when($request->filled('q'), fn ($q) => $q->where('title', 'like', '%'.$request->string('q').'%'))
+            ->when($request->filled('q'), function ($q) use ($request) {
+                $term = '%'.$request->string('q').'%';
+                $q->where(function ($sub) use ($term) {
+                    $sub->where('title', 'like', $term)
+                        ->orWhere('title_translations', 'like', $term);
+                });
+            })
             ->when($request->query('status') === 'published', fn ($q) => $q->where('is_published', true))
             ->when($request->query('status') === 'draft', fn ($q) => $q->where('is_published', false))
             ->when($request->query('status') === 'featured', fn ($q) => $q->where('is_featured', true))

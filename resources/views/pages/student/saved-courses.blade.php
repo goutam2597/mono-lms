@@ -51,7 +51,7 @@
                         <!-- Thumbnail & Badge -->
                         <div class="relative w-full aspect-[16/10] overflow-hidden bg-slate-100 border-b border-slate-100">
                             <img src="{{ $course->image ?? 'https://picsum.photos/seed/course-'.$course->id.'/480/300' }}"
-                                 alt="{{ $course->title }}"
+                                 alt="{{ $course->trans('title') }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
 
                             <!-- Remove from saved button -->
@@ -67,7 +67,7 @@
 
                             @if ($course->category)
                                 <span class="absolute bottom-2.5 left-2.5 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-[4px] bg-slate-900/80 backdrop-blur-xs text-white">
-                                    {{ $course->category->name }}
+                                    {{ $course->category->trans('name') }}
                                 </span>
                             @endif
                         </div>
@@ -96,7 +96,7 @@
 
                             <h3 class="font-bold text-sm text-slate-900 line-clamp-2 leading-snug">
                                 <a href="{{ route('courses.show', $course->slug) }}" class="hover:text-[var(--theme-primary,#344c3d)] transition-colors">
-                                    {{ $course->title }}
+                                    {{ $course->trans('title') }}
                                 </a>
                             </h3>
 

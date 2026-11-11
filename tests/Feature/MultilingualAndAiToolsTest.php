@@ -325,4 +325,130 @@ class MultilingualAndAiToolsTest extends TestCase
         $response->assertOk();
         $response->assertJsonPath('translations.hi.title', 'नमस्ते दुनिया');
     }
+
+    public function test_admin_courses_index_shows_translated_content_in_selected_locale_with_fallback(): void
+    {
+        $admin = $this->superAdmin();
+        $this->actingAs($admin, 'admin');
+
+        Language::create(['code' => 'en', 'name' => 'English', 'native_name' => 'English', 'is_default' => true, 'is_active' => true]);
+        Language::create(['code' => 'hi', 'name' => 'Hindi', 'native_name' => 'हिन्दी', 'is_default' => false, 'is_active' => true]);
+
+        $category = Category::create([
+            'name' => 'Design',
+            'slug' => 'design',
+            'name_translations' => [
+                'hi' => 'डिजाइन',
+            ],
+        ]);
+
+        $instructor = $this->instructor();
+
+        $courseWithHi = Course::create([
+            'instructor_id' => $instructor->id,
+            'title' => 'Build Websites with HTML',
+            'slug' => 'build-websites-with-html',
+            'category_id' => $category->id,
+            'title_translations' => [
+                'hi' => 'HTML के साथ वेबसाइट बनाएं',
+            ],
+            'price' => 50.00,
+            'level' => 'intermediate',
+            'type' => 'recorded',
+            'is_published' => true,
+        ]);
+
+        $courseWithoutHi = Course::create([
+            'instructor_id' => $instructor->id,
+            'title' => 'Python Bootcamp',
+            'slug' => 'python-bootcamp',
+            'category_id' => $category->id,
+            'price' => 30.00,
+            'level' => 'beginner',
+            'type' => 'recorded',
+            'is_published' => true,
+        ]);
+
+        // When viewed in default English
+        $enResponse = $this->get(route('admin.courses.index'));
+        $enResponse->assertOk();
+        $enResponse->assertSee('Build Websites with HTML');
+        $enResponse->assertSee('Python Bootcamp');
+
+        // When switched to Hindi
+        $this->get(route('admin.locale.switch', 'hi'))->assertRedirect();
+
+        $hiResponse = $this->get(route('admin.courses.index'));
+        $hiResponse->assertOk();
+        // Should show Hindi translated title for course with translation
+        $hiResponse->assertSee('HTML के साथ वेबसाइट बनाएं');
+        // And fallback to English for course without Hindi translation
+        $hiResponse->assertSee('Python Bootcamp');
+        // And category translated name
+        $hiResponse->assertSee('डिजाइन');
+
+        // Test searching in Hindi
+        $searchHi = $this->get(route('admin.courses.index', ['q' => 'वेबसाइट']));
+        $searchHi->assertOk();
+        $searchHi->assertSee('HTML के साथ वेबसाइट बनाएं');
+        $searchHi->assertDontSee('Python Bootcamp');
+    }
+
+    public function test_public_courses_catalog_and_search_show_translations_in_active_locale(): void
+    {
+        Language::create(['code' => 'en', 'name' => 'English', 'native_name' => 'English', 'is_default' => true, 'is_active' => true]);
+        Language::create(['code' => 'hi', 'name' => 'Hindi', 'native_name' => 'हिन्दी', 'is_default' => false, 'is_active' => true]);
+
+        $category = Category::create([
+            'name' => 'Design',
+            'slug' => 'design',
+            'name_translations' => ['hi' => 'डिजाइन'],
+        ]);
+
+        $instructor = $this->instructor();
+
+        Course::create([
+            'instructor_id' => $instructor->id,
+            'title' => 'Build Websites with HTML',
+            'slug' => 'build-websites-with-html',
+            'category_id' => $category->id,
+            'title_translations' => ['hi' => 'HTML के साथ वेबसाइट बनाएं'],
+            'price' => 50.00,
+            'level' => 'intermediate',
+            'type' => 'recorded',
+            'is_published' => true,
+        ]);
+
+        Course::create([
+            'instructor_id' => $instructor->id,
+            'title' => 'Python Bootcamp',
+            'slug' => 'python-bootcamp',
+            'category_id' => $category->id,
+            'price' => 30.00,
+            'level' => 'beginner',
+            'type' => 'recorded',
+            'is_published' => true,
+        ]);
+
+        // Default English
+        $enResponse = $this->get(route('courses.index'));
+        $enResponse->assertOk();
+        $enResponse->assertSee('Build Websites with HTML');
+        $enResponse->assertSee('Python Bootcamp');
+
+        // Switch to Hindi
+        $this->get(route('locale.switch', 'hi'))->assertRedirect();
+
+        $hiResponse = $this->get(route('courses.index'));
+        $hiResponse->assertOk();
+        $hiResponse->assertSee('HTML के साथ वेबसाइट बनाएं');
+        $hiResponse->assertSee('Python Bootcamp');
+        $hiResponse->assertSee('डिजाइन');
+
+        // Search public catalog using Hindi keyword
+        $searchResponse = $this->get(route('courses.index', ['q' => 'वेबसाइट']));
+        $searchResponse->assertOk();
+        $searchResponse->assertSee('HTML के साथ वेबसाइट बनाएं');
+        $searchResponse->assertDontSee('Python Bootcamp');
+    }
 }
