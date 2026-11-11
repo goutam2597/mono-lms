@@ -47,12 +47,12 @@ class LanguageController extends Controller
 
         Language::clearCache();
 
-        // Scaffold language directory from English reference files
+        // Scaffold language directory with clean empty files so missing keys fallback to English
         $targetDir = lang_path($language->code);
         if (! is_dir($targetDir)) {
             mkdir($targetDir, 0755, true);
             foreach (glob(lang_path('en/*.php')) as $file) {
-                copy($file, $targetDir.DIRECTORY_SEPARATOR.basename($file));
+                file_put_contents($targetDir.DIRECTORY_SEPARATOR.basename($file), "<?php\n\nreturn [\n];\n");
             }
         }
 
@@ -110,6 +110,7 @@ class LanguageController extends Controller
     public function translations(Language $language): View
     {
         $groups = [];
+        $isEn = $language->code === 'en' || $language->is_default;
 
         foreach (glob(lang_path('en/*.php')) as $file) {
             $name = basename($file, '.php');
@@ -123,7 +124,10 @@ class LanguageController extends Controller
             foreach ($reference as $key => $enValue) {
                 $v = $existing[$key] ?? '';
                 if (trim((string) $v) !== '') {
-                    $done++;
+                    // For non-default languages, an identical English string counts as untranslated scaffold
+                    if ($isEn || $v !== $enValue) {
+                        $done++;
+                    }
                 }
             }
 
@@ -168,7 +172,7 @@ class LanguageController extends Controller
             $submitted = $data['t'][$key] ?? null;
             $merged[$key] = is_string($submitted) && $submitted !== ''
                 ? $submitted
-                : ($existing[$key] ?? $enValue);
+                : ($existing[$key] ?? '');
         }
 
         $nested = [];
@@ -265,27 +269,6 @@ class LanguageController extends Controller
         if (empty($translations)) {
             return response()->json(['message' => 'AI translation returned empty result.'], 422);
         }
-
-        $merged = $existing;
-        foreach ($translations as $key => $value) {
-            $merged[$key] = $value;
-        }
-        foreach ($source as $key => $text) {
-            if (! isset($merged[$key]) || $merged[$key] === '') {
-                $merged[$key] = $text;
-            }
-        }
-
-        $nested = [];
-        foreach ($merged as $key => $value) {
-            Arr::set($nested, $key, $value);
-        }
-
-        if (! is_dir(dirname($targetPath))) {
-            mkdir(dirname($targetPath), 0755, true);
-        }
-        file_put_contents($targetPath, "<?php\n\nreturn ".var_export($nested, true).";\n");
-        Language::clearCache();
 
         $done = $offset + count($chunk);
         $remaining = max(0, count($todo) - $done);

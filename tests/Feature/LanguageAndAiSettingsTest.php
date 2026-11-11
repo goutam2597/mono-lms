@@ -7,6 +7,7 @@ use App\Models\AiProvider;
 use App\Models\Language;
 use App\Models\Role;
 use App\Models\Setting;
+use App\Services\AiTranslationService;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -140,6 +141,67 @@ class LanguageAndAiSettingsTest extends TestCase
         if (is_dir(lang_path('de'))) {
             array_map('unlink', glob(lang_path('de/*.*')));
             rmdir(lang_path('de'));
+        }
+    }
+
+    public function test_admin_translate_returns_chunk_and_does_not_prematurely_write_english_fallbacks_to_disk(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $provider = AiProvider::create([
+            'name' => 'Mock Provider',
+            'type' => 'openai',
+            'base_url' => 'https://api.openai.com/v1',
+            'api_key' => 'mock-key',
+            'selected_models' => ['gpt-4o-mini'],
+            'is_active' => true,
+        ]);
+        Setting::set('ai_translator_provider', $provider->id.'|gpt-4o-mini');
+
+        Language::create([
+            'code' => 'en',
+            'name' => 'English',
+            'native_name' => 'English',
+            'direction' => 'ltr',
+            'is_active' => true,
+            'is_default' => true,
+            'sort_order' => 1,
+        ]);
+
+        $targetLang = Language::create([
+            'code' => 'fr',
+            'name' => 'French',
+            'native_name' => 'Français',
+            'direction' => 'ltr',
+            'is_active' => true,
+            'is_default' => false,
+            'sort_order' => 3,
+        ]);
+
+        $mock = $this->mock(AiTranslationService::class);
+        $mock->shouldReceive('translate')
+            ->once()
+            ->andReturn([
+                'title' => 'Cours',
+                'grid' => 'Grille de cours',
+            ]);
+
+        $response = $this->postJson(route('admin.languages.translate', $targetLang), [
+            'file' => 'courses',
+            'offset' => 0,
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('translations.title', 'Cours')
+            ->assertJsonPath('translations.grid', 'Grille de cours');
+
+        // Verify that translate did NOT write uncompleted file to disk
+        $filePath = lang_path('fr/courses.php');
+        $this->assertFalse(file_exists($filePath), 'translate() must not auto-save uncompleted translations to disk.');
+
+        if (is_dir(lang_path('fr'))) {
+            array_map('unlink', glob(lang_path('fr/*.*')));
+            rmdir(lang_path('fr'));
         }
     }
 

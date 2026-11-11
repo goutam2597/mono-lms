@@ -1,5 +1,7 @@
 <x-layouts.dashboard :title="__('admin.languages.translations') . ' — ' . $language->name . ' - Mono LMS'" active="languages" userType="admin">
 
+<link rel="stylesheet" href="{{ asset('css/ai-progress.css') }}?v={{ file_exists(public_path('css/ai-progress.css')) ? filemtime(public_path('css/ai-progress.css')) : time() }}">
+
 <style>
     .action-btn { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 36px; padding: 0 16px; font-size: 11px; font-weight: 500; line-height: 1.2; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; cursor: pointer; font-family: inherit; transition: color .15s, background .15s, border-color .15s; }
     .action-btn:hover { color: #fff; background: #404040; border-color: #404040; }
@@ -162,6 +164,7 @@
                                 <input type="text" name="t[{{ $k }}]"
                                        data-trans-input="{{ $file }}"
                                        data-key="{{ $k }}"
+                                       data-en="{{ $enValue }}"
                                        value="{{ $group['values'][$k] ?? '' }}"
                                        placeholder="{{ $enValue }}"
                                        dir="{{ $language->direction }}"
@@ -179,17 +182,24 @@
     </div>
 </div>
 
+<script src="{{ asset('js/ai-progress.js') }}?v={{ file_exists(public_path('js/ai-progress.js')) ? filemtime(public_path('js/ai-progress.js')) : time() }}"></script>
+
 <script>
 (function () {
     var saveUrl        = @json(route('admin.languages.translations.update', $language));
     var translateUrl   = @json(route('admin.languages.translate', $language));
     var token          = @json(csrf_token());
     var files          = @json(array_keys($groups));
+    var languageCode   = @json($language->code);
+    var languageName   = @json($language->name);
+    var isDefault      = @json((bool) $isDefault);
+
     var lblTranslating = @json(__('admin.languages.translating'));
     var lblComplete    = @json(__('admin.languages.translate_complete'));
     var lblFailed      = @json(__('admin.languages.translate_failed'));
     var lblSaving      = @json(__('admin.languages.translate_saving'));
     var lblSaved       = @json(__('admin.languages.translate_saved'));
+    var lblSavedPartial = @json(__('admin.languages.translate_saved_partial'));
     var lblCompleted   = @json(__('admin.languages.completed', ['percent' => '__PCT__']));
     var lblRemaining   = @json(__('admin.languages.remaining', ['count' => '__COUNT__']));
 
@@ -241,7 +251,15 @@
         var inputs = card.querySelectorAll('input[data-trans-input="' + file + '"]');
         if (!inputs.length) return;
         var done = 0;
-        inputs.forEach(function (i) { if (i.value.trim() !== '') done++; });
+        inputs.forEach(function (i) {
+            var val = i.value.trim();
+            var en = (i.getAttribute('data-en') || i.getAttribute('placeholder') || '').trim();
+            if (val !== '') {
+                if (isDefault || val !== en) {
+                    done++;
+                }
+            }
+        });
         var left = inputs.length - done;
         var pct  = Math.round(done / inputs.length * 100);
 
@@ -259,7 +277,15 @@
             var f = c.getAttribute('data-file-card');
             var fi = c.querySelectorAll('input[data-trans-input="' + f + '"]');
             totalCount += fi.length;
-            fi.forEach(function (i) { if (i.value.trim() !== '') totalDone++; });
+            fi.forEach(function (i) {
+                var val = i.value.trim();
+                var en = (i.getAttribute('data-en') || i.getAttribute('placeholder') || '').trim();
+                if (val !== '') {
+                    if (isDefault || val !== en) {
+                        totalDone++;
+                    }
+                }
+            });
         });
         var overallPct = totalCount ? Math.round(totalDone / totalCount * 100) : 100;
         var overallBar = document.querySelector('[data-overall-bar]');
@@ -398,15 +424,18 @@
             });
         })
         .then(function (body) {
-            applyTranslations(file, body.translations);
             var n = Object.keys(body.translations || {}).length;
+            if (n > 0) {
+                applyTranslations(file, body.translations);
+            }
             done += n;
             if (! total) total = body.total;
             if (total > 0) onProgress(Math.min(done, total), total, n);
+
             if (body.remaining > 0 && n > 0) {
                 translateFile(file, body.next, done, total, onProgress, onDone, onError);
             } else {
-                onDone();
+                onDone(done === 0 && (body.total === 0 || !body.total));
             }
         })
         .catch(function (e) { onError(e); });
@@ -415,9 +444,25 @@
     function run(filesQueue, btn, restoreLabel) {
         if (running) return;
         running = true;
+
         if (progress) progress.classList.remove('hidden');
         if (progressBar) progressBar.style.width = '0%';
-        if (btn) { btn.disabled = true; btn.textContent = lblTranslating; }
+
+        var fx = window.aiFx && window.aiFx.button
+            ? window.aiFx.button.start(btn, { label: lblTranslating, simulate: false })
+            : null;
+        var con = window.aiFx && window.aiFx.console ? window.aiFx.console : null;
+
+        if (!fx && btn) {
+            btn.disabled = true;
+            btn.textContent = lblTranslating;
+        }
+
+        if (con) {
+            con.open(restoreLabel.toUpperCase() + ' (' + languageCode.toUpperCase() + ')');
+            con.log('Language: ' + languageName + ' [' + languageCode + ']', 'head');
+            con.log('Queue: ' + filesQueue.map(function (f) { return f + '.php'; }).join(', '), 'dim');
+        }
 
         var i = 0;
         var multi = filesQueue.length > 1;
@@ -425,38 +470,85 @@
         (function next() {
             if (i >= filesQueue.length) {
                 running = false;
-                if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
+                if (fx) fx.done(true);
+                else if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
                 if (progressBar) progressBar.style.width = '100%';
                 setStatus(lblComplete + ' ' + lblSaved);
-                showBanner('All translations completed and saved.', 'success');
+                if (con) {
+                    con.done('✓ All ' + filesQueue.length + ' files translated & saved');
+                    con.closeAfter(2600);
+                }
+                showBanner('All translations completed and saved successfully.', 'success');
                 return;
             }
+
             var file = filesQueue[i];
             var label = multi ? file + '.php (' + (i + 1) + '/' + filesQueue.length + ')' : file + '.php';
+
+            if (con) {
+                con.thinking(label + ' — scanning keys…');
+            }
             setStatus(lblTranslating + ' ' + label);
 
             translateFile(file, 0, 0, 0,
-                function (done, total) {
-                    if (progressBar && total > 0) {
-                        progressBar.style.width = Math.round(done / total * 100) + '%';
+                // onProgress
+                function (done, total, n) {
+                    setStatus(label + ' — ' + done + '/' + total);
+                    if (con) {
+                        if (n > 0) con.log('✓ ' + file + '.php — +' + n + ' keys (' + done + '/' + total + ')', 'ok');
+                        con.thinking(label + ' — ' + done + '/' + total);
                     }
-                    setStatus(lblTranslating + ' ' + label + ' ' + done + '/' + total);
+                    var fileFraction = total > 0 ? (done / total) : 1;
+                    var overallProgress = multi
+                        ? (i + fileFraction) * 100 / filesQueue.length
+                        : fileFraction * 100;
+
+                    if (fx) fx.update(overallProgress);
+                    if (progressBar) progressBar.style.width = Math.min(100, Math.round(overallProgress)) + '%';
                 },
-                function () {
-                    setStatus(lblSaving + ' ' + label);
-                    saveFile(file).then(function () {
+                // onDone
+                function (wasEmpty) {
+                    if (wasEmpty) {
+                        if (con) con.log('✓ ' + file + '.php — already fully translated', 'dim');
+                        if (fx && multi) fx.update((i + 1) * 100 / filesQueue.length);
+                        if (progressBar && multi) progressBar.style.width = Math.round((i + 1) * 100 / filesQueue.length) + '%';
                         i++;
                         next();
-                    }).catch(function (e) {
-                        running = false;
-                        if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
-                        setStatus((e.message || lblFailed) + ' (' + file + ')');
+                        return;
+                    }
+
+                    setStatus(label + ' — ' + lblSaving);
+                    if (con) con.log('▸ saving ' + file + '.php…', 'dim');
+
+                    saveFile(file).then(function () {
+                        if (con) con.log('✓ ' + file + '.php saved', 'ok');
+                        if (fx && multi) fx.update((i + 1) * 100 / filesQueue.length);
+                        if (progressBar && multi) progressBar.style.width = Math.round((i + 1) * 100 / filesQueue.length) + '%';
+                        i++;
+                        next();
+                    }).catch(function (saveErr) {
+                        if (con) con.log('⚠ ' + file + '.php — save warning: ' + (saveErr.message || 'kept in form'), 'warn');
+                        i++;
+                        next();
                     });
                 },
+                // onError
                 function (e) {
-                    running = false;
-                    if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
-                    setStatus((e.message || lblFailed) + ' (' + file + ')');
+                    setStatus(label + ' — error');
+                    if (fx) fx.done(false);
+                    if (con) {
+                        con.fail('✗ ' + (e.message || lblFailed) + ' on ' + file + '.php');
+                    }
+                    // Attempt to save whatever partial keys were received in DOM
+                    saveFile(file).then(finish, finish);
+
+                    function finish() {
+                        running = false;
+                        if (fx) fx.done(false);
+                        else if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
+                        setStatus((e.message || lblFailed) + ' (' + file + '.php)');
+                        showBanner('Translation stopped on ' + file + '.php: ' + (e.message || lblFailed), 'error');
+                    }
                 }
             );
         })();
