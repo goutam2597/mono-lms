@@ -125,6 +125,17 @@ class LanguageAndAiSettingsTest extends TestCase
 
         $response->assertRedirect();
 
+        // Also test JSON saving
+        $jsonResponse = $this->putJson(route('admin.languages.translations.update', $language), [
+            'file' => 'courses',
+            't' => [
+                'title' => 'Kurse JSON',
+            ],
+        ]);
+
+        $jsonResponse->assertOk()
+            ->assertJson(['message' => 'Translations saved successfully.']);
+
         // Clean up test directory if created
         if (is_dir(lang_path('de'))) {
             array_map('unlink', glob(lang_path('de/*.*')));

@@ -13,7 +13,7 @@ class AiTranslationService
 {
     private const CHUNK_SIZE = 25;
 
-    private const CHAT_TIMEOUT_SECONDS = 25;
+    private const CHAT_TIMEOUT_SECONDS = 60;
 
     private const CHAT_MAX_TOKENS = 4000;
 

@@ -192,7 +192,7 @@ class LanguageController extends Controller
 
     public function translate(Request $request, Language $language): JsonResponse
     {
-        set_time_limit(120);
+        set_time_limit(300);
 
         $data = $request->validate([
             'file' => ['required', 'string', 'regex:/^[a-z0-9_-]+$/i'],
@@ -244,7 +244,7 @@ class LanguageController extends Controller
             }
         }
 
-        $offset = $overwrite ? (int) ($data['offset'] ?? 0) : 0;
+        $offset = (int) ($data['offset'] ?? 0);
         $chunk = array_slice($todo, $offset, 25, true);
 
         if (empty($chunk)) {
@@ -288,13 +288,11 @@ class LanguageController extends Controller
         Language::clearCache();
 
         $done = $offset + count($chunk);
-        $remaining = $overwrite
-            ? max(0, count($todo) - $done)
-            : max(0, count($todo) - count($translations));
+        $remaining = max(0, count($todo) - $done);
 
         return response()->json([
             'translations' => $translations,
-            'next' => $overwrite ? $done : 0,
+            'next' => $done,
             'remaining' => $remaining,
             'total' => count($todo),
         ]);

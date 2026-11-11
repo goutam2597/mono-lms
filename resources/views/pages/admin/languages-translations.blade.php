@@ -3,12 +3,27 @@
 <style>
     .action-btn { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 36px; padding: 0 16px; font-size: 11px; font-weight: 500; line-height: 1.2; text-transform: uppercase; letter-spacing: .12em; white-space: nowrap; color: #fff; background: #0a0a0a; border: 1px solid #0a0a0a; cursor: pointer; font-family: inherit; transition: color .15s, background .15s, border-color .15s; }
     .action-btn:hover { color: #fff; background: #404040; border-color: #404040; }
-    .action-btn:disabled { opacity: .5; cursor: wait; }
+    .action-btn:disabled { opacity: .6; cursor: wait; }
     .action-btn-ghost { color: #525252; background: #fff; border-color: #d4d4d4; }
     .action-btn-ghost:hover { color: #0a0a0a; background: #fafafa; border-color: #0a0a0a; }
 </style>
 
 <div class="space-y-6">
+    <!-- Notifications Area -->
+    <div id="ajax-notification-banner" class="hidden rounded-none p-3.5 text-xs font-semibold flex items-center justify-between transition-all"></div>
+
+    @if (session('success'))
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3.5 text-xs font-semibold flex items-center justify-between">
+            <span>✓ {{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="bg-rose-50 border border-rose-200 text-rose-800 p-3.5 text-xs font-semibold flex items-center justify-between">
+            <span>⚠ {{ $errors->first() }}</span>
+        </div>
+    @endif
+
     <div class="flex flex-col gap-2">
         <a href="{{ route('admin.languages.index') }}" class="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-900 transition-colors">
             ← {{ __('admin.languages.back') }}
@@ -67,91 +82,98 @@
         $lmsFiles = ['courses', 'student', 'instructor', 'instructors'];
         $webFiles = ['app', 'auth', 'blog', 'emails', 'home', 'membership'];
         $adminFiles = ['admin'];
-        $otherFiles = array_diff(array_keys($groups), array_merge($adminFiles, $lmsFiles, $webFiles));
-
-        $tabs = [
-            'admin' => ['label' => __('admin.languages.tab_admin'), 'files' => array_values(array_intersect($adminFiles, array_keys($groups)))],
-            'lms'   => ['label' => __('admin.languages.tab_lms'),   'files' => array_values(array_intersect($lmsFiles, array_keys($groups)))],
-            'web'   => ['label' => __('admin.languages.tab_web'),   'files' => array_values(array_intersect(array_merge($webFiles, $otherFiles), array_keys($groups)))],
-            'all'   => ['label' => 'All (' . count($groups) . ')', 'files' => array_keys($groups)],
-        ];
     @endphp
 
-    <div data-tabs>
-        <div class="flex gap-6 border-b border-neutral-200">
-            @foreach ($tabs as $key => $tab)
-                <button type="button" data-tab="{{ $key }}"
-                        class="-mb-px border-b-2 pb-3 text-xs font-semibold uppercase tracking-[0.14em] transition-colors {{ $loop->first ? 'border-neutral-900 text-neutral-900' : 'border-transparent text-neutral-400 hover:text-neutral-700' }}">
-                    {{ $tab['label'] }}
-                </button>
-            @endforeach
-        </div>
+    <!-- Category Filter Tabs (Single rendering without duplicate cards in DOM) -->
+    <div class="flex gap-6 border-b border-neutral-200">
+        <button type="button" data-tab="admin"
+                class="-mb-px border-b-2 pb-3 text-xs font-semibold uppercase tracking-[0.14em] transition-colors border-neutral-900 text-neutral-900">
+            {{ __('admin.languages.tab_admin') }}
+        </button>
+        <button type="button" data-tab="lms"
+                class="-mb-px border-b-2 pb-3 text-xs font-semibold uppercase tracking-[0.14em] transition-colors border-transparent text-neutral-400 hover:text-neutral-700">
+            {{ __('admin.languages.tab_lms') }}
+        </button>
+        <button type="button" data-tab="web"
+                class="-mb-px border-b-2 pb-3 text-xs font-semibold uppercase tracking-[0.14em] transition-colors border-transparent text-neutral-400 hover:text-neutral-700">
+            {{ __('admin.languages.tab_web') }}
+        </button>
+        <button type="button" data-tab="all"
+                class="-mb-px border-b-2 pb-3 text-xs font-semibold uppercase tracking-[0.14em] transition-colors border-transparent text-neutral-400 hover:text-neutral-700">
+            All ({{ count($groups) }})
+        </button>
+    </div>
 
-        @foreach ($tabs as $key => $tab)
-            <div data-tab-panel="{{ $key }}" class="{{ $loop->first ? '' : 'hidden' }} space-y-6 mt-6">
-                @foreach ($tab['files'] as $file)
-                    @continue(! isset($groups[$file]))
-                    @php $group = $groups[$file]; @endphp
-                    <div class="border border-neutral-200 bg-white shadow-xs p-6" data-file-card="{{ $file }}">
-                        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-4">
-                            <div>
-                                <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900">
-                                    {{ $file }}.php
-                                    <span class="ms-2 text-xs font-normal normal-case tracking-normal text-neutral-400">({{ __('admin.languages.keys', ['count' => $group['total']]) }})</span>
-                                </h3>
-                                <div class="mt-2 flex items-center gap-3">
-                                    <div class="h-1.5 w-44 overflow-hidden bg-neutral-200">
-                                        <div data-file-bar="{{ $file }}" class="h-full bg-neutral-900 transition-all duration-300" style="width: {{ $group['percent'] }}%"></div>
-                                    </div>
-                                    <span data-file-label="{{ $file }}" class="text-xs text-neutral-500">
-                                        <strong class="tnum font-medium text-neutral-700">{{ __('admin.languages.completed', ['percent' => $group['percent']]) }}</strong>
-                                        @if ($group['total'] - $group['translated'] > 0)
-                                            · <span class="text-amber-600">{{ __('admin.languages.remaining', ['count' => number_format($group['total'] - $group['translated'])]) }}</span>
-                                        @endif
-                                    </span>
-                                </div>
+    <!-- Translation Cards (Each file rendered exactly ONCE) -->
+    <div id="translation-cards-container" class="space-y-6 mt-6">
+        @foreach ($groups as $file => $group)
+            @php
+                $cat = in_array($file, $adminFiles) ? 'admin' : (in_array($file, $lmsFiles) ? 'lms' : 'web');
+                $isInitialVisible = $cat === 'admin';
+            @endphp
+            <div class="border border-neutral-200 bg-white shadow-xs p-6 {{ $isInitialVisible ? '' : 'hidden' }}"
+                 data-file-card="{{ $file }}"
+                 data-category="{{ $cat }}">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-100 pb-4">
+                    <div>
+                        <h3 class="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900">
+                            {{ $file }}.php
+                            <span class="ms-2 text-xs font-normal normal-case tracking-normal text-neutral-400">({{ __('admin.languages.keys', ['count' => $group['total']]) }})</span>
+                        </h3>
+                        <div class="mt-2 flex items-center gap-3">
+                            <div class="h-1.5 w-44 overflow-hidden bg-neutral-200">
+                                <div data-file-bar="{{ $file }}" class="h-full bg-neutral-900 transition-all duration-300" style="width: {{ $group['percent'] }}%"></div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                @unless ($isDefault)
-                                    <button type="button" data-translate-file="{{ $file }}" class="action-btn action-btn-ghost h-9 px-4">
-                                        <svg class="mr-1.5 h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
-                                        {{ __('admin.languages.translate_ai') }}
-                                    </button>
-                                @endunless
-                                <button type="submit" form="trans-{{ $file }}" class="action-btn h-9 px-5">{{ __('admin.common.save') }}</button>
-                            </div>
-                        </div>
-
-                        <form method="POST" action="{{ route('admin.languages.translations.update', $language) }}" id="trans-{{ $file }}">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="file" value="{{ $file }}">
-                        </form>
-
-                        <div class="mt-4 hidden grid-cols-[240px_1fr_1fr] gap-4 border-b border-neutral-200 pb-2.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-400 lg:grid">
-                            <span>{{ __('admin.languages.code') }}</span>
-                            <span>{{ __('admin.languages.reference') }} (EN)</span>
-                            <span>{{ $language->name }} ({{ strtoupper($language->code) }})</span>
-                        </div>
-
-                        <div class="divide-y divide-neutral-100 max-h-[600px] overflow-y-auto pr-1">
-                            @foreach ($group['reference'] as $k => $enValue)
-                                <div class="grid gap-2 py-3 lg:grid-cols-[240px_1fr_1fr] lg:items-center lg:gap-4">
-                                    <p class="break-all font-mono text-[11px] text-neutral-400 select-all">{{ $k }}</p>
-                                    <p class="text-xs text-neutral-600 leading-relaxed">{{ $enValue }}</p>
-                                    <input type="text" form="trans-{{ $file }}" name="t[{{ $k }}]"
-                                           value="{{ $group['values'][$k] ?? '' }}" placeholder="{{ $enValue }}"
-                                           dir="{{ $language->direction }}"
-                                           class="h-9 w-full border border-neutral-200 bg-white px-3 text-xs placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none">
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div class="mt-4 flex justify-end border-t border-neutral-100 pt-3">
-                            <button type="submit" form="trans-{{ $file }}" class="action-btn h-9 px-5">{{ __('admin.common.save') }}</button>
+                            <span data-file-label="{{ $file }}" class="text-xs text-neutral-500">
+                                <strong class="tnum font-medium text-neutral-700">{{ __('admin.languages.completed', ['percent' => $group['percent']]) }}</strong>
+                                @if ($group['total'] - $group['translated'] > 0)
+                                    · <span class="text-amber-600">{{ __('admin.languages.remaining', ['count' => number_format($group['total'] - $group['translated'])]) }}</span>
+                                @endif
+                            </span>
                         </div>
                     </div>
-                @endforeach
+                    <div class="flex items-center gap-3">
+                        @unless ($isDefault)
+                            <button type="button" data-translate-file="{{ $file }}" class="action-btn action-btn-ghost h-9 px-4">
+                                <svg class="mr-1.5 h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+                                {{ __('admin.languages.translate_ai') }}
+                            </button>
+                        @endunless
+                        <button type="button" data-save-btn="{{ $file }}" class="action-btn h-9 px-5">{{ __('admin.common.save') }}</button>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('admin.languages.translations.update', $language) }}" id="trans-{{ $file }}" data-trans-form="{{ $file }}">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="file" value="{{ $file }}">
+
+                    <div class="mt-4 hidden grid-cols-[240px_1fr_1fr] gap-4 border-b border-neutral-200 pb-2.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-400 lg:grid">
+                        <span>{{ __('admin.languages.code') }}</span>
+                        <span>{{ __('admin.languages.reference') }} (EN)</span>
+                        <span>{{ $language->name }} ({{ strtoupper($language->code) }})</span>
+                    </div>
+
+                    <div class="divide-y divide-neutral-100 max-h-[600px] overflow-y-auto pr-1">
+                        @foreach ($group['reference'] as $k => $enValue)
+                            <div class="grid gap-2 py-3 lg:grid-cols-[240px_1fr_1fr] lg:items-center lg:gap-4">
+                                <p class="break-all font-mono text-[11px] text-neutral-400 select-all">{{ $k }}</p>
+                                <p class="text-xs text-neutral-600 leading-relaxed">{{ $enValue }}</p>
+                                <input type="text" name="t[{{ $k }}]"
+                                       data-trans-input="{{ $file }}"
+                                       data-key="{{ $k }}"
+                                       value="{{ $group['values'][$k] ?? '' }}"
+                                       placeholder="{{ $enValue }}"
+                                       dir="{{ $language->direction }}"
+                                       class="h-9 w-full border border-neutral-200 bg-white px-3 text-xs placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none">
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4 flex justify-end border-t border-neutral-100 pt-3">
+                        <button type="button" data-save-btn="{{ $file }}" class="action-btn h-9 px-5">{{ __('admin.common.save') }}</button>
+                    </div>
+                </form>
             </div>
         @endforeach
     </div>
@@ -159,28 +181,8 @@
 
 <script>
 (function () {
-    // Tab switching
-    document.querySelectorAll('[data-tab]').forEach(function (tabBtn) {
-        tabBtn.addEventListener('click', function () {
-            var target = tabBtn.dataset.tab;
-            document.querySelectorAll('[data-tab]').forEach(function (b) {
-                b.classList.remove('border-neutral-900', 'text-neutral-900');
-                b.classList.add('border-transparent', 'text-neutral-400');
-            });
-            tabBtn.classList.remove('border-transparent', 'text-neutral-400');
-            tabBtn.classList.add('border-neutral-900', 'text-neutral-900');
-
-            document.querySelectorAll('[data-tab-panel]').forEach(function (panel) {
-                if (panel.dataset.tabPanel === target) {
-                    panel.classList.remove('hidden');
-                } else {
-                    panel.classList.add('hidden');
-                }
-            });
-        });
-    });
-
-    var url            = @json(route('admin.languages.translate', $language));
+    var saveUrl        = @json(route('admin.languages.translations.update', $language));
+    var translateUrl   = @json(route('admin.languages.translate', $language));
     var token          = @json(csrf_token());
     var files          = @json(array_keys($groups));
     var lblTranslating = @json(__('admin.languages.translating'));
@@ -198,16 +200,53 @@
     var progressBar    = document.getElementById('translate-progress-bar');
     var running        = false;
 
+    // Fast category tabs filtering
+    document.querySelectorAll('[data-tab]').forEach(function (tabBtn) {
+        tabBtn.addEventListener('click', function () {
+            var target = tabBtn.dataset.tab;
+            document.querySelectorAll('[data-tab]').forEach(function (b) {
+                b.classList.remove('border-neutral-900', 'text-neutral-900');
+                b.classList.add('border-transparent', 'text-neutral-400');
+            });
+            tabBtn.classList.remove('border-transparent', 'text-neutral-400');
+            tabBtn.classList.add('border-neutral-900', 'text-neutral-900');
+
+            document.querySelectorAll('[data-file-card]').forEach(function (card) {
+                if (target === 'all' || card.dataset.category === target) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+    function showBanner(message, type) {
+        var banner = document.getElementById('ajax-notification-banner');
+        if (!banner) return;
+        banner.className = 'p-3.5 text-xs font-semibold flex items-center justify-between transition-all ' +
+            (type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-800 border border-rose-200');
+        banner.innerHTML = '<span>' + (type === 'success' ? '✓ ' : '⚠ ') + message + '</span><button type="button" onclick="this.parentElement.classList.add(\'hidden\')" class="text-sm font-bold opacity-60 hover:opacity-100">&times;</button>';
+        banner.classList.remove('hidden');
+        if (type === 'success') {
+            setTimeout(function () {
+                banner.classList.add('hidden');
+            }, 4000);
+        }
+    }
+
     function refreshFileProgress(file) {
-        var inputs = document.querySelectorAll('input[form="trans-' + file + '"][name^="t["]');
-        if (! inputs.length) return;
+        var card = document.querySelector('[data-file-card="' + file + '"]');
+        if (!card) return;
+        var inputs = card.querySelectorAll('input[data-trans-input="' + file + '"]');
+        if (!inputs.length) return;
         var done = 0;
         inputs.forEach(function (i) { if (i.value.trim() !== '') done++; });
         var left = inputs.length - done;
         var pct  = Math.round(done / inputs.length * 100);
 
-        var bar = document.querySelector('[data-file-bar="' + file + '"]');
-        var label = document.querySelector('[data-file-label="' + file + '"]');
+        var bar = card.querySelector('[data-file-bar="' + file + '"]');
+        var label = card.querySelector('[data-file-label="' + file + '"]');
         if (bar) bar.style.width = pct + '%';
         if (label) {
             label.innerHTML = '<strong class="tnum font-medium text-neutral-700">' +
@@ -216,11 +255,11 @@
         }
 
         var totalDone = 0, totalCount = 0;
-        document.querySelectorAll('[data-file-card]').forEach(function (card) {
-            var f = card.getAttribute('data-file-card');
-            var fi = document.querySelectorAll('input[form="trans-' + f + '"][name^="t["]');
+        document.querySelectorAll('[data-file-card]').forEach(function (c) {
+            var f = c.getAttribute('data-file-card');
+            var fi = c.querySelectorAll('input[data-trans-input="' + f + '"]');
             totalCount += fi.length;
-            fi.forEach(function (i) { if (i.value.trim() !== '') done++; totalDone++; });
+            fi.forEach(function (i) { if (i.value.trim() !== '') totalDone++; });
         });
         var overallPct = totalCount ? Math.round(totalDone / totalCount * 100) : 100;
         var overallBar = document.querySelector('[data-overall-bar]');
@@ -234,39 +273,120 @@
         }
     }
 
-    document.querySelectorAll('input[name^="t["]').forEach(function (input) {
+    // Input change listeners
+    document.querySelectorAll('input[data-trans-input]').forEach(function (input) {
         input.addEventListener('input', function () {
-            var formId = input.getAttribute('form');
-            if (formId && formId.indexOf('trans-') === 0) {
-                refreshFileProgress(formId.replace('trans-', ''));
-            }
+            var file = input.getAttribute('data-trans-input');
+            if (file) refreshFileProgress(file);
         });
     });
 
     function setStatus(t) { if (status) status.textContent = t; }
 
     function applyTranslations(file, translations) {
+        var card = document.querySelector('[data-file-card="' + file + '"]');
+        if (!card) return;
         Object.keys(translations || {}).forEach(function (key) {
-            var input = document.querySelector('input[form="trans-' + file + '"][name="t[' + key + ']"]');
+            var input = card.querySelector('input[data-trans-input="' + file + '"][data-key="' + CSS.escape(key) + '"]');
             if (input) input.value = translations[key];
         });
         refreshFileProgress(file);
     }
 
-    function saveFile(file) {
-        var form = document.getElementById('trans-' + file);
-        if (! form) return Promise.resolve();
-        return fetch(form.action, {
+    function getFileTranslations(file) {
+        var card = document.querySelector('[data-file-card="' + file + '"]');
+        if (!card) return {};
+        var inputs = card.querySelectorAll('input[data-trans-input="' + file + '"]');
+        var translations = {};
+        inputs.forEach(function (input) {
+            var key = input.getAttribute('data-key');
+            if (key) {
+                translations[key] = input.value;
+            }
+        });
+        return translations;
+    }
+
+    // Direct JSON saving (Instant, never touches upload_tmp_dir, no reload)
+    function saveFile(file, clickedBtn) {
+        var card = document.querySelector('[data-file-card="' + file + '"]');
+        if (!card) return Promise.resolve();
+
+        var translations = getFileTranslations(file);
+        var btns = card.querySelectorAll('[data-save-btn="' + file + '"]');
+
+        btns.forEach(function (b) {
+            b.disabled = true;
+            b.textContent = 'Saving...';
+        });
+
+        return fetch(saveUrl, {
             method: 'POST',
-            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-            body: new FormData(form)
-        }).then(function (res) {
-            if (! res.ok) throw new Error(lblFailed);
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({
+                _method: 'PUT',
+                file: file,
+                t: translations
+            })
+        })
+        .then(function (res) {
+            return res.json().then(function (body) {
+                if (!res.ok) {
+                    throw new Error(body.message || lblFailed);
+                }
+                return body;
+            });
+        })
+        .then(function (body) {
+            btns.forEach(function (b) {
+                b.disabled = false;
+                b.textContent = 'Saved! ✓';
+                b.style.backgroundColor = '#059669';
+                b.style.borderColor = '#059669';
+                setTimeout(function () {
+                    b.textContent = @json(__('admin.common.save'));
+                    b.style.backgroundColor = '';
+                    b.style.borderColor = '';
+                }, 2200);
+            });
+            showBanner(file + '.php translations saved successfully.', 'success');
+            refreshFileProgress(file);
+            return body;
+        })
+        .catch(function (err) {
+            btns.forEach(function (b) {
+                b.disabled = false;
+                b.textContent = @json(__('admin.common.save'));
+            });
+            showBanner('Error saving ' + file + '.php: ' + err.message, 'error');
+            throw err;
         });
     }
 
+    // Bind save buttons
+    document.querySelectorAll('[data-save-btn]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var file = btn.getAttribute('data-save-btn');
+            if (file) saveFile(file, btn);
+        });
+    });
+
+    // Form submit interception
+    document.querySelectorAll('[data-trans-form]').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var file = form.getAttribute('data-trans-form');
+            if (file) saveFile(file);
+        });
+    });
+
     function translateFile(file, offset, done, total, onProgress, onDone, onError) {
-        fetch(url, {
+        fetch(translateUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
             body: JSON.stringify({ file: file, offset: offset, overwrite: overwrite && overwrite.checked ? 1 : 0 })
@@ -308,6 +428,7 @@
                 if (btn) { btn.disabled = false; btn.textContent = restoreLabel; }
                 if (progressBar) progressBar.style.width = '100%';
                 setStatus(lblComplete + ' ' + lblSaved);
+                showBanner('All translations completed and saved.', 'success');
                 return;
             }
             var file = filesQueue[i];
