@@ -2,8 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ContactMessageAdminMail;
+use App\Mail\ContactMessageUserConfirmationMail;
 use App\Models\Admin;
+use App\Models\ContactMessage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class PagesSystemTest extends TestCase
@@ -62,6 +66,12 @@ class PagesSystemTest extends TestCase
 
     public function test_public_contact_form_submission_creates_record(): void
     {
+        Mail::fake();
+
+        $activeAdmin = Admin::where('status', 'active')->first();
+        $this->assertNotNull($activeAdmin);
+
+        // Guest submits contact form without login
         $response = $this->post(route('contact.submit'), [
             'name' => 'Alice Wonder',
             'email' => 'alice@example.com',
@@ -71,10 +81,47 @@ class PagesSystemTest extends TestCase
         ]);
 
         $response->assertSessionHas('success');
+
+        // Record created in contact_messages
         $this->assertDatabaseHas('contact_messages', [
             'email' => 'alice@example.com',
             'subject' => 'Enterprise Licensing Inquiry',
+            'is_read' => false,
         ]);
+
+        $message = ContactMessage::where('email', 'alice@example.com')->first();
+        $this->assertNotNull($message);
+
+        // 1. Admin gets email copy via Mail
+        Mail::assertSent(ContactMessageAdminMail::class, function ($mail) use ($activeAdmin) {
+            return $mail->hasTo($activeAdmin->email);
+        });
+
+        // 2. User gets confirmation copy via Mail
+        Mail::assertSent(ContactMessageUserConfirmationMail::class, function ($mail) {
+            return $mail->hasTo('alice@example.com');
+        });
+
+        // 3. Admin gets in-app notification in dashboard
+        $adminNotification = $activeAdmin->notifications()
+            ->where('created_at', '>=', now()->subSeconds(30))
+            ->get()
+            ->first(fn ($n) => ($n->data['category'] ?? null) === 'support');
+
+        $this->assertNotNull($adminNotification);
+        $this->assertStringContainsString('Enterprise Licensing Inquiry', $adminNotification->data['title']);
+    }
+
+    public function test_contact_form_validates_required_fields(): void
+    {
+        $response = $this->post(route('contact.submit'), [
+            'name' => '',
+            'email' => 'invalid-email',
+            'subject' => '',
+            'message' => '',
+        ]);
+
+        $response->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
     }
 
     public function test_custom_page_can_be_created_and_accessed_via_permalink(): void

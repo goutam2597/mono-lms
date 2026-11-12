@@ -84,12 +84,22 @@
                 <div class="lg:col-span-7">
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-xs">
                         <div class="mb-8">
-                            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
-                                {{ $page->setting('form_heading', 'Send Us a Message') }}
-                            </h2>
+                            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+                                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">
+                                    {{ $page->setting('form_heading', 'Send Us a Message') }}
+                                </h2>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    Public Inquiry · No Login Required
+                                </span>
+                            </div>
                             @if ($formSub = $page->setting('form_subtitle'))
-                                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                                <p class="text-sm text-slate-600 leading-relaxed">
                                     {{ $formSub }}
+                                </p>
+                            @else
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    Have a question or need assistance? Fill out the form below and our team will get back to you promptly.
                                 </p>
                             @endif
                         </div>
@@ -124,7 +134,7 @@
                                     <input type="text"
                                            id="contact_name"
                                            name="name"
-                                           value="{{ old('name') }}"
+                                           value="{{ old('name', auth('student')->user()?->name ?? auth('instructor')->user()?->name ?? auth('admin')->user()?->name) }}"
                                            required
                                            placeholder="e.g. Alex Johnson"
                                            class="w-full px-4 py-2.5 text-sm bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary,#344c3d)]/20 focus:border-[var(--theme-primary,#344c3d)]">
@@ -137,7 +147,7 @@
                                     <input type="email"
                                            id="contact_email"
                                            name="email"
-                                           value="{{ old('email') }}"
+                                           value="{{ old('email', auth('student')->user()?->email ?? auth('instructor')->user()?->email ?? auth('admin')->user()?->email) }}"
                                            required
                                            placeholder="you@domain.com"
                                            class="w-full px-4 py-2.5 text-sm bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary,#344c3d)]/20 focus:border-[var(--theme-primary,#344c3d)]">
@@ -152,7 +162,7 @@
                                     <input type="text"
                                            id="contact_phone"
                                            name="phone"
-                                           value="{{ old('phone') }}"
+                                           value="{{ old('phone', auth('student')->user()?->phone ?? auth('instructor')->user()?->phone) }}"
                                            placeholder="+1 (555) 000-0000"
                                            class="w-full px-4 py-2.5 text-sm bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary,#344c3d)]/20 focus:border-[var(--theme-primary,#344c3d)]">
                                 </div>
