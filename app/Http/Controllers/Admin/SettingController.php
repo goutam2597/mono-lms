@@ -26,6 +26,10 @@ class SettingController extends Controller
             'footer_payment_methods' => Setting::get('footer_payment_methods', ''),
             'footer_payment_methods_enabled' => Setting::get('footer_payment_methods_enabled', '1') === '1',
             'footer_payment_methods_width' => Setting::get('footer_payment_methods_width', '340px'),
+            'app_store_url' => Setting::appStoreUrl(),
+            'play_store_url' => Setting::playStoreUrl(),
+            'app_store_enabled' => Setting::isAppStoreEnabled(),
+            'play_store_enabled' => Setting::isPlayStoreEnabled(),
             'otp_signup_enabled' => Setting::isOtpSignupEnabled(),
             'membership_enabled' => Setting::get('membership_enabled', '1') === '1',
             'blog_enabled' => Setting::get('blog_enabled', '1') === '1',
@@ -60,6 +64,8 @@ class SettingController extends Controller
             'footer_copyright',
             'footer_payment_methods',
             'footer_payment_methods_width',
+            'app_store_url',
+            'play_store_url',
             'seo_meta_title',
             'seo_meta_description',
             'theme_primary',
@@ -77,6 +83,8 @@ class SettingController extends Controller
 
         // Toggles
         Setting::set('footer_payment_methods_enabled', $request->has('footer_payment_methods_enabled') ? '1' : '0');
+        Setting::set('app_store_enabled', $request->has('app_store_enabled') ? '1' : '0');
+        Setting::set('play_store_enabled', $request->has('play_store_enabled') ? '1' : '0');
         Setting::set('otp_signup_enabled', $request->has('otp_signup_enabled') ? '1' : '0');
         Setting::set('membership_enabled', $request->has('membership_enabled') ? '1' : '0');
         Setting::set('blog_enabled', $request->has('blog_enabled') ? '1' : '0');

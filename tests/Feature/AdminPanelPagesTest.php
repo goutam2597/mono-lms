@@ -228,6 +228,57 @@ class AdminPanelPagesTest extends TestCase
             ->assertDontSee('custom-gateways.png');
     }
 
+    public function test_admin_can_update_mobile_app_store_links(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // Can view the setting fields on the admin settings page
+        $this->get(route('admin.settings.index'))
+            ->assertOk()
+            ->assertSee('Mobile App Store Links')
+            ->assertSee('app_store_url')
+            ->assertSee('play_store_url')
+            ->assertSee('app_store_enabled')
+            ->assertSee('play_store_enabled');
+
+        // Admin updates custom App Store and Play Store links and enables them
+        $this->post(route('admin.settings.update'), [
+            'app_store_url' => 'https://apps.apple.com/app/mono-lms-pro/id999888777',
+            'play_store_url' => 'https://play.google.com/store/apps/details?id=com.monolms.pro',
+            'app_store_enabled' => '1',
+            'play_store_enabled' => '1',
+        ])->assertRedirect();
+
+        $this->assertEquals('https://apps.apple.com/app/mono-lms-pro/id999888777', Setting::get('app_store_url'));
+        $this->assertEquals('https://play.google.com/store/apps/details?id=com.monolms.pro', Setting::get('play_store_url'));
+        $this->assertEquals('1', Setting::get('app_store_enabled'));
+        $this->assertEquals('1', Setting::get('play_store_enabled'));
+
+        // Public storefront footer now displays both custom links
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('https://apps.apple.com/app/mono-lms-pro/id999888777', false)
+            ->assertSee('https://play.google.com/store/apps/details?id=com.monolms.pro', false)
+            ->assertSee('app-store-badge.svg')
+            ->assertSee('google-play-badge.svg');
+
+        // Disabling App Store hides it from the footer while keeping Play Store
+        $this->post(route('admin.settings.update'), [
+            'app_store_url' => 'https://apps.apple.com/app/mono-lms-pro/id999888777',
+            'play_store_url' => 'https://play.google.com/store/apps/details?id=com.monolms.pro',
+            // app_store_enabled omitted (unchecked)
+            'play_store_enabled' => '1',
+        ])->assertRedirect();
+
+        $this->assertEquals('0', Setting::get('app_store_enabled'));
+        $this->assertEquals('1', Setting::get('play_store_enabled'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('https://apps.apple.com/app/mono-lms-pro/id999888777')
+            ->assertSee('https://play.google.com/store/apps/details?id=com.monolms.pro', false);
+    }
+
     public function test_admin_can_update_homepage_banner_strip_width(): void
     {
         $this->actingAs($this->admin, 'admin');

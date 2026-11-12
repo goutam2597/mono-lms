@@ -10,14 +10,34 @@
                     {{ __('app.footer.about') }}
                 </p>
                 <!-- App Badges -->
-                <div class="flex items-center gap-3 pt-2">
-                    <a href="#" class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100" title="Download on the App Store">
-                        <img src="{{ asset('images/app-store-badge.svg') }}" alt="Download on the App Store" class="h-10 w-auto" />
-                    </a>
-                    <a href="#" class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100" title="Get it on Google Play">
-                        <img src="{{ asset('images/google-play-badge.svg') }}" alt="Get it on Google Play" class="h-10 w-auto" />
-                    </a>
-                </div>
+                @php
+                    $appStoreEnabled = \App\Models\Setting::isAppStoreEnabled();
+                    $playStoreEnabled = \App\Models\Setting::isPlayStoreEnabled();
+                    $appStoreUrl = \App\Models\Setting::appStoreUrl();
+                    $playStoreUrl = \App\Models\Setting::playStoreUrl();
+                    $hasAppStore = $appStoreEnabled && filled($appStoreUrl);
+                    $hasPlayStore = $playStoreEnabled && filled($playStoreUrl);
+                @endphp
+                @if ($hasAppStore || $hasPlayStore)
+                    <div class="flex items-center gap-3 pt-2">
+                        @if ($hasAppStore)
+                            <a href="{{ $appStoreUrl }}"
+                               @if(str_starts_with($appStoreUrl, 'http')) target="_blank" rel="noopener noreferrer" @endif
+                               class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100"
+                               title="Download on the App Store">
+                                <img src="{{ asset('images/app-store-badge.svg') }}" alt="Download on the App Store" class="h-10 w-auto" />
+                            </a>
+                        @endif
+                        @if ($hasPlayStore)
+                            <a href="{{ $playStoreUrl }}"
+                               @if(str_starts_with($playStoreUrl, 'http')) target="_blank" rel="noopener noreferrer" @endif
+                               class="inline-block transition-transform duration-200 hover:scale-105 opacity-90 hover:opacity-100"
+                               title="Get it on Google Play">
+                                <img src="{{ asset('images/google-play-badge.svg') }}" alt="Get it on Google Play" class="h-10 w-auto" />
+                            </a>
+                        @endif
+                    </div>
+                @endif
             </div>
 
             <!-- Support Links -->

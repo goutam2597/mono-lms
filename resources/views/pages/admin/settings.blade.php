@@ -151,6 +151,89 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Mobile App Store Badges (App Store & Google Play) -->
+                        <div class="border-t border-neutral-100 pt-5 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
+                                        <span>Mobile App Store Links</span>
+                                        <span class="text-[9px] font-semibold bg-neutral-100 text-neutral-700 px-1.5 py-0.5 rounded">Storefront Footer</span>
+                                    </h4>
+                                    <p class="text-[11px] text-neutral-500 mt-0.5">Add and edit download destination links for Apple App Store and Google Play Store badges in the footer.</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3.5">
+                                <!-- Apple App Store Link Card -->
+                                <div class="p-4 border border-neutral-200 bg-neutral-50/60 rounded-xs space-y-3">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="h-8 px-2 bg-black rounded flex items-center justify-center shrink-0">
+                                                <img src="{{ asset('images/app-store-badge.svg') }}" alt="App Store" class="h-6 w-auto" />
+                                            </div>
+                                            <div>
+                                                <span class="text-xs font-bold text-neutral-900 block">Apple App Store (iOS)</span>
+                                                <span class="text-[10px] text-neutral-400">iPhone, iPad &amp; Mac download URL</span>
+                                            </div>
+                                        </div>
+                                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                                            <input type="checkbox" name="app_store_enabled" value="1" @checked($settings['app_store_enabled'] ?? true) class="control">
+                                            <span class="text-xs font-medium text-neutral-700">Display in footer</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">App Store URL</label>
+                                        <div class="flex gap-2">
+                                            <input type="url" name="app_store_url" value="{{ $settings['app_store_url'] ?? '' }}"
+                                                   placeholder="https://apps.apple.com/app/your-app-name/id123456789"
+                                                   class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                            @if(!empty($settings['app_store_url']) && str_starts_with($settings['app_store_url'], 'http'))
+                                                <a href="{{ $settings['app_store_url'] }}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-700 text-xs shrink-0 transition-colors" title="Test App Store link in new tab">
+                                                    <svg class="w-4 h-4 mr-1 text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                    <span class="hidden sm:inline font-medium">Test</span>
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <p class="text-[10px] text-neutral-400 mt-1">Visitors clicking the badge in the storefront footer will be directed to this link.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Google Play Store Link Card -->
+                                <div class="p-4 border border-neutral-200 bg-neutral-50/60 rounded-xs space-y-3">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="h-8 px-2 bg-black rounded flex items-center justify-center shrink-0">
+                                                <img src="{{ asset('images/google-play-badge.svg') }}" alt="Google Play" class="h-6 w-auto" />
+                                            </div>
+                                            <div>
+                                                <span class="text-xs font-bold text-neutral-900 block">Google Play Store (Android)</span>
+                                                <span class="text-[10px] text-neutral-400">Android phone &amp; tablet download URL</span>
+                                            </div>
+                                        </div>
+                                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                                            <input type="checkbox" name="play_store_enabled" value="1" @checked($settings['play_store_enabled'] ?? true) class="control">
+                                            <span class="text-xs font-medium text-neutral-700">Display in footer</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Google Play Store URL</label>
+                                        <div class="flex gap-2">
+                                            <input type="url" name="play_store_url" value="{{ $settings['play_store_url'] ?? '' }}"
+                                                   placeholder="https://play.google.com/store/apps/details?id=com.yourcompany.lms"
+                                                   class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                            @if(!empty($settings['play_store_url']) && str_starts_with($settings['play_store_url'], 'http'))
+                                                <a href="{{ $settings['play_store_url'] }}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-700 text-xs shrink-0 transition-colors" title="Test Google Play link in new tab">
+                                                    <svg class="w-4 h-4 mr-1 text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                                    <span class="hidden sm:inline font-medium">Test</span>
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <p class="text-[10px] text-neutral-400 mt-1">Visitors clicking the badge in the storefront footer will be directed to this link.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

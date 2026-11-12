@@ -96,4 +96,24 @@ class Setting extends Model
     {
         return self::get('otp_signup_enabled', '0') === '1';
     }
+
+    public static function appStoreUrl(?string $fallback = 'https://apps.apple.com'): ?string
+    {
+        return self::get('app_store_url', $fallback);
+    }
+
+    public static function playStoreUrl(?string $fallback = 'https://play.google.com/store/apps'): ?string
+    {
+        return self::get('play_store_url', $fallback);
+    }
+
+    public static function isAppStoreEnabled(): bool
+    {
+        return self::get('app_store_enabled', '1') === '1';
+    }
+
+    public static function isPlayStoreEnabled(): bool
+    {
+        return self::get('play_store_enabled', '1') === '1';
+    }
 }
