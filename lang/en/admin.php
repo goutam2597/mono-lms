@@ -28,7 +28,8 @@ return [
         ],
 
         'groups' => [
-            'pages' => 'Pages',
+            'pages' => 'Editor',
+            'editor' => 'Editor',
             'courses' => 'Courses',
             'users' => 'Users & Staff',
             'sales' => 'Invoices & Sales',
@@ -42,6 +43,8 @@ return [
             'dashboard' => 'Dashboard',
             'pages' => 'All Pages',
             'homepage' => 'Home Page Editor',
+            'header' => 'Header Editor',
+            'footer' => 'Footer Editor',
             'page_about' => 'About Us',
             'page_contact' => 'Contact Us',
             'page_privacy' => 'Privacy Policy',

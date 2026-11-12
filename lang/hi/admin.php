@@ -26,7 +26,8 @@ return [
         ],
 
         'groups' => [
-            'pages' => 'पेज',
+            'pages' => 'संपादक (Editor)',
+            'editor' => 'संपादक (Editor)',
             'courses' => 'पाठ्यक्रम',
             'users' => 'उपयोगकर्ता और कर्मचारी',
             'sales' => 'इनवॉइस और बिक्री',
@@ -40,6 +41,8 @@ return [
             'dashboard' => 'डैशबोर्ड',
             'pages' => 'सभी पेज',
             'homepage' => 'होम पेज संपादक',
+            'header' => 'हेडर संपादक',
+            'footer' => 'फ़ूटर संपादक',
             'page_about' => 'हमारे बारे में',
             'page_contact' => 'संपर्क करें',
             'page_privacy' => 'गोपनीयता नीति',

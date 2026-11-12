@@ -108,129 +108,19 @@
                                    class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
 
-                        <!-- Footer Payment Methods Badge -->
-                        <div class="border-t border-neutral-100 pt-4 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-wider">Footer Payment Methods</h4>
-                                    <p class="text-[11px] text-neutral-500">Displayed at the bottom of the storefront footer between Copyright and Terms &amp; Conditions.</p>
-                                </div>
-                                <label class="inline-flex items-center gap-2 cursor-pointer select-none">
-                                    <input type="checkbox" name="footer_payment_methods_enabled" value="1" @checked($settings['footer_payment_methods_enabled'] ?? true) class="control">
-                                    <span class="text-xs font-medium text-neutral-700">Display in footer</span>
-                                </label>
-                            </div>
-                            <x-media-selector
-                                name="footer_payment_methods"
-                                :value="$settings['footer_payment_methods']"
-                                label="Payment Methods Banner Image"
-                                hint="Upload a replacement strip (PNG, SVG, or WebP) or select from Media Library"
-                                shape="wide"
-                                :defaultUrl="asset('images/payment-methods.png')"
-                            />
-
-                            <!-- Strip Width Control -->
-                            <div class="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Strip Display Width Preset</label>
-                                    <select id="footer_payment_methods_width_preset" onchange="if(this.value){ document.getElementById('footer_payment_methods_width_input').value = this.value; }" class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
-                                        <option value="180px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '180px')>Compact (180px)</option>
-                                        <option value="260px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '260px')>Medium (260px)</option>
-                                        <option value="340px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '340px')>Standard (340px) &mdash; Default</option>
-                                        <option value="420px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '420px')>Large (420px)</option>
-                                        <option value="500px" @selected(($settings['footer_payment_methods_width'] ?? '340px') === '500px')>Extra Large (500px)</option>
-                                        <option value="auto" @selected(($settings['footer_payment_methods_width'] ?? '340px') === 'auto')>Natural / Auto</option>
-                                        <option value="" @selected(!in_array(($settings['footer_payment_methods_width'] ?? '340px'), ['180px', '260px', '340px', '420px', '500px', 'auto']))>Custom value</option>
-                                    </select>
-                                    <p class="text-[10px] text-neutral-400 mt-1">Select a preset to automatically populate the width.</p>
-                                </div>
-                                <div>
-                                    <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Strip Width Value</label>
-                                    <input type="text" id="footer_payment_methods_width_input" name="footer_payment_methods_width" value="{{ $settings['footer_payment_methods_width'] ?? '340px' }}" placeholder="340px" class="h-10 w-full border border-neutral-300 px-3.5 text-xs font-mono text-neutral-900 focus:border-neutral-900 focus:outline-none">
-                                    <p class="text-[10px] text-neutral-400 mt-1">Accepts px (e.g. 340px), %, rem, or auto.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mobile App Store Badges (App Store & Google Play) -->
-                        <div class="border-t border-neutral-100 pt-5 space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="text-xs font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
-                                        <span>Mobile App Store Links</span>
-                                        <span class="text-[9px] font-semibold bg-neutral-100 text-neutral-700 px-1.5 py-0.5 rounded">Storefront Footer</span>
-                                    </h4>
-                                    <p class="text-[11px] text-neutral-500 mt-0.5">Add and edit download destination links for Apple App Store and Google Play Store badges in the footer.</p>
-                                </div>
-                            </div>
-
-                            <div class="space-y-3.5">
-                                <!-- Apple App Store Link Card -->
-                                <div class="p-4 border border-neutral-200 bg-neutral-50/60 rounded-xs space-y-3">
-                                    <div class="flex items-center justify-between gap-3">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="h-8 px-2 bg-black rounded flex items-center justify-center shrink-0">
-                                                <img src="{{ asset('images/app-store-badge.svg') }}" alt="App Store" class="h-6 w-auto" />
-                                            </div>
-                                            <div>
-                                                <span class="text-xs font-bold text-neutral-900 block">Apple App Store (iOS)</span>
-                                                <span class="text-[10px] text-neutral-400">iPhone, iPad &amp; Mac download URL</span>
-                                            </div>
-                                        </div>
-                                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
-                                            <input type="checkbox" name="app_store_enabled" value="1" @checked($settings['app_store_enabled'] ?? true) class="control">
-                                            <span class="text-xs font-medium text-neutral-700">Display in footer</span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">App Store URL</label>
-                                        <div class="flex gap-2">
-                                            <input type="url" name="app_store_url" value="{{ $settings['app_store_url'] ?? '' }}"
-                                                   placeholder="https://apps.apple.com/app/your-app-name/id123456789"
-                                                   class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
-                                            @if(!empty($settings['app_store_url']) && str_starts_with($settings['app_store_url'], 'http'))
-                                                <a href="{{ $settings['app_store_url'] }}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-700 text-xs shrink-0 transition-colors" title="Test App Store link in new tab">
-                                                    <svg class="w-4 h-4 mr-1 text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                                    <span class="hidden sm:inline font-medium">Test</span>
-                                                </a>
-                                            @endif
-                                        </div>
-                                        <p class="text-[10px] text-neutral-400 mt-1">Visitors clicking the badge in the storefront footer will be directed to this link.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Google Play Store Link Card -->
-                                <div class="p-4 border border-neutral-200 bg-neutral-50/60 rounded-xs space-y-3">
-                                    <div class="flex items-center justify-between gap-3">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="h-8 px-2 bg-black rounded flex items-center justify-center shrink-0">
-                                                <img src="{{ asset('images/google-play-badge.svg') }}" alt="Google Play" class="h-6 w-auto" />
-                                            </div>
-                                            <div>
-                                                <span class="text-xs font-bold text-neutral-900 block">Google Play Store (Android)</span>
-                                                <span class="text-[10px] text-neutral-400">Android phone &amp; tablet download URL</span>
-                                            </div>
-                                        </div>
-                                        <label class="inline-flex items-center gap-2 cursor-pointer select-none">
-                                            <input type="checkbox" name="play_store_enabled" value="1" @checked($settings['play_store_enabled'] ?? true) class="control">
-                                            <span class="text-xs font-medium text-neutral-700">Display in footer</span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Google Play Store URL</label>
-                                        <div class="flex gap-2">
-                                            <input type="url" name="play_store_url" value="{{ $settings['play_store_url'] ?? '' }}"
-                                                   placeholder="https://play.google.com/store/apps/details?id=com.yourcompany.lms"
-                                                   class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
-                                            @if(!empty($settings['play_store_url']) && str_starts_with($settings['play_store_url'], 'http'))
-                                                <a href="{{ $settings['play_store_url'] }}" target="_blank" rel="noopener noreferrer" class="h-10 px-3.5 border border-neutral-300 bg-white hover:bg-neutral-100 flex items-center justify-center text-neutral-700 text-xs shrink-0 transition-colors" title="Test Google Play link in new tab">
-                                                    <svg class="w-4 h-4 mr-1 text-neutral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                                    <span class="hidden sm:inline font-medium">Test</span>
-                                                </a>
-                                            @endif
-                                        </div>
-                                        <p class="text-[10px] text-neutral-400 mt-1">Visitors clicking the badge in the storefront footer will be directed to this link.</p>
-                                    </div>
+                        <!-- Header & Footer Customization Link Note -->
+                        <div class="border-t border-neutral-100 pt-4">
+                            <div class="p-3.5 bg-neutral-50 border border-neutral-200 flex items-start gap-3">
+                                <span class="p-1.5 bg-neutral-900 text-white rounded-xs shrink-0 mt-0.5">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+                                </span>
+                                <div class="text-xs text-neutral-600">
+                                    <span class="font-bold text-neutral-900 block mb-0.5">Header &amp; Footer Editors</span>
+                                    Looking to customize the storefront topbar, navbar, payment methods banner, or mobile app store links? Manage them directly in the
+                                    <a href="{{ route('admin.header.index') }}" class="font-bold text-neutral-900 underline hover:text-[var(--theme-primary,#344c3d)]">Header Editor</a>
+                                    and
+                                    <a href="{{ route('admin.footer.index') }}" class="font-bold text-neutral-900 underline hover:text-[var(--theme-primary,#344c3d)]">Footer Editor</a>
+                                    under the <strong>Editor</strong> menu.
                                 </div>
                             </div>
                         </div>

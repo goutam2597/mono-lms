@@ -10,7 +10,9 @@ use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Admin\FooterController as AdminFooterController;
 use App\Http\Controllers\Admin\GoogleSettingsController;
+use App\Http\Controllers\Admin\HeaderController as AdminHeaderController;
 use App\Http\Controllers\Admin\HomePageController as AdminHomePageController;
 use App\Http\Controllers\Admin\InstructorController as AdminInstructorController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -470,8 +472,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::put('/homepage', [AdminHomePageController::class, 'update'])->name('homepage.update');
     Route::post('/homepage', [AdminHomePageController::class, 'update']);
 
-    // Static & Custom Pages
+    // Site Editor: Static & Custom Pages, Header, Footer
     Route::middleware('permission:pages.manage')->group(function () {
+        Route::get('/header', [AdminHeaderController::class, 'edit'])->name('header.index');
+        Route::post('/header', [AdminHeaderController::class, 'update'])->name('header.update');
+        Route::put('/header', [AdminHeaderController::class, 'update']);
+
+        Route::get('/footer', [AdminFooterController::class, 'edit'])->name('footer.index');
+        Route::post('/footer', [AdminFooterController::class, 'update'])->name('footer.update');
+        Route::put('/footer', [AdminFooterController::class, 'update']);
+
         Route::resource('pages', AdminPageController::class)->except('show');
         Route::get('/pages/edit-by-slug/{slug}', [AdminPageController::class, 'editBySlug'])->name('pages.edit-by-slug');
         Route::post('/pages/{page}/duplicate', [AdminPageController::class, 'duplicate'])->name('pages.duplicate');

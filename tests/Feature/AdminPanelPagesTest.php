@@ -191,90 +191,146 @@ class AdminPanelPagesTest extends TestCase
             ->assertSee('--theme-primary: #065f46', false);
     }
 
-    public function test_admin_can_update_footer_payment_methods(): void
+    public function test_admin_sidebar_displays_editor_group_with_header_and_footer(): void
     {
         $this->actingAs($this->admin, 'admin');
 
-        $this->get(route('admin.settings.index'))
+        $this->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Footer Payment Methods')
-            ->assertSee('footer_payment_methods')
-            ->assertSee('footer_payment_methods_width');
-
-        $this->post(route('admin.settings.update'), [
-            'footer_payment_methods' => 'media/custom-gateways.png',
-            'footer_payment_methods_enabled' => '1',
-            'footer_payment_methods_width' => '420px',
-        ])->assertRedirect();
-
-        $this->assertEquals('media/custom-gateways.png', Setting::get('footer_payment_methods'));
-        $this->assertEquals('1', Setting::get('footer_payment_methods_enabled'));
-        $this->assertEquals('420px', Setting::get('footer_payment_methods_width'));
-
-        $this->get('/')
-            ->assertOk()
-            ->assertSee('max-width: 420px', false);
-
-        // Disabling it hides payment methods from footer
-        $this->post(route('admin.settings.update'), [
-            // No footer_payment_methods_enabled passed (unchecked)
-        ])->assertRedirect();
-
-        $this->assertEquals('0', Setting::get('footer_payment_methods_enabled'));
-
-        $this->get('/')
-            ->assertOk()
-            ->assertDontSee('payment-methods.png')
-            ->assertDontSee('custom-gateways.png');
+            ->assertSee('Editor')
+            ->assertSee('Header Editor')
+            ->assertSee('Footer Editor')
+            ->assertSee(route('admin.header.index'), false)
+            ->assertSee(route('admin.footer.index'), false);
     }
 
-    public function test_admin_can_update_mobile_app_store_links(): void
+    public function test_admin_can_manage_header_settings_in_header_editor(): void
     {
         $this->actingAs($this->admin, 'admin');
 
-        // Can view the setting fields on the admin settings page
+        // View Header Editor page
+        $this->get(route('admin.header.index'))
+            ->assertOk()
+            ->assertSee('Header Editor')
+            ->assertSee('header_topbar_address')
+            ->assertSee('header_topbar_phone')
+            ->assertSee('header_sticky_enabled')
+            ->assertSee('header_search_enabled')
+            ->assertSee('header_nav_home_enabled');
+
+        // Update header settings
+        $this->post(route('admin.header.update'), [
+            'header_topbar_address' => '100 Silicon Parkway, San Francisco, CA',
+            'header_topbar_phone' => '+1 (800) 999-0000',
+            'header_social_facebook' => 'https://facebook.com/monolms',
+            'header_social_instagram' => 'https://instagram.com/monolms',
+            'header_social_twitter' => 'https://x.com/monolms',
+            'header_social_linkedin' => 'https://linkedin.com/company/monolms',
+            'header_topbar_enabled' => '1',
+            'header_language_switcher_enabled' => '1',
+            'header_sticky_enabled' => '1',
+            'header_search_enabled' => '1',
+            'header_nav_home_enabled' => '1',
+            'header_nav_courses_enabled' => '1',
+            'header_nav_instructors_enabled' => '1',
+            'header_nav_blog_enabled' => '1',
+        ])->assertRedirect();
+
+        $this->assertEquals('100 Silicon Parkway, San Francisco, CA', Setting::get('header_topbar_address'));
+        $this->assertEquals('+1 (800) 999-0000', Setting::get('header_topbar_phone'));
+        $this->assertEquals('https://facebook.com/monolms', Setting::get('header_social_facebook'));
+
+        // Public page reflects the custom topbar text and link
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('100 Silicon Parkway, San Francisco, CA')
+            ->assertSee('+1 (800) 999-0000')
+            ->assertSee('https://facebook.com/monolms', false);
+
+        // Turn off topbar
+        $this->post(route('admin.header.update'), [
+            // header_topbar_enabled omitted
+            'header_nav_home_enabled' => '1',
+        ])->assertRedirect();
+
+        $this->assertEquals('0', Setting::get('header_topbar_enabled'));
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('100 Silicon Parkway, San Francisco, CA');
+    }
+
+    public function test_admin_can_manage_footer_settings_payment_methods_and_app_links(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // General settings references the dedicated Header & Footer editors
         $this->get(route('admin.settings.index'))
             ->assertOk()
-            ->assertSee('Mobile App Store Links')
-            ->assertSee('app_store_url')
-            ->assertSee('play_store_url')
-            ->assertSee('app_store_enabled')
-            ->assertSee('play_store_enabled');
+            ->assertSee('Header &amp; Footer Editors', false)
+            ->assertSee(route('admin.footer.index'), false);
 
-        // Admin updates custom App Store and Play Store links and enables them
-        $this->post(route('admin.settings.update'), [
+        // View Footer Editor page
+        $this->get(route('admin.footer.index'))
+            ->assertOk()
+            ->assertSee('Footer Editor')
+            ->assertSee('Footer Payment Methods')
+            ->assertSee('Mobile App Store Links')
+            ->assertSee('footer_payment_methods')
+            ->assertSee('footer_payment_methods_width')
+            ->assertSee('app_store_url')
+            ->assertSee('play_store_url');
+
+        // Update footer settings in Footer Editor
+        $this->post(route('admin.footer.update'), [
+            'footer_copyright' => '© 2026 Mono LMS Global Inc.',
+            'footer_about_text' => 'World-class online academy for tech professionals.',
+            'footer_support_title' => 'Assistance & FAQ',
+            'footer_payment_methods' => 'media/custom-gateways.png',
+            'footer_payment_methods_enabled' => '1',
+            'footer_payment_methods_width' => '380px',
             'app_store_url' => 'https://apps.apple.com/app/mono-lms-pro/id999888777',
             'play_store_url' => 'https://play.google.com/store/apps/details?id=com.monolms.pro',
             'app_store_enabled' => '1',
             'play_store_enabled' => '1',
+            'footer_newsletter_enabled' => '1',
         ])->assertRedirect();
 
+        $this->assertEquals('© 2026 Mono LMS Global Inc.', Setting::get('footer_copyright'));
+        $this->assertEquals('World-class online academy for tech professionals.', Setting::get('footer_about_text'));
+        $this->assertEquals('Assistance & FAQ', Setting::get('footer_support_title'));
+        $this->assertEquals('media/custom-gateways.png', Setting::get('footer_payment_methods'));
+        $this->assertEquals('380px', Setting::get('footer_payment_methods_width'));
         $this->assertEquals('https://apps.apple.com/app/mono-lms-pro/id999888777', Setting::get('app_store_url'));
         $this->assertEquals('https://play.google.com/store/apps/details?id=com.monolms.pro', Setting::get('play_store_url'));
-        $this->assertEquals('1', Setting::get('app_store_enabled'));
-        $this->assertEquals('1', Setting::get('play_store_enabled'));
 
-        // Public storefront footer now displays both custom links
+        // Public storefront footer displays updated content
         $this->get('/')
             ->assertOk()
+            ->assertSee('© 2026 Mono LMS Global Inc.')
+            ->assertSee('World-class online academy for tech professionals.')
+            ->assertSee('Assistance & FAQ')
+            ->assertSee('max-width: 380px', false)
             ->assertSee('https://apps.apple.com/app/mono-lms-pro/id999888777', false)
             ->assertSee('https://play.google.com/store/apps/details?id=com.monolms.pro', false)
             ->assertSee('app-store-badge.svg')
             ->assertSee('google-play-badge.svg');
 
-        // Disabling App Store hides it from the footer while keeping Play Store
-        $this->post(route('admin.settings.update'), [
-            'app_store_url' => 'https://apps.apple.com/app/mono-lms-pro/id999888777',
-            'play_store_url' => 'https://play.google.com/store/apps/details?id=com.monolms.pro',
-            // app_store_enabled omitted (unchecked)
+        // Disabling payment methods and app store link hides them from the footer
+        $this->post(route('admin.footer.update'), [
+            'footer_copyright' => '© 2026 Mono LMS Global Inc.',
+            // footer_payment_methods_enabled and app_store_enabled omitted
             'play_store_enabled' => '1',
+            'play_store_url' => 'https://play.google.com/store/apps/details?id=com.monolms.pro',
         ])->assertRedirect();
 
+        $this->assertEquals('0', Setting::get('footer_payment_methods_enabled'));
         $this->assertEquals('0', Setting::get('app_store_enabled'));
         $this->assertEquals('1', Setting::get('play_store_enabled'));
 
         $this->get('/')
             ->assertOk()
+            ->assertDontSee('custom-gateways.png')
             ->assertDontSee('https://apps.apple.com/app/mono-lms-pro/id999888777')
             ->assertSee('https://play.google.com/store/apps/details?id=com.monolms.pro', false);
     }

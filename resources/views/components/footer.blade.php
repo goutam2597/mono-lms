@@ -7,7 +7,7 @@
                     <img src="{{ \App\Models\Setting::logoUrl(asset('images/logo-white.png')) }}" alt="{{ \App\Models\Setting::get('site_name', 'Mono LMS') }}" width="150" height="40" decoding="async" class="h-9 sm:h-10 w-[135px] sm:w-[150px] aspect-[938/250] object-contain shrink-0" />
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
-                    {{ __('app.footer.about') }}
+                    {{ \App\Models\Setting::get('footer_about_text') ?: __('app.footer.about') }}
                 </p>
                 <!-- App Badges -->
                 @php
@@ -42,7 +42,7 @@
 
             <!-- Support Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.support') }}</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_support_title') ?: __('app.footer.support') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.help_center') }}</a></li>
                     <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.faq') }}</a></li>
@@ -53,7 +53,7 @@
 
             <!-- Pages Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.pages') }}</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_pages_title') ?: __('app.footer.pages') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
                     <li><a href="{{ route('courses.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.courses') }}</a></li>
                     <li><a href="{{ route('instructors.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.instructors') }}</a></li>
@@ -64,7 +64,7 @@
 
             <!-- Useful Links -->
             <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.useful') }}</h4>
+                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_useful_title') ?: __('app.footer.useful') }}</h4>
                 <ul class="space-y-2.5 text-sm text-gray-400">
                     <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.become_instructor') }}</a></li>
                     <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.instructor_portal') }}</a></li>
@@ -74,16 +74,18 @@
             </div>
 
             <!-- Newsletter Column -->
-            <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ __('app.footer.newsletter') }}</h4>
-                <p class="text-xs text-gray-400 mb-3">{{ __('app.footer.newsletter_hint') }}</p>
-                <div class="space-y-2">
-                    <input type="email" placeholder="{{ __('app.footer.email_placeholder') }}" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#738a6e]" />
-                    <button class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
-                        {{ __('app.footer.subscribe') }}
-                    </button>
+            @if (\App\Models\Setting::get('footer_newsletter_enabled', '1') === '1')
+                <div class="lg:col-span-2">
+                    <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_newsletter_title') ?: __('app.footer.newsletter') }}</h4>
+                    <p class="text-xs text-gray-400 mb-3">{{ \App\Models\Setting::get('footer_newsletter_hint') ?: __('app.footer.newsletter_hint') }}</p>
+                    <div class="space-y-2">
+                        <input type="email" placeholder="{{ __('app.footer.email_placeholder') }}" class="w-full bg-[#142333] border border-gray-700 rounded-lg px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#738a6e]" />
+                        <button class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
+                            {{ __('app.footer.subscribe') }}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <!-- Bottom Copyright & Compliance -->
