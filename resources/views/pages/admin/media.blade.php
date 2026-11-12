@@ -62,7 +62,11 @@
             <form id="bulk-form" method="POST" action="{{ route('admin.media.bulk-destroy') }}" onsubmit="return confirm('{{ __('admin.media.bulk_confirm') }}')">
                 @csrf
             </form>
-            <div class="flex items-center gap-3 ml-auto">
+            <div class="flex items-center gap-4 ml-auto">
+                <label class="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer select-none">
+                    <input type="checkbox" id="check-all" class="control" aria-label="{{ __('admin.common.select_all') ?? 'Select All' }}">
+                    <span>{{ __('admin.common.select_all') ?? 'Select All' }}</span>
+                </label>
                 <span class="text-xs text-slate-500 font-medium">
                     <span id="sel-count" class="font-bold text-slate-800">0</span> {{ __('admin.common.selected') }}
                 </span>
@@ -94,13 +98,10 @@
         @else
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3.5">
                 @foreach ($media as $item)
-                    <div class="group relative overflow-hidden rounded-none border border-slate-200 bg-white hover:border-slate-400 hover:shadow-md transition-all flex flex-col justify-between">
-                        <!-- Checkbox Overlay -->
-                        <label class="absolute top-2 left-2 z-20 flex h-5 w-5 cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-white/90 backdrop-blur-xs transition-all hover:border-slate-500">
-                            <input type="checkbox" class="row-check sr-only" name="ids[]" value="{{ $item->id }}" form="bulk-form">
-                            <svg class="check-icon hidden w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
-                            </svg>
+                    <div class="media-card group relative overflow-hidden rounded-none border border-slate-200 bg-white hover:border-slate-400 hover:shadow-md transition-all flex flex-col justify-between">
+                        <!-- Custom Checkbox Overlay -->
+                        <label class="absolute top-2 left-2 z-20 flex items-center justify-center p-1 bg-white/95 backdrop-blur-xs border border-slate-200 shadow-xs cursor-pointer hover:border-slate-400 transition-colors select-none">
+                            <input type="checkbox" class="control row-check" name="ids[]" value="{{ $item->id }}" form="bulk-form" aria-label="Select {{ $item->name }}">
                         </label>
 
                         <!-- Actions Hover Floating Menu -->
@@ -197,28 +198,42 @@
         }
 
         var checks = document.querySelectorAll('.row-check');
+        var checkAll = document.getElementById('check-all');
         var countEl = document.getElementById('sel-count');
         var btn = document.getElementById('bulk-btn');
 
         function sync() {
+            var all = document.querySelectorAll('.row-check');
             var selected = document.querySelectorAll('.row-check:checked');
             var n = selected.length;
             if (countEl) countEl.textContent = n;
             if (btn) btn.disabled = (n === 0);
 
-            document.querySelectorAll('.row-check').forEach(function (cb) {
-                var label = cb.closest('label');
-                var icon = label ? label.querySelector('.check-icon') : null;
-                if (!label) return;
+            if (checkAll) {
+                checkAll.checked = (all.length > 0 && selected.length === all.length);
+                checkAll.indeterminate = (selected.length > 0 && selected.length < all.length);
+            }
+
+            all.forEach(function (cb) {
+                var card = cb.closest('.media-card');
+                if (!card) return;
                 if (cb.checked) {
-                    label.classList.add('bg-[#344c3d]', 'border-[#344c3d]');
-                    label.classList.remove('bg-white/90', 'border-slate-300');
-                    if (icon) icon.classList.remove('hidden');
+                    card.classList.add('ring-2', 'ring-neutral-900', 'border-neutral-900');
+                    card.classList.remove('border-slate-200');
                 } else {
-                    label.classList.remove('bg-[#344c3d]', 'border-[#344c3d]');
-                    label.classList.add('bg-white/90', 'border-slate-300');
-                    if (icon) icon.classList.add('hidden');
+                    card.classList.remove('ring-2', 'ring-neutral-900', 'border-neutral-900');
+                    card.classList.add('border-slate-200');
                 }
+            });
+        }
+
+        if (checkAll) {
+            checkAll.addEventListener('change', function () {
+                var isChecked = checkAll.checked;
+                document.querySelectorAll('.row-check').forEach(function (c) {
+                    c.checked = isChecked;
+                });
+                sync();
             });
         }
 
