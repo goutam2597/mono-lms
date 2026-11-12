@@ -35,6 +35,22 @@ class NotificationService
             return;
         }
 
+        // Deduplication guard: ignore identical notifications dispatched within a 10-second window
+        try {
+            if (method_exists($notifiable, 'notifications')) {
+                $recentlySent = $notifiable->notifications()
+                    ->where('created_at', '>=', now()->subSeconds(10))
+                    ->get()
+                    ->contains(fn ($n) => ($n->data['title'] ?? null) === $title && ($n->data['message'] ?? null) === $message);
+
+                if ($recentlySent) {
+                    return;
+                }
+            }
+        } catch (Throwable) {
+            // Ignore if notifications table query fails
+        }
+
         try {
             $notification = new AppNotification(
                 title: $title,
@@ -67,21 +83,30 @@ class NotificationService
                 }
             }
         } catch (Throwable $e) {
-            // If sending via mail fails (e.g. invalid SMTP config), fallback to database only
-            Log::warning('AppNotification failed with full channels, falling back to database: '.$e->getMessage());
+            // If sending via mail fails (e.g. invalid SMTP config), the database channel already ran first.
+            // Only retry if database notification was not yet stored.
+            Log::warning('AppNotification mail/channel dispatch error: '.$e->getMessage());
 
             try {
-                $fallback = new AppNotification(
-                    title: $title,
-                    message: $message,
-                    category: $category,
-                    actionUrl: $actionUrl,
-                    actionLabel: $actionLabel,
-                    icon: $icon,
-                    sendMail: false,
-                    metadata: $metadata,
-                );
-                $notifiable->notify($fallback);
+                $alreadyStored = method_exists($notifiable, 'notifications')
+                    && $notifiable->notifications()
+                        ->where('created_at', '>=', now()->subSeconds(30))
+                        ->get()
+                        ->contains(fn ($n) => ($n->data['title'] ?? null) === $title && ($n->data['message'] ?? null) === $message);
+
+                if (! $alreadyStored) {
+                    $fallback = new AppNotification(
+                        title: $title,
+                        message: $message,
+                        category: $category,
+                        actionUrl: $actionUrl,
+                        actionLabel: $actionLabel,
+                        icon: $icon,
+                        sendMail: false,
+                        metadata: $metadata,
+                    );
+                    $notifiable->notify($fallback);
+                }
             } catch (Throwable $e2) {
                 Log::error('AppNotification fallback database error: '.$e2->getMessage());
             }

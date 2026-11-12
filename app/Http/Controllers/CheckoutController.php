@@ -118,6 +118,12 @@ final class CheckoutController extends Controller
 
         $this->authorizeOrder($order);
 
+        // If the order has already been marked paid, redirect straight to success
+        if ($order->payment_status === 'paid') {
+            return redirect()->route('checkout.success', $order)
+                ->with('success', 'Payment verified — you are enrolled!');
+        }
+
         $gateway = (string) $request->input('gateway', $order->payment_method);
 
         $result = $this->verifier->verify($gateway, $request, $order);

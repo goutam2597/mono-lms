@@ -144,7 +144,9 @@ final class CheckoutService
      */
     public function markPaid(Order $order, ?string $valId = null): Order
     {
-        DB::transaction(function () use ($order, $valId) {
+        $justPaid = false;
+
+        DB::transaction(function () use ($order, $valId, &$justPaid) {
             /** @var Order $locked */
             $locked = Order::query()->lockForUpdate()->findOrFail($order->id);
 
@@ -168,6 +170,7 @@ final class CheckoutService
                     'paid_at' => now(),
                     'val_id' => $valId ?: $locked->val_id,
                 ]);
+                $justPaid = true;
             }
 
             Enrollment::firstOrCreate(
@@ -179,22 +182,24 @@ final class CheckoutService
                 $locked->update(['enrollment_activated_at' => now()]);
             }
 
-            if (filled($locked->coupon_code)) {
+            if ($justPaid && filled($locked->coupon_code)) {
                 Coupon::where('code', $locked->coupon_code)->increment('used_count');
             }
         });
 
         $order->refresh();
 
-        NotificationService::send(
-            $order->student,
-            'Enrollment activated',
-            'Your payment for "'.$order->course->title.'" was confirmed. You can start learning now.',
-            category: 'enrollment',
-            actionUrl: route('student.courses.learn', $order->course),
-            actionLabel: 'Start Learning',
-            sendMail: true,
-        );
+        if ($justPaid) {
+            NotificationService::send(
+                $order->student,
+                'Enrollment activated',
+                'Your payment for "'.$order->course->title.'" was confirmed. You can start learning now.',
+                category: 'enrollment',
+                actionUrl: route('student.courses.learn', $order->course),
+                actionLabel: 'Start Learning',
+                sendMail: true,
+            );
+        }
 
         return $order;
     }
