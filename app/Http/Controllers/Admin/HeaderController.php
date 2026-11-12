@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use App\Models\Setting;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -33,13 +34,27 @@ class HeaderController extends Controller
             'site_logo' => Setting::get('site_logo', ''),
         ];
 
+        $menuItems = Setting::headerMenu();
+        $availablePages = Page::select('id', 'title', 'slug', 'status', 'is_system')
+            ->orderByDesc('is_system')
+            ->orderBy('title')
+            ->get();
+
         return view('pages.admin.header', [
             'settings' => $settings,
+            'menuItems' => $menuItems,
+            'availablePages' => $availablePages,
         ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
+        if ($request->has('reset_menu')) {
+            Setting::set('header_menu_items', null);
+
+            return back()->with('success', 'Header navigation reset to default structure successfully.');
+        }
+
         $fields = [
             'header_topbar_address',
             'header_topbar_phone',
@@ -66,6 +81,19 @@ class HeaderController extends Controller
         Setting::set('header_nav_instructors_enabled', $request->has('header_nav_instructors_enabled') ? '1' : '0');
         Setting::set('header_nav_blog_enabled', $request->has('header_nav_blog_enabled') ? '1' : '0');
         Setting::set('header_nav_membership_enabled', $request->has('header_nav_membership_enabled') ? '1' : '0');
+
+        // Header Menu Tree (JSON)
+        if ($request->has('header_menu_items')) {
+            $rawMenu = $request->input('header_menu_items');
+            if (is_string($rawMenu)) {
+                $decoded = json_decode($rawMenu, true);
+                if (is_array($decoded)) {
+                    Setting::set('header_menu_items', json_encode($decoded));
+                }
+            } elseif (is_array($rawMenu)) {
+                Setting::set('header_menu_items', json_encode($rawMenu));
+            }
+        }
 
         return back()->with('success', 'Header settings and navigation updated successfully.');
     }

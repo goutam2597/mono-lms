@@ -40,38 +40,32 @@
                 @endif
             </div>
 
-            <!-- Support Links -->
-            <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_support_title') ?: __('app.footer.support') }}</h4>
-                <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.help_center') }}</a></li>
-                    <li><a href="#" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.faq') }}</a></li>
-                    <li><a href="{{ \App\Models\Page::url('contact', '/contact') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.contact') }}</a></li>
-                    <li><a href="{{ \App\Models\Page::url('about', '/about') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.about_us') }}</a></li>
-                </ul>
-            </div>
-
-            <!-- Pages Links -->
-            <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_pages_title') ?: __('app.footer.pages') }}</h4>
-                <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ route('courses.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.courses') }}</a></li>
-                    <li><a href="{{ route('instructors.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.instructors') }}</a></li>
-                    <li><a href="{{ route('blog.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.blog') }}</a></li>
-                    <li><a href="{{ route('membership.index') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.membership') }}</a></li>
-                </ul>
-            </div>
-
-            <!-- Useful Links -->
-            <div class="lg:col-span-2">
-                <h4 class="text-sm font-bold text-white mb-4">{{ \App\Models\Setting::get('footer_useful_title') ?: __('app.footer.useful') }}</h4>
-                <ul class="space-y-2.5 text-sm text-gray-400">
-                    <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.become_instructor') }}</a></li>
-                    <li><a href="{{ auth('instructor')->check() ? route('instructor.dashboard') : route('instructor.login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.instructor_portal') }}</a></li>
-                    <li><a href="{{ auth('student')->check() ? route('student.dashboard') : route('login') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.footer.student_portal') }}</a></li>
-                    <li><a href="{{ auth('student')->check() ? route('student.dashboard') : route('register') }}" class="hover:text-[#bfcfbb] transition-colors">{{ __('app.nav.register') }}</a></li>
-                </ul>
-            </div>
+            <!-- Dynamic Footer Navigation Columns -->
+            @php
+                $footerCols = \App\Models\Setting::footerColumns();
+                $footerBottom = \App\Models\Setting::footerBottomLinks();
+            @endphp
+            @foreach ($footerCols as $col)
+                <div class="lg:col-span-2">
+                    <h4 class="text-sm font-bold text-white mb-4">{{ $col['title'] ?? 'Links' }}</h4>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        @foreach ($col['links'] ?? [] as $link)
+                            @php
+                                $lUrl = $link['url'] ?? '#';
+                                $resLUrl = str_starts_with($lUrl, 'http') || $lUrl === '#' ? $lUrl : url($lUrl);
+                            @endphp
+                            <li>
+                                <a href="{{ $resLUrl }}"
+                                   target="{{ $link['target'] ?? '_self' }}"
+                                   @if(($link['target'] ?? '') === '_blank') rel="noopener noreferrer" @endif
+                                   class="hover:text-[#bfcfbb] transition-colors">
+                                    {{ $link['label'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endforeach
 
             <!-- Newsletter Column -->
             @if (\App\Models\Setting::get('footer_newsletter_enabled', '1') === '1')
@@ -99,10 +93,22 @@
                     <img src="{{ \App\Models\Setting::paymentMethodsUrl() }}" alt="Accepted Payment Methods" style="{{ $stripWidth !== 'auto' ? 'max-width: '.$stripWidth.';' : '' }} width: 100%; height: auto;" class="max-h-8 sm:max-h-9 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity" />
                 </div>
             @endif
-            <div class="flex items-center gap-4">
-                <a href="{{ \App\Models\Page::url('tnc', '/terms') }}" class="hover:text-white transition-colors">Terms & Conditions</a>
-                <span>|</span>
-                <a href="{{ \App\Models\Page::url('privacy', '/privacy') }}" class="hover:text-white transition-colors">Privacy Policy</a>
+            <div class="flex items-center gap-4 flex-wrap">
+                @foreach ($footerBottom as $bIndex => $bLink)
+                    @php
+                        $bUrl = $bLink['url'] ?? '#';
+                        $resBUrl = str_starts_with($bUrl, 'http') || $bUrl === '#' ? $bUrl : url($bUrl);
+                    @endphp
+                    @if ($bIndex > 0)
+                        <span>|</span>
+                    @endif
+                    <a href="{{ $resBUrl }}"
+                       target="{{ $bLink['target'] ?? '_self' }}"
+                       @if(($bLink['target'] ?? '') === '_blank') rel="noopener noreferrer" @endif
+                       class="hover:text-white transition-colors">
+                        {!! $bLink['label'] !!}
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

@@ -68,11 +68,16 @@ class PageController extends Controller
         $validated = $this->validatePage($request);
         $settings = $this->extractSettings($request, $validated['template']);
 
+        $content = $validated['content'] ?? null;
+        if (empty($content) && ! empty($settings['blocks'])) {
+            $content = $this->compileBlocksToHtml($settings['blocks']);
+        }
+
         $page = Page::create([
             'title' => $validated['title'],
             'slug' => Str::slug($validated['slug']),
             'template' => $validated['template'],
-            'content' => $validated['content'] ?? null,
+            'content' => $content,
             'status' => $validated['status'],
             'settings' => $settings,
             'meta_title' => $validated['meta_title'] ?? null,
@@ -109,11 +114,16 @@ class PageController extends Controller
         $validated = $this->validatePage($request, $page->id);
         $settings = $this->extractSettings($request, $validated['template'], $page->settings ?? []);
 
+        $content = $validated['content'] ?? null;
+        if (empty($content) && ! empty($settings['blocks'])) {
+            $content = $this->compileBlocksToHtml($settings['blocks']);
+        }
+
         $page->update([
             'title' => $validated['title'],
             'slug' => Str::slug($validated['slug']),
             'template' => $validated['template'],
-            'content' => $validated['content'] ?? null,
+            'content' => $content,
             'status' => $validated['status'],
             'settings' => $settings,
             'meta_title' => $validated['meta_title'] ?? null,
@@ -254,6 +264,144 @@ class PageController extends Controller
             $settings['cta_button_url'] = $input['cta_button_url'] ?? ($existing['cta_button_url'] ?? '/instructor/register');
         }
 
+        // Visual Page Builder Blocks
+        if ($request->has('settings_blocks_json') && filled($request->input('settings_blocks_json'))) {
+            $decodedBlocks = json_decode((string) $request->input('settings_blocks_json'), true);
+            if (is_array($decodedBlocks)) {
+                $settings['blocks'] = $decodedBlocks;
+            }
+        } elseif (isset($input['blocks']) && is_array($input['blocks'])) {
+            $settings['blocks'] = $input['blocks'];
+        }
+
         return $settings;
+    }
+
+    /**
+     * Compile structured visual builder blocks into clean semantic HTML.
+     *
+     * @param  array<int, array<string, mixed>>  $blocks
+     */
+    protected function compileBlocksToHtml(array $blocks): string
+    {
+        $html = [];
+
+        foreach ($blocks as $block) {
+            $type = $block['type'] ?? '';
+            $data = $block['data'] ?? [];
+
+            switch ($type) {
+                case 'hero':
+                    $title = e($data['title'] ?? 'Headline');
+                    $subtitle = e($data['subtitle'] ?? '');
+                    $btnLabel = e($data['btn_primary_label'] ?? '');
+                    $btnUrl = e($data['btn_primary_url'] ?? '#');
+                    $html[] = "<div class=\"block-hero my-8 p-8 sm:p-12 bg-slate-900 text-white rounded-2xl text-center\">
+                        <h1 class=\"text-3xl sm:text-5xl font-extrabold mb-4\">{$title}</h1>
+                        ".($subtitle ? "<p class=\"text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-6\">{$subtitle}</p>" : '').'
+                        '.($btnLabel ? "<a href=\"{$btnUrl}\" class=\"inline-block px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm\">{$btnLabel}</a>" : '').'
+                    </div>';
+                    break;
+
+                case 'features_grid':
+                    $title = e($data['title'] ?? 'Our Key Features');
+                    $itemsHtml = '';
+                    foreach ($data['items'] ?? [] as $item) {
+                        $itTitle = e($item['title'] ?? '');
+                        $itDesc = e($item['description'] ?? '');
+                        $itemsHtml .= "<div class=\"p-6 rounded-xl border border-slate-200 bg-white shadow-xs\">
+                            <h3 class=\"text-lg font-bold text-slate-900 mb-2\">{$itTitle}</h3>
+                            <p class=\"text-sm text-slate-600 leading-relaxed\">{$itDesc}</p>
+                        </div>";
+                    }
+                    $html[] = "<div class=\"block-features my-12\">
+                        <h2 class=\"text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-8\">{$title}</h2>
+                        <div class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6\">{$itemsHtml}</div>
+                    </div>";
+                    break;
+
+                case 'split_content':
+                    $title = e($data['title'] ?? '');
+                    $desc = nl2br(e($data['description'] ?? ''));
+                    $img = e($data['image'] ?? '');
+                    $pointsHtml = '';
+                    foreach ($data['points'] ?? [] as $pt) {
+                        $ptStr = e($pt);
+                        $pointsHtml .= "<li class=\"flex items-center gap-2 text-sm text-slate-700\"><span>✓</span> <span>{$ptStr}</span></li>";
+                    }
+                    $html[] = "<div class=\"block-split my-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center\">
+                        <div>
+                            <h2 class=\"text-2xl font-bold text-slate-900 mb-4\">{$title}</h2>
+                            <div class=\"text-sm text-slate-600 leading-relaxed mb-4\">{$desc}</div>
+                            ".($pointsHtml ? "<ul class=\"space-y-2 mb-6\">{$pointsHtml}</ul>" : '').'
+                        </div>
+                        '.($img ? "<div><img src=\"{$img}\" alt=\"{$title}\" class=\"rounded-2xl w-full object-cover shadow-md\"></div>" : '').'
+                    </div>';
+                    break;
+
+                case 'faq':
+                    $title = e($data['title'] ?? 'Frequently Asked Questions');
+                    $faqItems = '';
+                    foreach ($data['items'] ?? [] as $faq) {
+                        $q = e($faq['question'] ?? '');
+                        $a = nl2br(e($faq['answer'] ?? ''));
+                        $faqItems .= "<details class=\"group border border-slate-200 rounded-xl p-4 bg-slate-50/50 mb-3\">
+                            <summary class=\"font-bold text-sm text-slate-900 cursor-pointer list-none flex justify-between items-center\">
+                                <span>{$q}</span>
+                                <span class=\"text-slate-400 group-open:rotate-180 transition-transform\">&darr;</span>
+                            </summary>
+                            <div class=\"text-xs text-slate-600 mt-3 pt-3 border-t border-slate-200 leading-relaxed\">{$a}</div>
+                        </details>";
+                    }
+                    $html[] = "<div class=\"block-faq my-12\">
+                        <h2 class=\"text-2xl font-bold text-slate-900 text-center mb-6\">{$title}</h2>
+                        <div class=\"max-w-3xl mx-auto\">{$faqItems}</div>
+                    </div>";
+                    break;
+
+                case 'cta_banner':
+                    $title = e($data['title'] ?? 'Ready to Get Started?');
+                    $subtitle = e($data['subtitle'] ?? '');
+                    $btnLabel = e($data['btn_label'] ?? 'Join Now');
+                    $btnUrl = e($data['btn_url'] ?? '#');
+                    $html[] = "<div class=\"block-cta my-12 p-8 sm:p-10 rounded-2xl bg-[#344c3d] text-white text-center\">
+                        <h2 class=\"text-2xl sm:text-3xl font-extrabold mb-3\">{$title}</h2>
+                        ".($subtitle ? "<p class=\"text-slate-200 text-sm max-w-xl mx-auto mb-6\">{$subtitle}</p>" : '')."
+                        <a href=\"{$btnUrl}\" class=\"inline-block px-6 py-3 rounded-lg bg-white text-[#344c3d] font-bold text-xs uppercase tracking-wider shadow-md hover:bg-slate-100\">{$btnLabel}</a>
+                    </div>";
+                    break;
+
+                case 'stats':
+                    $statsHtml = '';
+                    foreach ($data['items'] ?? [] as $stat) {
+                        $v = e($stat['value'] ?? '');
+                        $l = e($stat['label'] ?? '');
+                        $statsHtml .= "<div class=\"text-center p-4 bg-slate-50 rounded-xl border border-slate-100\">
+                            <div class=\"text-3xl font-extrabold text-slate-900\">{$v}</div>
+                            <div class=\"text-xs text-slate-500 uppercase tracking-wider mt-1 font-semibold\">{$l}</div>
+                        </div>";
+                    }
+                    $html[] = "<div class=\"block-stats my-8 grid grid-cols-2 md:grid-cols-4 gap-4\">{$statsHtml}</div>";
+                    break;
+
+                case 'testimonial':
+                    $quote = e($data['quote'] ?? '');
+                    $author = e($data['author_name'] ?? '');
+                    $role = e($data['author_role'] ?? '');
+                    $html[] = "<div class=\"block-testimonial my-10 p-8 rounded-2xl border border-slate-200 bg-slate-50/60 text-center max-w-2xl mx-auto\">
+                        <p class=\"text-base sm:text-lg italic text-slate-800 mb-4\">“{$quote}”</p>
+                        <div class=\"font-bold text-sm text-slate-900\">{$author}</div>
+                        ".($role ? "<div class=\"text-xs text-slate-500\">{$role}</div>" : '').'
+                    </div>';
+                    break;
+
+                case 'rich_text':
+                    $body = $data['body'] ?? '';
+                    $html[] = "<div class=\"block-rich-text my-8 prose prose-slate max-w-none\">{$body}</div>";
+                    break;
+            }
+        }
+
+        return implode("\n\n", $html);
     }
 }

@@ -6,6 +6,7 @@ use App\Mail\ContactMessageAdminMail;
 use App\Mail\ContactMessageUserConfirmationMail;
 use App\Models\Admin;
 use App\Models\ContactMessage;
+use App\Models\Page;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -147,6 +148,183 @@ class PagesSystemTest extends TestCase
         $publicResponse->assertOk();
         $publicResponse->assertSee('Student Careers & Placement');
         $publicResponse->assertSee('Welcome to our careers center.', false);
+    }
+
+    public function test_admin_can_create_page_using_visual_drag_and_drop_blocks_without_coding(): void
+    {
+        $admin = Admin::first();
+
+        $sampleBlocks = [
+            [
+                'id' => 'blk_hero_1',
+                'type' => 'hero',
+                'data' => [
+                    'eyebrow' => 'Special Program',
+                    'title' => 'Executive AI Masterclass',
+                    'subtitle' => 'Zero coding required to design this modern landing page.',
+                    'btn_primary_label' => 'Enroll in Program',
+                    'btn_primary_url' => '/checkout',
+                    'bg_theme' => 'dark',
+                ],
+            ],
+            [
+                'id' => 'blk_faq_1',
+                'type' => 'faq',
+                'data' => [
+                    'title' => 'Masterclass Questions',
+                    'items' => [
+                        ['question' => 'Who is this for?', 'answer' => 'Executives, creators, and professionals.'],
+                    ],
+                ],
+            ],
+            [
+                'id' => 'blk_cta_1',
+                'type' => 'cta_banner',
+                'data' => [
+                    'title' => 'Begin Your Transformation Today',
+                    'subtitle' => 'Seats are strictly limited to 50 learners.',
+                    'btn_label' => 'Reserve Seat',
+                    'btn_url' => '/register',
+                ],
+            ],
+        ];
+
+        // Admin submits the page form with settings_blocks_json without writing any HTML
+        $response = $this->actingAs($admin, 'admin')->post(route('admin.pages.store'), [
+            'title' => 'AI Executive Bootcamp',
+            'slug' => 'ai-bootcamp',
+            'template' => 'standard',
+            'status' => 'published',
+            'settings_blocks_json' => json_encode($sampleBlocks),
+            'meta_title' => 'Executive AI Bootcamp',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        // Verify page saved with structured blocks and auto-compiled HTML
+        $page = Page::where('slug', 'ai-bootcamp')->first();
+        $this->assertNotNull($page);
+        $this->assertCount(3, $page->setting('blocks'));
+        $this->assertStringContainsString('Executive AI Masterclass', $page->content);
+
+        // Storefront visitor sees the full visual rendered layout
+        $public = $this->get('/ai-bootcamp');
+        $public->assertOk();
+        $public->assertSee('Executive AI Masterclass');
+        $public->assertSee('Zero coding required to design this modern landing page.');
+        $public->assertSee('Masterclass Questions');
+        $public->assertSee('Who is this for?');
+        $public->assertSee('Begin Your Transformation Today');
+    }
+
+    public function test_admin_can_organize_header_navbar_menu_with_submenus_and_custom_pages(): void
+    {
+        $admin = Admin::first();
+
+        // View Header Editor and ensure Menu Builder elements are rendered
+        $viewRes = $this->actingAs($admin, 'admin')->get(route('admin.header.index'));
+        $viewRes->assertOk();
+        $viewRes->assertSee('Header Navbar Menu Organizer');
+        $viewRes->assertSee('header_menu_items_input');
+
+        // Post custom menu structure with submenus and custom pages
+        $customMenu = [
+            [
+                'id' => 'nav_home',
+                'label' => 'Start',
+                'url' => '/',
+                'type' => 'route',
+                'target' => '_self',
+                'badge' => '',
+                'is_active' => true,
+                'children' => [],
+            ],
+            [
+                'id' => 'nav_catalog',
+                'label' => 'Explore',
+                'url' => '#',
+                'type' => 'custom',
+                'target' => '_self',
+                'badge' => 'New',
+                'is_active' => true,
+                'children' => [
+                    [
+                        'id' => 'nav_all_courses',
+                        'label' => 'All Courses',
+                        'url' => '/courses',
+                        'type' => 'route',
+                        'target' => '_self',
+                        'badge' => '',
+                        'is_active' => true,
+                    ],
+                    [
+                        'id' => 'nav_about',
+                        'label' => 'About Our Academy',
+                        'url' => '/about',
+                        'type' => 'page',
+                        'target' => '_self',
+                        'badge' => '',
+                        'is_active' => true,
+                    ],
+                ],
+            ],
+        ];
+
+        $updateRes = $this->actingAs($admin, 'admin')->post(route('admin.header.update'), [
+            'header_menu_items' => json_encode($customMenu),
+            'header_topbar_address' => '123 Innovation Blvd',
+            'header_topbar_phone' => '+1 (555) 000-1111',
+        ]);
+        $updateRes->assertSessionHas('success');
+
+        // Storefront header renders custom top-level items and dropdown submenu
+        $storefront = $this->get('/');
+        $storefront->assertOk();
+        $storefront->assertSee('Explore');
+        $storefront->assertSee('All Courses');
+        $storefront->assertSee('About Our Academy');
+    }
+
+    public function test_admin_can_organize_footer_columns_and_links(): void
+    {
+        $admin = Admin::first();
+
+        $viewRes = $this->actingAs($admin, 'admin')->get(route('admin.footer.index'));
+        $viewRes->assertOk();
+        $viewRes->assertSee('Columns &amp; Navigation Links Organizer', false);
+
+        $customCols = [
+            [
+                'id' => 'col_academy',
+                'title' => 'Academy Programs',
+                'links' => [
+                    ['id' => 'l1', 'label' => 'Full Curriculum', 'url' => '/courses', 'target' => '_self'],
+                    ['id' => 'l2', 'label' => 'About Our Mission', 'url' => '/about', 'target' => '_self'],
+                ],
+            ],
+            [
+                'id' => 'col_community',
+                'title' => 'Community Portal',
+                'links' => [
+                    ['id' => 'l3', 'label' => 'Instructor Application', 'url' => '/instructor/register', 'target' => '_self'],
+                    ['id' => 'l4', 'label' => 'Direct Contact', 'url' => '/contact', 'target' => '_self'],
+                ],
+            ],
+        ];
+
+        $updateRes = $this->actingAs($admin, 'admin')->post(route('admin.footer.update'), [
+            'footer_navigation_columns' => json_encode($customCols),
+            'footer_copyright' => '© 2026 Mono LMS Global',
+        ]);
+        $updateRes->assertSessionHas('success');
+
+        $storefront = $this->get('/');
+        $storefront->assertOk();
+        $storefront->assertSee('Academy Programs');
+        $storefront->assertSee('Full Curriculum');
+        $storefront->assertSee('About Our Mission');
+        $storefront->assertSee('Community Portal');
+        $storefront->assertSee('Instructor Application');
     }
 
     public function test_admin_pages_index_is_accessible(): void

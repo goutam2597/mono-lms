@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use App\Models\Setting;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -32,13 +33,30 @@ class FooterController extends Controller
             'site_name' => Setting::get('site_name', 'Mono LMS'),
         ];
 
+        $footerColumns = Setting::footerColumns();
+        $footerBottomLinks = Setting::footerBottomLinks();
+        $availablePages = Page::select('id', 'title', 'slug', 'status', 'is_system')
+            ->orderByDesc('is_system')
+            ->orderBy('title')
+            ->get();
+
         return view('pages.admin.footer', [
             'settings' => $settings,
+            'footerColumns' => $footerColumns,
+            'footerBottomLinks' => $footerBottomLinks,
+            'availablePages' => $availablePages,
         ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
+        if ($request->has('reset_columns')) {
+            Setting::set('footer_navigation_columns', null);
+            Setting::set('footer_bottom_links', null);
+
+            return back()->with('success', 'Footer columns and links reset to default structure successfully.');
+        }
+
         $fields = [
             'footer_copyright',
             'footer_about_text',
@@ -66,6 +84,32 @@ class FooterController extends Controller
         Setting::set('play_store_enabled', $request->has('play_store_enabled') ? '1' : '0');
         Setting::set('footer_newsletter_enabled', $request->has('footer_newsletter_enabled') ? '1' : '0');
 
-        return back()->with('success', 'Footer settings, payment methods, and app links updated successfully.');
+        // Footer Navigation Columns (JSON)
+        if ($request->has('footer_navigation_columns')) {
+            $rawCols = $request->input('footer_navigation_columns');
+            if (is_string($rawCols)) {
+                $decoded = json_decode($rawCols, true);
+                if (is_array($decoded)) {
+                    Setting::set('footer_navigation_columns', json_encode($decoded));
+                }
+            } elseif (is_array($rawCols)) {
+                Setting::set('footer_navigation_columns', json_encode($rawCols));
+            }
+        }
+
+        // Footer Bottom Links (JSON)
+        if ($request->has('footer_bottom_links')) {
+            $rawBottom = $request->input('footer_bottom_links');
+            if (is_string($rawBottom)) {
+                $decoded = json_decode($rawBottom, true);
+                if (is_array($decoded)) {
+                    Setting::set('footer_bottom_links', json_encode($decoded));
+                }
+            } elseif (is_array($rawBottom)) {
+                Setting::set('footer_bottom_links', json_encode($rawBottom));
+            }
+        }
+
+        return back()->with('success', 'Footer settings, payment methods, and navigation updated successfully.');
     }
 }

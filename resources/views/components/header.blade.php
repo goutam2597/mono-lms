@@ -5,11 +5,9 @@
     $langEnabled = \App\Models\Setting::get('header_language_switcher_enabled', '1') === '1';
     $stickyEnabled = \App\Models\Setting::get('header_sticky_enabled', '1') === '1';
     $searchEnabled = \App\Models\Setting::get('header_search_enabled', '1') === '1';
-    $navHome = \App\Models\Setting::get('header_nav_home_enabled', '1') === '1';
-    $navCourses = \App\Models\Setting::get('header_nav_courses_enabled', '1') === '1';
-    $navInstructors = \App\Models\Setting::get('header_nav_instructors_enabled', '1') === '1';
-    $navBlog = \App\Models\Setting::get('header_nav_blog_enabled', '1') === '1';
-    $navMembership = \App\Models\Setting::get('header_nav_membership_enabled', '1') === '1' && \App\Models\Setting::get('membership_enabled');
+    $headerMenuItems = \App\Models\Setting::headerMenu();
+    $currentUrl = request()->url();
+    $currentPath = trim(request()->path(), '/');
 @endphp
 
 @if ($topbarEnabled)
@@ -80,31 +78,85 @@
 
         <!-- Desktop Navigation -->
         <nav class="hidden lg:flex items-center gap-7 text-[14px] font-medium text-[#191919]">
-            @if ($navHome)
-                <a href="{{ route('home') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'home' ? 'text-[#344c3d] font-semibold' : '' }}">
-                    {{ __('app.nav.home') }}
-                </a>
-            @endif
-            @if ($navCourses)
-                <a href="{{ route('courses.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ Str::startsWith($active, 'course') ? 'text-[#344c3d] font-semibold' : '' }}">
-                    {{ __('app.nav.courses') }}
-                </a>
-            @endif
-            @if ($navInstructors)
-                <a href="{{ route('instructors.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'instructors' ? 'text-[#344c3d] font-semibold' : '' }}">
-                    {{ __('app.nav.instructors') }}
-                </a>
-            @endif
-            @if ($navBlog)
-                <a href="{{ route('blog.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'blog' ? 'text-[#344c3d] font-semibold' : '' }}">
-                    {{ __('app.nav.blog') }}
-                </a>
-            @endif
-            @if ($navMembership)
-                <a href="{{ route('membership.index') }}" class="py-2 hover:text-[#738a6e] transition-colors {{ $active === 'membership' ? 'text-[#344c3d] font-semibold' : '' }}">
-                    {{ __('app.nav.membership') }}
-                </a>
-            @endif
+            @foreach ($headerMenuItems as $item)
+                @continue(!($item['is_active'] ?? true))
+                @php
+                    $rawUrl = $item['url'] ?? '#';
+                    $resolvedUrl = str_starts_with($rawUrl, 'http') || $rawUrl === '#' ? $rawUrl : url($rawUrl);
+                    $hasChildren = !empty($item['children']) && count(array_filter($item['children'], fn($c) => $c['is_active'] ?? true)) > 0;
+                    $itemPath = trim(parse_url($resolvedUrl, PHP_URL_PATH) ?? '', '/');
+                    $isItemActive = ($rawUrl !== '#' && ($currentPath === $itemPath || ($itemPath !== '' && str_starts_with($currentPath, $itemPath))));
+                    $isChildActive = false;
+                    if ($hasChildren) {
+                        foreach ($item['children'] as $ch) {
+                            if (!($ch['is_active'] ?? true)) continue;
+                            $chUrl = $ch['url'] ?? '#';
+                            $chPath = trim(parse_url(str_starts_with($chUrl, 'http') ? $chUrl : url($chUrl), PHP_URL_PATH) ?? '', '/');
+                            if ($chUrl !== '#' && ($currentPath === $chPath || ($chPath !== '' && str_starts_with($currentPath, $chPath)))) {
+                                $isChildActive = true;
+                                break;
+                            }
+                        }
+                    }
+                @endphp
+
+                @if ($hasChildren)
+                    <!-- Top-Level Nav with Submenu Dropdown -->
+                    <div class="relative group py-2" tabindex="0">
+                        <button type="button"
+                                class="inline-flex items-center gap-1.5 py-1 text-slate-800 hover:text-[#738a6e] transition-colors cursor-pointer select-none {{ ($isItemActive || $isChildActive) ? 'text-[#344c3d] font-semibold' : '' }}"
+                                aria-haspopup="true">
+                            <span>{{ $item['label'] }}</span>
+                            @if(!empty($item['badge']))
+                                <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 tracking-wide uppercase">{{ $item['badge'] }}</span>
+                            @endif
+                            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                            </svg>
+                        </button>
+
+                        <!-- Submenu Flyout Menu -->
+                        <div class="absolute left-0 top-full pt-1.5 min-w-max opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 z-50 transform origin-top -translate-y-1 group-hover:translate-y-0 group-focus-within:translate-y-0"
+                             style="min-width: max-content;">
+                            <div class="bg-white rounded-xl shadow-xl border border-slate-200/90 py-1.5 overflow-hidden ring-1 ring-black/5 divide-y divide-slate-100">
+                                @foreach ($item['children'] as $child)
+                                    @continue(!($child['is_active'] ?? true))
+                                    @php
+                                        $cUrl = $child['url'] ?? '#';
+                                        $resCUrl = str_starts_with($cUrl, 'http') || $cUrl === '#' ? $cUrl : url($cUrl);
+                                        $cPath = trim(parse_url($resCUrl, PHP_URL_PATH) ?? '', '/');
+                                        $isCActive = ($cUrl !== '#' && ($currentPath === $cPath || ($cPath !== '' && str_starts_with($currentPath, $cPath))));
+                                    @endphp
+                                    <a href="{{ $resCUrl }}"
+                                       target="{{ $child['target'] ?? '_self' }}"
+                                       @if(($child['target'] ?? '') === '_blank') rel="noopener noreferrer" @endif
+                                       class="flex items-center justify-between gap-6 px-4 py-2.5 text-xs text-slate-700 hover:bg-[#f4f6f9] hover:text-[#344c3d] transition-colors whitespace-nowrap {{ $isCActive ? 'font-bold text-[#344c3d] bg-slate-50' : '' }}"
+                                       style="white-space: nowrap;">
+                                        <div class="flex items-center gap-2 whitespace-nowrap">
+                                            <span class="w-1.5 h-1.5 rounded-full {{ $isCActive ? 'bg-[#344c3d]' : 'bg-slate-300' }} shrink-0"></span>
+                                            <span class="whitespace-nowrap font-medium">{!! $child['label'] !!}</span>
+                                        </div>
+                                        @if(!empty($child['badge']))
+                                            <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-slate-100 text-slate-600 uppercase shrink-0">{{ $child['badge'] }}</span>
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <!-- Single Direct Link -->
+                    <a href="{{ $resolvedUrl }}"
+                       target="{{ $item['target'] ?? '_self' }}"
+                       @if(($item['target'] ?? '') === '_blank') rel="noopener noreferrer" @endif
+                       class="py-2 inline-flex items-center gap-1.5 hover:text-[#738a6e] transition-colors {{ $isItemActive ? 'text-[#344c3d] font-semibold' : '' }}">
+                        <span>{{ $item['label'] }}</span>
+                        @if(!empty($item['badge']))
+                            <span class="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 tracking-wide uppercase">{{ $item['badge'] }}</span>
+                        @endif
+                    </a>
+                @endif
+            @endforeach
         </nav>
 
         <!-- Right Action Buttons -->
@@ -131,22 +183,51 @@
                 <summary class="w-9 h-9 rounded-xl border border-[#e7e7e7] flex items-center justify-center text-gray-700 hover:text-[#738a6e] hover:border-[#738a6e] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </summary>
-                <div class="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
-                    @if ($navHome)
-                        <a href="{{ route('home') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.home') }}</a>
-                    @endif
-                    @if ($navCourses)
-                        <a href="{{ route('courses.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.courses') }}</a>
-                    @endif
-                    @if ($navInstructors)
-                        <a href="{{ route('instructors.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.instructors') }}</a>
-                    @endif
-                    @if ($navBlog)
-                        <a href="{{ route('blog.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.blog') }}</a>
-                    @endif
-                    @if ($navMembership)
-                        <a href="{{ route('membership.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.membership') }}</a>
-                    @endif
+                <div class="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60] max-h-[80vh] overflow-y-auto">
+                    @foreach ($headerMenuItems as $item)
+                        @continue(!($item['is_active'] ?? true))
+                        @php
+                            $rawUrl = $item['url'] ?? '#';
+                            $resolvedUrl = str_starts_with($rawUrl, 'http') || $rawUrl === '#' ? $rawUrl : url($rawUrl);
+                            $hasChildren = !empty($item['children']) && count(array_filter($item['children'], fn($c) => $c['is_active'] ?? true)) > 0;
+                        @endphp
+                        @if ($hasChildren)
+                            <details class="group px-3 py-1">
+                                <summary class="flex items-center justify-between py-1.5 px-1 text-sm font-medium text-slate-800 hover:text-[#344c3d] cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                                    <span class="flex items-center gap-1.5">
+                                        <span>{{ $item['label'] }}</span>
+                                        @if(!empty($item['badge']))
+                                            <span class="px-1.5 py-0.2 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 uppercase">{{ $item['badge'] }}</span>
+                                        @endif
+                                    </span>
+                                    <svg class="w-3.5 h-3.5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                                </summary>
+                                <div class="pl-3 py-1 space-y-1 border-l-2 border-slate-200 mt-1 mb-1">
+                                    @foreach ($item['children'] as $child)
+                                        @continue(!($child['is_active'] ?? true))
+                                        @php
+                                            $cUrl = $child['url'] ?? '#';
+                                            $resCUrl = str_starts_with($cUrl, 'http') || $cUrl === '#' ? $cUrl : url($cUrl);
+                                        @endphp
+                                        <a href="{{ $resCUrl }}"
+                                           target="{{ $child['target'] ?? '_self' }}"
+                                           class="block px-2 py-1.5 text-xs text-slate-600 hover:text-[#344c3d]">
+                                            {{ $child['label'] }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </details>
+                        @else
+                            <a href="{{ $resolvedUrl }}"
+                               target="{{ $item['target'] ?? '_self' }}"
+                               class="flex items-center justify-between px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">
+                                <span>{{ $item['label'] }}</span>
+                                @if(!empty($item['badge']))
+                                    <span class="px-1.5 py-0.2 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 uppercase">{{ $item['badge'] }}</span>
+                                @endif
+                            </a>
+                        @endif
+                    @endforeach
                     <div class="border-t border-gray-100 my-1"></div>
                     @if (auth('student')->check())
                         <a href="{{ route('student.dashboard') }}" class="block px-4 py-2 text-sm hover:bg-[#f4f6f9] hover:text-[#344c3d]">{{ __('app.nav.dashboard') }}</a>
