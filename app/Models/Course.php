@@ -20,7 +20,13 @@ class Course extends Model
 {
     use HasTranslations;
 
-    public const TYPES = ['recorded', 'live', 'combined'];
+    public const TYPE_RECORDED = 'recorded';
+
+    public const TYPE_LIVE = 'live';
+
+    public const TYPE_COMBINED = 'combined';
+
+    public const TYPES = [self::TYPE_RECORDED, self::TYPE_LIVE, self::TYPE_COMBINED];
 
     protected function casts(): array
     {
@@ -59,6 +65,16 @@ class Course extends Model
     public function liveClasses(): HasMany
     {
         return $this->hasMany(LiveClass::class)->orderBy('starts_at');
+    }
+
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class)->orderBy('sort_order');
+    }
+
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class);
     }
 
     public function enrollments(): HasMany

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Language;
 use App\Services\AiTranslationService;
+use App\Services\QuizService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -48,7 +49,11 @@ class CourseController extends Controller
         $data = $this->validated($request);
         $data['slug'] = $this->uniqueSlug($data['title']);
 
-        $this->myCourses()->create($data);
+        $course = $this->myCourses()->create($data);
+
+        if ($request->has('quizzes')) {
+            app(QuizService::class)->syncFromCreation($course, (array) $request->input('quizzes', []));
+        }
 
         return redirect()->route('instructor.courses.index')->with('success', __('instructor.courses.created'));
     }
@@ -58,7 +63,7 @@ class CourseController extends Controller
         $this->authorizeCourse($course);
 
         return view('pages.instructor.courses-form', [
-            'course' => $course->load(['lessons', 'liveClasses']),
+            'course' => $course->load(['lessons', 'liveClasses', 'quizzes.questions', 'quizzes.liveClass']),
             'categories' => Category::orderBy('name')->get(),
             'languages' => Language::active(),
             'defaultCode' => Language::defaultCode(),

@@ -184,6 +184,10 @@
                     </label>
                 </div>
 
+                @if (! $course->exists)
+                    @include('pages.admin.partials.course-quizzes-builder-create')
+                @endif
+
                 <div class="flex items-center gap-3 pt-2">
                     <button type="submit" class="bg-[#344c3d] hover:bg-[#283a2f] text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">{{ __('app.common.save') }}</button>
                     <a href="{{ route('instructor.courses.index') }}" class="text-sm font-semibold text-[#5d5d5d] hover:text-[#191919] px-4 py-2.5">{{ __('app.common.cancel') }}</a>
@@ -358,6 +362,11 @@
                     @endforelse
                 </div>
             </div>
+        @endif
+
+        @if ($course->exists)
+            <!-- Quizzes & Assessments Manager -->
+            @include('pages.admin.partials.course-quizzes-manager', ['course' => $course, 'userType' => 'instructor'])
         @endif
     </div>
 

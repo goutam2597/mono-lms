@@ -252,6 +252,10 @@
                     </div>
                 </div>
 
+                @if (! $course->exists)
+                    @include('pages.admin.partials.course-quizzes-builder-create')
+                @endif
+
                 <div class="flex items-center gap-3 pt-3 border-t border-neutral-200">
                     <button type="submit" class="action-btn action-btn-primary h-11 px-7 text-[11px] font-medium uppercase tracking-[0.14em]">
                         {{ __('app.common.save') }}
@@ -448,6 +452,9 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Quizzes & Assessments Manager -->
+            @include('pages.admin.partials.course-quizzes-manager', ['course' => $course, 'userType' => 'admin'])
         @endif
     </div>
 

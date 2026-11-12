@@ -68,6 +68,11 @@ class Student extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class)->latest('id');
+    }
+
     public function activeSubscription(): ?Subscription
     {
         return $this->subscriptions()

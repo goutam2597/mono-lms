@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\QuizController as AdminQuizController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\RoleController;
@@ -51,6 +52,7 @@ use App\Http\Controllers\Instructor\LessonController;
 use App\Http\Controllers\Instructor\LiveClassController as InstructorLiveClassController;
 use App\Http\Controllers\Instructor\NotificationController as InstructorNotificationController;
 use App\Http\Controllers\Instructor\ProfileController as InstructorProfileController;
+use App\Http\Controllers\Instructor\QuizController as InstructorQuizController;
 use App\Http\Controllers\Instructor\ReviewController as InstructorReviewController;
 use App\Http\Controllers\Instructor\StudentController as InstructorStudentController;
 use App\Http\Controllers\Instructor\TicketController as InstructorTicketController;
@@ -68,6 +70,7 @@ use App\Http\Controllers\Student\LearnController;
 use App\Http\Controllers\Student\NotificationController as StudentNotificationController;
 use App\Http\Controllers\Student\OrderController as StudentOrderController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Student\TicketController as StudentTicketController;
 use App\Http\Controllers\Student\WishlistController;
 use App\Http\Controllers\ThemeController;
@@ -285,6 +288,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:courses.manage')->name('live-classes.update');
     Route::delete('/live-classes/{liveClass}', [AdminLiveClassController::class, 'destroy'])
         ->middleware('permission:courses.manage')->name('live-classes.destroy');
+    Route::post('/courses/{course}/quizzes', [AdminQuizController::class, 'store'])
+        ->middleware('permission:courses.manage')->name('courses.quizzes.store');
+    Route::put('/quizzes/{quiz}', [AdminQuizController::class, 'update'])
+        ->middleware('permission:courses.manage')->name('quizzes.update');
+    Route::delete('/quizzes/{quiz}', [AdminQuizController::class, 'destroy'])
+        ->middleware('permission:courses.manage')->name('quizzes.destroy');
+    Route::post('/quizzes/{quiz}/questions', [AdminQuizController::class, 'storeQuestion'])
+        ->middleware('permission:courses.manage')->name('quizzes.questions.store');
+    Route::delete('/quiz-questions/{question}', [AdminQuizController::class, 'destroyQuestion'])
+        ->middleware('permission:courses.manage')->name('quizzes.questions.destroy');
     Route::post('/courses/bulk-destroy', [AdminCourseController::class, 'bulkDestroy'])
         ->middleware('permission:courses.manage')->name('courses.bulk-destroy');
     Route::match(['post', 'patch'], '/courses/{course}/publish', [AdminCourseController::class, 'publish'])
@@ -517,6 +530,13 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
     Route::put('/live-classes/{liveClass}', [InstructorLiveClassController::class, 'update'])->name('live-classes.update');
     Route::delete('/live-classes/{liveClass}', [InstructorLiveClassController::class, 'destroy'])->name('live-classes.destroy');
 
+    // Quizzes (recorded / live / combined)
+    Route::post('/courses/{course}/quizzes', [InstructorQuizController::class, 'store'])->name('courses.quizzes.store');
+    Route::put('/quizzes/{quiz}', [InstructorQuizController::class, 'update'])->name('quizzes.update');
+    Route::delete('/quizzes/{quiz}', [InstructorQuizController::class, 'destroy'])->name('quizzes.destroy');
+    Route::post('/quizzes/{quiz}/questions', [InstructorQuizController::class, 'storeQuestion'])->name('quizzes.questions.store');
+    Route::delete('/quiz-questions/{question}', [InstructorQuizController::class, 'destroyQuestion'])->name('quizzes.questions.destroy');
+
     Route::get('/students', [InstructorStudentController::class, 'index'])->name('students');
     Route::get('/reviews', [InstructorReviewController::class, 'index'])->name('reviews');
     Route::post('/reviews/{review}/reply', [InstructorReviewController::class, 'reply'])->name('reviews.reply');
@@ -568,7 +588,12 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::get('/certificates', [StudentCertificateController::class, 'index'])->name('certificates');
     Route::get('/certificates/{certificate}/print', [StudentCertificateController::class, 'printCertificate'])->name('certificates.print');
     Route::post('/certificates/claim/{course}', [StudentCertificateController::class, 'claim'])->name('certificates.claim');
-    Route::get('/quiz-attempts', fn () => view('pages.student.quiz-attempts'))->name('quiz-attempts');
+
+    // Quizzes & Assessments
+    Route::get('/quiz-attempts', [StudentQuizController::class, 'index'])->name('quiz-attempts');
+    Route::get('/courses/{course}/quizzes/{quiz}/take', [StudentQuizController::class, 'take'])->name('quizzes.take');
+    Route::post('/courses/{course}/quizzes/{quiz}/attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quizzes.submit');
+    Route::get('/quiz-attempts/{attempt}/review', [StudentQuizController::class, 'review'])->name('quizzes.review');
 });
 
 // ------------------------------------------------------------- Dynamic Public Pages (Catch-all permalinks)

@@ -71,7 +71,8 @@ final class LearnController extends Controller
                 ?? $lessons->first();
         }
 
-        $liveClasses = $course->liveClasses;
+        $liveClasses = $course->liveClasses()->with('quizzes')->get();
+        $quizzes = $course->quizzes()->published()->with(['liveClass'])->withCount('questions')->get();
 
         return view('pages.student.learn', [
             'course' => $course,
@@ -81,6 +82,7 @@ final class LearnController extends Controller
             'completedIds' => $completedIds,
             'liveClasses' => $liveClasses,
             'upcomingClasses' => $liveClasses->filter(fn (LiveClass $c) => $c->isUpcoming())->values(),
+            'quizzes' => $quizzes,
             'hasRecordedContent' => $course->hasRecordedContent(),
             'hasLiveContent' => $course->hasLiveContent(),
         ]);

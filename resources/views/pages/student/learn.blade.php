@@ -84,27 +84,114 @@
                             @forelse ($liveClasses as $live)
                                 <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <div class="min-w-0">
-                                        <p class="text-sm font-semibold text-[#191919] truncate">{{ $live->title }}</p>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <p class="text-sm font-semibold text-[#191919] truncate">{{ $live->title }}</p>
+                                            @if ($live->quizzes->isNotEmpty())
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800">
+                                                    Quiz Available
+                                                </span>
+                                            @endif
+                                        </div>
                                         <p class="text-[11px] text-neutral-400 mt-0.5">
                                             {{ $live->starts_at->format('D, d M Y · h:i A') }} · {{ $live->platformLabel() }} · {{ $live->duration_minutes }} min
                                             @if ($live->status !== 'scheduled')<span class="ml-1 font-semibold uppercase">{{ $live->status }}</span>@endif
                                         </p>
                                     </div>
-                                    @if ($live->isUpcoming())
-                                        <a href="{{ route('student.live-classes.join', $live) }}" target="_blank" rel="noopener"
-                                           class="shrink-0 inline-flex items-center gap-1.5 bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors">
-                                            Join Class
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                        </a>
-                                    @elseif ($live->recording_url)
-                                        <a href="{{ $live->recording_url }}" target="_blank" rel="noopener" class="shrink-0 inline-flex items-center gap-1.5 border border-[#e7e7e7] hover:border-[#344c3d] text-[#344c3d] text-xs font-bold px-4 py-2.5 rounded-lg transition-colors">Watch Recording</a>
-                                    @else
-                                        <span class="text-[11px] text-neutral-400 shrink-0">{{ ucfirst($live->status) }}</span>
-                                    @endif
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        @if ($live->quizzes->isNotEmpty())
+                                            @php $liveQuiz = $live->quizzes->first(); @endphp
+                                            <a href="{{ route('student.quizzes.take', [$course, $liveQuiz]) }}"
+                                               class="inline-flex items-center gap-1.5 border border-purple-200 hover:border-purple-400 text-purple-700 bg-purple-50 text-xs font-bold px-3 py-2 rounded-lg transition-colors">
+                                                Session Quiz
+                                            </a>
+                                        @endif
+                                        @if ($live->isUpcoming())
+                                            <a href="{{ route('student.live-classes.join', $live) }}" target="_blank" rel="noopener"
+                                               class="inline-flex items-center gap-1.5 bg-[#344c3d] hover:bg-[#283a2f] text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors">
+                                                Join Class
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                            </a>
+                                        @elseif ($live->recording_url)
+                                            <a href="{{ $live->recording_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 border border-[#e7e7e7] hover:border-[#344c3d] text-[#344c3d] text-xs font-bold px-4 py-2 rounded-lg transition-colors">Watch Recording</a>
+                                        @else
+                                            <span class="text-[11px] text-neutral-400">{{ ucfirst($live->status) }}</span>
+                                        @endif
+                                    </div>
                                 </div>
                             @empty
                                 <p class="px-5 py-8 text-center text-xs text-neutral-400">No live classes scheduled yet.</p>
                             @endforelse
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Course Quizzes & Live Assessments -->
+                @if (isset($quizzes) && $quizzes->isNotEmpty())
+                    <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden">
+                        <div class="px-5 py-4 border-b border-[#e7e7e7] flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-[#191919] text-sm">{{ $course->hasLiveContent() ? 'Quizzes & Live Assessments' : 'Quizzes & Course Assessments' }}</h3>
+                                <p class="text-[11px] text-neutral-400 mt-0.5">Test your understanding to earn course certification</p>
+                            </div>
+                            <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+                                {{ $quizzes->count() }} Total
+                            </span>
+                        </div>
+                        <div class="divide-y divide-[#e7e7e7]">
+                            @foreach ($quizzes as $quizItem)
+                                @php
+                                    $studentUser = auth('student')->user();
+                                    $best = $studentUser ? $quizItem->bestAttemptFor($studentUser) : null;
+                                    $canTake = $studentUser ? $quizItem->canAttempt($studentUser) : false;
+                                    $attemptsCount = $studentUser ? $quizItem->attemptsCount($studentUser) : 0;
+                                @endphp
+                                <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors">
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <p class="text-sm font-semibold text-[#191919] truncate">{{ $quizItem->trans('title') }}</p>
+                                            @if ($quizItem->liveClass)
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-purple-100 text-purple-800">
+                                                    Live Class: {{ $quizItem->liveClass->title }}
+                                                </span>
+                                            @elseif ($course->hasLiveContent())
+                                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-blue-100 text-blue-800">
+                                                    {{ $course->isLive() ? 'Live Assessment' : 'Course Quiz' }}
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-emerald-100 text-emerald-800">
+                                                    Course Assessment
+                                                </span>
+                                            @endif
+                                            @if ($best && $best->is_passed)
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800">
+                                                    Passed ({{ $best->formattedScore() }}) ✓
+                                                </span>
+                                            @elseif ($attemptsCount > 0)
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded bg-rose-100 text-rose-800">
+                                                    Attempted ({{ $best->formattedScore() }})
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <p class="text-[11px] text-neutral-400 mt-0.5">
+                                            {{ $quizItem->questions_count }} Questions · {{ $quizItem->time_limit_minutes > 0 ? $quizItem->time_limit_minutes.' min' : 'Untimed' }} · Passing: {{ $quizItem->passing_percentage }}% · Attempts: {{ $attemptsCount }}/{{ $quizItem->max_attempts ?: '∞' }}
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        @if ($best)
+                                            <a href="{{ route('student.quizzes.review', $best) }}"
+                                               class="action-btn action-btn-ghost h-9 px-3.5 text-[10px] font-bold uppercase tracking-wider">
+                                                Review
+                                            </a>
+                                        @endif
+                                        @if ($canTake)
+                                            <a href="{{ route('student.quizzes.take', [$course, $quizItem]) }}"
+                                               class="action-btn action-btn-primary h-9 px-4 text-[10px] font-bold uppercase tracking-wider">
+                                                {{ $attemptsCount > 0 ? 'Retake Quiz' : 'Take Quiz' }}
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 @endif
@@ -142,6 +229,12 @@
                     <div class="px-5 py-3 border-t border-[#e7e7e7] bg-[#f8fafb] flex items-center justify-between">
                         <span class="text-[11px] font-semibold text-neutral-500">Live classes</span>
                         <span class="text-[11px] font-bold text-emerald-700">{{ $upcomingClasses->count() }} upcoming</span>
+                    </div>
+                @endif
+                @if (isset($quizzes) && $quizzes->isNotEmpty())
+                    <div class="px-5 py-3 border-t border-[#e7e7e7] bg-[#f8fafb] flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-neutral-500">Quizzes & Tests</span>
+                        <span class="text-[11px] font-bold text-[#344c3d]">{{ $quizzes->count() }} available</span>
                     </div>
                 @endif
             </div>

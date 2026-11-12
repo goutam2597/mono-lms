@@ -10,6 +10,7 @@ use App\Models\Instructor;
 use App\Models\Language;
 use App\Models\Lesson;
 use App\Services\AiTranslationService;
+use App\Services\QuizService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +61,11 @@ class CourseController extends Controller
         $data['slug'] = $this->uniqueSlug($data['title']);
         $data['instructor_id'] = $this->resolveInstructorId($request);
 
-        Course::create($data);
+        $course = Course::create($data);
+
+        if ($request->has('quizzes')) {
+            app(QuizService::class)->syncFromCreation($course, (array) $request->input('quizzes', []));
+        }
 
         return redirect()->route('admin.courses.index')->with('success', __('instructor.courses.created') ?: 'Course created successfully.');
     }
@@ -68,7 +73,7 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         return view('pages.admin.courses-form', [
-            'course' => $course->load(['lessons', 'liveClasses']),
+            'course' => $course->load(['lessons', 'liveClasses', 'quizzes.questions', 'quizzes.liveClass']),
             'categories' => Category::orderBy('name')->get(),
             'instructors' => Instructor::where('status', 'active')->where('verification_status', 'approved')->orderBy('name')->get(),
             'currentAdmin' => auth('admin')->user(),

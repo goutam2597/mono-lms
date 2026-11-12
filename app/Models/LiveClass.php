@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'course_id', 'title', 'description', 'starts_at', 'duration_minutes',
@@ -26,6 +27,11 @@ class LiveClass extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class)->orderBy('sort_order');
     }
 
     public function isUpcoming(): bool
