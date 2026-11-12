@@ -25,6 +25,14 @@ class QuizService
                 continue;
             }
 
+            $retakeDelayVal = max(0, (int) ($quizData['retake_delay_minutes'] ?? ($quizData['retake_delay'] ?? 0)));
+            $retakeDelayUnit = $quizData['retake_delay_unit'] ?? 'minutes';
+            if ($retakeDelayUnit === 'hours') {
+                $retakeDelayVal *= 60;
+            } elseif ($retakeDelayUnit === 'days') {
+                $retakeDelayVal *= 1440;
+            }
+
             $quiz = $course->quizzes()->create([
                 'live_class_id' => ! empty($quizData['live_class_id']) ? (int) $quizData['live_class_id'] : null,
                 'title' => $title,
@@ -32,6 +40,7 @@ class QuizService
                 'time_limit_minutes' => max(0, (int) ($quizData['time_limit_minutes'] ?? 15)),
                 'passing_percentage' => max(1, min(100, (int) ($quizData['passing_percentage'] ?? 70))),
                 'max_attempts' => max(0, (int) ($quizData['max_attempts'] ?? 3)),
+                'retake_delay_minutes' => $retakeDelayVal,
                 'is_published' => isset($quizData['is_published']) ? (bool) $quizData['is_published'] : true,
                 'sort_order' => $quizSortOrder++,
             ]);

@@ -17,6 +17,7 @@ final class QuizController extends Controller
         $data['course_id'] = $course->id;
         $data['sort_order'] = $course->quizzes()->count() + 1;
         $data['is_published'] = $request->boolean('is_published', true);
+        $data['retake_delay_minutes'] = $this->resolveRetakeDelayMinutes($request);
 
         $quiz = Quiz::create($data);
 
@@ -30,6 +31,7 @@ final class QuizController extends Controller
     {
         $data = $this->validatedQuiz($request, $quiz->course);
         $data['is_published'] = $request->boolean('is_published', true);
+        $data['retake_delay_minutes'] = $this->resolveRetakeDelayMinutes($request);
 
         $quiz->update($data);
 
@@ -100,7 +102,25 @@ final class QuizController extends Controller
             'time_limit_minutes' => ['nullable', 'integer', 'min:0', 'max:300'],
             'passing_percentage' => ['required', 'integer', 'min:1', 'max:100'],
             'max_attempts' => ['nullable', 'integer', 'min:0', 'max:50'],
+            'retake_delay_minutes' => ['nullable', 'integer', 'min:0', 'max:10080'],
+            'retake_delay_unit' => ['nullable', 'string', 'in:minutes,hours,days'],
         ]);
+    }
+
+    private function resolveRetakeDelayMinutes(Request $request): int
+    {
+        $val = max(0, (int) $request->input('retake_delay_minutes', 0));
+        $unit = $request->input('retake_delay_unit', 'minutes');
+
+        if ($unit === 'hours') {
+            return $val * 60;
+        }
+
+        if ($unit === 'days') {
+            return $val * 1440;
+        }
+
+        return $val;
     }
 
     private function syncQuestions(Request $request, Quiz $quiz): void

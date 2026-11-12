@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Models\Student;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class QuizSystemTest extends TestCase
@@ -529,5 +530,113 @@ class QuizSystemTest extends TestCase
         $response->assertSee('Quizzes & Course Assessments');
         $response->assertSee('Recorded Module 1 Quiz');
         $response->assertSee('Course Assessment');
+    }
+
+    public function test_admin_and_instructor_can_configure_retake_cooldown_delay_by_time(): void
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        // Admin updates retake cooldown to 24 hours (1440 minutes)
+        $resp = $this->put(route('admin.quizzes.update', $this->quiz), [
+            'title' => $this->quiz->title,
+            'passing_percentage' => 70,
+            'time_limit_minutes' => 15,
+            'max_attempts' => 3,
+            'retake_delay_minutes' => 24,
+            'retake_delay_unit' => 'hours',
+        ]);
+        $resp->assertRedirect();
+
+        $this->quiz->refresh();
+        $this->assertEquals(1440, $this->quiz->retake_delay_minutes);
+        $this->assertEquals('1 day', $this->quiz->retakeDelayFormatted());
+
+        // Instructor sets retake delay in minutes
+        $this->actingAs($this->instructor, 'instructor');
+        $instResp = $this->put(route('instructor.quizzes.update', $this->quiz), [
+            'title' => $this->quiz->title,
+            'passing_percentage' => 75,
+            'time_limit_minutes' => 20,
+            'max_attempts' => 5,
+            'retake_delay_minutes' => 45,
+            'retake_delay_unit' => 'minutes',
+        ]);
+        $instResp->assertRedirect();
+
+        $this->quiz->refresh();
+        $this->assertEquals(45, $this->quiz->retake_delay_minutes);
+        $this->assertEquals('45 mins', $this->quiz->retakeDelayFormatted());
+    }
+
+    public function test_student_cannot_retake_quiz_while_cooldown_is_active_and_can_retake_after_cooldown(): void
+    {
+        // Set a 2-hour cooldown on the quiz
+        $this->quiz->update([
+            'retake_delay_minutes' => 120,
+            'max_attempts' => 3,
+        ]);
+
+        // Student completes an attempt 30 minutes ago (1.5 hours remaining on cooldown)
+        QuizAttempt::create([
+            'quiz_id' => $this->quiz->id,
+            'student_id' => $this->student->id,
+            'course_id' => $this->course->id,
+            'attempt_number' => 1,
+            'total_questions' => 1,
+            'correct_answers_count' => 0,
+            'score_percentage' => 0.00,
+            'is_passed' => false,
+            'started_at' => now()->subMinutes(40),
+            'completed_at' => now()->subMinutes(30),
+            'answers' => [$this->question->id => 'a'],
+        ]);
+
+        $this->assertTrue($this->quiz->isRetakeLocked($this->student));
+        $this->assertFalse($this->quiz->canAttempt($this->student));
+
+        // Visiting take route should redirect with cooldown active message
+        $response = $this->actingAs($this->student, 'student')
+            ->get(route('student.quizzes.take', [$this->course, $this->quiz]));
+
+        $response->assertRedirect(route('student.courses.learn', $this->course));
+        $response->assertSessionHas('error');
+
+        // Viewing attempts page should show cooldown badge
+        $attemptsResp = $this->actingAs($this->student, 'student')
+            ->get(route('student.quiz-attempts'));
+        $attemptsResp->assertOk();
+        $attemptsResp->assertSee('Retake in');
+
+        // Fast-forward time past 2 hours (121 minutes)
+        Carbon::setTestNow(now()->addMinutes(121));
+
+        $this->assertFalse($this->quiz->isRetakeLocked($this->student));
+        $this->assertTrue($this->quiz->canAttempt($this->student));
+
+        // Now retaking is allowed and creates attempt #2
+        $retakeResp = $this->actingAs($this->student, 'student')
+            ->get(route('student.quizzes.take', [$this->course, $this->quiz]));
+        $retakeResp->assertOk();
+
+        $this->assertDatabaseHas('quiz_attempts', [
+            'quiz_id' => $this->quiz->id,
+            'student_id' => $this->student->id,
+            'attempt_number' => 2,
+        ]);
+
+        Carbon::setTestNow(); // Reset test clock
+    }
+
+    public function test_quiz_timer_displays_time_limit_and_countdown_box(): void
+    {
+        $this->quiz->update(['time_limit_minutes' => 25]);
+
+        $response = $this->actingAs($this->student, 'student')
+            ->get(route('student.quizzes.take', [$this->course, $this->quiz]));
+
+        $response->assertOk();
+        $response->assertSee('Time Remaining');
+        $response->assertSee('id="quiz-timer-box"', false);
+        $response->assertSee('id="timer-display"', false);
     }
 }

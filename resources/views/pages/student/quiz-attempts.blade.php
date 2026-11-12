@@ -132,11 +132,17 @@
                                            class="text-[var(--theme-primary,#344c3d)] hover:underline font-semibold text-xs">
                                             View Review →
                                         </a>
-                                        @if ($attempt->quiz && $attempt->course && $attempt->quiz->canAttempt(auth('student')->user()))
-                                            <a href="{{ route('student.quizzes.take', [$attempt->course, $attempt->quiz]) }}"
-                                               class="bg-[#344c3d] hover:bg-[#25372c] text-white px-2.5 py-1 rounded text-[10px] font-bold transition-colors">
-                                                Retake Quiz
-                                            </a>
+                                        @if ($attempt->quiz && $attempt->course)
+                                            @if ($attempt->quiz->isRetakeLocked(auth('student')->user()))
+                                                <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-semibold" title="Unlock time decided by instructor">
+                                                    ⏳ Retake in {{ $attempt->quiz->retakeCooldownRemainingHuman(auth('student')->user()) }}
+                                                </span>
+                                            @elseif ($attempt->quiz->canAttempt(auth('student')->user()))
+                                                <a href="{{ route('student.quizzes.take', [$attempt->course, $attempt->quiz]) }}"
+                                                   class="bg-[#344c3d] hover:bg-[#25372c] text-white px-2.5 py-1 rounded text-[10px] font-bold transition-colors">
+                                                    Retake Quiz
+                                                </a>
+                                            @endif
                                         @endif
                                     </div>
                                 </td>
@@ -213,7 +219,18 @@
                                 <span class="text-[11px] text-slate-400">
                                     Attempts: {{ $userAttemptsCount }}/{{ $q->max_attempts ?: '∞' }}
                                 </span>
-                                @if ($canTake)
+                                @if ($q->isRetakeLocked(auth('student')->user()))
+                                    @php
+                                        $cooldownSecs = $q->retakeCooldownRemainingSeconds(auth('student')->user());
+                                        $cooldownHuman = $q->retakeCooldownRemainingHuman(auth('student')->user());
+                                    @endphp
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] bg-amber-50 text-amber-800 border border-amber-200 text-xs font-semibold retake-cooldown-timer"
+                                          data-remaining="{{ $cooldownSecs }}"
+                                          data-take-url="{{ route('student.quizzes.take', [$q->course, $q]) }}"
+                                          title="Retake wait period decided by instructor">
+                                        ⏳ Retake in <span class="cooldown-countdown font-bold font-mono">{{ $cooldownHuman }}</span>
+                                    </span>
+                                @elseif ($canTake)
                                     <a href="{{ route('student.quizzes.take', [$q->course, $q]) }}"
                                        class="bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-bold px-3.5 py-1.5 rounded transition-colors">
                                         {{ $userAttemptsCount > 0 ? 'Retake Quiz' : 'Take Quiz' }}
@@ -231,5 +248,45 @@
             </div>
         @endif
     </div>
+
+    <!-- Live Retake Cooldown Countdown Script -->
+    <script>
+        (function() {
+            var cooldownElements = document.querySelectorAll('.retake-cooldown-timer');
+            if (!cooldownElements.length) return;
+
+            function formatCooldown(secs) {
+                var hrs = Math.floor(secs / 3600);
+                var mins = Math.floor((secs % 3600) / 60);
+                var s = secs % 60;
+                if (hrs > 0) return hrs + 'h ' + mins + 'm';
+                if (mins > 0) return mins + 'm ' + s + 's';
+                return s + 's';
+            }
+
+            setInterval(function() {
+                cooldownElements.forEach(function(el) {
+                    var remaining = parseInt(el.getAttribute('data-remaining') || '0', 10);
+                    if (remaining > 1) {
+                        remaining--;
+                        el.setAttribute('data-remaining', remaining);
+                        var span = el.querySelector('.cooldown-countdown');
+                        if (span) span.innerText = formatCooldown(remaining);
+                    } else if (remaining === 1) {
+                        // Cooldown ended, convert to active Retake button
+                        var url = el.getAttribute('data-take-url');
+                        var parent = el.parentNode;
+                        if (parent && url) {
+                            var btn = document.createElement('a');
+                            btn.href = url;
+                            btn.className = "bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-bold px-3.5 py-1.5 rounded transition-colors animate-bounce";
+                            btn.innerText = "Retake Quiz Now";
+                            parent.replaceChild(btn, el);
+                        }
+                    }
+                });
+            }, 1000);
+        })();
+    </script>
 
 </x-layouts.dashboard>

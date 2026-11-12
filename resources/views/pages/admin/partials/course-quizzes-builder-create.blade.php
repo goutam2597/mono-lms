@@ -61,6 +61,20 @@
                 <input type="number" name="quizzes[__Q_INDEX__][max_attempts]" min="0" value="3" placeholder="0 = unlimited" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded-md focus:outline-none focus:border-neutral-900">
             </div>
 
+            <!-- Retake Wait Cooldown -->
+            <div class="space-y-1.5 sm:col-span-2">
+                <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Retake Cooldown Wait Time</label>
+                <div class="grid grid-cols-[1fr_100px] gap-2">
+                    <input type="number" name="quizzes[__Q_INDEX__][retake_delay_minutes]" min="0" value="0" placeholder="0 = immediate" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded-md focus:outline-none focus:border-neutral-900">
+                    <select name="quizzes[__Q_INDEX__][retake_delay_unit]" class="h-9 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2 text-xs rounded-md focus:outline-none focus:border-neutral-900">
+                        <option value="hours" selected>Hours</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="days">Days</option>
+                    </select>
+                </div>
+                <p class="text-[10px] text-neutral-400">Wait duration between attempts before retake is unlocked (0 = immediate).</p>
+            </div>
+
             <div class="space-y-1.5 sm:col-span-2 flex items-center pt-5">
                 <label class="inline-flex items-center gap-2 cursor-pointer select-none">
                     <input type="checkbox" name="quizzes[__Q_INDEX__][is_published]" value="1" checked class="rounded border-neutral-300 text-[#344c3d] focus:ring-0">

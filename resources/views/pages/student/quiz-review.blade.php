@@ -16,7 +16,11 @@
             </div>
 
             <div class="flex items-center gap-2">
-                @if ($quiz->canAttempt(auth('student')->user()))
+                @if ($quiz->isRetakeLocked(auth('student')->user()))
+                    <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-[6px] text-xs font-semibold" title="Retake cooldown decided by instructor">
+                        ⏳ Retake in {{ $quiz->retakeCooldownRemainingHuman(auth('student')->user()) }}
+                    </span>
+                @elseif ($quiz->canAttempt(auth('student')->user()))
                     <a href="{{ route('student.quizzes.take', [$course, $quiz]) }}"
                        class="bg-[#344c3d] hover:bg-[#25372c] text-white text-xs font-bold px-3.5 py-1.5 rounded-[6px] transition-colors">
                         Retake Quiz
@@ -28,6 +32,20 @@
                 </a>
             </div>
         </div>
+
+        @if ($quiz->isRetakeLocked(auth('student')->user()))
+            <div class="bg-amber-50 border border-amber-200 rounded-[10px] p-4 flex items-center justify-between gap-3 text-xs text-amber-900 shadow-xs">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-base">⏳</span>
+                    <div>
+                        <strong class="font-bold">Retake Cooldown Active:</strong>
+                        Your instructor has set a wait period of {{ $quiz->retakeDelayFormatted() }} between attempts. Next attempt opens in
+                        <span class="font-bold font-mono">{{ $quiz->retakeCooldownRemainingHuman(auth('student')->user()) }}</span>
+                        ({{ $quiz->retakeAvailableAt(auth('student')->user())?->format('M d, Y · h:i A') }}).
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- Gradebook Result Hero Card -->
         <div class="bg-white border border-[#e2e8f0] rounded-[10px] p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-center gap-6 sm:gap-8">

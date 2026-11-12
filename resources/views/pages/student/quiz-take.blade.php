@@ -35,15 +35,26 @@
                     <div class="text-sm font-bold text-slate-900" id="answered-counter">0 / {{ $questions->count() }}</div>
                 </div>
 
-                <!-- Timer (if timed) -->
+                <!-- Timer Widget -->
                 @if ($quiz->time_limit_minutes > 0)
                     @php
                         $endTime = $attempt->started_at->addMinutes($quiz->time_limit_minutes)->timestamp;
                         $remainingSeconds = max(0, $endTime - now()->timestamp);
+                        $totalSeconds = $quiz->time_limit_minutes * 60;
                     @endphp
-                    <div class="bg-slate-900 text-white px-3.5 py-2 rounded-[8px] flex items-center gap-2 font-mono" id="quiz-timer-box">
-                        <svg class="w-4 h-4 text-emerald-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span class="text-sm font-bold" id="timer-display">--:--</span>
+                    <div class="flex flex-col items-end">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Time Remaining</span>
+                        <div class="bg-slate-900 text-white px-3.5 py-1.5 rounded-[8px] flex items-center gap-2 font-mono transition-colors shadow-sm" id="quiz-timer-box">
+                            <svg class="w-4 h-4 text-emerald-400 animate-pulse" id="timer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span class="text-sm sm:text-base font-bold tracking-wider" id="timer-display">--:--</span>
+                        </div>
+                    </div>
+                @else
+                    <div class="flex flex-col items-end">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Mode</span>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[8px] bg-slate-100 text-slate-700 border border-slate-200">
+                            ⏱️ Untimed
+                        </span>
                     </div>
                 @endif
             </div>
@@ -54,6 +65,17 @@
                 <span class="font-bold text-slate-800 block mb-1">Instructions:</span>
                 {{ $quiz->trans('description') }}
                 <div class="mt-2 text-[11px] text-slate-500">Passing score required: <strong>{{ $quiz->passing_percentage }}%</strong>. Answer each question carefully before submitting.</div>
+            </div>
+        @endif
+
+        <!-- Floating Critical Timer Warning Banner -->
+        @if ($quiz->time_limit_minutes > 0)
+            <div id="timer-critical-alert" class="hidden fixed bottom-5 right-5 z-50 bg-rose-600 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 animate-bounce border-2 border-white/30 max-w-sm">
+                <span class="text-xl">⚠️</span>
+                <div class="text-xs font-bold leading-tight">
+                    Less than 1 minute remaining!
+                    <span class="block font-normal text-[11px] text-white/90">Your answers will be automatically submitted when time runs out.</span>
+                </div>
             </div>
         @endif
 
@@ -130,33 +152,80 @@
     @if ($quiz->time_limit_minutes > 0)
         <script>
             (function() {
-                var remaining = {{ $remainingSeconds }};
+                var initialRemaining = {{ $remainingSeconds }};
+                var targetEndTime = Date.now() + (initialRemaining * 1000);
                 var timerDisplay = document.getElementById('timer-display');
                 var timerBox = document.getElementById('quiz-timer-box');
+                var timerIcon = document.getElementById('timer-icon');
                 var form = document.getElementById('quiz-form');
+                var criticalAlert = document.getElementById('timer-critical-alert');
+                var isSubmitting = false;
 
-                function updateTimer() {
+                function formatTime(totalSecs) {
+                    var hrs = Math.floor(totalSecs / 3600);
+                    var mins = Math.floor((totalSecs % 3600) / 60);
+                    var secs = totalSecs % 60;
+
+                    if (hrs > 0) {
+                        return (hrs < 10 ? '0' : '') + hrs + ':' + (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                    }
+                    return (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                }
+
+                function tick() {
+                    if (isSubmitting) return;
+
+                    var now = Date.now();
+                    var remaining = Math.max(0, Math.round((targetEndTime - now) / 1000));
+
                     if (remaining <= 0) {
+                        isSubmitting = true;
                         timerDisplay.innerText = "00:00";
-                        alert("Time limit expired! Submitting your answers automatically.");
-                        form.submit();
+                        if (timerBox) {
+                            timerBox.className = "bg-rose-700 text-white px-3.5 py-1.5 rounded-[8px] flex items-center gap-2 font-mono shadow-sm";
+                        }
+                        // Lock inputs
+                        document.querySelectorAll('.option-radio').forEach(function(r) { r.readOnly = true; });
+
+                        // Show auto-submit notification
+                        if (criticalAlert) {
+                            criticalAlert.classList.remove('hidden');
+                            criticalAlert.innerHTML = '<span class="text-xl">⏱️</span><div class="text-xs font-bold leading-tight">Time limit expired!<span class="block font-normal text-[11px] text-white/90">Submitting your answers automatically now...</span></div>';
+                        }
+
+                        setTimeout(function() {
+                            form.submit();
+                        }, 600);
                         return;
                     }
 
-                    var mins = Math.floor(remaining / 60);
-                    var secs = remaining % 60;
-                    timerDisplay.innerText = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                    timerDisplay.innerText = formatTime(remaining);
 
-                    if (remaining < 120) {
-                        timerBox.classList.remove('bg-slate-900');
-                        timerBox.classList.add('bg-rose-600', 'animate-pulse');
+                    // Under 1 minute (critical danger state)
+                    if (remaining <= 60) {
+                        if (timerBox) {
+                            timerBox.className = "bg-rose-600 text-white px-3.5 py-1.5 rounded-[8px] flex items-center gap-2 font-mono transition-colors shadow-sm animate-pulse";
+                        }
+                        if (timerIcon) {
+                            timerIcon.className = "w-4 h-4 text-white animate-spin";
+                        }
+                        if (criticalAlert && criticalAlert.classList.contains('hidden')) {
+                            criticalAlert.classList.remove('hidden');
+                        }
+                    } else if (remaining <= 300) {
+                        // Under 5 minutes (amber caution state)
+                        if (timerBox) {
+                            timerBox.className = "bg-amber-500 text-white px-3.5 py-1.5 rounded-[8px] flex items-center gap-2 font-mono transition-colors shadow-sm";
+                        }
+                        if (timerIcon) {
+                            timerIcon.className = "w-4 h-4 text-white animate-pulse";
+                        }
                     }
 
-                    remaining--;
-                    setTimeout(updateTimer, 1000);
+                    setTimeout(tick, 1000);
                 }
 
-                updateTimer();
+                tick();
             })();
         </script>
     @endif

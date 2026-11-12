@@ -106,6 +106,16 @@ final class QuizController extends Controller
             );
         }
 
+        // Check if retake cooldown is active
+        if ($quiz->isRetakeLocked($student)) {
+            $remaining = $quiz->retakeCooldownRemainingHuman($student);
+            $availableAt = $quiz->retakeAvailableAt($student)?->format('M d, Y · h:i A');
+
+            return redirect()
+                ->route('student.courses.learn', $course)
+                ->with('error', "Retake cooldown active: You can retake this quiz in {$remaining} (available {$availableAt}).");
+        }
+
         // Check if student has remaining attempts
         if (! $quiz->canAttempt($student)) {
             $latest = $quiz->latestAttemptFor($student);

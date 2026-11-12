@@ -39,6 +39,20 @@
                 <input type="number" name="max_attempts" min="0" value="3" placeholder="0 for unlimited" class="h-10 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3.5 text-sm rounded-lg focus:outline-none focus:border-neutral-900">
             </div>
 
+            <!-- Retake Wait Period (decided by admin / instructor) -->
+            <div class="space-y-1.5 sm:col-span-2">
+                <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Retake Cooldown / Wait Time</label>
+                <div class="grid grid-cols-[1fr_110px] gap-2">
+                    <input type="number" name="retake_delay_minutes" min="0" value="0" placeholder="0 = immediate" class="h-10 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3.5 text-sm rounded-lg focus:outline-none focus:border-neutral-900">
+                    <select name="retake_delay_unit" class="h-10 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2.5 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                        <option value="hours" selected>Hours</option>
+                        <option value="minutes">Minutes</option>
+                        <option value="days">Days</option>
+                    </select>
+                </div>
+                <p class="text-[11px] text-neutral-400">Delay before student can retake this quiz (e.g. 24 hours, 0 = immediate).</p>
+            </div>
+
             <!-- Associate with Live Class (for live / combined courses) or Scope for Pre-recorded -->
             @if ($course->hasLiveContent() && $course->liveClasses->isNotEmpty())
                 <div class="space-y-1.5 sm:col-span-3">
@@ -119,11 +133,16 @@
                             </span>
                         </div>
                         <p class="text-xs text-neutral-400 mt-1">
-                            {{ $quiz->questions->count() }} Questions · {{ $quiz->time_limit_minutes > 0 ? $quiz->time_limit_minutes.' mins' : 'Untimed' }} · Max Attempts: {{ $quiz->max_attempts ?: 'Unlimited' }} · {{ $quiz->attempts_count }} Student Attempts
+                            {{ $quiz->questions->count() }} Questions · Timer: {{ $quiz->time_limit_minutes > 0 ? $quiz->time_limit_minutes.' mins' : 'Untimed' }} · Retake Cooldown: <span class="font-semibold text-neutral-700 dark:text-neutral-200">{{ $quiz->retakeDelayFormatted() }}</span> · Max Attempts: {{ $quiz->max_attempts ?: 'Unlimited' }} · {{ $quiz->attempts_count }} Student Attempts
                         </p>
                     </div>
 
                     <div class="flex items-center gap-2 shrink-0">
+                        <button type="button"
+                                onclick="document.getElementById('quiz-settings-{{ $quiz->id }}').classList.toggle('hidden')"
+                                class="action-btn action-btn-secondary h-8 px-3 text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1">
+                            ⚙️ Edit Settings
+                        </button>
                         <button type="button"
                                 onclick="document.getElementById('quiz-questions-{{ $quiz->id }}').classList.toggle('hidden')"
                                 class="action-btn action-btn-ghost h-8 px-3 text-[10px] font-semibold uppercase tracking-wider">
@@ -137,6 +156,48 @@
                             </button>
                         </form>
                     </div>
+                </div>
+
+                <!-- Quiz Settings Edit Panel (collapsible) -->
+                <div id="quiz-settings-{{ $quiz->id }}" class="hidden p-4 sm:p-5 bg-neutral-50/80 dark:bg-neutral-800/60 border-b border-neutral-200 dark:border-neutral-700">
+                    <form action="{{ route($userType . '.quizzes.update', $quiz) }}" method="POST" class="space-y-4">
+                        @csrf
+                        @method('PUT')
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                            <div class="space-y-1 sm:col-span-2">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Quiz Title</label>
+                                <input type="text" name="title" value="{{ $quiz->title }}" required class="h-8 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Timer (Mins)</label>
+                                <input type="number" name="time_limit_minutes" min="0" value="{{ $quiz->time_limit_minutes }}" class="h-8 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Pass (%)</label>
+                                <input type="number" name="passing_percentage" min="1" max="100" value="{{ $quiz->passing_percentage }}" required class="h-8 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Max Attempts</label>
+                                <input type="number" name="max_attempts" min="0" value="{{ $quiz->max_attempts }}" class="h-8 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                            </div>
+                            <div class="space-y-1 sm:col-span-3">
+                                <label class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400">Retake Cooldown (Decided by Admin/Instructor)</label>
+                                <div class="grid grid-cols-[1fr_100px] gap-2">
+                                    <input type="number" name="retake_delay_minutes" min="0" value="{{ $quiz->retake_delay_minutes >= 60 ? ($quiz->retake_delay_minutes / 60) : $quiz->retake_delay_minutes }}" class="h-8 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                                    <select name="retake_delay_unit" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-2 text-xs rounded focus:outline-none focus:border-neutral-900">
+                                        <option value="hours" @selected($quiz->retake_delay_minutes >= 60 || $quiz->retake_delay_minutes === 0)>Hours</option>
+                                        <option value="minutes" @selected($quiz->retake_delay_minutes > 0 && $quiz->retake_delay_minutes < 60)>Minutes</option>
+                                        <option value="days" @selected($quiz->retake_delay_minutes >= 1440 && $quiz->retake_delay_minutes % 1440 === 0)>Days</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-end sm:col-span-2">
+                                <button type="submit" class="action-btn action-btn-primary h-8 px-4 text-[10px] font-bold uppercase tracking-wider">
+                                    Save Settings
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Questions Manager Accordion Body -->

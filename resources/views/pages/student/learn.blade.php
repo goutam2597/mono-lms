@@ -183,7 +183,11 @@
                                                 Review
                                             </a>
                                         @endif
-                                        @if ($canTake)
+                                        @if ($studentUser && $quizItem->isRetakeLocked($studentUser))
+                                            <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-semibold px-3 py-2 rounded-lg" title="Retake wait cooldown decided by instructor">
+                                                ⏳ Retake in {{ $quizItem->retakeCooldownRemainingHuman($studentUser) }}
+                                            </span>
+                                        @elseif ($canTake)
                                             <a href="{{ route('student.quizzes.take', [$course, $quizItem]) }}"
                                                class="action-btn action-btn-primary h-9 px-4 text-[10px] font-bold uppercase tracking-wider">
                                                 {{ $attemptsCount > 0 ? 'Retake Quiz' : 'Take Quiz' }}
