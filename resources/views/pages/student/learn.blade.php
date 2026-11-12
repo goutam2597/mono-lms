@@ -86,9 +86,17 @@
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <p class="text-sm font-semibold text-[#191919] truncate">{{ $live->title }}</p>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border {{ $live->classTypeBadgeClasses() }}">
+                                                {{ $live->classTypeLabel() }}
+                                            </span>
                                             @if ($live->quizzes->isNotEmpty())
                                                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800">
                                                     Quiz Available
+                                                </span>
+                                            @endif
+                                            @if ($live->attendedBy(auth('student')->user()))
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                    Attended ✓
                                                 </span>
                                             @endif
                                         </div>
@@ -199,6 +207,65 @@
                         </div>
                     </div>
                 @endif
+
+                <!-- Course Assignments & Practical Projects (Ostad cohort-based learning) -->
+                @if (isset($assignments) && $assignments->isNotEmpty())
+                    <div class="bg-white border border-[#e7e7e7] rounded-2xl overflow-hidden">
+                        <div class="px-5 py-4 border-b border-[#e7e7e7] flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-[#191919] text-sm">Assignments & Practical Projects</h3>
+                                <p class="text-[11px] text-neutral-400 mt-0.5">Hands-on tasks evaluated with personalized instructor feedback</p>
+                            </div>
+                            <span class="text-[11px] font-semibold text-[#344c3d] bg-[#344c3d]/10 px-2.5 py-1 rounded border border-[#344c3d]/20">
+                                {{ $assignments->count() }} Total
+                            </span>
+                        </div>
+                        <div class="divide-y divide-[#e7e7e7]">
+                            @foreach ($assignments as $assignmentItem)
+                                @php
+                                    $studentSub = $assignmentItem->submissionFor(auth('student')->user());
+                                @endphp
+                                <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors">
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <p class="text-sm font-semibold text-[#191919] truncate">{{ $assignmentItem->title }}</p>
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded bg-slate-100 text-slate-700">
+                                                {{ $assignmentItem->total_points }} pts (Pass: {{ $assignmentItem->pass_points }})
+                                            </span>
+                                            @if (! $studentSub)
+                                                <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-800">
+                                                    Not Submitted
+                                                </span>
+                                            @elseif ($studentSub->isGraded())
+                                                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded {{ $studentSub->isPassed() ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' }}">
+                                                    {{ $studentSub->isPassed() ? 'Passed' : 'Needs Revision' }} ({{ $studentSub->score }} / {{ $assignmentItem->total_points }} pts)
+                                                </span>
+                                            @elseif ($studentSub->status === 'resubmission_requested')
+                                                <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-800">
+                                                    Retest Requested
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-bold rounded bg-blue-100 text-blue-800">
+                                                    Under Review
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <p class="text-[11px] text-neutral-400 mt-0.5">
+                                            Due: {{ $assignmentItem->due_date ? $assignmentItem->due_date->format('D, d M Y · h:i A') : 'No deadline' }}
+                                            @if ($assignmentItem->isPastDue())<span class="text-rose-500 font-semibold ml-1">(Past Due)</span>@endif
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <a href="{{ route('student.assignments.show', [$course, $assignmentItem]) }}"
+                                           class="action-btn {{ $studentSub ? 'action-btn-ghost' : 'action-btn-primary' }} h-9 px-4 text-[10px] font-bold uppercase tracking-wider">
+                                            {{ $studentSub ? 'View Submission' : 'Submit Work' }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <!-- Sidebar: lesson list -->
@@ -239,6 +306,36 @@
                     <div class="px-5 py-3 border-t border-[#e7e7e7] bg-[#f8fafb] flex items-center justify-between">
                         <span class="text-[11px] font-semibold text-neutral-500">Quizzes & Tests</span>
                         <span class="text-[11px] font-bold text-[#344c3d]">{{ $quizzes->count() }} available</span>
+                    </div>
+                @endif
+                @if (isset($leaderboard) && $leaderboard->isNotEmpty())
+                    <div class="p-4 border-t border-[#e7e7e7] bg-[#fcfdfd] space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold text-[#191919] flex items-center gap-1.5">
+                                <span>🏆</span> Cohort Leaderboard
+                            </h4>
+                            @if (isset($myRank) && $myRank)
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-[#344c3d] text-white">
+                                    Rank #{{ $myRank['rank'] }}
+                                </span>
+                            @endif
+                        </div>
+                        <div class="space-y-1.5">
+                            @foreach ($leaderboard->take(3) as $topEntry)
+                                <div class="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-white border border-[#e7e7e7]">
+                                    <div class="flex items-center gap-2 truncate">
+                                        <span class="font-bold text-[11px] text-neutral-400 w-4 text-center">
+                                            @if ($loop->iteration === 1) 🥇 @elseif ($loop->iteration === 2) 🥈 @else 🥉 @endif
+                                        </span>
+                                        <span class="truncate font-medium text-slate-800">{{ $topEntry['student']?->name }}</span>
+                                    </div>
+                                    <span class="font-extrabold text-[#344c3d] text-[11px] shrink-0">{{ $topEntry['total_score'] }} pts</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        <a href="{{ route('student.courses.leaderboard', $course) }}" class="block text-center text-[11px] font-bold text-[#344c3d] hover:underline pt-1">
+                            View Full Leaderboard ({{ $leaderboard->count() }} peers) →
+                        </a>
                     </div>
                 @endif
             </div>

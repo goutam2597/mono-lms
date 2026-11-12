@@ -9,6 +9,7 @@ use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\LessonCompletion;
 use App\Models\LiveClass;
+use App\Models\LiveClassAttendance;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -71,8 +72,11 @@ final class LearnController extends Controller
                 ?? $lessons->first();
         }
 
-        $liveClasses = $course->liveClasses()->with('quizzes')->get();
+        $liveClasses = $course->liveClasses()->with(['quizzes', 'attendances'])->get();
         $quizzes = $course->quizzes()->published()->with(['liveClass'])->withCount('questions')->get();
+        $assignments = $course->assignments()->published()->with(['submissions' => fn ($q) => $q->where('student_id', $student->id)])->get();
+        $leaderboard = $course->cohortLeaderboard();
+        $myRank = $leaderboard->firstWhere('student_id', $student->id);
 
         return view('pages.student.learn', [
             'course' => $course,
@@ -83,6 +87,9 @@ final class LearnController extends Controller
             'liveClasses' => $liveClasses,
             'upcomingClasses' => $liveClasses->filter(fn (LiveClass $c) => $c->isUpcoming())->values(),
             'quizzes' => $quizzes,
+            'assignments' => $assignments,
+            'leaderboard' => $leaderboard,
+            'myRank' => $myRank,
             'hasRecordedContent' => $course->hasRecordedContent(),
             'hasLiveContent' => $course->hasLiveContent(),
         ]);
@@ -132,6 +139,13 @@ final class LearnController extends Controller
             ->exists();
 
         abort_unless($enrolled, 403);
+
+        LiveClassAttendance::firstOrCreate([
+            'live_class_id' => $liveClass->id,
+            'student_id' => $student->id,
+        ], [
+            'joined_at' => now(),
+        ]);
 
         return redirect()->away($liveClass->meeting_url);
     }

@@ -51,6 +51,7 @@ final class LiveClassController extends Controller
             'starts_at' => ['required', 'date', 'after:yesterday'],
             'duration_minutes' => ['nullable', 'integer', 'min:5', 'max:600'],
             'meeting_platform' => ['required', 'string', 'in:zoom,google_meet,jitsi,other'],
+            'class_type' => ['nullable', 'string', 'in:main,conceptual,scrum'],
             'meeting_url' => ['required', 'url', 'max:500'],
             'recording_url' => ['nullable', 'url', 'max:500'],
             'status' => ['nullable', 'string', 'in:scheduled,live,completed,cancelled'],

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AiController;
 use App\Http\Controllers\Admin\AiSettingsController;
 use App\Http\Controllers\Admin\AiTranslationController;
+use App\Http\Controllers\Admin\AssignmentController as AdminAssignmentController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
@@ -48,6 +49,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseReviewController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Instructor\AssignmentController as InstructorAssignmentController;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboardController;
 use App\Http\Controllers\Instructor\LessonController;
@@ -65,9 +67,11 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PublicCertificateController;
 use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\SearchSuggestionController;
+use App\Http\Controllers\Student\AssignmentController as StudentAssignmentController;
 use App\Http\Controllers\Student\CertificateController as StudentCertificateController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\EnrollmentController;
+use App\Http\Controllers\Student\LeaderboardController as StudentLeaderboardController;
 use App\Http\Controllers\Student\LearnController;
 use App\Http\Controllers\Student\NotificationController as StudentNotificationController;
 use App\Http\Controllers\Student\OrderController as StudentOrderController;
@@ -300,6 +304,20 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         ->middleware('permission:courses.manage')->name('quizzes.questions.store');
     Route::delete('/quiz-questions/{question}', [AdminQuizController::class, 'destroyQuestion'])
         ->middleware('permission:courses.manage')->name('quizzes.questions.destroy');
+
+    // Assignments (Ostad cohort-based learning)
+    Route::get('/courses/{course}/assignments', [AdminAssignmentController::class, 'index'])
+        ->middleware('permission:courses.manage')->name('courses.assignments.index');
+    Route::post('/courses/{course}/assignments', [AdminAssignmentController::class, 'store'])
+        ->middleware('permission:courses.manage')->name('assignments.store');
+    Route::put('/assignments/{assignment}', [AdminAssignmentController::class, 'update'])
+        ->middleware('permission:courses.manage')->name('assignments.update');
+    Route::delete('/assignments/{assignment}', [AdminAssignmentController::class, 'destroy'])
+        ->middleware('permission:courses.manage')->name('assignments.destroy');
+    Route::get('/assignments/{assignment}/submissions', [AdminAssignmentController::class, 'submissions'])
+        ->middleware('permission:courses.manage')->name('assignments.submissions');
+    Route::post('/assignments/{assignment}/submissions/{submission}/grade', [AdminAssignmentController::class, 'grade'])
+        ->middleware('permission:courses.manage')->name('assignments.grade');
     Route::post('/courses/bulk-destroy', [AdminCourseController::class, 'bulkDestroy'])
         ->middleware('permission:courses.manage')->name('courses.bulk-destroy');
     Route::match(['post', 'patch'], '/courses/{course}/publish', [AdminCourseController::class, 'publish'])
@@ -547,6 +565,14 @@ Route::prefix('instructor')->name('instructor.')->middleware('auth:instructor')-
     Route::post('/quizzes/{quiz}/questions', [InstructorQuizController::class, 'storeQuestion'])->name('quizzes.questions.store');
     Route::delete('/quiz-questions/{question}', [InstructorQuizController::class, 'destroyQuestion'])->name('quizzes.questions.destroy');
 
+    // Assignments (Ostad cohort-based learning)
+    Route::get('/courses/{course}/assignments', [InstructorAssignmentController::class, 'index'])->name('courses.assignments.index');
+    Route::post('/courses/{course}/assignments', [InstructorAssignmentController::class, 'store'])->name('assignments.store');
+    Route::put('/assignments/{assignment}', [InstructorAssignmentController::class, 'update'])->name('assignments.update');
+    Route::delete('/assignments/{assignment}', [InstructorAssignmentController::class, 'destroy'])->name('assignments.destroy');
+    Route::get('/assignments/{assignment}/submissions', [InstructorAssignmentController::class, 'submissions'])->name('assignments.submissions');
+    Route::post('/assignments/{assignment}/submissions/{submission}/grade', [InstructorAssignmentController::class, 'grade'])->name('assignments.grade');
+
     Route::get('/students', [InstructorStudentController::class, 'index'])->name('students');
     Route::get('/reviews', [InstructorReviewController::class, 'index'])->name('reviews');
     Route::post('/reviews/{review}/reply', [InstructorReviewController::class, 'reply'])->name('reviews.reply');
@@ -604,6 +630,14 @@ Route::prefix('student')->name('student.')->middleware('auth:student')->group(fu
     Route::get('/courses/{course}/quizzes/{quiz}/take', [StudentQuizController::class, 'take'])->name('quizzes.take');
     Route::post('/courses/{course}/quizzes/{quiz}/attempts/{attempt}/submit', [StudentQuizController::class, 'submit'])->name('quizzes.submit');
     Route::get('/quiz-attempts/{attempt}/review', [StudentQuizController::class, 'review'])->name('quizzes.review');
+
+    // Assignments & Homework (Ostad cohort-based learning)
+    Route::get('/courses/{course}/assignments/{assignment}', [StudentAssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/courses/{course}/assignments/{assignment}/submit', [StudentAssignmentController::class, 'submit'])->name('assignments.submit');
+    Route::post('/courses/{course}/assignments/{assignment}/resubmit-request', [StudentAssignmentController::class, 'requestResubmission'])->name('assignments.resubmit-request');
+
+    // Cohort Leaderboard (Ostad gamification & rank)
+    Route::get('/courses/{course}/leaderboard', [StudentLeaderboardController::class, 'show'])->name('courses.leaderboard');
 });
 
 // ------------------------------------------------------------- Dynamic Public Pages (Catch-all permalinks)

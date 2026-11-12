@@ -324,6 +324,14 @@
                                 selected="zoom" :searchable="false" />
                         </div>
                         <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-[#191919]">Session Type</label>
+                            <select name="class_type" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e] bg-white">
+                                <option value="main">Live Main Class</option>
+                                <option value="conceptual">Conceptual / Doubt Clearing</option>
+                                <option value="scrum">Scrum & Progress Review</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
                             <label class="text-xs font-semibold text-[#191919]">Duration (minutes)</label>
                             <input type="number" name="duration_minutes" min="5" value="60" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
                         </div>
@@ -367,6 +375,9 @@
         @if ($course->exists)
             <!-- Quizzes & Assessments Manager -->
             @include('pages.admin.partials.course-quizzes-manager', ['course' => $course, 'userType' => 'instructor'])
+
+            <!-- Assignments & Cohort Engine (Ostad-style hands-on learning) -->
+            @include('pages.admin.partials.course-assignments-manager', ['course' => $course, 'userType' => 'instructor'])
         @endif
     </div>
 

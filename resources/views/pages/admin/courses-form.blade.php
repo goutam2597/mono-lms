@@ -417,6 +417,14 @@
                                 </select>
                             </div>
                             <div class="space-y-1.5">
+                                <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Session Type</label>
+                                <select name="class_type" class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                    <option value="main">Live Main Class</option>
+                                    <option value="conceptual">Conceptual / Doubt Clearing</option>
+                                    <option value="scrum">Scrum & Progress Review</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Duration (mins)</label>
                                 <input type="number" name="duration_minutes" min="5" value="60" class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                             </div>
@@ -455,6 +463,9 @@
 
             <!-- Quizzes & Assessments Manager -->
             @include('pages.admin.partials.course-quizzes-manager', ['course' => $course, 'userType' => 'admin'])
+
+            <!-- Assignments & Cohort Engine (Ostad-style hands-on learning) -->
+            @include('pages.admin.partials.course-assignments-manager', ['course' => $course, 'userType' => 'admin'])
         @endif
     </div>
 

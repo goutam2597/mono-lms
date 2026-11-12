@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 #[Fillable([
     'instructor_id', 'category_id', 'title', 'slug', 'subtitle', 'description',
@@ -70,6 +71,11 @@ class Course extends Model
     public function quizzes(): HasMany
     {
         return $this->hasMany(Quiz::class)->orderBy('sort_order');
+    }
+
+    public function assignments(): HasMany
+    {
+        return $this->hasMany(Assignment::class)->orderBy('sort_order');
     }
 
     public function quizAttempts(): HasMany
@@ -220,6 +226,89 @@ class Course extends Model
         $fallback ??= 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80';
 
         return PublicMedia::url($this->image, $fallback);
+    }
+
+    /**
+     * Compute the cohort leaderboard ranking for enrolled students.
+     *
+     * @return Collection<int, array<string, mixed>>
+     */
+    public function cohortLeaderboard(): Collection
+    {
+        $enrollments = $this->enrollments()
+            ->whereIn('status', ['active', 'completed'])
+            ->with('student')
+            ->get();
+
+        if ($enrollments->isEmpty()) {
+            return collect();
+        }
+
+        $studentIds = $enrollments->pluck('student_id')->all();
+        $assignmentIds = $this->assignments()->pluck('id')->all();
+        $liveClassIds = $this->liveClasses()->pluck('id')->all();
+
+        // Assignment points
+        $submissionsByStudent = empty($assignmentIds) ? collect() : AssignmentSubmission::whereIn('assignment_id', $assignmentIds)
+            ->whereIn('student_id', $studentIds)
+            ->where('status', AssignmentSubmission::STATUS_GRADED)
+            ->get()
+            ->groupBy('student_id');
+
+        // Quiz points (highest passed attempt score per quiz)
+        $attemptsByStudent = QuizAttempt::where('course_id', $this->id)
+            ->whereIn('student_id', $studentIds)
+            ->where('is_passed', true)
+            ->get()
+            ->groupBy('student_id');
+
+        // Live class attendance points (10 points per attended session)
+        $attendancesByStudent = empty($liveClassIds) ? collect() : LiveClassAttendance::whereIn('live_class_id', $liveClassIds)
+            ->whereIn('student_id', $studentIds)
+            ->get()
+            ->groupBy('student_id');
+
+        $rows = $enrollments->map(function ($enrollment) use ($submissionsByStudent, $attemptsByStudent, $attendancesByStudent) {
+            $student = $enrollment->student;
+            $sId = $enrollment->student_id;
+
+            $subs = $submissionsByStudent->get($sId, collect());
+            $assignmentScore = (int) $subs->sum('score');
+            $assignmentsCompleted = (int) $subs->count();
+
+            $attempts = $attemptsByStudent->get($sId, collect());
+            // Unique by quiz_id taking highest score
+            $quizScore = (int) $attempts->groupBy('quiz_id')->map(fn ($qAttempts) => $qAttempts->max('score'))->sum();
+            $quizzesPassed = (int) $attempts->groupBy('quiz_id')->count();
+
+            $att = $attendancesByStudent->get($sId, collect());
+            $classesAttended = (int) $att->count();
+            $attendanceScore = $classesAttended * 10;
+
+            $totalScore = $assignmentScore + $quizScore + $attendanceScore;
+
+            return [
+                'student_id' => $sId,
+                'student' => $student,
+                'progress' => (int) $enrollment->progress,
+                'assignment_points' => $assignmentScore,
+                'assignments_completed' => $assignmentsCompleted,
+                'quiz_points' => $quizScore,
+                'quizzes_passed' => $quizzesPassed,
+                'attendance_points' => $attendanceScore,
+                'classes_attended' => $classesAttended,
+                'total_score' => $totalScore,
+            ];
+        });
+
+        // Sort by total score descending, then progress descending, then student id
+        $sorted = $rows->sortByDesc('total_score')->values();
+
+        return $sorted->map(function ($row, $index) {
+            $row['rank'] = $index + 1;
+
+            return $row;
+        });
     }
 
     /**
