@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
  * Every gateway return/webhook must pass through here before an order is
  * marked paid: status check, amount check and reference binding.
  */
-final class OnlinePaymentVerificationService
+class OnlinePaymentVerificationService
 {
     /**
      * @param  array{gateway: string, order: Order, request: Request}  $context
@@ -22,7 +22,7 @@ final class OnlinePaymentVerificationService
         $amount = (float) $order->amount;
 
         return match ($gateway) {
-            'stripe' => $this->verifyStripe($request, (string) ($order->val_id ?? ''), $amount, $order->order_number),
+            'stripe' => $this->verifyStripe($request, (string) ($order->val_id ?? ''), $amount, $order),
             'paypal' => $this->verifyPaypal($request, $amount),
             'razorpay' => $this->verifyRazorpay($request, (string) ($order->val_id ?? ''), $amount),
             default => ['ok' => false, 'reference' => null, 'message' => 'Unsupported payment gateway.'],
@@ -30,7 +30,7 @@ final class OnlinePaymentVerificationService
     }
 
     /** @return array{ok: bool, reference: ?string, message: ?string} */
-    private function verifyStripe(Request $request, string $storedRef, float $amount, string $orderNumber): array
+    private function verifyStripe(Request $request, string $storedRef, float $amount, Order $order): array
     {
         $settings = $this->stripeSettings();
         if (! $settings['enabled'] || ! $settings['secret']) {
@@ -62,8 +62,14 @@ final class OnlinePaymentVerificationService
             return $this->fail('Stripe payment amount mismatch.');
         }
 
-        $metaOrder = (string) ($session['metadata']['order_id'] ?? '');
-        if ($metaOrder !== '' && (string) $session['metadata']['order_id'] !== (string) $orderNumber) {
+        $metaOrderId = (string) ($session['metadata']['order_id'] ?? '');
+        $metaOrderNumber = (string) ($session['metadata']['order_number'] ?? '');
+
+        if ($metaOrderId !== '' && $metaOrderId !== (string) $order->id && $metaOrderId !== (string) $order->order_number) {
+            return $this->fail('Stripe payment does not belong to this order.');
+        }
+
+        if ($metaOrderNumber !== '' && $metaOrderNumber !== (string) $order->order_number && $metaOrderNumber !== (string) $order->id) {
             return $this->fail('Stripe payment does not belong to this order.');
         }
 
@@ -194,7 +200,7 @@ final class OnlinePaymentVerificationService
      * @param  array<int, int>  $curlOptions
      * @return array<string, mixed>
      */
-    private function jsonRequest(string $url, array $curlOptions = [], ?string $basicAuth = null): array
+    protected function jsonRequest(string $url, array $curlOptions = [], ?string $basicAuth = null): array
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

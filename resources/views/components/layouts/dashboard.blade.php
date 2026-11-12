@@ -568,14 +568,14 @@
                                 </div>
                                 <div class="flex items-center gap-2.5">
                                     @if ($unreadNotificationsCount > 0)
-                                        <form method="POST" action="{{ $readAllRoute }}">
+                                        <form method="POST" action="{{ $readAllRoute }}" class="flex items-center">
                                             @csrf
-                                            <button type="submit" class="text-[11px] font-medium text-slate-500 hover:text-slate-800 dark:text-neutral-400 dark:hover:text-white cursor-pointer hover:underline">
+                                            <button type="submit" class="text-[11px] font-medium text-slate-500 hover:text-slate-800 dark:text-neutral-400 dark:hover:text-white cursor-pointer hover:underline leading-none">
                                                 {{ __('app.nav.mark_all_read') }}
                                             </button>
                                         </form>
                                     @endif
-                                    <span class="text-[11px] text-slate-400 dark:text-neutral-500 font-medium">
+                                    <span class="text-[11px] text-slate-400 dark:text-neutral-500 font-medium leading-none">
                                         {{ ucfirst($userType) }}
                                     </span>
                                 </div>
@@ -623,9 +623,6 @@
                                                     <p class="font-medium text-[13px] leading-snug {{ $isUnread ? 'text-slate-900 dark:text-white font-semibold' : 'text-slate-700 dark:text-neutral-300' }}">
                                                         {{ $data['title'] ?? 'Notification' }}
                                                     </p>
-                                                    @if ($isUnread)
-                                                        <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                                                    @endif
                                                 </div>
                                                 <p class="text-[12px] text-slate-500 dark:text-neutral-400 mt-0.5 leading-normal line-clamp-2">
                                                     {{ $data['message'] ?? '' }}

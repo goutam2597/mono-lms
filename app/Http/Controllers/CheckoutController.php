@@ -193,7 +193,7 @@ final class CheckoutController extends Controller
             'metadata[order_id]' => (string) $order->id,
             'metadata[order_number]' => $order->order_number,
             'line_items[0][price_data][currency]' => $currency,
-            'line_items[0][price_data][product_data][name]' => $order->course->title,
+            'line_items[0][price_data][product_data][name]' => $order->course?->title ?? 'Course Enrollment',
             'line_items[0][price_data][unit_amount]' => (string) (int) round(((float) $order->amount) * 100),
             'line_items[0][quantity]' => '1',
         ];

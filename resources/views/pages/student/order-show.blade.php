@@ -1,6 +1,6 @@
 <x-layouts.dashboard title="Order {{ $order->order_number }} - Mono LMS" active="orders" userType="student">
 
-    <div class="space-y-6 max-w-4xl">
+    <div class="space-y-6">
         <div>
             <a href="{{ route('student.orders') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#738a6e] hover:text-[#344c3d] mb-1 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>

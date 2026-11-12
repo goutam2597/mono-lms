@@ -1,5 +1,5 @@
 <x-layouts.dashboard title="My Profile - Mono LMS" active="profile" userType="admin">
-    <div class="space-y-6 max-w-5xl">
+    <div class="space-y-6">
         <!-- Breadcrumb & Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
