@@ -8,6 +8,10 @@
         'student' => 'student.locale.switch',
     ];
     $routeName = $routeNames[$panel] ?? 'locale.switch';
+    // Error pages render outside the middleware pipeline, where SetLocale
+    // never shared these; fall back to the source of truth on such renders.
+    $activeLanguages ??= \App\Models\Language::active();
+    $currentLocale ??= app()->getLocale();
     $current = $activeLanguages->firstWhere('code', $currentLocale);
 @endphp
 
