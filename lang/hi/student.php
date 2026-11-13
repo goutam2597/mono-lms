@@ -12,6 +12,7 @@ return [
         'saved_courses' => 'सहेजे गए पाठ्यक्रम',
         'certificates' => 'मेरे प्रमाणपत्र',
         'quiz' => 'मेरे क्विज़ प्रयास',
+        'notifications' => 'सूचनाएं',
         'tickets' => 'सहायता और समर्थन',
         'browse' => 'कोर्स ब्राउज़ करें',
         'settings' => 'सेटिंग्स',

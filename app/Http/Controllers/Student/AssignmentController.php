@@ -7,9 +7,11 @@ use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Services\NotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 final class AssignmentController extends Controller
 {
@@ -96,6 +98,8 @@ final class AssignmentController extends Controller
             ]
         );
 
+        $this->notifyInstructorsOfSubmission($assignment, $student, $newStatus);
+
         return back()->with('success', 'Assignment submitted successfully! Your instructor will review and grade it.');
     }
 
@@ -119,6 +123,38 @@ final class AssignmentController extends Controller
             'resubmission_note' => $request->input('resubmission_note'),
         ]);
 
+        NotificationService::notifyCourseInstructors(
+            $assignment->course,
+            'Resubmission Request: '.$assignment->title,
+            $student->name.' requested to resubmit "'.$assignment->title.'". Note: '
+                .Str::limit($request->input('resubmission_note'), 140),
+            'assignment',
+            route('instructor.assignments.submissions', $assignment),
+            'Review Submissions',
+            'assignment',
+            adminActionUrl: route('admin.assignments.submissions', $assignment),
+        );
+
         return back()->with('success', 'Your resubmission request has been sent to the instructor.');
+    }
+
+    /**
+     * Alert the course instructor (or admins) that a student submitted work.
+     */
+    private function notifyInstructorsOfSubmission(Assignment $assignment, $student, string $status): void
+    {
+        $isResubmission = $status === AssignmentSubmission::STATUS_RESUBMITTED;
+
+        NotificationService::notifyCourseInstructors(
+            $assignment->course,
+            ($isResubmission ? 'Assignment Resubmitted: ' : 'New Submission: ').$assignment->title,
+            $student->name.($isResubmission ? ' resubmitted work for ' : ' submitted work for ')
+                .'"'.$assignment->title.'" in "'.$assignment->course->title.'".',
+            'assignment',
+            route('instructor.assignments.submissions', $assignment),
+            'Grade Submission',
+            'assignment',
+            adminActionUrl: route('admin.assignments.submissions', $assignment),
+        );
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use App\Models\Course;
+use App\Services\NotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -57,7 +58,11 @@ final class AssignmentController extends Controller
         $validated['allow_resubmission'] = $request->boolean('allow_resubmission', true);
         $validated['sort_order'] = $course->assignments()->count() + 1;
 
-        Assignment::create($validated);
+        $assignment = Assignment::create($validated);
+
+        if ($assignment->status === Assignment::STATUS_PUBLISHED) {
+            $this->notifyStudentsOfPublishedAssignment($assignment);
+        }
 
         return back()->with('success', 'Assignment created successfully.');
     }
@@ -79,7 +84,12 @@ final class AssignmentController extends Controller
 
         $validated['allow_resubmission'] = $request->boolean('allow_resubmission', true);
 
+        $wasDraft = $assignment->status !== Assignment::STATUS_PUBLISHED;
         $assignment->update($validated);
+
+        if ($wasDraft && $assignment->status === Assignment::STATUS_PUBLISHED) {
+            $this->notifyStudentsOfPublishedAssignment($assignment);
+        }
 
         return back()->with('success', 'Assignment updated successfully.');
     }
@@ -137,6 +147,66 @@ final class AssignmentController extends Controller
             'graded_at' => now(),
         ]);
 
+        $this->notifyStudentOfGrade($assignment, $submission, $status);
+
         return back()->with('success', 'Submission graded successfully.');
+    }
+
+    /**
+     * Announce a newly published assignment to the course cohort.
+     */
+    private function notifyStudentsOfPublishedAssignment(Assignment $assignment): void
+    {
+        $due = $assignment->due_date?->format('M j, Y');
+
+        NotificationService::notifyCourseStudents(
+            $assignment->course,
+            'New Assignment: '.$assignment->title,
+            'A new assignment is available in "'.$assignment->course->title.'"'
+                .($due ? ' and is due '.$due : '')
+                .'. Worth '.$assignment->total_points.' points.',
+            'assignment',
+            route('student.assignments.show', [$assignment->course, $assignment]),
+            'Open Assignment',
+            'assignment',
+        );
+    }
+
+    /**
+     * Notify the student once their submission has been graded or a
+     * resubmission has been requested by the reviewer.
+     */
+    private function notifyStudentOfGrade(Assignment $assignment, AssignmentSubmission $submission, string $status): void
+    {
+        if ($status === AssignmentSubmission::STATUS_RESUBMISSION_REQUESTED) {
+            NotificationService::send(
+                $submission->student,
+                'Resubmission Requested: '.$assignment->title,
+                'Your submission needs another attempt. Review the instructor feedback on "'.$assignment->title.'" and resubmit before '
+                    .($assignment->due_date?->format('M j, Y') ?? 'the deadline').'.',
+                'assignment',
+                route('student.assignments.show', [$assignment->course, $assignment]),
+                'View Feedback',
+                'assignment',
+                true,
+            );
+
+            return;
+        }
+
+        $passed = $submission->isPassed();
+
+        NotificationService::send(
+            $submission->student,
+            'Assignment Graded: '.$assignment->title,
+            'You scored '.$submission->score.'/'.$assignment->total_points
+                .' on "'.$assignment->title.'" — '.($passed ? 'passed, great work!' : 'below the pass mark of '.$assignment->pass_points.' points.')
+                .($submission->instructor_feedback ? ' Feedback is waiting for you.' : ''),
+            'assignment',
+            route('student.assignments.show', [$assignment->course, $assignment]),
+            'View Result',
+            'assignment',
+            true,
+        );
     }
 }

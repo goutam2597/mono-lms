@@ -83,7 +83,7 @@
                         <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.title') }} *</label>
                         <input type="text" name="title" id="course-title-default" value="{{ old('title', $course->title) }}" required
                                data-translate-key="title" data-translate-locale="{{ $defaultCode }}"
-                               class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                               class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                         @error('title')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                     </div>
 
@@ -92,7 +92,7 @@
                         <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.subtitle') }}</label>
                         <input type="text" name="subtitle" id="course-subtitle-default" value="{{ old('subtitle', $course->subtitle) }}" placeholder="Brief tagline or hook for the course card"
                                data-translate-key="subtitle" data-translate-locale="{{ $defaultCode }}"
-                               class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                               class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
 
                     <!-- Full Description -->
@@ -100,7 +100,7 @@
                         <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.description') }}</label>
                         <textarea name="description" id="course-desc-default" rows="6"
                                   data-translate-key="description" data-translate-locale="{{ $defaultCode }}"
-                                  class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900">{{ old('description', $course->description) }}</textarea>
+                                  class="w-full border border-neutral-300 rounded-lg p-4 text-sm focus:outline-none focus:border-neutral-900">{{ old('description', $course->description) }}</textarea>
                     </div>
                 </div>
 
@@ -112,7 +112,7 @@
                             <input type="text" name="translations[{{ $lang->code }}][title]"
                                    value="{{ old("translations.{$lang->code}.title", $course->translationMap('title')[$lang->code] ?? '') }}"
                                    data-translate-key="title" data-translate-locale="{{ $lang->code }}"
-                                   class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                                   class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                             <p class="text-[11px] text-neutral-400">Blank falls back to default course title.</p>
                         </div>
 
@@ -121,7 +121,7 @@
                             <input type="text" name="translations[{{ $lang->code }}][subtitle]"
                                    value="{{ old("translations.{$lang->code}.subtitle", $course->translationMap('subtitle')[$lang->code] ?? '') }}"
                                    data-translate-key="subtitle" data-translate-locale="{{ $lang->code }}"
-                                   class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                                   class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                             <p class="text-[11px] text-neutral-400">Blank falls back to default course subtitle.</p>
                         </div>
 
@@ -129,7 +129,7 @@
                             <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.description') }} · {{ $lang->native_name }}</label>
                             <textarea name="translations[{{ $lang->code }}][description]" rows="6"
                                       data-translate-key="description" data-translate-locale="{{ $lang->code }}"
-                                      class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900">{{ old("translations.{$lang->code}.description", $course->translationMap('description')[$lang->code] ?? '') }}</textarea>
+                                      class="w-full border border-neutral-300 rounded-lg p-4 text-sm focus:outline-none focus:border-neutral-900">{{ old("translations.{$lang->code}.description", $course->translationMap('description')[$lang->code] ?? '') }}</textarea>
                             <p class="text-[11px] text-neutral-400">Blank falls back to default course description.</p>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                             $isAssignedToAdmin = $course->exists && $course->instructor && $course->instructor->email === ($currentAdmin->email ?? '');
                             $selectedInstructor = old('instructor_id', $isAssignedToAdmin ? 'self' : ($course->instructor_id ?? 'self'));
                         @endphp
-                        <select name="instructor_id" required data-mselect class="h-11 w-full border border-neutral-300 px-3.5 text-sm focus:outline-none focus:border-neutral-900 bg-white font-medium">
+                        <select name="instructor_id" required data-mselect class="h-11 w-full border border-neutral-300 rounded-lg px-3.5 text-sm focus:outline-none focus:border-neutral-900 bg-white font-medium">
                             <option value="self" @selected($selectedInstructor === 'self')>
                                 ⭐ Myself ({{ $currentAdmin->name ?? 'Administrator' }})
                             </option>
@@ -193,13 +193,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="space-y-1.5">
                         <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.price') }} (USD) *</label>
-                        <input type="number" step="0.01" min="0" name="price" value="{{ old('price', $course->price ?? 0) }}" required class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="number" step="0.01" min="0" name="price" value="{{ old('price', $course->price ?? 0) }}" required class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                         <p class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">💡 Set to 0 to make this course 100% free with all lessons automatically unlocked.</p>
                         @error('price')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">{{ __('instructor.courses.fields.old_price') }} (USD / Strike-through)</label>
-                        <input type="number" step="0.01" min="0" name="old_price" value="{{ old('old_price', $course->old_price) }}" placeholder="Leave blank if no sale discount" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="number" step="0.01" min="0" name="old_price" value="{{ old('old_price', $course->old_price) }}" placeholder="Leave blank if no sale discount" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                         @error('old_price')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                     </div>
                 </div>
@@ -401,15 +401,15 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Session Title *</label>
-                                <input type="text" name="title" required class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="title" required class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                             </div>
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Starts At *</label>
-                                <input type="datetime-local" name="starts_at" required class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <input type="datetime-local" name="starts_at" required class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                             </div>
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Platform</label>
-                                <select name="meeting_platform" class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <select name="meeting_platform" class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                                     <option value="zoom">Zoom</option>
                                     <option value="google_meet">Google Meet</option>
                                     <option value="jitsi">Jitsi Meet</option>
@@ -418,7 +418,7 @@
                             </div>
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Session Type</label>
-                                <select name="class_type" class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <select name="class_type" class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                                     <option value="main">Live Main Class</option>
                                     <option value="conceptual">Conceptual / Doubt Clearing</option>
                                     <option value="scrum">Scrum & Progress Review</option>
@@ -426,11 +426,11 @@
                             </div>
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Duration (mins)</label>
-                                <input type="number" name="duration_minutes" min="5" value="60" class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <input type="number" name="duration_minutes" min="5" value="60" class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                             </div>
                             <div class="space-y-1.5 sm:col-span-2">
                                 <label class="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">Meeting URL *</label>
-                                <input type="url" name="meeting_url" required placeholder="https://zoom.us/j/..." class="h-10 w-full border border-neutral-300 bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+                                <input type="url" name="meeting_url" required placeholder="https://zoom.us/j/..." class="h-10 w-full border border-neutral-300 rounded-lg bg-white px-3.5 text-sm focus:outline-none focus:border-neutral-900">
                             </div>
                         </div>
                         <div class="flex justify-end">

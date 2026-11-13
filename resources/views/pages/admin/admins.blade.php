@@ -118,12 +118,12 @@
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
-                    <input type="text" name="name" id="admin-name" required maxlength="255" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="name" id="admin-name" required maxlength="255" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.email') }} *</label>
-                    <input type="email" name="email" id="admin-email" required maxlength="255" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                    <input type="email" name="email" id="admin-email" required maxlength="255" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <div class="space-y-1.5">
@@ -131,7 +131,7 @@
                         {{ __('app.common.password') }}
                         <span id="admin-password-hint" class="text-neutral-400 font-normal">({{ __('instructor.profile.new_password_hint') }})</span>
                     </label>
-                    <input type="password" name="password" id="admin-password" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                    <input type="password" name="password" id="admin-password" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <!-- Avatar Media Selector -->
@@ -147,7 +147,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.admins.role') }}</label>
-                        <select name="role_id" id="admin-role" data-mselect class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="role_id" id="admin-role" data-mselect class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="">—</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -156,7 +156,7 @@
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.status') }}</label>
-                        <select name="status" id="admin-status" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="status" id="admin-status" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="active">{{ __('app.common.active') }}</option>
                             <option value="inactive">{{ __('app.common.inactive') }}</option>
                         </select>

@@ -120,12 +120,12 @@
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Session Title *</label>
-                    <input type="text" name="title" id="event-title" required placeholder="e.g. Live Q&A: Reactive PHP Architecture" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <input type="text" name="title" id="event-title" required placeholder="e.g. Live Q&A: Reactive PHP Architecture" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Host Instructor</label>
-                    <select name="instructor_id" id="event-instructor" data-mselect class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                    <select name="instructor_id" id="event-instructor" data-mselect class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-slate-900">
                         <option value="">Mono LMS Staff Team</option>
                         @foreach($instructors as $inst)
                             <option value="{{ $inst->id }}">{{ $inst->name }}</option>
@@ -136,22 +136,22 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Start Date & Time *</label>
-                        <input type="datetime-local" name="start_time" id="event-start-time" required class="w-full px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="datetime-local" name="start_time" id="event-start-time" required class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Duration (Mins) *</label>
-                        <input type="number" name="duration_minutes" id="event-duration" value="60" required class="w-full px-3 py-2 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="number" name="duration_minutes" id="event-duration" value="60" required class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Meeting Link (Zoom / Google Meet)</label>
-                    <input type="url" name="meeting_link" id="event-meeting-link" placeholder="https://zoom.us/j/..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <input type="url" name="meeting_link" id="event-meeting-link" placeholder="https://zoom.us/j/..." class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Max Attendee Capacity</label>
-                    <input type="number" name="capacity" id="event-capacity" value="100" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <input type="number" name="capacity" id="event-capacity" value="100" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                 </div>
 
                 <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">

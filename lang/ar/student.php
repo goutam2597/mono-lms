@@ -10,6 +10,7 @@ return [
         'saved_courses' => 'الدورات المحفوظة',
         'certificates' => 'شهاداتي',
         'quiz' => 'محاولات الاختبار',
+        'notifications' => 'الإشعارات',
         'tickets' => 'المساعدة والدعم',
         'browse' => 'تصفح الدورات',
         'settings' => 'الإعدادات',

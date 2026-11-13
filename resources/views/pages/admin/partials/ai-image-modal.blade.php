@@ -4,12 +4,12 @@
     .aiimg-modal { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .aiimg-modal.open { display: flex; }
     .aiimg-backdrop { position: absolute; inset: 0; background: rgba(10,10,10,.6); backdrop-filter: blur(4px); }
-    .aiimg-card { position: relative; width: 100%; max-width: 560px; max-height: calc(100vh - 40px); overflow-y: auto; background: #fff; border: 1px solid #e5e5e5; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-    .aiimg-res { position: relative; aspect-ratio: 1; cursor: pointer; border: 2px solid transparent; background: #f5f5f5; transition: border-color .15s; }
+    .aiimg-card { position: relative; width: 100%; max-width: 560px; max-height: calc(100vh - 40px); overflow-y: auto; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    .aiimg-res { position: relative; aspect-ratio: 1; cursor: pointer; border: 2px solid transparent; border-radius: 8px; background: #f5f5f5; transition: border-color .15s; overflow: hidden; }
     .aiimg-res img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .aiimg-res:hover { border-color: #a3a3a3; }
     .aiimg-res.selected { border-color: #0a0a0a; }
-    .aiimg-res .aiimg-check { position: absolute; top: 6px; right: 6px; display: none; width: 20px; height: 20px; background: #0a0a0a; color: #fff; align-items: center; justify-content: center; }
+    .aiimg-res .aiimg-check { position: absolute; top: 6px; right: 6px; display: none; width: 20px; height: 20px; border-radius: 4px; background: #0a0a0a; color: #fff; align-items: center; justify-content: center; }
     .aiimg-res.selected .aiimg-check { display: flex; }
     .aiimg-res.aiimg-crop { aspect-ratio: 2.4; aspect-ratio: var(--aiimg-ratio, 2.4); }
 </style>
@@ -28,7 +28,7 @@
             <div>
                 <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-500">{{ __('admin.imagegen.prompt') ?? 'Prompt' }}</label>
                 <textarea id="aiimg-prompt" rows="4" maxlength="4000"
-                          class="w-full border border-neutral-300 px-4 py-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none"></textarea>
+                          class="w-full border border-neutral-300 rounded-lg px-4 py-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none"></textarea>
                 <p class="mt-1 text-[11px] text-neutral-400">{{ __('admin.imagegen.prompt_hint') ?? 'Built from the form\'s title and description — edit freely before generating.' }}</p>
             </div>
 
@@ -36,7 +36,7 @@
                 <div>
                     <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-500">{{ __('admin.imagegen.size') ?? 'Size' }}</label>
                     <select id="aiimg-size"
-                            class="h-11 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
+                            class="h-11 w-full cursor-pointer border border-neutral-300 rounded-lg bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
                         <option value="1024x1024">{{ __('admin.imagegen.size_square') ?? 'Square — 1024×1024' }}</option>
                         <option value="1792x1024" selected>{{ __('admin.imagegen.size_landscape') ?? 'Landscape — 1792×1024' }}</option>
                         <option value="1024x1792">{{ __('admin.imagegen.size_portrait') ?? 'Portrait — 1024×1792' }}</option>
@@ -45,7 +45,7 @@
                 <div id="aiimg-count-wrap">
                     <label class="mb-1.5 block text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-500">{{ __('admin.imagegen.count') ?? 'Images' }}</label>
                     <select id="aiimg-count"
-                            class="h-11 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
+                            class="h-11 w-full cursor-pointer border border-neutral-300 rounded-lg bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>

@@ -56,12 +56,12 @@
                         <div class="sm:col-span-2">
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Server Host *</label>
                             <input type="text" name="mail_host" value="{{ $mail['host'] }}" placeholder="e.g. smtp.mailgun.org, smtp.sendgrid.net" required
-                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                   class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Port *</label>
                             <input type="text" name="mail_port" value="{{ $mail['port'] }}" placeholder="587" required
-                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                   class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
                     </div>
 
@@ -69,13 +69,13 @@
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Username</label>
                             <input type="text" name="mail_username" value="{{ $mail['username'] }}" placeholder="SMTP username / API key user"
-                                   class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                   class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">SMTP Password</label>
                             <div class="relative">
                                 <input type="password" name="mail_password" id="input-mail-pass" value="{{ $mail['password'] }}" placeholder="••••••••"
-                                       class="h-10 w-full font-mono border border-neutral-300 pl-3.5 pr-10 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                       class="h-10 w-full font-mono border border-neutral-300 rounded-lg pl-3.5 pr-10 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                 <button type="button" id="btn-toggle-mail-pass" class="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-400 hover:text-neutral-700">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </button>
@@ -86,7 +86,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Encryption *</label>
-                            <select name="mail_encryption" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                            <select name="mail_encryption" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 rounded-lg bg-white px-3 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                                 <option value="tls" @selected($mail['encryption'] === 'tls')>TLS (Recommended)</option>
                                 <option value="ssl" @selected($mail['encryption'] === 'ssl')>SSL</option>
                                 <option value="none" @selected($mail['encryption'] === 'none')>None (Plain)</option>
@@ -95,12 +95,12 @@
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">From Email Address *</label>
                             <input type="email" name="mail_from_address" value="{{ $mail['from_address'] }}" required
-                                   class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                   class="h-10 w-full border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
                         <div>
                             <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">From Sender Name *</label>
                             <input type="text" name="mail_from_name" value="{{ $mail['from_name'] }}" required
-                                   class="h-10 w-full border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                   class="h-10 w-full border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                         </div>
                     </div>
 
@@ -188,12 +188,12 @@
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Bucket Name</label>
                                 <input type="text" name="storage_s3_bucket" value="{{ $storage['s3_bucket'] }}" placeholder="e.g. mono-lms-assets"
-                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                       class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                             </div>
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Region</label>
                                 <input type="text" name="storage_s3_region" value="{{ $storage['s3_region'] }}" placeholder="e.g. us-east-1"
-                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                       class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                             </div>
                         </div>
 
@@ -201,12 +201,12 @@
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Access Key ID</label>
                                 <input type="text" name="storage_s3_key" value="{{ $storage['s3_key'] }}" placeholder="AKIA..."
-                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                       class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                             </div>
                             <div>
                                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">Secret Access Key</label>
                                 <input type="password" name="storage_s3_secret" value="{{ $storage['s3_secret'] }}" placeholder="••••••••••••••••••••••••"
-                                       class="h-10 w-full font-mono border border-neutral-300 px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                       class="h-10 w-full font-mono border border-neutral-300 rounded-lg px-3.5 text-xs text-neutral-900 focus:border-neutral-900 focus:outline-none">
                             </div>
                         </div>
                     </div>

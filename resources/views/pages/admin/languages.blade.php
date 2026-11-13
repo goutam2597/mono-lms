@@ -39,21 +39,21 @@
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.languages.code') }} *</label>
                 <input type="text" name="code" required value="{{ old('code') }}" placeholder="e.g. fr, es, de" maxlength="10"
-                       class="h-10 w-full border border-neutral-300 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
+                       class="h-10 w-full border border-neutral-300 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
             </div>
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.languages.name') }} *</label>
                 <input type="text" name="name" required value="{{ old('name') }}" placeholder="e.g. French"
-                       class="h-10 w-full border border-neutral-300 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
+                       class="h-10 w-full border border-neutral-300 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
             </div>
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.languages.native') }} *</label>
                 <input type="text" name="native_name" required value="{{ old('native_name') }}" placeholder="e.g. Français"
-                       class="h-10 w-full border border-neutral-300 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
+                       class="h-10 w-full border border-neutral-300 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
             </div>
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.languages.direction') }} *</label>
-                <select name="direction" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
+                <select name="direction" data-mselect data-mselect-no-search class="h-10 w-full cursor-pointer border border-neutral-300 rounded-lg bg-white px-3 text-sm focus:border-neutral-900 focus:outline-none">
                     <option value="ltr">{{ __('admin.languages.ltr') }}</option>
                     <option value="rtl">{{ __('admin.languages.rtl') }}</option>
                 </select>
@@ -61,7 +61,7 @@
             <div>
                 <label class="mb-1 block text-[10px] font-bold uppercase tracking-wider text-neutral-500">{{ __('admin.common.flag') }}</label>
                 <input type="text" name="flag" value="{{ old('flag') }}" placeholder="e.g. fr, es, us" maxlength="10"
-                       class="h-10 w-full border border-neutral-300 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
+                       class="h-10 w-full border border-neutral-300 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none">
             </div>
             <div class="flex items-end">
                 <button type="submit" class="action-btn h-10 w-full">{{ __('admin.common.add') }}</button>
@@ -104,16 +104,16 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="text" name="name" value="{{ $language->name }}" required
-                                           class="h-8 w-36 border border-transparent bg-transparent px-2 text-xs font-medium text-neutral-900 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
+                                           class="h-8 w-36 border border-transparent bg-transparent rounded-lg px-2 text-xs font-medium text-neutral-900 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
                                 </form>
                             </td>
                             <td class="px-6 py-3.5">
                                 <input type="text" name="native_name" form="lang-{{ $language->id }}" value="{{ $language->native_name }}" required
-                                       class="h-8 w-36 border border-transparent bg-transparent px-2 text-xs text-neutral-600 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
+                                       class="h-8 w-36 border border-transparent bg-transparent rounded-lg px-2 text-xs text-neutral-600 transition hover:border-neutral-200 focus:border-neutral-900 focus:bg-white focus:outline-none">
                             </td>
                             <td class="px-6 py-3.5">
                                 <select name="direction" form="lang-{{ $language->id }}" data-mselect data-mselect-no-search
-                                        class="h-8 w-20 cursor-pointer border border-neutral-200 bg-white px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-600 transition hover:border-neutral-900 focus:border-neutral-900 focus:outline-none">
+                                        class="h-8 w-20 cursor-pointer border border-neutral-200 bg-white rounded-lg px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-600 transition hover:border-neutral-900 focus:border-neutral-900 focus:outline-none">
                                     <option value="ltr" @selected($language->direction === 'ltr')>LTR</option>
                                     <option value="rtl" @selected($language->direction === 'rtl')>RTL</option>
                                 </select>

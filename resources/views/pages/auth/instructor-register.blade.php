@@ -15,7 +15,7 @@
                     <span>{{ __('auth.full_name') }}</span>
                     <span class="text-[#e70d0d]">*</span>
                 </label>
-                <input id="name" name="name" type="text" value="{{ old('name') }}" required placeholder="Jane Doe" class="w-full bg-white border {{ $errors->has('name') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
+                <input id="name" name="name" type="text" value="{{ old('name') }}" required placeholder="Jane Doe" class="w-full bg-white border {{ $errors->has('name') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-lg px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('name')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
@@ -24,7 +24,7 @@
                     <span>{{ __('auth.email') }}</span>
                     <span class="text-[#e70d0d]">*</span>
                 </label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="jane@example.com" class="w-full bg-white border {{ $errors->has('email') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="jane@example.com" class="w-full bg-white border {{ $errors->has('email') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-lg px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('email')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
@@ -32,7 +32,7 @@
                 <label for="designation" class="text-xs font-semibold text-[#191919]">
                     Professional Title / Headline
                 </label>
-                <input id="designation" name="designation" type="text" value="{{ old('designation') }}" placeholder="Senior Full-Stack Engineer & Instructor" class="w-full bg-white border border-[#e7e7e7] rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
+                <input id="designation" name="designation" type="text" value="{{ old('designation') }}" placeholder="Senior Full-Stack Engineer & Instructor" class="w-full bg-white border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('designation')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
@@ -41,7 +41,7 @@
                     <span>{{ __('auth.password') }}</span>
                     <span class="text-[#e70d0d]">*</span>
                 </label>
-                <input id="password" name="password" type="password" required placeholder="•••••••• (min 8 characters)" class="w-full bg-white border {{ $errors->has('password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-md px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
+                <input id="password" name="password" type="password" required placeholder="•••••••• (min 8 characters)" class="w-full bg-white border {{ $errors->has('password') ? 'border-red-400' : 'border-[#e7e7e7]' }} rounded-lg px-3.5 py-2.5 text-xs text-[#191919] placeholder-gray-400 focus:outline-none focus:border-[#738a6e]">
                 @error('password')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 

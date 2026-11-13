@@ -54,7 +54,7 @@
                 <div id="blog-generate-row" class="hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 p-4">
                     <div class="flex flex-wrap items-center gap-3">
                         <input type="text" id="blog-generate-prompt" maxlength="500" placeholder="{{ __('admin.blog.generate_ph') ?? 'Describe the blog article topic in a few words…' }}"
-                               class="h-9 min-w-0 basis-full flex-1 border sm:min-w-[240px] sm:basis-auto border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 dark:focus:border-neutral-100 focus:outline-none">
+                               class="h-9 min-w-0 basis-full flex-1 border sm:min-w-[240px] sm:basis-auto border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 dark:focus:border-neutral-100 focus:outline-none">
                         <button type="button" id="blog-generate-run" class="action-btn h-9 px-5 text-[10px] font-medium tracking-[0.14em]">
                             {{ __('admin.blog.generate') ?? 'Generate' }}
                         </button>
@@ -69,7 +69,7 @@
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('instructor.courses.fields.title') }} *</label>
                     <input type="text" name="title" id="blog-title-default" value="{{ old('title', $post->title) }}" required
                            data-translate-key="title" data-translate-locale="{{ $defaultCode }}"
-                           class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                           class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                     @error('title')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
 
@@ -77,7 +77,7 @@
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.blog.excerpt') }}</label>
                     <textarea name="excerpt" id="blog-excerpt-default" rows="2"
                               data-translate-key="excerpt" data-translate-locale="{{ $defaultCode }}"
-                              class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old('excerpt', $post->excerpt) }}</textarea>
+                              class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old('excerpt', $post->excerpt) }}</textarea>
                     @error('excerpt')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
 
@@ -85,7 +85,7 @@
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.blog.content') }}</label>
                     <textarea name="content" id="blog-content-default" rows="12"
                               data-translate-key="content" data-translate-locale="{{ $defaultCode }}"
-                              class="w-full border border-slate-200 px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:border-[#344C3D]">{{ old('content', $post->content) }}</textarea>
+                              class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:border-[#344C3D]">{{ old('content', $post->content) }}</textarea>
                     <p class="text-[11px] text-slate-400">{{ __('admin.blog.content_hint') }}</p>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                         <input type="text" name="translations[{{ $lang->code }}][title]"
                                value="{{ old("translations.{$lang->code}.title", $post->translationMap('title')[$lang->code] ?? '') }}"
                                data-translate-key="title" data-translate-locale="{{ $lang->code }}"
-                               class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                               class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                         <p class="text-[11px] text-neutral-400">Blank falls back to default title.</p>
                     </div>
 
@@ -106,7 +106,7 @@
                         <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.blog.excerpt') }} · {{ $lang->native_name }}</label>
                         <textarea name="translations[{{ $lang->code }}][excerpt]" rows="2"
                                   data-translate-key="excerpt" data-translate-locale="{{ $lang->code }}"
-                                  class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old("translations.{$lang->code}.excerpt", $post->translationMap('excerpt')[$lang->code] ?? '') }}</textarea>
+                                  class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old("translations.{$lang->code}.excerpt", $post->translationMap('excerpt')[$lang->code] ?? '') }}</textarea>
                         <p class="text-[11px] text-neutral-400">Blank falls back to default excerpt.</p>
                     </div>
 
@@ -114,7 +114,7 @@
                         <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.blog.content') }} · {{ $lang->native_name }}</label>
                         <textarea name="translations[{{ $lang->code }}][content]" rows="12"
                                   data-translate-key="content" data-translate-locale="{{ $lang->code }}"
-                                  class="w-full border border-slate-200 px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:border-[#344C3D]">{{ old("translations.{$lang->code}.content", $post->translationMap('content')[$lang->code] ?? '') }}</textarea>
+                                  class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs font-mono focus:outline-none focus:border-[#344C3D]">{{ old("translations.{$lang->code}.content", $post->translationMap('content')[$lang->code] ?? '') }}</textarea>
                         <p class="text-[11px] text-neutral-400">Blank falls back to default content.</p>
                     </div>
                 </div>

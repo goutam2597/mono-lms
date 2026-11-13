@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Admin;
 use App\Models\ContactMessage;
+use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Instructor;
 use App\Models\Review;
@@ -33,6 +34,23 @@ class NotificationService
     ): void {
         if (! $notifiable) {
             return;
+        }
+
+        // Idempotency guard for scheduled/repeated sends: skip when a notification
+        // carrying the same dedup key was already delivered to this notifiable.
+        $dedupKey = $metadata['dedup_key'] ?? null;
+        if (is_string($dedupKey) && $dedupKey !== '') {
+            try {
+                $alreadySent = $notifiable->notifications()
+                    ->where('data->dedup_key', $dedupKey)
+                    ->exists();
+
+                if ($alreadySent) {
+                    return;
+                }
+            } catch (Throwable) {
+                // Ignore if notifications table query fails
+            }
         }
 
         // Deduplication guard: ignore identical notifications dispatched within a 10-second window
@@ -131,6 +149,57 @@ class NotificationService
         foreach ($admins as $admin) {
             self::send($admin, $title, $message, $category, $actionUrl, $actionLabel, $icon, $sendMail, $metadata);
         }
+    }
+
+    /**
+     * Send a notification to every actively enrolled student of a course.
+     */
+    public static function notifyCourseStudents(
+        Course $course,
+        string $title,
+        string $message,
+        string $category = 'system',
+        ?string $actionUrl = null,
+        ?string $actionLabel = null,
+        ?string $icon = null,
+        bool $sendMail = false,
+        array $metadata = [],
+    ): void {
+        $students = $course->enrollments()
+            ->whereIn('status', ['active', 'completed'])
+            ->with('student')
+            ->get()
+            ->pluck('student')
+            ->filter();
+
+        foreach ($students as $student) {
+            self::send($student, $title, $message, $category, $actionUrl, $actionLabel, $icon, $sendMail, $metadata);
+        }
+    }
+
+    /**
+     * Send a notification to the course instructor, falling back to
+     * administrators when no instructor is assigned to the course.
+     */
+    public static function notifyCourseInstructors(
+        Course $course,
+        string $title,
+        string $message,
+        string $category = 'system',
+        ?string $actionUrl = null,
+        ?string $actionLabel = null,
+        ?string $icon = null,
+        bool $sendMail = false,
+        array $metadata = [],
+        ?string $adminActionUrl = null,
+    ): void {
+        if ($course->instructor) {
+            self::send($course->instructor, $title, $message, $category, $actionUrl, $actionLabel, $icon, $sendMail, $metadata);
+
+            return;
+        }
+
+        self::notifyAdmins($title, $message, $category, $adminActionUrl ?? $actionUrl, $actionLabel, $icon, $sendMail, $metadata);
     }
 
     /**

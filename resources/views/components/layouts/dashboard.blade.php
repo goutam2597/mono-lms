@@ -490,24 +490,24 @@
             <header class="h-[60px] bg-white dark:bg-[#0a0a0a] border-b border-[#e2e8f0] dark:border-[#1f1f1f] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-[0px_1px_3px_rgba(0,0,0,0.02)]">
                 <!-- Search Keyword with ⌘ Badge -->
                 <div class="flex items-center gap-3">
-                    <button type="button" id="sidebar-toggle" class="lg:hidden p-2 rounded-[5px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 focus:outline-none" aria-label="Toggle navigation">
+                    <button type="button" id="sidebar-toggle" class="lg:hidden p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800 focus:outline-none" aria-label="Toggle navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
-                    <div class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#222222] flex items-center gap-2 h-[34px] px-3 rounded-[5px] w-52 sm:w-68">
+                    <div class="bg-white dark:bg-[#0d0d0d] border border-[#e2e8f0] dark:border-[#222222] flex items-center gap-2 h-[34px] px-3 rounded-lg w-52 sm:w-68">
                         <input type="text" placeholder="{{ __('app.nav.search_placeholder') }}" class="flex-1 text-[13px] text-slate-700 dark:text-neutral-200 placeholder-slate-400 dark:placeholder-neutral-500 bg-transparent border-0 focus:outline-none min-w-0">
-                        <span class="bg-[var(--theme-primary,#344c3d)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-[4px] shrink-0">⌘</span>
+                        <span class="bg-[var(--theme-primary,#344c3d)] text-white text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">⌘</span>
                     </div>
                 </div>
 
                 <!-- Right Toolbar Icons (Figma Dev Mode specs) -->
                 <div class="flex items-center gap-2 sm:gap-2.5">
                     <!-- Minimus / Fullscreen -->
-                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="{{ __('app.nav.toggle_fullscreen') }}" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-[5px] transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
+                    <button type="button" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()" title="{{ __('app.nav.toggle_fullscreen') }}" class="h-[34px] w-[34px] border border-[#e2e8f0] dark:border-[#222222] hover:bg-slate-50 dark:hover:bg-[#151515] text-slate-600 dark:text-neutral-300 rounded-lg transition-colors cursor-pointer hidden sm:flex items-center justify-center shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
                     </button>
 
                     <!-- Language Switcher Flag (Unified 34px height) -->
-                    <div class="h-[34px] border border-[#e2e8f0] dark:border-[#222222] rounded-[5px] px-2.5 flex items-center bg-white dark:bg-[#0d0d0d] hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors shrink-0">
+                    <div class="h-[34px] border border-[#e2e8f0] dark:border-[#222222] rounded-lg px-2.5 flex items-center bg-white dark:bg-[#0d0d0d] hover:bg-slate-50 dark:hover:bg-[#151515] transition-colors shrink-0">
                         <x-language-switcher :panel="$userType" class="text-xs font-semibold text-slate-700 dark:text-neutral-200 h-full flex items-center [&>button]:h-full [&>button]:py-0 [&>button]:gap-1.5" />
                     </div>
 

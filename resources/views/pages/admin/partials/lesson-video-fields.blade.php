@@ -19,12 +19,12 @@
     </div>
 
     <div data-video-youtube class="space-y-1.5 {{ $currentSource === 'upload' ? 'hidden' : '' }}">
-        <input type="text" name="video_url" value="{{ old('video_url', ($lesson ?? null)?->video_url) }}" placeholder="https://www.youtube.com/watch?v=..." class="h-10 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3.5 text-sm focus:outline-none focus:border-neutral-900">
+        <input type="text" name="video_url" value="{{ old('video_url', ($lesson ?? null)?->video_url) }}" placeholder="https://www.youtube.com/watch?v=..." class="h-10 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 rounded-lg px-3.5 text-sm focus:outline-none focus:border-neutral-900">
         @error('video_url')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
     </div>
 
     <div data-video-upload class="space-y-1.5 {{ $currentSource === 'upload' ? '' : 'hidden' }}">
-        <input type="file" name="video" accept="video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska" class="w-full text-sm text-neutral-600 dark:text-neutral-300 file:mr-3 file:px-4 file:py-2 file:border file:border-neutral-300 dark:file:border-neutral-700 file:bg-white dark:file:bg-neutral-800 file:text-xs file:font-semibold file:cursor-pointer">
+        <input type="file" name="video" accept="video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska" class="w-full text-sm text-neutral-600 dark:text-neutral-300 file:mr-3 file:px-4 file:py-2 file:border file:border-neutral-300 dark:file:border-neutral-700 file:bg-white dark:file:bg-neutral-800 file:rounded-lg file:text-xs file:font-semibold file:cursor-pointer">
         @error('video')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
         @if (($lesson ?? null)?->isUploadedVideo())
             <input type="hidden" name="keep_video_path" value="{{ $lesson->video_path }}">

@@ -12,6 +12,7 @@ return [
         'profile' => 'My Profile',
         'verification' => 'Verification',
         'tickets' => 'Help & Support',
+        'notifications' => 'Notifications',
         'settings' => 'Settings',
         'logout' => 'Logout',
         'menu' => 'Instructor Menu',

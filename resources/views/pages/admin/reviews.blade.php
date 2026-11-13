@@ -97,13 +97,13 @@
                                name="q"
                                value="{{ request('q') }}"
                                placeholder="Search by student, email, course title, or comment..."
-                               class="w-full bg-white border border-slate-200 px-3 py-1.5 pl-8 text-xs focus:outline-none focus:border-[#344C3D]">
+                               class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 pl-8 text-xs focus:outline-none focus:border-[#344C3D]">
                         <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
 
                     <select name="rating"
                             onchange="this.form.submit()"
-                            class="bg-white border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:border-[#344C3D]">
+                            class="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-700 focus:outline-none focus:border-[#344C3D]">
                         <option value="">All Star Ratings</option>
                         <option value="5" @selected(request('rating') == '5')>★★★★★ (5 Stars)</option>
                         <option value="4" @selected(request('rating') == '4')>★★★★☆ (4 Stars)</option>
@@ -397,7 +397,7 @@
                                   name="instructor_reply"
                                   rows="3"
                                   placeholder="Type an official response. This will be publicly shown under the review and notify the student..."
-                                  class="w-full bg-white border border-slate-200 p-3 text-xs focus:outline-none focus:border-[#344C3D]"></textarea>
+                                  class="w-full bg-white border border-slate-200 rounded-lg p-3 text-xs focus:outline-none focus:border-[#344C3D]"></textarea>
                     </div>
 
                     <div class="flex items-center justify-between pt-2">

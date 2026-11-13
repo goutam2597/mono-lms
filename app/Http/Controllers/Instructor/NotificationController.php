@@ -22,7 +22,7 @@ class NotificationController extends Controller
 
         if ($filter === 'unread') {
             $query->whereNull('read_at');
-        } elseif (in_array($filter, ['verification', 'support', 'smtp', 'enrollment', 'review'])) {
+        } elseif (in_array($filter, ['verification', 'support', 'smtp', 'enrollment', 'review', 'assignment'])) {
             $query->where('data->category', $filter);
         }
 
@@ -43,6 +43,7 @@ class NotificationController extends Controller
             'smtp' => $instructor->notifications()->where('data->category', 'smtp')->count(),
             'enrollment' => $instructor->notifications()->where('data->category', 'enrollment')->count(),
             'review' => $instructor->notifications()->where('data->category', 'review')->count(),
+            'assignment' => $instructor->notifications()->where('data->category', 'assignment')->count(),
         ];
 
         return view('pages.instructor.notifications', [

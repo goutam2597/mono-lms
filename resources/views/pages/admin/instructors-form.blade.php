@@ -13,12 +13,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.name') }} *</label>
-                    <input type="text" name="name" value="{{ old('name', $instructor->name) }}" required class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                    <input type="text" name="name" value="{{ old('name', $instructor->name) }}" required class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                     @error('name')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.email') }} *</label>
-                    <input type="email" name="email" value="{{ old('email', $instructor->email) }}" required class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                    <input type="email" name="email" value="{{ old('email', $instructor->email) }}" required class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                     @error('email')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
             </div>
@@ -26,19 +26,19 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.password') }} {{ $instructor->exists ? '('.__('instructor.profile.new_password_hint').')' : '*' }}</label>
-                    <input type="password" name="password" class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                    <input type="password" name="password" class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                     @error('password')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.phone') }}</label>
-                    <input type="text" name="phone" value="{{ old('phone', $instructor->phone) }}" class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                    <input type="text" name="phone" value="{{ old('phone', $instructor->phone) }}" class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.instructors.designation') }}</label>
-                    <input type="text" name="designation" value="{{ old('designation', $instructor->designation) }}" class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                    <input type="text" name="designation" value="{{ old('designation', $instructor->designation) }}" class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.status') }}</label>
@@ -60,7 +60,7 @@
 
             <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.instructors.bio') }}</label>
-                <textarea name="bio" rows="4" class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old('bio', $instructor->bio) }}</textarea>
+                <textarea name="bio" rows="4" class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">{{ old('bio', $instructor->bio) }}</textarea>
             </div>
 
             <div class="flex items-center gap-3 pt-4 border-t border-slate-200">

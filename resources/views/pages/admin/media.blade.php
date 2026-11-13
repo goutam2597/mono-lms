@@ -43,7 +43,7 @@
             <form method="GET" action="{{ route('admin.media.index') }}" class="flex items-center gap-2 w-full sm:w-auto">
                 <div class="relative w-full sm:w-72">
                     <input type="search" name="q" value="{{ $q }}" placeholder="{{ __('admin.media.search_placeholder') }}"
-                           class="w-full h-9 pl-9 pr-3 text-xs border border-slate-200 rounded-none bg-slate-50/50 focus:bg-white focus:outline-none focus:border-slate-900 transition-colors">
+                           class="w-full h-9 pl-9 pr-3 text-xs border border-slate-200 rounded-lg bg-slate-50/50 focus:bg-white focus:outline-none focus:border-slate-900 transition-colors">
                     <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
                     </svg>

@@ -12,6 +12,7 @@ return [
         'saved_courses' => 'Saved Courses',
         'certificates' => 'My Certificates',
         'quiz' => 'My Quiz Attempts',
+        'notifications' => 'Notifications',
         'tickets' => 'Help & Support',
         'browse' => 'Browse Courses',
         'settings' => 'Settings',

@@ -44,7 +44,7 @@
             <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[260px]">
                 <div class="relative flex-1 max-w-sm">
                     <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..." class="w-full pl-9 pr-3.5 py-1.5 text-xs border border-slate-200 focus:outline-none focus:border-[#344c3d]">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email..." class="w-full pl-9 pr-3.5 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-[#344c3d]">
                 </div>
 
                 <div class="flex items-center gap-1.5">
@@ -187,7 +187,7 @@
                 <!-- Account Type Selector -->
                 <div id="user-type-container" class="space-y-1.5">
                     <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Account Type / Role *</label>
-                    <select id="user-type-select" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                    <select id="user-type-select" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                         <option value="student">Student (Learner)</option>
                         <option value="instructor">Instructor (Teaching Faculty)</option>
                         <option value="admin">Administrator (Management)</option>
@@ -198,11 +198,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Full Name *</label>
-                        <input type="text" name="name" id="user-name" required maxlength="255" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900">
+                        <input type="text" name="name" id="user-name" required maxlength="255" class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Email Address *</label>
-                        <input type="email" name="email" id="user-email" required maxlength="255" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900">
+                        <input type="email" name="email" id="user-email" required maxlength="255" class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
@@ -212,11 +212,11 @@
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">
                             Password <span id="user-password-hint" class="text-slate-400 font-normal">*</span>
                         </label>
-                        <input type="password" name="password" id="user-password" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900">
+                        <input type="password" name="password" id="user-password" class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900">
                     </div>
                     <div class="space-y-1.5" id="user-phone-container">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Phone Number</label>
-                        <input type="text" name="phone" id="user-phone" maxlength="30" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900">
+                        <input type="text" name="phone" id="user-phone" maxlength="30" class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
@@ -224,11 +224,11 @@
                 <div id="instructor-fields" class="space-y-4 hidden">
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Designation / Title</label>
-                        <input type="text" name="designation" id="user-designation" placeholder="e.g. Senior PHP Architect" maxlength="100" class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900">
+                        <input type="text" name="designation" id="user-designation" placeholder="e.g. Senior PHP Architect" maxlength="100" class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Instructor Bio</label>
-                        <textarea name="bio" id="user-bio" rows="3" class="w-full border border-slate-300 p-3 text-xs focus:outline-none focus:border-slate-900"></textarea>
+                        <textarea name="bio" id="user-bio" rows="3" class="w-full border border-slate-300 rounded-lg p-3 text-xs focus:outline-none focus:border-slate-900"></textarea>
                     </div>
                 </div>
 
@@ -236,7 +236,7 @@
                 <div id="admin-fields" class="space-y-4 hidden">
                     <div class="space-y-1.5">
                         <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Administrative Role</label>
-                        <select name="role_id" id="user-role-id" data-mselect class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                        <select name="role_id" id="user-role-id" data-mselect class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                             <option value="">— Standard Admin —</option>
                             @foreach($roles as $role)
                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -253,7 +253,7 @@
                 <!-- Status -->
                 <div class="space-y-1.5">
                     <label class="block font-bold uppercase tracking-wider text-[11px] text-slate-700">Account Status</label>
-                    <select name="status" id="user-status" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
+                    <select name="status" id="user-status" data-mselect data-mselect-no-search class="h-10 w-full border border-slate-300 rounded-lg px-3.5 text-xs focus:outline-none focus:border-slate-900 bg-white">
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>

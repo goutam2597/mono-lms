@@ -128,22 +128,22 @@
         <div class="space-y-1.5">
             <label class="text-[10px] font-semibold uppercase text-neutral-500 block">Options (Select radio for correct answer)</label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded">
+                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded-lg">
                     <input type="radio" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][correct_answer]" value="a" checked class="text-[#344c3d] focus:ring-0">
                     <span class="text-xs font-bold text-neutral-500">A.</span>
                     <input type="text" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][options][0]" placeholder="Option A text" class="h-6 w-full text-xs border-0 bg-transparent focus:outline-none p-0">
                 </div>
-                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded">
+                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded-lg">
                     <input type="radio" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][correct_answer]" value="b" class="text-[#344c3d] focus:ring-0">
                     <span class="text-xs font-bold text-neutral-500">B.</span>
                     <input type="text" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][options][1]" placeholder="Option B text" class="h-6 w-full text-xs border-0 bg-transparent focus:outline-none p-0">
                 </div>
-                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded">
+                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded-lg">
                     <input type="radio" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][correct_answer]" value="c" class="text-[#344c3d] focus:ring-0">
                     <span class="text-xs font-bold text-neutral-500">C.</span>
                     <input type="text" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][options][2]" placeholder="Option C text" class="h-6 w-full text-xs border-0 bg-transparent focus:outline-none p-0">
                 </div>
-                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded">
+                <div class="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 px-2.5 py-1.5 rounded-lg">
                     <input type="radio" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][correct_answer]" value="d" class="text-[#344c3d] focus:ring-0">
                     <span class="text-xs font-bold text-neutral-500">D.</span>
                     <input type="text" name="quizzes[__Q_INDEX__][questions][__QUEST_INDEX__][options][3]" placeholder="Option D text" class="h-6 w-full text-xs border-0 bg-transparent focus:outline-none p-0">

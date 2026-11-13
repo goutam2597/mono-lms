@@ -121,35 +121,35 @@
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
-                    <input type="text" name="name" id="plan-name" required maxlength="100" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="name" id="plan-name" required maxlength="100" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.plans.description') }}</label>
-                    <textarea name="description" id="plan-description" rows="2" class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
+                    <textarea name="description" id="plan-description" rows="2" class="w-full border border-neutral-300 rounded-lg p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.courses.price') }} *</label>
-                        <input type="number" step="0.01" min="0" name="price" id="plan-price" required class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="number" step="0.01" min="0" name="price" id="plan-price" required class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.plans.billing_period') }}</label>
-                        <select name="billing_period" id="plan-billing-period" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="billing_period" id="plan-billing-period" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="monthly">{{ __('membership.monthly') }}</option>
                             <option value="yearly">{{ __('membership.yearly') }}</option>
                         </select>
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('instructor.lessons.fields.sort_order') }}</label>
-                        <input type="number" name="sort_order" id="plan-sort-order" min="0" value="0" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="number" name="sort_order" id="plan-sort-order" min="0" value="0" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                 </div>
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.plans.features') }}</label>
-                    <textarea name="features" id="plan-features" rows="4" placeholder="One feature per line" class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
+                    <textarea name="features" id="plan-features" rows="4" placeholder="One feature per line" class="w-full border border-neutral-300 rounded-lg p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
                     <p class="text-[11px] text-neutral-400">{{ __('admin.plans.features_hint') }}</p>
                 </div>
 

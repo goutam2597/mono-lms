@@ -10,9 +10,11 @@ use App\Models\Lesson;
 use App\Models\LessonCompletion;
 use App\Models\LiveClass;
 use App\Models\LiveClassAttendance;
+use App\Services\NotificationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
 final class LearnController extends Controller
 {
@@ -140,13 +142,45 @@ final class LearnController extends Controller
 
         abort_unless($enrolled, 403);
 
-        LiveClassAttendance::firstOrCreate([
+        $attendance = LiveClassAttendance::firstOrCreate([
             'live_class_id' => $liveClass->id,
             'student_id' => $student->id,
         ], [
             'joined_at' => now(),
         ]);
 
+        // First-time attendance earns 10 leaderboard points — celebrate top-3 placement (Ostad gamification).
+        if ($attendance->wasRecentlyCreated) {
+            $this->maybeNotifyLeaderboardRank($liveClass->course, $student);
+        }
+
         return redirect()->away($liveClass->meeting_url);
+    }
+
+    /** Notify the student when their cohort leaderboard rank reaches the podium. */
+    private function maybeNotifyLeaderboardRank(Course $course, $student): void
+    {
+        try {
+            $rank = $course->cohortLeaderboard()->firstWhere('student_id', $student->id);
+
+            if (! $rank || $rank['rank'] > 3) {
+                return;
+            }
+
+            $medals = [1 => '🥇 1st', 2 => '🥈 2nd', 3 => '🥉 3rd'];
+
+            NotificationService::send(
+                $student,
+                'Leaderboard Update: '.$medals[$rank['rank']].' Place in '.$course->title,
+                'You are ranked #'.$rank['rank'].' in the cohort with '.$rank['total_score'].' points. '
+                    .$rank['attendance_points'].' points came from live class attendance.',
+                'leaderboard',
+                route('student.courses.leaderboard', $course),
+                'View Leaderboard',
+                'leaderboard',
+            );
+        } catch (Throwable) {
+            // Leaderboard is a nice-to-have; never block the join redirect
+        }
     }
 }

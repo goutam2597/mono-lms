@@ -12,6 +12,7 @@ return [
         'profile' => 'मेरी प्रोफ़ाइल',
         'verification' => 'सत्यापन',
         'tickets' => 'सहायता और समर्थन',
+        'notifications' => 'सूचनाएं',
         'settings' => 'सेटिंग्स',
         'logout' => 'लॉगआउट',
         'menu' => 'प्रशिक्षक मेनू',

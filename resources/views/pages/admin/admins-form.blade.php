@@ -12,19 +12,19 @@
 
             <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.name') }} *</label>
-                <input type="text" name="name" value="{{ old('name', $admin->name) }}" required class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                <input type="text" name="name" value="{{ old('name', $admin->name) }}" required class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 @error('name')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
             </div>
 
             <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.email') }} *</label>
-                <input type="email" name="email" value="{{ old('email', $admin->email) }}" required class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                <input type="email" name="email" value="{{ old('email', $admin->email) }}" required class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 @error('email')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
             </div>
 
             <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('app.common.password') }} {{ $admin->exists ? '('.__('instructor.profile.new_password_hint').')' : '*' }}</label>
-                <input type="password" name="password" class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                <input type="password" name="password" class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 @error('password')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
             </div>
 

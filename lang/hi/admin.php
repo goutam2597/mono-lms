@@ -68,6 +68,7 @@ return [
             'reports' => 'एनालिटिक्स अवलोकन',
             'leads' => 'लीड्स (CRM)',
             'tickets' => 'सहायता टिकट',
+            'notifications' => 'सूचनाएं',
             'messages' => 'संपर्क संदेश',
             'settings' => 'सामान्य सेटिंग्स',
             'google_settings' => 'गूगल और फायरबेस',

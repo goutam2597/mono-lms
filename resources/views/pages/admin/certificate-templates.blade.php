@@ -406,12 +406,12 @@
                 @csrf
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Template Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. Heritage Grand Diploma" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900 text-xs">
+                    <input type="text" name="title" required placeholder="e.g. Heritage Grand Diploma" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900 text-xs">
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
-                    <select name="template_type" id="create_template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                    <select name="template_type" id="create_template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-slate-900">
                         <option value="template_1" selected>Template 1: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
                         <option value="template_8">Template 8: Certificate of Appreciation (Navy & Gold Geometric Frame)</option>
                     </select>
@@ -420,27 +420,27 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signer Name *</label>
-                        <input type="text" name="signer_name" required value="Dr. Alexander Wright" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="signer_name" required value="Dr. Alexander Wright" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signature Title *</label>
-                        <input type="text" name="signature_title" required value="Program Director & Dean" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" name="signature_title" required value="Program Director & Dean" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Award Subtitle Text</label>
-                    <textarea name="subtitle" rows="2" class="w-full p-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900 text-xs">This certificate acknowledges your outstanding dedication, mastery, and distinguished accomplishment in successfully completing the comprehensive curriculum.</textarea>
+                    <textarea name="subtitle" rows="2" class="w-full p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900 text-xs">This certificate acknowledges your outstanding dedication, mastery, and distinguished accomplishment in successfully completing the comprehensive curriculum.</textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-medium text-slate-500 text-[11px] mb-1">Primary Color</label>
-                        <input type="text" name="border_color" value="#1a1815" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 focus:outline-none">
+                        <input type="text" name="border_color" value="#1a1815" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 rounded-lg focus:outline-none">
                     </div>
                     <div>
                         <label class="block font-medium text-slate-500 text-[11px] mb-1">Background Color</label>
-                        <input type="text" name="bg_color" value="#ffffff" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 focus:outline-none">
+                        <input type="text" name="bg_color" value="#ffffff" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 rounded-lg focus:outline-none">
                     </div>
                 </div>
 
@@ -480,12 +480,12 @@
                 @method('PUT')
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Template Title *</label>
-                    <input type="text" id="edit_title" name="title" required class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900 text-xs">
+                    <input type="text" id="edit_title" name="title" required class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900 text-xs">
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Design Style *</label>
-                    <select id="edit_template_type" name="template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                    <select id="edit_template_type" name="template_type" class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-slate-900">
                         <option value="template_1" selected>Template 1: Contemporary Prestige Award (Gold Ribbon Wave & Avatar Portrait)</option>
                         <option value="template_8">Template 8: Certificate of Appreciation (Navy & Gold Geometric Frame)</option>
                     </select>
@@ -494,27 +494,27 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signer Name *</label>
-                        <input type="text" id="edit_signer_name" name="signer_name" required class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" id="edit_signer_name" name="signer_name" required class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Signature Title *</label>
-                        <input type="text" id="edit_signature_title" name="signature_title" required class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="text" id="edit_signature_title" name="signature_title" required class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Award Subtitle Text</label>
-                    <textarea id="edit_subtitle" name="subtitle" rows="2" class="w-full p-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900 text-xs"></textarea>
+                    <textarea id="edit_subtitle" name="subtitle" rows="2" class="w-full p-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900 text-xs"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-medium text-slate-500 text-[11px] mb-1">Primary Color</label>
-                        <input type="text" id="edit_border_color" name="border_color" value="#1a1815" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 focus:outline-none">
+                        <input type="text" id="edit_border_color" name="border_color" value="#1a1815" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 rounded-lg focus:outline-none">
                     </div>
                     <div>
                         <label class="block font-medium text-slate-500 text-[11px] mb-1">Background Color</label>
-                        <input type="text" id="edit_bg_color" name="bg_color" value="#ffffff" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 focus:outline-none">
+                        <input type="text" id="edit_bg_color" name="bg_color" value="#ffffff" class="w-full px-2 py-1 text-xs font-mono border border-slate-200 rounded-lg focus:outline-none">
                     </div>
                 </div>
 

@@ -70,6 +70,7 @@ return [
             'reports' => 'Analytics Overview',
             'leads' => 'Leads (CRM)',
             'tickets' => 'Support Tickets',
+            'notifications' => 'Notifications',
             'messages' => 'Contact Messages',
             'settings' => 'General Settings',
             'google_settings' => 'Google & Firebase',

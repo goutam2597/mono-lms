@@ -12,7 +12,7 @@
 
             <div class="space-y-1.5">
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-700">{{ __('admin.roles.name') }} *</label>
-                <input type="text" name="name" value="{{ old('name', $role->name) }}" required class="w-full border border-slate-200 px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
+                <input type="text" name="name" value="{{ old('name', $role->name) }}" required class="w-full border border-slate-200 rounded-lg px-3.5 py-2.5 text-xs focus:outline-none focus:border-[#344C3D]">
                 @error('name')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
             </div>
 

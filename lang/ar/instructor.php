@@ -10,6 +10,7 @@ return [
         'profile' => 'ملفي الشخصي',
         'verification' => 'التحقق من الهوية',
         'tickets' => 'المساعدة والدعم',
+        'notifications' => 'الإشعارات',
         'settings' => 'الإعدادات',
         'logout' => 'تسجيل الخروج',
         'menu' => 'قائمة المدرب',

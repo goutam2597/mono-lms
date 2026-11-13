@@ -139,36 +139,36 @@
                 @csrf
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Coupon Code *</label>
-                    <input type="text" name="code" required placeholder="e.g. SUMMER2026" class="w-full uppercase font-mono px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <input type="text" name="code" required placeholder="e.g. SUMMER2026" class="w-full uppercase font-mono px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Campaign Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. Summer Special 25% Off" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                    <input type="text" name="title" required placeholder="e.g. Summer Special 25% Off" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Discount Type *</label>
-                        <select name="discount_type" data-mselect data-mselect-no-search class="h-10 w-full px-3 text-xs border border-slate-200 rounded-none bg-white focus:outline-none focus:border-slate-900">
+                        <select name="discount_type" data-mselect data-mselect-no-search class="h-10 w-full px-3 text-xs border border-slate-200 rounded-lg bg-white focus:outline-none focus:border-slate-900">
                             <option value="percent">Percentage (%)</option>
                             <option value="fixed">Fixed Dollar ($)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Discount Value *</label>
-                        <input type="number" step="0.01" name="discount_value" required placeholder="e.g. 25" class="h-10 w-full px-3.5 text-xs border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="number" step="0.01" name="discount_value" required placeholder="e.g. 25" class="h-10 w-full px-3.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Max Redemptions</label>
-                        <input type="number" name="max_uses" placeholder="e.g. 100 (Blank = ∞)" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="number" name="max_uses" placeholder="e.g. 100 (Blank = ∞)" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Expiration Date</label>
-                        <input type="date" name="expires_at" class="w-full px-3 py-2.5 border border-slate-200 rounded-none focus:outline-none focus:border-slate-900">
+                        <input type="date" name="expires_at" class="w-full px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-900">
                     </div>
                 </div>
 

@@ -224,11 +224,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
-                        <input type="text" name="name" id="instructor-name" required maxlength="255" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="text" name="name" id="instructor-name" required maxlength="255" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.email') }} *</label>
-                        <input type="email" name="email" id="instructor-email" required maxlength="255" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="email" name="email" id="instructor-email" required maxlength="255" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                 </div>
 
@@ -238,22 +238,22 @@
                             {{ __('app.common.password') }}
                             <span id="instructor-password-hint" class="text-neutral-400 font-normal">({{ __('instructor.profile.new_password_hint') }})</span>
                         </label>
-                        <input type="password" name="password" id="instructor-password" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="password" name="password" id="instructor-password" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.phone') }}</label>
-                        <input type="text" name="phone" id="instructor-phone" maxlength="30" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="text" name="phone" id="instructor-phone" maxlength="30" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.instructors.designation') }}</label>
-                        <input type="text" name="designation" id="instructor-designation" placeholder="e.g. Senior PHP Architect" maxlength="100" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                        <input type="text" name="designation" id="instructor-designation" placeholder="e.g. Senior PHP Architect" maxlength="100" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                     </div>
                     <div class="space-y-1.5">
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.status') }}</label>
-                        <select name="status" id="instructor-status" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
+                        <select name="status" id="instructor-status" data-mselect data-mselect-no-search class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900 bg-white">
                             <option value="active">{{ __('app.common.active') }}</option>
                             <option value="inactive">{{ __('app.common.inactive') }}</option>
                             <option value="pending_verification">Pending Verification</option>
@@ -273,7 +273,7 @@
 
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.instructors.bio') }}</label>
-                    <textarea name="bio" id="instructor-bio" rows="3" class="w-full border border-neutral-300 p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
+                    <textarea name="bio" id="instructor-bio" rows="3" class="w-full border border-neutral-300 rounded-lg p-4 text-sm focus:outline-none focus:border-neutral-900"></textarea>
                 </div>
 
                 <div class="flex items-center justify-end gap-3 pt-3 border-t border-neutral-200">
@@ -364,7 +364,7 @@
                 <form id="verify-reject-form" method="POST" action="" class="p-3.5 bg-neutral-50 border border-red-200 space-y-2 hidden">
                     @csrf
                     <label class="block text-[11px] font-bold uppercase text-red-800">Reason for Rejection *</label>
-                    <textarea name="rejection_reason" id="rejection_reason" rows="2" required placeholder="Explain why the documents cannot be verified (e.g. illegible copy, expired ID, name mismatch)..." class="w-full border border-neutral-300 p-2.5 text-xs focus:outline-none focus:border-red-600 bg-white"></textarea>
+                    <textarea name="rejection_reason" id="rejection_reason" rows="2" required placeholder="Explain why the documents cannot be verified (e.g. illegible copy, expired ID, name mismatch)..." class="w-full border border-neutral-300 rounded-lg p-2.5 text-xs focus:outline-none focus:border-red-600 bg-white"></textarea>
                     <div class="flex items-center justify-end gap-2 pt-1">
                         <button type="button" id="cancel-reject-btn" class="action-btn action-btn-ghost h-8 px-3 text-[10px]">Cancel</button>
                         <button type="submit" class="action-btn action-btn-danger h-8 px-4 text-[10px] font-bold uppercase">Confirm Rejection</button>

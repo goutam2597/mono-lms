@@ -84,21 +84,21 @@
         <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 space-y-3">
             <div class="text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">+ Add Initial Question (Optional)</div>
             <div class="space-y-2">
-                <input type="text" name="new_questions[0][text]" placeholder="Question 1 text: e.g. What is the difference between flexbox and CSS grid?" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                <input type="text" name="new_questions[0][text]" placeholder="Question 1 text: e.g. What is the difference between flexbox and CSS grid?" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <input type="text" name="new_questions[0][options][0]" placeholder="Option A" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                    <input type="text" name="new_questions[0][options][1]" placeholder="Option B" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                    <input type="text" name="new_questions[0][options][2]" placeholder="Option C" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                    <input type="text" name="new_questions[0][options][3]" placeholder="Option D" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="new_questions[0][options][0]" placeholder="Option A" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="new_questions[0][options][1]" placeholder="Option B" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="new_questions[0][options][2]" placeholder="Option C" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="new_questions[0][options][3]" placeholder="Option D" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                    <select name="new_questions[0][correct]" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2 text-xs rounded focus:outline-none focus:border-neutral-900">
+                    <select name="new_questions[0][correct]" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                         <option value="a">Correct Option: A</option>
                         <option value="b">Correct Option: B</option>
                         <option value="c">Correct Option: C</option>
                         <option value="d">Correct Option: D</option>
                     </select>
-                    <input type="text" name="new_questions[0][explanation]" placeholder="Explanation (shown to student after quiz)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="new_questions[0][explanation]" placeholder="Explanation (shown to student after quiz)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                 </div>
             </div>
         </div>
@@ -207,21 +207,21 @@
                         @csrf
                         <div class="text-xs font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider">+ Add New Question</div>
                         <div class="space-y-2">
-                            <input type="text" name="question_text" required placeholder="Question text: e.g. Which HTML tag is used for the largest heading?" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                            <input type="text" name="question_text" required placeholder="Question text: e.g. Which HTML tag is used for the largest heading?" class="h-9 w-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <input type="text" name="options[0]" required placeholder="Option A text (e.g. <h1>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                                <input type="text" name="options[1]" required placeholder="Option B text (e.g. <h6>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                                <input type="text" name="options[2]" placeholder="Option C text (e.g. <head>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
-                                <input type="text" name="options[3]" placeholder="Option D text (e.g. <heading>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="options[0]" required placeholder="Option A text (e.g. <h1>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="options[1]" required placeholder="Option B text (e.g. <h6>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="options[2]" placeholder="Option C text (e.g. <head>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="options[3]" placeholder="Option D text (e.g. <heading>)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                                <select name="correct_answer" required class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2 text-xs rounded focus:outline-none focus:border-neutral-900">
+                                <select name="correct_answer" required class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-2 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                                     <option value="a">Correct Answer: Option A</option>
                                     <option value="b">Correct Answer: Option B</option>
                                     <option value="c">Correct Answer: Option C</option>
                                     <option value="d">Correct Answer: Option D</option>
                                 </select>
-                                <input type="text" name="explanation" placeholder="Explanation for students (optional)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded focus:outline-none focus:border-neutral-900">
+                                <input type="text" name="explanation" placeholder="Explanation for students (optional)" class="h-8 border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-xs rounded-lg focus:outline-none focus:border-neutral-900">
                             </div>
                         </div>
                         <div class="flex justify-end pt-1">

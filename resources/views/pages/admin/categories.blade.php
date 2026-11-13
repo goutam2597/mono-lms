@@ -172,10 +172,10 @@
                 </div>
 
                 @if ($generatorSet)
-                    <div id="cat-generate-row" class="hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 p-4">
+                    <div id="cat-generate-row" class="hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 p-4 rounded-lg">
                         <div class="flex flex-wrap items-center gap-3">
                             <input type="text" id="cat-generate-prompt" maxlength="500" placeholder="{{ __('admin.categories.generate_ph') ?? 'Describe the category in a few words…' }}"
-                                   class="h-9 min-w-0 basis-full flex-1 border sm:min-w-[240px] sm:basis-auto border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 dark:focus:border-neutral-100 focus:outline-none">
+                                   class="h-9 min-w-0 basis-full flex-1 border sm:min-w-[240px] sm:basis-auto border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 rounded-lg px-3 text-sm placeholder:text-neutral-400 focus:border-neutral-900 dark:focus:border-neutral-100 focus:outline-none">
                             <button type="button" id="cat-generate-run" class="action-btn h-9 px-5 text-[10px] font-medium tracking-[0.14em]">
                                 {{ __('admin.categories.generate') ?? 'Generate' }}
                             </button>
@@ -189,7 +189,7 @@
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} *</label>
                     <input type="text" name="name" id="cat-name-input" required maxlength="100"
                            data-translate-key="name" data-translate-locale="{{ $defaultCode }}"
-                           class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                           class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <!-- Other Language Panels -->
@@ -198,7 +198,7 @@
                         <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('app.common.name') }} ({{ $lang->native_name }})</label>
                         <input type="text" name="translations[{{ $lang->code }}][name]" id="cat-trans-name-{{ $lang->code }}" maxlength="100"
                                data-translate-key="name" data-translate-locale="{{ $lang->code }}"
-                               class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                               class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                         <p class="text-[11px] text-neutral-400">Blank falls back to default language name.</p>
                     </div>
                 @endforeach
@@ -224,8 +224,8 @@
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">Accent Color</label>
                     <div class="flex items-center gap-3">
-                        <input type="color" name="color" id="cat-color-input" value="#137547" class="w-10 h-10 border border-neutral-300 cursor-pointer p-0.5">
-                        <input type="text" id="cat-color-preview" value="#137547" readonly class="w-28 h-10 border border-neutral-300 px-3 text-xs text-neutral-600 bg-neutral-50 font-mono">
+                        <input type="color" name="color" id="cat-color-input" value="#137547" class="w-10 h-10 border border-neutral-300 rounded-lg cursor-pointer p-0.5">
+                        <input type="text" id="cat-color-preview" value="#137547" readonly class="w-28 h-10 border border-neutral-300 rounded-lg px-3 text-xs text-neutral-600 bg-neutral-50 font-mono">
                         <span class="text-[11px] text-neutral-400">Card tint & badge highlight</span>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                 <!-- Fallback Icon / Emoji / SVG Path -->
                 <div class="space-y-1.5">
                     <label class="block font-semibold uppercase tracking-wider text-[11px] text-neutral-600">{{ __('admin.categories.icon') }} (Fallback Emoji or SVG Path)</label>
-                    <input type="text" name="icon" id="cat-icon-input" placeholder="💻 or SVG Path (M...)" class="h-11 w-full border border-neutral-300 px-4 text-sm focus:outline-none focus:border-neutral-900">
+                    <input type="text" name="icon" id="cat-icon-input" placeholder="💻 or SVG Path (M...)" class="h-11 w-full border border-neutral-300 rounded-lg px-4 text-sm focus:outline-none focus:border-neutral-900">
                 </div>
 
                 <div class="flex items-center justify-end gap-3 pt-3 border-t border-neutral-200">

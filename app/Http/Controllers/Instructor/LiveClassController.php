@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Instructor;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\LiveClass;
+use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,11 @@ final class LiveClassController extends Controller
         $data['course_id'] = $course->id;
         $data['sort_order'] = $course->liveClasses()->count() + 1;
 
-        LiveClass::create($data);
+        $liveClass = LiveClass::create($data);
+
+        if (($liveClass->status ?? 'scheduled') === 'scheduled') {
+            $this->notifyStudentsOfClassScheduled($liveClass);
+        }
 
         return back()->with('success', 'Live class "'.$data['title'].'" scheduled.');
     }
@@ -61,5 +66,22 @@ final class LiveClassController extends Controller
     private function authorizeCourse(Course $course): void
     {
         abort_unless($course->instructor_id === auth('instructor')->id(), 403);
+    }
+
+    /**
+     * Announce a newly scheduled live class to the course cohort.
+     */
+    private function notifyStudentsOfClassScheduled(LiveClass $liveClass): void
+    {
+        NotificationService::notifyCourseStudents(
+            $liveClass->course,
+            'Live Class Scheduled: '.$liveClass->title,
+            $liveClass->classTypeLabel().' on '.$liveClass->starts_at->format('M j, Y \a\t g:i A')
+                .' via '.$liveClass->platformLabel().'. Attendance earns 10 leaderboard points.',
+            'live_class',
+            route('student.courses.learn', $liveClass->course),
+            'View Schedule',
+            'live_class',
+        );
     }
 }
