@@ -45,8 +45,10 @@ class StudentAuthController extends PanelAuthController
         // override handles student, instructor and admin credentials). The
         // field is merged in so the rule also runs when the widget never
         // rendered (Laravel skips non-implicit rules for absent fields).
-        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
-        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+        if ($this->turnstileEnabled()) {
+            $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+            $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+        }
 
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],

@@ -6,6 +6,7 @@ use App\Mail\ContactMessageAdminMail;
 use App\Mail\ContactMessageUserConfirmationMail;
 use App\Models\Admin;
 use App\Models\ContactMessage;
+use App\Models\Lead;
 use App\Models\Page;
 use App\Services\NotificationService;
 use App\Support\MailHelper;
@@ -77,6 +78,22 @@ class PublicPageController extends Controller
             'message' => trim($validated['message']),
             'is_read' => false,
         ]);
+
+        // Capture the inquirer as a CRM lead so Admin → Leads stays real.
+        // New visitors become a fresh 'new' lead; returning inquirers keep
+        // their pipeline stage and the inquiry is appended to their trail.
+        $lead = Lead::firstOrNew(['email' => $contactMessage->email]);
+        if (! $lead->exists) {
+            $lead->fill([
+                'name' => $contactMessage->name,
+                'phone' => $contactMessage->phone,
+                'source' => 'contact form',
+                'status' => 'new',
+            ]);
+        }
+        $lead->notes = trim(($lead->notes ? $lead->notes."\n---\n" : '')
+            .'['.now()->format('d M Y').'] '.$contactMessage->subject.': '.Str::limit($contactMessage->message, 200));
+        $lead->save();
 
         // Apply SMTP configuration dynamically
         MailHelper::applySmtpConfig();

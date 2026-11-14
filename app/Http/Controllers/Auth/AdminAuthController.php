@@ -23,4 +23,11 @@ class AdminAuthController extends PanelAuthController
     {
         return 'admin.panel';
     }
+
+    protected function turnstileEnabled(): bool
+    {
+        // Admin sign-in stays reachable even when Cloudflare is down or
+        // misconfigured — only student/instructor panels are gated.
+        return false;
+    }
 }

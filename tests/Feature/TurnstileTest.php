@@ -123,6 +123,30 @@ class TurnstileTest extends TestCase
         $this->assertGuest('instructor');
     }
 
+    public function test_admin_login_is_not_gated(): void
+    {
+        $this->enableTurnstile();
+        Admin::create([
+            'name' => 'Captcha Admin',
+            'email' => 'captcha-admin@mono-lms.test',
+            'password' => 'password',
+            'status' => 'active',
+            'is_super_admin' => true,
+        ]);
+
+        // No Turnstile token: the admin panel must stay reachable so it can
+        // fix the configuration even when Cloudflare is down.
+        $this->post(route('admin.login.attempt'), [
+            'email' => 'captcha-admin@mono-lms.test',
+            'password' => 'password',
+        ])->assertRedirect(route('admin.dashboard'));
+
+        $this->assertAuthenticatedAs(
+            Admin::where('email', 'captcha-admin@mono-lms.test')->first(),
+            'admin',
+        );
+    }
+
     public function test_registration_is_gated_when_turnstile_enabled(): void
     {
         $this->fakeSiteverify(true);

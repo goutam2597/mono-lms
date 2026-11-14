@@ -28,6 +28,16 @@ abstract class PanelAuthController extends Controller
         return $this->guard().'.login';
     }
 
+    /**
+     * Whether the login form is gated by the Turnstile bot check. Student and
+     * instructor panels opt in; the admin panel stays reachable even when
+     * Cloudflare is down or misconfigured.
+     */
+    protected function turnstileEnabled(): bool
+    {
+        return true;
+    }
+
     public function showLogin()
     {
         if (Auth::guard($this->guard())->check()) {
@@ -43,8 +53,10 @@ abstract class PanelAuthController extends Controller
         // Passes untouched while Turnstile is disabled. The field is merged in
         // so the rule also runs when the widget never rendered (Laravel skips
         // non-implicit rules for absent fields).
-        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
-        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+        if ($this->turnstileEnabled()) {
+            $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+            $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+        }
 
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],

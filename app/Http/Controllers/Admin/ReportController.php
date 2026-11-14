@@ -29,16 +29,16 @@ class ReportController extends Controller
         $topInstructors = Instructor::withCount('courses')
             ->get()
             ->map(function ($inst) {
+                // Real instructor earnings: 70% share of paid orders for their courses.
                 $courses = Course::where('instructor_id', $inst->id)->pluck('id');
-                $earnings = (float) Order::whereIn('course_id', $courses)->where('payment_status', 'paid')->sum('amount') * 0.70;
-                $inst->earnings = $earnings > 0 ? $earnings : rand(450, 1850);
+                $inst->earnings = (float) Order::whereIn('course_id', $courses)->where('payment_status', 'paid')->sum('amount') * 0.70;
 
                 return $inst;
             })->sortByDesc('earnings')->take(5);
 
         return view('pages.admin.reports', [
             'stats' => [
-                'revenue' => $totalRevenue > 0 ? $totalRevenue : 4768.57,
+                'revenue' => $totalRevenue,
                 'enrollments' => $totalEnrollments,
                 'students' => $totalStudents,
                 'courses' => $totalCourses,

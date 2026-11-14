@@ -59,10 +59,13 @@
                                 </div>
                             </div>
                             <span class="font-bold text-[#344c3d] px-2.5 py-1 bg-emerald-50 border border-emerald-200 shrink-0 font-mono">
-                                {{ max($course->enrollments_count, 12) }} enrollments
+                                {{ $course->enrollments_count }} enrollments
                             </span>
                         </div>
                     @endforeach
+                    @if($topCourses->isEmpty())
+                        <div class="p-6 text-center text-xs text-slate-400">No enrollments yet — course rankings appear as students enroll.</div>
+                    @endif
                 </div>
             </div>
 
@@ -90,6 +93,9 @@
                             </span>
                         </div>
                     @endforeach
+                    @if($topInstructors->isEmpty())
+                        <div class="p-6 text-center text-xs text-slate-400">No instructors yet — earnings appear once instructors publish courses.</div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -121,6 +127,9 @@
                                 <td class="py-3 px-4 text-right font-mono font-bold text-slate-900">${{ number_format($order->amount, 2) }}</td>
                             </tr>
                         @endforeach
+                        @if($recentOrders->isEmpty())
+                            <tr><td colspan="5" class="py-10 text-center text-xs text-slate-400">No paid orders yet — transactions appear here after the first successful checkout.</td></tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
