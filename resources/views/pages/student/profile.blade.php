@@ -93,11 +93,14 @@
 
                     <div class="space-y-1 sm:col-span-2">
                         <label class="text-xs font-semibold text-slate-700">{{ __('app.common.phone') }}</label>
-                        <input type="text"
-                               name="phone"
-                               value="{{ old('phone', $student->phone) }}"
-                               placeholder="+1 (555) 000-0000"
-                               class="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-[var(--theme-primary,#344c3d)] rounded-[6px] px-3 py-2 text-xs text-slate-900 focus:outline-none transition-colors">
+                        <x-phone-input
+                            name="phone"
+                            :value="old('phone', $student->phone_e164 ?? $student->phone)"
+                            :country="old('phone_country', $student->phone_country)"
+                            inputClass="w-full min-w-0 flex-1 bg-slate-50 border border-slate-200 focus:bg-white focus:border-[var(--theme-primary,#344c3d)] rounded-[6px] px-3 py-2 text-xs text-slate-900 focus:outline-none transition-colors"
+                            triggerClass="border border-slate-200 rounded-[6px] px-3 py-2 text-xs bg-slate-50 hover:border-slate-300 whitespace-nowrap text-slate-900"
+                        />
+                        @error('phone')<p class="text-[11px] text-rose-600 font-medium">{{ $message }}</p>@enderror
                     </div>
                 </div>
 

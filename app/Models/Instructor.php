@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'email', 'password', 'phone', 'bio', 'avatar',
+    'name', 'email', 'password', 'phone', 'phone_e164', 'phone_country', 'bio', 'avatar',
     'designation', 'locale', 'status',
     'certification_file', 'national_id_file', 'verification_status',
     'verified_at', 'rejection_reason',

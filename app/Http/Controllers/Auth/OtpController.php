@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\OtpVerificationMail;
 use App\Models\Instructor;
-use App\Models\Setting;
 use App\Models\Student;
+use App\Services\OtpService;
+use App\Services\PhoneNumberService;
+use App\Services\SmsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class OtpController extends Controller
 {
+    public function __construct(
+        protected OtpService $otpService,
+        protected PhoneNumberService $phoneService,
+        protected SmsService $smsService,
+    ) {}
+
     /**
      * Show the OTP verification form.
      */
@@ -26,12 +31,19 @@ class OtpController extends Controller
         $expiresAt = (int) ($pending['expires_at'] ?? (now()->addMinutes(10)->timestamp));
         $remainingSeconds = max(0, $expiresAt - now()->timestamp);
 
-        $email = (string) ($pending['email'] ?? 'student@example.com');
+        $channel = $pending['channel'] ?? OtpService::CHANNEL_EMAIL;
+        $email = (string) ($pending['email'] ?? '');
+        $phone = (string) ($pending['phone'] ?? '');
         $maskedEmail = $this->maskEmail($email);
+        $maskedPhone = $this->phoneService->mask($phone);
         $role = $pending['type'] ?? 'student';
 
         return view('pages.auth.otp', [
+            'channel' => $channel,
             'maskedEmail' => $maskedEmail,
+            'maskedPhone' => $maskedPhone,
+            'displayTarget' => $channel === OtpService::CHANNEL_SMS ? $maskedPhone : $maskedEmail,
+            'smsOtpAvailable' => $this->smsService->otpEnabled() && filled($phone),
             'role' => $role,
             'remainingSeconds' => $remainingSeconds,
             'isExpired' => $remainingSeconds <= 0,
@@ -54,15 +66,24 @@ class OtpController extends Controller
         ]);
 
         $submittedOtp = preg_replace('/\D/', '', (string) $request->input('otp'));
-        $expectedOtp = (string) ($pending['otp'] ?? '');
-        $expiresAt = (int) ($pending['expires_at'] ?? 0);
+        $channel = $pending['channel'] ?? OtpService::CHANNEL_EMAIL;
+        $identifier = $channel === OtpService::CHANNEL_SMS ? ($pending['phone'] ?? '') : ($pending['email'] ?? '');
 
-        if (now()->timestamp > $expiresAt) {
-            return back()->withErrors(['otp' => 'This verification code has expired. Please click "Resend OTP" below to receive a new code.']);
-        }
+        // Verify using OtpService (hashed verification with brute-force lockout)
+        $verified = $this->otpService->verifyFor($channel, $identifier, OtpService::PURPOSE_SIGNUP, $submittedOtp);
 
-        if ($submittedOtp !== $expectedOtp) {
-            return back()->withErrors(['otp' => 'The verification code entered is incorrect. Please try again.']);
+        // Fallback check against session for backward compatibility
+        if (! $verified) {
+            $expectedOtp = (string) ($pending['otp'] ?? '');
+            $expiresAt = (int) ($pending['expires_at'] ?? 0);
+
+            if (now()->timestamp > $expiresAt) {
+                return back()->withErrors(['otp' => 'This verification code has expired. Please click "Resend OTP" below to receive a new code.']);
+            }
+
+            if ($submittedOtp !== $expectedOtp) {
+                return back()->withErrors(['otp' => 'The verification code entered is incorrect or exceeded maximum attempts. Please try again.']);
+            }
         }
 
         $type = $pending['type'] ?? 'student';
@@ -70,6 +91,7 @@ class OtpController extends Controller
         if ($type === 'instructor') {
             if (Instructor::where('email', $pending['email'])->exists()) {
                 $request->session()->forget('pending_otp_registration');
+                $this->otpService->clear($channel, $identifier, OtpService::PURPOSE_SIGNUP);
 
                 return redirect()->route('instructor.login')->with('info', 'An account with this email already exists. Please sign in.');
             }
@@ -77,6 +99,8 @@ class OtpController extends Controller
             $instructor = Instructor::create([
                 'name' => $pending['name'],
                 'email' => $pending['email'],
+                ...$this->phoneService->attributesFor($pending['phone'] ?? null),
+                'phone_verified_at' => $channel === OtpService::CHANNEL_SMS ? now() : null,
                 'password' => $pending['password'],
                 'designation' => $pending['designation'] ?? 'Instructor',
                 'status' => 'pending_verification',
@@ -84,15 +108,18 @@ class OtpController extends Controller
             ]);
 
             $request->session()->forget('pending_otp_registration');
+            $this->otpService->clear($channel, $identifier, OtpService::PURPOSE_SIGNUP);
+
             Auth::guard('instructor')->login($instructor);
             $request->session()->regenerate();
 
-            return redirect()->route('instructor.dashboard')->with('status', 'Email verified successfully! Please submit your Instructor Certificate and National ID to complete instructor verification.');
+            return redirect()->route('instructor.dashboard')->with('status', 'Verification successful! Please submit your Instructor Certificate to complete onboarding.');
         }
 
         // Student
         if (Student::where('email', $pending['email'])->exists()) {
             $request->session()->forget('pending_otp_registration');
+            $this->otpService->clear($channel, $identifier, OtpService::PURPOSE_SIGNUP);
 
             return redirect()->route('login')->with('info', 'An account with this email already exists. Please sign in.');
         }
@@ -100,19 +127,23 @@ class OtpController extends Controller
         $student = Student::create([
             'name' => $pending['name'],
             'email' => $pending['email'],
+            ...$this->phoneService->attributesFor($pending['phone'] ?? null),
+            'phone_verified_at' => $channel === OtpService::CHANNEL_SMS ? now() : null,
             'password' => $pending['password'],
             'status' => 'active',
         ]);
 
         $request->session()->forget('pending_otp_registration');
+        $this->otpService->clear($channel, $identifier, OtpService::PURPOSE_SIGNUP);
+
         Auth::guard('student')->login($student);
         $request->session()->regenerate();
 
-        return redirect()->route('student.dashboard')->with('success', 'Email verified successfully! Welcome to Mono LMS.');
+        return redirect()->route('student.dashboard')->with('success', 'Verification successful! Welcome to Mono LMS.');
     }
 
     /**
-     * Resend a fresh 6-digit OTP code.
+     * Resend a fresh 6-digit OTP code (can also switch channel between email and SMS).
      */
     public function resend(Request $request): RedirectResponse
     {
@@ -122,83 +153,74 @@ class OtpController extends Controller
             return redirect()->route('register')->withErrors(['email' => 'No pending registration found. Please register again.']);
         }
 
-        $otp = (string) random_int(100000, 999999);
-        $pending['otp'] = $otp;
-        $pending['expires_at'] = now()->addMinutes(10)->timestamp;
+        $channel = $request->input('channel', $pending['channel'] ?? OtpService::CHANNEL_EMAIL);
+        if ($channel === OtpService::CHANNEL_SMS && (! $this->smsService->otpEnabled() || empty($pending['phone']))) {
+            $channel = OtpService::CHANNEL_EMAIL;
+        }
 
+        $identifier = $channel === OtpService::CHANNEL_SMS ? $pending['phone'] : $pending['email'];
+
+        [$otpModel, $code] = $this->otpService->issueFor(
+            $channel,
+            $identifier,
+            OtpService::PURPOSE_SIGNUP,
+            $pending['name'],
+            $pending['type'] ?? 'student',
+        );
+
+        $pending['channel'] = $channel;
+        $pending['otp'] = $code;
+        $pending['expires_at'] = now()->addMinutes(OtpService::EXPIRY_MINUTES)->timestamp;
         $request->session()->put('pending_otp_registration', $pending);
 
-        $this->sendOtpEmail($pending['email'], $pending['name'], $otp, $pending['type'] ?? 'student');
+        $targetText = $channel === OtpService::CHANNEL_SMS ? 'your phone ('.$this->phoneService->mask($identifier).')' : 'your email ('.$this->maskEmail($identifier).')';
 
-        return back()->with('status', 'A new 6-digit verification code has been sent to your email.');
+        return back()->with('status', "A new 6-digit verification code has been dispatched to {$targetText}.");
     }
 
     /**
-     * Initiate an OTP sign-up flow from a registration controller.
+     * Initiate an OTP sign-up flow from registration controller.
      *
      * @param  array<string, mixed>  $data
      */
     public function initiateRegistration(Request $request, array $data): RedirectResponse
     {
-        $otp = (string) random_int(100000, 999999);
-        $expiresAt = now()->addMinutes(10)->timestamp;
+        // Choose channel: if user provided phone and SMS OTP is enabled, or default to email
+        $channel = (! empty($data['phone']) && $this->smsService->otpEnabled() && ($data['prefer_sms'] ?? false))
+            ? OtpService::CHANNEL_SMS
+            : OtpService::CHANNEL_EMAIL;
+
+        $identifier = $channel === OtpService::CHANNEL_SMS ? $data['phone'] : $data['email'];
+
+        [$otpModel, $code] = $this->otpService->issueFor(
+            $channel,
+            $identifier,
+            OtpService::PURPOSE_SIGNUP,
+            $data['name'],
+            $data['type'] ?? 'student',
+        );
 
         $payload = [
             'type' => $data['type'] ?? 'student',
+            'channel' => $channel,
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
             'password' => $data['password'],
             'designation' => $data['designation'] ?? null,
-            'otp' => $otp,
-            'expires_at' => $expiresAt,
+            'otp' => $code,
+            'expires_at' => now()->addMinutes(OtpService::EXPIRY_MINUTES)->timestamp,
         ];
 
         $request->session()->put('pending_otp_registration', $payload);
 
-        $this->sendOtpEmail($payload['email'], $payload['name'], $otp, $payload['type']);
+        $dest = $channel === OtpService::CHANNEL_SMS ? $this->phoneService->mask($identifier) : $this->maskEmail($identifier);
 
-        return redirect()->route('otp')->with('status', "Verification code sent! Please check your email: {$this->maskEmail($payload['email'])}");
+        return redirect()->route('otp')->with('status', "Verification code sent to {$dest}!");
     }
 
     /**
-     * Dispatch OTP email and gracefully log on local/mock environments.
-     */
-    protected function sendOtpEmail(string $email, string $name, string $otp, string $type): void
-    {
-        $this->applySmtpSettings();
-
-        try {
-            Mail::to($email)->send(new OtpVerificationMail($otp, $name, $type));
-        } catch (\Throwable $e) {
-            Log::warning("Could not dispatch OTP email via configured SMTP to {$email}: ".$e->getMessage());
-        }
-
-        Log::info("OTP generated for {$email} ({$type}): {$otp}");
-    }
-
-    /**
-     * Apply SMTP settings dynamically from admin panel configuration.
-     */
-    protected function applySmtpSettings(): void
-    {
-        $host = Setting::get('mail_host');
-
-        if (! empty($host)) {
-            config([
-                'mail.default' => 'smtp',
-                'mail.mailers.smtp.host' => $host,
-                'mail.mailers.smtp.port' => (int) Setting::get('mail_port', 587),
-                'mail.mailers.smtp.username' => Setting::get('mail_username'),
-                'mail.mailers.smtp.password' => Setting::get('mail_password'),
-                'mail.mailers.smtp.encryption' => Setting::get('mail_encryption', 'tls') ?: null,
-                'mail.from.address' => Setting::get('mail_from_address', config('mail.from.address')),
-                'mail.from.name' => Setting::get('mail_from_name', config('mail.from.name')),
-            ]);
-        }
-    }
-
-    /**
-     * Mask an email address for privacy (e.g. jo***oe@example.com).
+     * Mask an email address for privacy.
      */
     protected function maskEmail(string $email): string
     {

@@ -31,6 +31,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'media.manage' => ['Manage media library', 'Content'],
             'plans.manage' => ['Manage membership plans', 'Membership'],
             'languages.manage' => ['Manage languages', 'Settings'],
+            'locations.manage' => ['Manage countries, states & cities', 'Settings'],
+            'sms.gateway.manage' => ['Manage SMS gateway & transport settings', 'Settings'],
         ];
 
         $permissionIds = [];

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\InstructorController as AdminInstructorController
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Admin\LiveClassController as AdminLiveClassController;
+use App\Http\Controllers\Admin\LocationController as AdminLocationController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -34,6 +35,8 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ServicesController as AdminServicesController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\SmsGatewayController as AdminSmsGatewayController;
+use App\Http\Controllers\Admin\SmsSettingsController as AdminSmsSettingsController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\SystemController as AdminSystemController;
@@ -63,6 +66,7 @@ use App\Http\Controllers\Instructor\TicketController as InstructorTicketControll
 use App\Http\Controllers\Instructor\VerificationController as InstructorVerificationController;
 use App\Http\Controllers\InstructorDirectoryController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PublicCertificateController;
 use App\Http\Controllers\PublicPageController;
@@ -105,6 +109,10 @@ Route::get('/locale/{code}', [LocaleController::class, 'switchStore'])->name('lo
 
 // Search Suggestions API (mono_market pattern)
 Route::get('/api/search-suggestions', [SearchSuggestionController::class, 'index'])->name('api.search.suggestions');
+
+// Geo feeds for cascading country → state → city dropdowns
+Route::get('/locations/states', [LocationController::class, 'states'])->name('locations.states');
+Route::get('/locations/cities', [LocationController::class, 'cities'])->name('locations.cities');
 
 // Public catalog (DB-driven)
 Route::prefix('courses')->name('courses.')->group(function () {
@@ -484,6 +492,44 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     // General Settings
     Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+
+    // SMS & Transport Settings
+    Route::get('/settings/sms', [AdminSmsSettingsController::class, 'index'])->name('settings.sms');
+    Route::put('/settings/sms', [AdminSmsSettingsController::class, 'update'])->name('settings.sms.update');
+    Route::post('/settings/sms/test', [AdminSmsSettingsController::class, 'test'])->name('settings.sms.test');
+
+    // Locations: countries, states & cities (same structure as mono_market)
+    Route::middleware('permission:locations.manage')->group(function () {
+        // Countries
+        Route::get('/settings/countries', [AdminLocationController::class, 'countries'])->name('settings.countries');
+        Route::post('/settings/countries', [AdminLocationController::class, 'storeCountry'])->name('settings.countries.store');
+        Route::put('/settings/countries/{country}', [AdminLocationController::class, 'updateCountry'])->name('settings.countries.update');
+        Route::delete('/settings/countries/{country}', [AdminLocationController::class, 'destroyCountry'])->name('settings.countries.destroy');
+
+        // States
+        Route::get('/settings/countries/{country}/states', [AdminLocationController::class, 'states'])->name('settings.countries.states');
+        Route::post('/settings/countries/{country}/states', [AdminLocationController::class, 'storeState'])->name('settings.countries.states.store');
+        Route::put('/settings/countries/{country}/states/{state}', [AdminLocationController::class, 'updateState'])->name('settings.countries.states.update')->scopeBindings();
+        Route::delete('/settings/countries/{country}/states/{state}', [AdminLocationController::class, 'destroyState'])->name('settings.countries.states.destroy')->scopeBindings();
+
+        // Cities
+        Route::get('/settings/countries/{country}/states/{state}/cities', [AdminLocationController::class, 'cities'])->name('settings.countries.states.cities');
+        Route::post('/settings/countries/{country}/states/{state}/cities', [AdminLocationController::class, 'storeCity'])->name('settings.countries.states.cities.store')->scopeBindings();
+        Route::put('/settings/countries/{country}/states/{state}/cities/{city}', [AdminLocationController::class, 'updateCity'])->name('settings.countries.states.cities.update')->scopeBindings();
+        Route::delete('/settings/countries/{country}/states/{state}/cities/{city}', [AdminLocationController::class, 'destroyCity'])->name('settings.countries.states.cities.destroy')->scopeBindings();
+    });
+
+    // SMS Gateway Devices & Logs
+    Route::prefix('sms-gateway')->name('sms-gateway.')->group(function () {
+        Route::get('/', [AdminSmsGatewayController::class, 'index'])->name('index');
+        Route::post('/', [AdminSmsGatewayController::class, 'store'])->name('store');
+        Route::post('/{device}/active', [AdminSmsGatewayController::class, 'setActive'])->name('active');
+        Route::post('/{device}/toggle', [AdminSmsGatewayController::class, 'toggle'])->name('toggle');
+        Route::post('/{device}/revoke', [AdminSmsGatewayController::class, 'revoke'])->name('revoke');
+        Route::delete('/{device}', [AdminSmsGatewayController::class, 'destroy'])->name('destroy');
+        Route::get('/log', [AdminSmsGatewayController::class, 'log'])->name('log');
+        Route::post('/nudge', [AdminSmsGatewayController::class, 'nudge'])->name('nudge');
+    });
 
     // Home Page Editor
     Route::get('/homepage', [AdminHomePageController::class, 'edit'])->name('homepage.index');

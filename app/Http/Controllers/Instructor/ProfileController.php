@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Services\PhoneNumberService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,14 +17,14 @@ class ProfileController extends Controller
         return view('pages.instructor.profile', ['instructor' => auth('instructor')->user()]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, PhoneNumberService $phones): RedirectResponse
     {
         $instructor = auth('instructor')->user();
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('instructors', 'email')->ignore($instructor->id)],
-            'phone' => ['nullable', 'string', 'max:30'],
+            'phone' => ['nullable', 'string', 'max:40', PhoneNumberService::rule()],
             'designation' => ['nullable', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:5000'],
             'avatar' => ['nullable', 'image', 'max:4096', 'mimes:jpg,jpeg,png,webp,svg'],
@@ -43,7 +44,7 @@ class ProfileController extends Controller
             $instructor->update(['avatar' => $path]);
         }
 
-        $instructor->update($data);
+        $instructor->update([...$data, ...$phones->attributesFor($data['phone'] ?? null)]);
 
         return back()->with('success', __('instructor.profile.updated'));
     }

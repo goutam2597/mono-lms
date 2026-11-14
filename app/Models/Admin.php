@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'role_id', 'name', 'email', 'password', 'phone', 'avatar',
+    'role_id', 'name', 'email', 'password', 'phone', 'phone_e164', 'phone_country', 'avatar',
     'locale', 'is_super_admin', 'status',
 ])]
 #[Hidden(['password', 'remember_token'])]

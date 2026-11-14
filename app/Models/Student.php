@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'email', 'password', 'phone', 'avatar', 'locale', 'status',
+    'name', 'email', 'password', 'phone', 'phone_e164', 'phone_country', 'avatar', 'locale', 'status',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class Student extends Authenticatable

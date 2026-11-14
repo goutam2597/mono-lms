@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\PhoneNumberService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,11 +14,11 @@ class ProfileController extends Controller
         return view('pages.student.profile', ['student' => auth('student')->user()]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, PhoneNumberService $phones)
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:30'],
+            'phone' => ['nullable', 'string', 'max:40', PhoneNumberService::rule()],
             'avatar' => ['nullable', 'image', 'max:2048', 'mimes:jpg,jpeg,png,webp'],
             'remove_avatar' => ['nullable', 'boolean'],
         ]);
@@ -37,7 +38,7 @@ class ProfileController extends Controller
             $student->update(['avatar' => $path]);
         }
 
-        $student->update($data);
+        $student->update([...$data, ...$phones->attributesFor($data['phone'] ?? null)]);
 
         return back()->with('success', __('student.profile.updated'));
     }

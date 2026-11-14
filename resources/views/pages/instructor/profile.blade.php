@@ -95,7 +95,13 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-[#191919]">{{ __('app.common.phone') }}</label>
-                        <input type="text" name="phone" value="{{ old('phone', $instructor->phone) }}" placeholder="+1 234 567 890" class="w-full border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]">
+                        <x-phone-input
+                            name="phone"
+                            :value="old('phone', $instructor->phone_e164 ?? $instructor->phone)"
+                            :country="old('phone_country', $instructor->phone_country)"
+                            inputClass="w-full min-w-0 flex-1 border border-[#e7e7e7] rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#738a6e]"
+                            triggerClass="border border-[#e7e7e7] rounded-lg px-3 py-2.5 text-sm bg-white hover:border-[#738a6e] whitespace-nowrap text-[#191919]"
+                        />
                         @error('phone')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div class="space-y-1.5">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Setting;
 use App\Models\Student;
+use App\Services\PhoneNumberService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
@@ -102,6 +103,8 @@ class StudentAuthController extends PanelAuthController
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:students,email'],
             'password' => ['required', 'string', Password::min(8)],
+            'phone' => ['nullable', 'string', 'max:40', PhoneNumberService::rule()],
+            'prefer_sms' => ['nullable', 'boolean'],
             'terms' => ['accepted'],
         ]);
 
@@ -111,6 +114,8 @@ class StudentAuthController extends PanelAuthController
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
+                'phone' => $data['phone'] ?? null,
+                'prefer_sms' => (bool) ($data['prefer_sms'] ?? false),
             ]);
         }
 
@@ -118,6 +123,7 @@ class StudentAuthController extends PanelAuthController
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
+            ...app(PhoneNumberService::class)->attributesFor($data['phone'] ?? null),
             'status' => 'active',
         ]);
 

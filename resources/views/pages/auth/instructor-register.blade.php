@@ -29,6 +29,22 @@
             </div>
 
             <div class="space-y-1.5">
+                <label for="phone-national" class="text-xs font-semibold text-[#191919]">{{ __('auth.phone') }}</label>
+                <x-phone-input name="phone" :value="old('phone')" :country="old('phone_country')" />
+                @error('phone')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            @if (\App\Models\Setting::enabled('sms_otp_enabled'))
+                <div class="space-y-1.5">
+                    <label class="flex items-start gap-2 cursor-pointer select-none text-xs text-[#191919]">
+                        <input type="checkbox" name="prefer_sms" value="1" checked class="control mt-0.5">
+                        <span>Send my verification code by SMS instead of email</span>
+                    </label>
+                    <p class="text-[11px] text-[#9a9a9a]">Only used when a phone number is provided above.</p>
+                </div>
+            @endif
+
+            <div class="space-y-1.5">
                 <label for="designation" class="text-xs font-semibold text-[#191919]">
                     Professional Title / Headline
                 </label>

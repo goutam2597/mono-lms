@@ -244,6 +244,75 @@ class FirebaseNotificationService
         ];
     }
 
+    /**
+     * Check whether Firebase Cloud Messaging is available for wake-ups and notifications.
+     */
+    public function isAvailable(): bool
+    {
+        return self::isConfigured();
+    }
+
+    /**
+     * Send a data-only FCM push message (used to wake background apps such as the Android SMS gateway).
+     * Returns 'sent', 'unregistered', or 'failed'.
+     */
+    public function sendDataMessage(string $deviceToken, array $data): string
+    {
+        if (! self::isConfigured() || empty($deviceToken)) {
+            return 'failed';
+        }
+
+        $creds = self::getServiceAccount();
+        $projectId = (string) ($creds['project_id'] ?? Setting::get('firebase_project_id', ''));
+        if ($projectId === '') {
+            return 'failed';
+        }
+
+        $accessToken = self::getAccessToken();
+        if (! $accessToken) {
+            return 'failed';
+        }
+
+        $stringData = [];
+        foreach ($data as $k => $v) {
+            $stringData[(string) $k] = is_scalar($v) ? (string) $v : json_encode($v);
+        }
+
+        $endpoint = 'https://fcm.googleapis.com/v1/projects/'.$projectId.'/messages:send';
+        $payload = [
+            'message' => [
+                'token' => $deviceToken,
+                'data' => $stringData,
+                'android' => [
+                    'priority' => 'high',
+                ],
+            ],
+        ];
+
+        try {
+            $res = Http::withToken($accessToken)
+                ->timeout(10)
+                ->post($endpoint, $payload);
+
+            if ($res->successful()) {
+                return 'sent';
+            }
+
+            $errorCode = $res->json('error.details.0.errorCode') ?? $res->json('error.status');
+            if (in_array($errorCode, ['UNREGISTERED', 'NOT_FOUND'], true)) {
+                return 'unregistered';
+            }
+
+            Log::warning('FCM data message send rejected: '.$res->body());
+
+            return 'failed';
+        } catch (Throwable $e) {
+            Log::warning('FCM data message exception: '.$e->getMessage());
+
+            return 'failed';
+        }
+    }
+
     protected static function base64UrlEncode(string $data): string
     {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');

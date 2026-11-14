@@ -320,18 +320,17 @@
                             </div>
                         </div>
 
-                        <!-- 5. VISUAL DRAG & DROP PAGE BUILDER (No-Code Block Canvas) -->
+                        <!-- 5. VISUAL SECTION LAYOUT BUILDER -->
                         <div class="mt-6 pt-5 border-t border-slate-100 dark:border-neutral-800" id="content-body-container">
                             <input type="hidden" name="settings_blocks_json" id="settings_blocks_json" value="{{ json_encode(old('settings.blocks', $page->setting('blocks', []))) }}">
 
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200 dark:border-neutral-800">
                                 <div>
                                     <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                                        <span>🎨 Visual Page Designer</span>
-                                        <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">No-Code</span>
+                                        <span>Visual Page Builder</span>
                                     </h3>
                                     <p class="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
-                                        Build beautiful pages with pre-designed drag &amp; drop section blocks. No HTML or coding required.
+                                        Design structured layout sections using responsive block components.
                                     </p>
                                 </div>
 
@@ -339,11 +338,11 @@
                                 <div class="inline-flex rounded-lg border border-slate-300 dark:border-neutral-700 p-0.5 bg-slate-100 dark:bg-neutral-800">
                                     <button type="button" id="tab-btn-visual" onclick="setBuilderTab('visual')"
                                             class="px-3 py-1.5 text-xs font-semibold rounded-md transition-colors bg-white dark:bg-neutral-700 text-slate-900 dark:text-white shadow-xs">
-                                        🎨 Visual Blocks
+                                        Visual Blocks
                                     </button>
                                     <button type="button" id="tab-btn-code" onclick="setBuilderTab('code')"
                                             class="px-3 py-1.5 text-xs font-medium rounded-md transition-colors text-slate-600 dark:text-neutral-400 hover:text-slate-900">
-                                        💻 Raw HTML
+                                        HTML Source
                                     </button>
                                 </div>
                             </div>
@@ -413,9 +412,11 @@
                                     <!-- 1. Hero -->
                                     <button type="button" onclick="addBlock('hero')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center font-bold text-lg mb-2">🌟</div>
+                                            <div class="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-emerald-700 dark:text-emerald-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25l1.5 1.5 3-3"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Hero Header Banner</h4>
-                                            <p class="text-[11px] text-slate-500 leading-relaxed">High-impact headline banner with CTA buttons and optional hero graphic.</p>
+                                            <p class="text-[11px] text-slate-500 leading-relaxed">Headline banner with action buttons and optional hero image.</p>
                                         </div>
                                         <span class="text-[10px] font-bold text-emerald-600 mt-3 inline-block">+ Add Hero</span>
                                     </button>
@@ -423,7 +424,9 @@
                                     <!-- 2. Features Grid -->
                                     <button type="button" onclick="addBlock('features_grid')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-800 dark:text-indigo-300 flex items-center justify-center font-bold text-lg mb-2">⚡</div>
+                                            <div class="w-9 h-9 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-indigo-700 dark:text-indigo-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Features Grid</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Multi-column cards with icons, highlights, and benefit descriptions.</p>
                                         </div>
@@ -433,7 +436,9 @@
                                     <!-- 3. Split Content -->
                                     <button type="button" onclick="addBlock('split_content')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 flex items-center justify-center font-bold text-lg mb-2">📖</div>
+                                            <div class="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-blue-700 dark:text-blue-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Split Text &amp; Image</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Side-by-side narrative with checkmark bullet points and photo.</p>
                                         </div>
@@ -443,7 +448,9 @@
                                     <!-- 4. Stats Counter -->
                                     <button type="button" onclick="addBlock('stats')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-900/60 text-purple-800 dark:text-purple-300 flex items-center justify-center font-bold text-lg mb-2">📊</div>
+                                            <div class="w-9 h-9 rounded-lg bg-purple-100 dark:bg-purple-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-purple-700 dark:text-purple-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Key Statistics</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Large numbers highlighting students, course metrics, and satisfaction.</p>
                                         </div>
@@ -453,7 +460,9 @@
                                     <!-- 5. FAQ Accordion -->
                                     <button type="button" onclick="addBlock('faq')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 flex items-center justify-center font-bold text-lg mb-2">❓</div>
+                                            <div class="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">FAQ Accordions</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Interactive click-to-expand questions and answers for visitors.</p>
                                         </div>
@@ -463,9 +472,11 @@
                                     <!-- 6. Call to Action Banner -->
                                     <button type="button" onclick="addBlock('cta_banner')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-center font-bold text-lg mb-2">🚀</div>
+                                            <div class="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-emerald-700 dark:text-emerald-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.58-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Call To Action Banner</h4>
-                                            <p class="text-[11px] text-slate-500 leading-relaxed">High-contrast conversion strip with bold prompt and action button.</p>
+                                            <p class="text-[11px] text-slate-500 leading-relaxed">High-contrast conversion strip with headline and action button.</p>
                                         </div>
                                         <span class="text-[10px] font-bold text-emerald-600 mt-3 inline-block">+ Add CTA</span>
                                     </button>
@@ -473,7 +484,9 @@
                                     <!-- 7. Testimonial -->
                                     <button type="button" onclick="addBlock('testimonial')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300 flex items-center justify-center font-bold text-lg mb-2">💬</div>
+                                            <div class="w-9 h-9 rounded-lg bg-rose-100 dark:bg-rose-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-rose-700 dark:text-rose-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Testimonial Quote</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Social proof quote card with 5 gold stars and author title.</p>
                                         </div>
@@ -483,7 +496,9 @@
                                     <!-- 8. Video Showcase -->
                                     <button type="button" onclick="addBlock('video_embed')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 flex items-center justify-center font-bold text-lg mb-2">🎥</div>
+                                            <div class="w-9 h-9 rounded-lg bg-red-100 dark:bg-red-900/60 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-red-700 dark:text-red-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Video Embed</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Embedded responsive video player for YouTube, Vimeo, or tutorials.</p>
                                         </div>
@@ -493,7 +508,9 @@
                                     <!-- 9. Rich Text -->
                                     <button type="button" onclick="addBlock('rich_text')" class="p-4 rounded-xl border border-slate-200 dark:border-neutral-800 hover:border-emerald-600 hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 text-left transition-all group cursor-pointer flex flex-col justify-between">
                                         <div class="space-y-1.5">
-                                            <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-neutral-800 text-slate-800 dark:text-neutral-300 flex items-center justify-center font-bold text-lg mb-2">📝</div>
+                                            <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-neutral-800 flex items-center justify-center mb-2">
+                                                <svg class="w-5 h-5 text-slate-700 dark:text-neutral-300" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                                            </div>
                                             <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-emerald-700">Formatted Text Article</h4>
                                             <p class="text-[11px] text-slate-500 leading-relaxed">Structured text article paragraphs, headers, and bulleted content.</p>
                                         </div>
@@ -874,16 +891,16 @@
 
             function blockMeta(type) {
                 switch(type) {
-                    case 'hero': return { name: 'Hero Header Banner', icon: '🌟', color: 'emerald' };
-                    case 'features_grid': return { name: 'Features Grid', icon: '⚡', color: 'indigo' };
-                    case 'split_content': return { name: 'Split Text & Image', icon: '📖', color: 'blue' };
-                    case 'stats': return { name: 'Key Statistics', icon: '📊', color: 'purple' };
-                    case 'faq': return { name: 'FAQ Accordions', icon: '❓', color: 'amber' };
-                    case 'cta_banner': return { name: 'Call To Action Banner', icon: '🚀', color: 'emerald' };
-                    case 'testimonial': return { name: 'Testimonial Quote', icon: '💬', color: 'rose' };
-                    case 'video_embed': return { name: 'Video Embed', icon: '🎥', color: 'red' };
-                    case 'rich_text': return { name: 'Formatted Text Article', icon: '📝', color: 'slate' };
-                    default: return { name: 'Section Block', icon: '📦', color: 'slate' };
+                    case 'hero': return { name: 'Hero Header Banner', tag: 'Hero', color: 'emerald' };
+                    case 'features_grid': return { name: 'Features Grid', tag: 'Features', color: 'indigo' };
+                    case 'split_content': return { name: 'Split Text & Image', tag: 'Story', color: 'blue' };
+                    case 'stats': return { name: 'Key Statistics', tag: 'Metrics', color: 'purple' };
+                    case 'faq': return { name: 'FAQ Accordions', tag: 'FAQ', color: 'amber' };
+                    case 'cta_banner': return { name: 'Call To Action Banner', tag: 'CTA', color: 'emerald' };
+                    case 'testimonial': return { name: 'Testimonial Quote', tag: 'Review', color: 'rose' };
+                    case 'video_embed': return { name: 'Video Embed', tag: 'Media', color: 'red' };
+                    case 'rich_text': return { name: 'Formatted Text Article', tag: 'Article', color: 'slate' };
+                    default: return { name: 'Section Block', tag: 'Block', color: 'slate' };
                 }
             }
 
@@ -923,7 +940,7 @@
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 10.001 4.001A2 2 0 007 2zm0 6a2 2 0 10.001 4.001A2 2 0 007 8zm0 6a2 2 0 10.001 4.001A2 2 0 007 14zm6-12a2 2 0 10.001 4.001A2 2 0 0013 2zm0 6a2 2 0 10.001 4.001A2 2 0 0013 8zm0 6a2 2 0 10.001 4.001A2 2 0 0013 14z"/></svg>
                                 </span>
                                 <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-200 dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 font-mono">#${idx + 1}</span>
-                                <span class="text-base">${meta.icon}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 dark:bg-neutral-800 text-slate-600 dark:text-neutral-300 font-mono">${meta.tag}</span>
                                 <span class="text-xs font-bold text-slate-900 dark:text-white truncate">${meta.name}</span>
                                 <span class="text-[11px] text-slate-400 font-normal truncate hidden sm:inline">&mdash; "${escapeHtml(d.title || d.eyebrow || 'Untitled')}"</span>
                             </div>
@@ -937,7 +954,7 @@
                                 <button type="button" onclick="moveBlock(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="h-7 w-7 text-xs border border-slate-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-800 text-slate-600 dark:text-neutral-400 disabled:opacity-30 cursor-pointer" title="Move Up">&uarr;</button>
                                 <button type="button" onclick="moveBlock(${idx}, 1)" ${idx === blocks.length - 1 ? 'disabled' : ''} class="h-7 w-7 text-xs border border-slate-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-800 text-slate-600 dark:text-neutral-400 disabled:opacity-30 cursor-pointer" title="Move Down">&darr;</button>
                                 <!-- Duplicate -->
-                                <button type="button" onclick="duplicateBlock(${idx})" class="h-7 px-2 text-[10px] font-bold uppercase border border-slate-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 cursor-pointer" title="Duplicate block">❐ Duplicate</button>
+                                <button type="button" onclick="duplicateBlock(${idx})" class="h-7 px-2 text-[10px] font-bold uppercase border border-slate-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-800 text-slate-700 dark:text-neutral-300 cursor-pointer" title="Duplicate block">Duplicate</button>
                                 <!-- Delete -->
                                 <button type="button" onclick="deleteBlock(${idx})" class="h-7 w-7 text-xs border border-slate-300 dark:border-neutral-700 rounded bg-white dark:bg-neutral-800 text-red-500 hover:bg-red-50 cursor-pointer" title="Delete block">&times;</button>
                             </div>

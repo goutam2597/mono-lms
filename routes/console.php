@@ -17,3 +17,6 @@ Schedule::command('orders:cancel-expired')->everyMinute()->withoutOverlapping();
 // frequent runs idempotent.
 Schedule::command('notifications:assignment-deadlines')->everyFifteenMinutes()->withoutOverlapping();
 Schedule::command('notifications:live-class-reminders')->everyFifteenMinutes()->withoutOverlapping();
+
+// SMS Gateway queue hygiene: reclaim unacknowledged processing claims and re-nudge phones
+Schedule::command('sms-gateway:recover')->everyMinute()->withoutOverlapping();

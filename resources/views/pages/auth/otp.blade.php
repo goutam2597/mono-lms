@@ -3,13 +3,13 @@
         <!-- Header -->
         <div class="space-y-2">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-[#191919]">Email OTP Verification</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-[#191919]">{{ ($channel ?? 'email') === 'sms' ? 'SMS' : 'Email' }} OTP Verification</h1>
                 <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full bg-[#344c3d]/10 text-[#344c3d] border border-[#344c3d]/20">
                     {{ ($role ?? 'student') === 'instructor' ? 'Instructor' : 'Student' }}
                 </span>
             </div>
             <p class="text-sm text-[#5d5d5d]">
-                We sent a 6-digit verification code to <span class="font-semibold text-[#191919]">{{ $maskedEmail ?? 'your email' }}</span>
+                We sent a 6-digit verification code to <span class="font-semibold text-[#191919]">{{ $displayTarget ?? ($maskedEmail ?? 'your contact') }}</span>
             </p>
         </div>
 
@@ -70,13 +70,26 @@
 
         <!-- Resend Section -->
         <div class="pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#5d5d5d]">
-            <span>Didn't receive the email code?</span>
-            <form action="{{ route('otp.resend') }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="font-semibold text-[#344c3d] hover:underline cursor-pointer">
-                    Resend Code
-                </button>
-            </form>
+            <span>Didn't receive the verification code?</span>
+            <div class="flex items-center gap-2 flex-wrap">
+                <form action="{{ route('otp.resend') }}" method="POST" class="inline">
+                    @csrf
+                    <input type="hidden" name="channel" value="{{ $channel ?? 'email' }}">
+                    <button type="submit" class="font-semibold text-[#344c3d] hover:underline cursor-pointer">
+                        Resend Code
+                    </button>
+                </form>
+                @if (!empty($smsOtpAvailable))
+                    <span class="text-slate-300">&bull;</span>
+                    <form action="{{ route('otp.resend') }}" method="POST" class="inline">
+                        @csrf
+                        <input type="hidden" name="channel" value="{{ ($channel ?? 'email') === 'sms' ? 'email' : 'sms' }}">
+                        <button type="submit" class="font-semibold text-[#344c3d] hover:underline cursor-pointer">
+                            Send via {{ ($channel ?? 'email') === 'sms' ? 'Email' : 'SMS' }}
+                        </button>
+                    </form>
+                @endif
+            </div>
         </div>
 
         <!-- Back Link -->
