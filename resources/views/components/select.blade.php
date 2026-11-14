@@ -32,7 +32,7 @@
         <svg data-ms-chevron class="w-4 h-4 text-gray-400 shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
     </button>
 
-    <div data-ms-panel class="hidden absolute {{ $align === 'right' ? 'right-0' : 'left-0' }} top-full mt-2 min-w-full w-max max-w-xs bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
+    <div data-ms-panel class="hidden absolute {{ $align === 'right' ? 'right-0' : 'left-0' }} top-full mt-2 min-w-full w-max max-w-[32rem] bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[60]">
         @if ($showSearch)
             <div class="px-3 pb-2">
                 <input type="text" data-ms-search placeholder="{{ __('app.common.search') }}..." autocomplete="off"

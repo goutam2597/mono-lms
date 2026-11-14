@@ -219,6 +219,8 @@ input[type="color"] {
     transition: background .12s, color .12s;
     user-select: none;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .mselect-opt:hover {
     background: #f5f5f5;

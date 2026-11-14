@@ -51,10 +51,22 @@
         var cap = parseInt(list.style.maxHeight, 10) || 260;
         var listH = Math.min(list.offsetHeight || 0, cap);
         var minW = parseInt(openList.sel.getAttribute('data-mselect-min-width'), 10) || 0;
-        var width = Math.max(r.width, minW);
+
+        // Expand to the widest option text so nothing is clipped when the
+        // list opens — never narrower than the trigger, never off-screen.
+        // offsetWidth at width:auto = max option text + paddings.
+        list.style.width = 'auto';
+        var naturalW = list.offsetWidth;
+        if (list.scrollHeight > list.clientHeight + 1) {
+            naturalW += 8; // the vertical scrollbar steals a little width
+        }
+
+        var width = Math.max(r.width, minW, naturalW);
         if (!openList.sel.classList.contains('w-full') && width < 130) {
             width = Math.max(width, 130);
         }
+        var maxAvail = window.innerWidth - 16;
+        if (width > maxAvail) width = maxAvail;
         var below = window.innerHeight - r.bottom;
 
         if (below < listH + 8 && r.top > listH + 8) {
