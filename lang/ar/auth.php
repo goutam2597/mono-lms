@@ -38,4 +38,8 @@ return [
     'instructor_login_title' => 'تسجيل دخول المدرّب',
     'instructor_login_hint' => 'تُنشأ حسابات المدرّبين بواسطة الإدارة.',
     'admin_login_title' => 'تسجيل دخول الإدارة',
+    'turnstile' => [
+        'label' => 'Cloudflare Turnstile',
+        'failed' => 'فشل التحقق من الحماية ضد الروبوتات. يرجى تجربة أداة التحقق مرة أخرى.',
+    ],
 ];

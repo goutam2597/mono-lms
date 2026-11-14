@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AiTranslationController;
 use App\Http\Controllers\Admin\AssignmentController as AdminAssignmentController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CertificateController as AdminCertificateController;
+use App\Http\Controllers\Admin\CookieSettingsController as AdminCookieSettingsController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -40,6 +41,7 @@ use App\Http\Controllers\Admin\SmsSettingsController as AdminSmsSettingsControll
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\SupportController as AdminSupportController;
 use App\Http\Controllers\Admin\SystemController as AdminSystemController;
+use App\Http\Controllers\Admin\TurnstileSettingsController as AdminTurnstileSettingsController;
 use App\Http\Controllers\Admin\UserDirectoryController as AdminUserDirectoryController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
@@ -487,6 +489,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
         Route::post('/settings/google', [GoogleSettingsController::class, 'store'])->name('settings.google.store');
         Route::delete('/settings/google/firebase-service-account', [GoogleSettingsController::class, 'destroyServiceAccount'])->name('settings.google.firebase_service_account.destroy');
         Route::post('/settings/google/firebase-test', [GoogleSettingsController::class, 'testFirebaseNotification'])->name('settings.google.firebase_test');
+
+        // Cookie Consent
+        Route::get('/settings/cookie', [AdminCookieSettingsController::class, 'index'])->name('settings.cookie');
+        Route::put('/settings/cookie', [AdminCookieSettingsController::class, 'update'])->name('settings.cookie.update');
+
+        // Bot Protection (Cloudflare Turnstile)
+        Route::get('/settings/turnstile', [AdminTurnstileSettingsController::class, 'index'])->name('settings.turnstile');
+        Route::put('/settings/turnstile', [AdminTurnstileSettingsController::class, 'update'])->name('settings.turnstile.update');
     });
 
     // General Settings

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Setting;
 use App\Models\Student;
+use App\Rules\ValidTurnstile;
 use App\Services\PhoneNumberService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,8 +33,21 @@ class StudentAuthController extends PanelAuthController
         return 'student.panel';
     }
 
+    protected function loginRouteName(): string
+    {
+        // The student login route is named `login`, not `student.login`.
+        return 'login';
+    }
+
     public function login(Request $request)
     {
+        // Web-only bot gate on the shared multi-guard login form (this
+        // override handles student, instructor and admin credentials). The
+        // field is merged in so the rule also runs when the widget never
+        // rendered (Laravel skips non-implicit rules for absent fields).
+        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -99,6 +113,13 @@ class StudentAuthController extends PanelAuthController
 
     public function register(Request $request)
     {
+        // Web-only bot gate. Passes untouched while Turnstile is disabled;
+        // when the OTP signup flow is on, this also shields it from spam. The
+        // field is merged in so the rule also runs when the widget never
+        // rendered (Laravel skips non-implicit rules for absent fields).
+        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('register')]]);
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:students,email'],

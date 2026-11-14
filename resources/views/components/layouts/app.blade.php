@@ -49,6 +49,8 @@
 
     <x-footer />
 
+    @include('components.cookie-consent')
+
     @if (session('success'))
         <div data-flash-toast data-type="success" data-message="{{ session('success') }}" data-title="Success" class="hidden"></div>
     @elseif (session('error'))

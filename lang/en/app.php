@@ -134,4 +134,12 @@ return [
         'expert' => 'Expert',
         'all' => 'All Levels',
     ],
+    'cookie' => [
+        'title' => 'We value your privacy',
+        'message' => 'We use cookies to enhance your browsing experience, analyse site traffic and personalise content. By clicking “Accept all”, you consent to our use of cookies.',
+        'accept' => 'Accept all',
+        'decline' => 'Decline',
+        'learn_more' => 'Learn more',
+        'aria_label' => 'Cookie consent',
+    ],
 ];

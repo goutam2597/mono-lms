@@ -50,6 +50,9 @@
                 </a>
             </div>
 
+            <!-- Bot Protection -->
+            <x-turnstile action="login" />
+
             <!-- Submit Button -->
             <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md mt-2">
                 <span>{{ __('auth.sign_in') }}</span>

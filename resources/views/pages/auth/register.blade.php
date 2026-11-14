@@ -60,6 +60,7 @@
                 @error('terms')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
             </div>
 
+            <x-turnstile action="register" />
             <button type="submit" class="w-full bg-[#344c3d] hover:bg-[#25372c] text-white text-sm font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md mt-2">
                 <span>{{ __('auth.register') }}</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Rules\ValidTurnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -21,6 +22,12 @@ abstract class PanelAuthController extends Controller
 
     abstract protected function panelLabelKey(): string;
 
+    /** Route name the logout handler returns to (defaults to guard().'.login'). */
+    protected function loginRouteName(): string
+    {
+        return $this->guard().'.login';
+    }
+
     public function showLogin()
     {
         if (Auth::guard($this->guard())->check()) {
@@ -32,6 +39,13 @@ abstract class PanelAuthController extends Controller
 
     public function login(Request $request)
     {
+        // Web-only bot gate shared by the student and instructor login forms.
+        // Passes untouched while Turnstile is disabled. The field is merged in
+        // so the rule also runs when the widget never rendered (Laravel skips
+        // non-implicit rules for absent fields).
+        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('login')]]);
+
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
@@ -78,6 +92,6 @@ abstract class PanelAuthController extends Controller
         $request->session()->forget($this->guard().'_locale');
         $request->session()->regenerateToken();
 
-        return redirect()->route($this->guard().'.login')->with('status', __('auth.logged_out'));
+        return redirect()->route($this->loginRouteName())->with('status', __('auth.logged_out'));
     }
 }

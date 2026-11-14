@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Instructor;
 use App\Models\Setting;
+use App\Rules\ValidTurnstile;
 use App\Services\PhoneNumberService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,13 @@ class InstructorAuthController extends PanelAuthController
 
     public function register(Request $request)
     {
+        // Web-only bot gate. Passes untouched while Turnstile is disabled;
+        // when the OTP signup flow is on, this also shields it from spam. The
+        // field is merged in so the rule also runs when the widget never
+        // rendered (Laravel skips non-implicit rules for absent fields).
+        $request->merge(['cf-turnstile-response' => $request->input('cf-turnstile-response')]);
+        $request->validate(['cf-turnstile-response' => [new ValidTurnstile('register')]]);
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:instructors,email'],

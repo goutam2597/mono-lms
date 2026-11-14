@@ -150,6 +150,8 @@
                         ['id' => 'sms_gateway', 'label' => 'SMS Gateway Devices', 'route' => 'admin.sms-gateway.index'],
                         ['id' => 'sms_logs', 'label' => 'SMS Logs', 'route' => 'admin.sms-gateway.log'],
                         ['id' => 'locations', 'label' => 'Locations', 'route' => 'admin.settings.countries'],
+                        ['id' => 'cookie_settings', 'label' => 'Cookie Consent', 'route' => 'admin.settings.cookie'],
+                        ['id' => 'turnstile_settings', 'label' => 'Cloudflare', 'route' => 'admin.settings.turnstile'],
                         ['id' => 'google_settings', 'label' => __('admin.nav.items.google_settings'), 'route' => 'admin.settings.google'],
                         ['id' => 'payment-gateways', 'label' => __('admin.nav.items.payment_gateways'), 'route' => 'admin.payment-gateways.index'],
                         ['id' => 'services', 'label' => __('admin.nav.items.services'), 'route' => 'admin.services.index'],

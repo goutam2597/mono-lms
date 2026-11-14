@@ -38,4 +38,8 @@ return [
     'instructor_login_title' => 'Instructor Sign In',
     'instructor_login_hint' => 'Instructor accounts are created by the administration.',
     'admin_login_title' => 'Admin Sign In',
+    'turnstile' => [
+        'label' => 'Cloudflare Turnstile',
+        'failed' => 'Bot verification failed. Please try the verification widget again.',
+    ],
 ];

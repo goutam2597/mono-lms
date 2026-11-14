@@ -38,4 +38,8 @@ return [
     'instructor_login_title' => 'इंस्ट्रक्टर साइन इन',
     'instructor_login_hint' => 'इंस्ट्रक्टर खाते प्रशासन द्वारा बनाए जाते हैं।',
     'admin_login_title' => 'एडमिन साइन इन',
+    'turnstile' => [
+        'label' => 'Cloudflare Turnstile',
+        'failed' => 'बॉट सत्यापन विफल रहा। कृपया सत्यापन विजेट को फिर से आज़माएँ।',
+    ],
 ];

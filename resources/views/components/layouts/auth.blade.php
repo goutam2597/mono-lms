@@ -95,5 +95,7 @@
             </div>
         </div>
     </div>
+
+    @include('components.cookie-consent')
 </body>
 </html>

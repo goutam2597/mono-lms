@@ -32,6 +32,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'plans.manage' => ['Manage membership plans', 'Membership'],
             'languages.manage' => ['Manage languages', 'Settings'],
             'locations.manage' => ['Manage countries, states & cities', 'Settings'],
+            'settings.manage' => ['Manage general platform settings (cookie consent, Google, etc.)', 'Settings'],
             'sms.gateway.manage' => ['Manage SMS gateway & transport settings', 'Settings'],
         ];
 
